@@ -1,0 +1,2 @@
+add_library(evaluation dummy_file.cpp)
+target_link_libraries(evaluation PUBLIC cxx_setup)

@@ -1,4 +1,4 @@
-#include "our_project/tools/tools.h"
+#include "ChessEngine/tools/tools.h"
 
 int main() {
     tools::print_hello();

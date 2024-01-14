@@ -1,2 +1,2 @@
-add_library(game dummy_file.cpp)
+add_library(game chessboard.cpp)
 target_link_libraries(game PUBLIC cxx_setup)

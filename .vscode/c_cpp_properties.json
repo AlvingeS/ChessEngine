@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}",
-                "${workspaceFolder}/external/**"
+                "${workspaceFolder}/external/**",
+                "${workspaceFolder}/ChessEngine/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

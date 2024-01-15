@@ -1,4 +1,4 @@
-add_subdirectory(tools)
+add_subdirectory(utils)
 add_subdirectory(tests)
 add_subdirectory(game)
 add_subdirectory(search)

@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include "ChessEngine/game/headers/piecetype.h"
 #include "ChessEngine/utils/headers/bit_logic.h"
+#include <string>
 
 namespace game {
     class ChessBoard {
@@ -15,6 +16,10 @@ namespace game {
             std::unordered_map<PieceType, utils::U64> get_bitboards() {
                 return m_bitboards;
             }
+
+            void set_board_from_fen(const std::string& fen);
+
+            PieceType char_to_piece_type(char c);
 
             private:
                 std::unordered_map<PieceType, utils::U64> m_bitboards;

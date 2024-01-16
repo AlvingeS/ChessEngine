@@ -117,4 +117,30 @@ namespace utils {
         ASSERT_EQ(expected, actual) << "NotBits: Expected: 0x" << std::hex << expected 
                                     << ", Actual: 0x" << std::hex << actual;
     }
+
+    TEST_F(BitLogic, GetBit) {
+        bool expected = 0;
+        bool actual = utils::get_bit(a, 0);
+
+        ASSERT_EQ(expected, actual) << "GetBit: Expected: " << expected 
+                                    << ", Actual: " << actual;
+
+        expected = 1;
+        actual = utils::get_bit(a, 9);
+
+        ASSERT_EQ(expected, actual) << "GetBit: Expected: " << expected 
+                                    << ", Actual: " << actual;
+
+        expected = 1;
+        actual = utils::get_bit(a, 15);
+
+        ASSERT_EQ(expected, actual) << "GetBit: Expected: " << expected 
+                                    << ", Actual: " << actual;
+
+        expected = 0;
+        actual = utils::get_bit(a, 16);
+
+        ASSERT_EQ(expected, actual) << "GetBit: Expected: " << expected 
+                                    << ", Actual: " << actual;
+    }
 }

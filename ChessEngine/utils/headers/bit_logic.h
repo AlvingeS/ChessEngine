@@ -20,4 +20,8 @@ namespace utils {
     inline U64 not_bits(U64 a) {
         return ~a;
     }
+
+    inline bool get_bit(U64 a, int i) {
+        return (a >> i) & 1;
+    }
 }

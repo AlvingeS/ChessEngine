@@ -12,6 +12,10 @@ namespace game {
                 return m_bitboards[piece_type];
             }
 
+            std::unordered_map<PieceType, utils::U64> get_bitboards() {
+                return m_bitboards;
+            }
+
             private:
                 std::unordered_map<PieceType, utils::U64> m_bitboards;
 

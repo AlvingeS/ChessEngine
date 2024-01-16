@@ -15,7 +15,11 @@ enum class PieceType : uint8_t {
     B_BISHOP,
     B_ROOK,
     B_QUEEN,
-    B_KING
+    B_KING,
+    W_ALL,
+    B_ALL,
+    OCCUPIED,
+    EMPTY
 };
 
 }

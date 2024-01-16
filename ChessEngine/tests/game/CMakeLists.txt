@@ -1,5 +1,5 @@
 add_executable(game_tests
-    dummy_test.cpp
+    bitboard_init.cpp
 )
 
 target_link_libraries(game_tests PRIVATE game GTest::gtest_main)

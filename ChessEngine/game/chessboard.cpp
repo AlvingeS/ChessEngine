@@ -57,25 +57,23 @@ namespace game {
     }
 
     void ChessBoard::set_board_from_fen(const std::string& fen) {
-        // Reset all bitboards
         for (auto& board : m_bitboards) {
             board.second = 0ULL;
         }
 
-        // Parse the FEN string
         int rank = 7;
         int file = 0;
         for (char c : fen) {
             if (c == ' ') {
-                break; // End of piece placement data
+                break;
             } else if (c == '/') {
                 rank--;
                 file = 0;
             } else if (std::isdigit(c)) {
-                file += c - '0'; // Empty squares
+                file += c - '0';
             } else {
                 PieceType type = char_to_piece_type(c);
-                uint64_t bit = 1ULL << (rank * 8 + (7 - file)); // Adjusted file index
+                uint64_t bit = 1ULL << (rank * 8 + (7 - file));
                 m_bitboards[type] |= bit;
                 file++;
             }

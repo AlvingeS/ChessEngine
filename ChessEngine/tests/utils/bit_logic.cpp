@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "ChessEngine/utils/bit_logic.h"
+#include "ChessEngine/utils/headers/bit_logic.h"
 
 namespace utils {
     class BitLogic : public ::testing::Test {

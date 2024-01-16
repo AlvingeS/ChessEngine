@@ -1,7 +1,9 @@
-#include "ChessEngine/utils/bit_logic.h"
+#include "ChessEngine/game/headers/chessboard.h"
+#include <iostream>
 
 int main() {
-    unsigned long long int n = 64;
-    utils::print_bits(n);
+    game::ChessBoard chessboard = game::ChessBoard();
+
+    std::cout << "Done!" << std::endl;
     return 0;
 }

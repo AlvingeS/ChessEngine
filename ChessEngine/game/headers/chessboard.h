@@ -1,7 +1,7 @@
 #pragma once
 #include <unordered_map>
-#include "ChessEngine/game/piecetype.h"
-#include "ChessEngine/utils/bit_logic.h"
+#include "ChessEngine/game/headers/piecetype.h"
+#include "ChessEngine/utils/headers/bit_logic.h"
 
 namespace game {
     class ChessBoard {

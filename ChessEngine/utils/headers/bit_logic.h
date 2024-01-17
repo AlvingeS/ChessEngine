@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 namespace utils {
     typedef unsigned long long U64;
@@ -24,4 +25,14 @@ namespace utils {
     inline bool get_bit(U64 a, int i) {
         return (a >> i) & 1;
     }
+
+    inline int rank_from_bit_index(int i) {
+        return i / 8;
+    }
+
+    inline int file_from_bit_index(int i) {
+        return i % 8;
+    }
+
+    std::vector<int> get_bit_indices(U64 bitboard);
 }

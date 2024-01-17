@@ -19,8 +19,6 @@ namespace game {
 
             void set_board_from_fen(const std::string& fen);
 
-            PieceType char_to_piece_type(char c);
-
             private:
                 std::unordered_map<PieceType, utils::U64> m_bitboards;
 

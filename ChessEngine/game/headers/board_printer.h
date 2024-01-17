@@ -12,7 +12,6 @@ namespace game {
             void print_board();
         private:
             std::vector<std::vector<char>> m_board;
-            char piece_type_to_char(PieceType piece_type);
             bool is_piece_bitboard(PieceType piece_type);
     };
 }

@@ -6,29 +6,6 @@ namespace game {
         fill_board(bitboards);
     }
 
-    char BoardPrinter::piece_type_to_char(PieceType piece_type) {
-        switch(piece_type) {
-            case PieceType::W_PAWN: return 'P';
-            case PieceType::W_KNIGHT: return 'N';
-            case PieceType::W_BISHOP: return 'B';
-            case PieceType::W_ROOK: return 'R';
-            case PieceType::W_QUEEN: return 'Q';
-            case PieceType::W_KING: return 'K';
-            case PieceType::B_PAWN: return 'p';
-            case PieceType::B_KNIGHT: return 'n';
-            case PieceType::B_BISHOP: return 'b';
-            case PieceType::B_ROOK: return 'r';
-            case PieceType::B_QUEEN: return 'q';
-            case PieceType::B_KING: return 'k';
-            case PieceType::W_ALL: return 'x';
-            case PieceType::B_ALL: return 'y';
-            case PieceType::OCCUPIED: return 'o';
-            case PieceType::EMPTY: return 'e';
-        }
-
-        return ' ';
-    }
-
     bool BoardPrinter::is_piece_bitboard(PieceType piece_type) {
         switch(piece_type) {
             case PieceType::W_PAWN:

@@ -79,23 +79,4 @@ namespace game {
             }
         }
     }
-
-
-    PieceType ChessBoard::char_to_piece_type(char c) {
-        switch (c) {
-            case 'P': return PieceType::W_PAWN;
-            case 'N': return PieceType::W_KNIGHT;
-            case 'B': return PieceType::W_BISHOP;
-            case 'R': return PieceType::W_ROOK;
-            case 'Q': return PieceType::W_QUEEN;
-            case 'K': return PieceType::W_KING;
-            case 'p': return PieceType::B_PAWN;
-            case 'n': return PieceType::B_KNIGHT;
-            case 'b': return PieceType::B_BISHOP;
-            case 'r': return PieceType::B_ROOK;
-            case 'q': return PieceType::B_QUEEN;
-            case 'k': return PieceType::B_KING;
-            default:  return PieceType::EMPTY;
-        }
-    }
 }

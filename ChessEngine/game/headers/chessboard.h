@@ -28,7 +28,5 @@ namespace game {
                 utils::U64 gen_b_all_bitboard();
                 utils::U64 gen_occupied_bitboard();
                 utils::U64 gen_empty_bitboard();
-
-                bool w_to_move;
     };
 }

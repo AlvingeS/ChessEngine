@@ -1,5 +1,5 @@
 
-#include "BitLogic.h"
+#include "BitBasics.h"
 #include <vector>
 
 namespace bits {

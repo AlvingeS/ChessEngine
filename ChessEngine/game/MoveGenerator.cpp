@@ -1,5 +1,6 @@
 #include "headers/MoveGenerator.h"
 #include "ChessEngine/bits/headers/BitMasks.h"
+#include "ChessEngine/bits/headers/BitUtils.h"
 
 namespace game {
     MoveGenerator::MoveGenerator() {

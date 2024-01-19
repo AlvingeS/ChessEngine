@@ -1,6 +1,6 @@
 #include <iostream>
 #include <bitset>
-#include "headers/BitLogic.h"
+#include "headers/BitUtils.h"
 
 namespace bits {
 

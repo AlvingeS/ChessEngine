@@ -1,10 +1,7 @@
 #pragma once
-#include <vector>
 
 namespace bits {
     typedef unsigned long long U64;
-
-    void printU64InBits(unsigned long long int n);
 
     inline U64 bitwiseAnd(U64 a, U64 b) {
         return a & b;
@@ -33,6 +30,4 @@ namespace bits {
     inline int fileFromBitIndex(int i) {
         return i % 8;
     }
-
-    std::vector<int> getBitIndices(U64 bitboard);
 }

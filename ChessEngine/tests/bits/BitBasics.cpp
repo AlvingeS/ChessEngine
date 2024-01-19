@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include "ChessEngine/bits/headers/BitLogic.h"
+#include "ChessEngine/bits/headers/BitBasics.h"
 
 namespace bits {
-    class BitLogic : public ::testing::Test {
+    class BitBasics : public ::testing::Test {
         protected:
             bits::U64 a;
             bits::U64 b;
@@ -17,7 +17,7 @@ namespace bits {
             }
     };
 
-    TEST_F(BitLogic, AndBits) {
+    TEST_F(BitBasics, AndBits) {
         bits::U64 expected = 0x0000000000000000ULL;
         bits::U64 actual = bits::bitwiseAnd(a, b);
 
@@ -42,7 +42,7 @@ namespace bits {
                                     << ", Actual: 0x" << std::hex << actual;
     }
 
-    TEST_F(BitLogic, OrBits) {
+    TEST_F(BitBasics, OrBits) {
         bits::U64 expected = 0x000000000000FFFFULL;
         bits::U64 actual = bits::bitwiseOr(a, b);
 
@@ -68,7 +68,7 @@ namespace bits {
     }
 
 
-    TEST_F(BitLogic, XorBits) {
+    TEST_F(BitBasics, XorBits) {
         bits::U64 expected = 0x000000000000FFFFULL;
         bits::U64 actual = bits::bitwiseXor(a, b);
 
@@ -93,7 +93,7 @@ namespace bits {
                                     << ", Actual: 0x" << std::hex << actual;
     }
 
-    TEST_F(BitLogic, NotBits) {
+    TEST_F(BitBasics, NotBits) {
         bits::U64 expected = 0xFFFFFFFFFFFF00FFULL;
         bits::U64 actual = bits::bitwiseNot(a);
 
@@ -118,7 +118,7 @@ namespace bits {
                                     << ", Actual: 0x" << std::hex << actual;
     }
 
-    TEST_F(BitLogic, GetBit) {
+    TEST_F(BitBasics, GetBit) {
         bool expected = 0;
         bool actual = bits::getBit(a, 0);
 

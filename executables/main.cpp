@@ -11,6 +11,7 @@ int main() {
     unsigned long long int a = 0x0000000000000001ULL;
     bits::printU64InBits(a);
     bits::printU64InBits(a & (a - 1));
+    bits::printU64InBits(1ULL >> 63);
 
     for (int i : bits::getBitIndices(a)) {
         std::cout << i << std::endl;

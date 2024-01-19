@@ -1,7 +1,7 @@
 
-#include "bit_logic.h"
+#include "BitLogic.h"
 #include <vector>
 
-namespace utils {
+namespace bits {
     std::vector<U64> create_straight_ray_bitmasks(int bit_index);
 }

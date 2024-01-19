@@ -1,7 +1,7 @@
-#include "bit_masks.h"
-#include "bitdir.h"
+#include "headers/BitMasks.h"
+#include "headers/BitDir.h"
 
-namespace utils {
+namespace bits {
     std::vector<U64> create_straight_ray_bitmasks(int bit_index) {
         std::vector<U64> rays = std::vector<U64>(4);
         
@@ -10,8 +10,8 @@ namespace utils {
         U64 east_ray = 0ULL;
         U64 west_ray = 0ULL;
 
-        int rank = rank_from_bit_index(bit_index);
-        int file = file_from_bit_index(bit_index);
+        int rank = rankFromBitIndex(bit_index);
+        int file = fileFromBitIndex(bit_index);
 
         for (int i = rank + 1; i < 8; i++) {
             north_ray |= (1ULL << (i * 8 + file));

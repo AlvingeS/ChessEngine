@@ -1,14 +1,14 @@
 #include <iostream>
 #include <bitset>
-#include "headers/bit_logic.h"
+#include "headers/BitLogic.h"
 
-namespace utils {
+namespace bits {
 
-    void print_bits(unsigned long long int n) {
+    void printU64InBits(unsigned long long int n) {
         std::cout << std::bitset<64>(n) << std::endl;
     }
 
-    std::vector<int> get_bit_indices(U64 bitboard) {
+    std::vector<int> getBitIndices(U64 bitboard) {
         std::vector<int> indices;
 
         while (bitboard != 0) {

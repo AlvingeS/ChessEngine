@@ -1,6 +1,6 @@
-#include "headers/MoveGenerator.h"
-#include "ChessEngine/bits/headers/BitMasks.h"
-#include "ChessEngine/bits/headers/BitUtils.h"
+#include "MoveGenerator.h"
+#include "ChessEngine/bits/BitMasks.h"
+#include "ChessEngine/bits/BitUtils.h"
 
 namespace game {
     MoveGenerator::MoveGenerator() {
@@ -24,27 +24,6 @@ namespace game {
             indices = bits::getBitIndices(_board.getBitboard(PieceType::W_ROOK));
         } else {
             indices = bits::getBitIndices(_board.getBitboard(PieceType::B_ROOK));
-        }
-
-        for (int index : indices) {
-            iso_rook_bitboard = 1ULL << index;
-
-            ray_bitmasks = bits::create_straight_ray_bitmasks(index);
-
-
-            // Loop through each ray and check if it is blocked
-            for (bits::U64 ray : ray_bitmasks) {
-                if (ray & _board.getBitboard(PieceType::OCCUPIED) != 0) {
-                    ray_blocked.push_back(true);
-                } else {
-                    ray_blocked.push_back(false);
-
-                    // Loop through each square in the ray and add a move for each
-                    
-                }
-            }
-
-
         }
     }
 }

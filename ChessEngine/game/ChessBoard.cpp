@@ -1,4 +1,4 @@
-#include "headers/ChessBoard.h"
+#include "ChessBoard.h"
 
 namespace game {
 

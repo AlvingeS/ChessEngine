@@ -1,7 +1,7 @@
 #pragma once
 #include <unordered_map>
-#include "ChessEngine/game/headers/PieceType.h"
-#include "ChessEngine/bits/headers/BitBasics.h"
+#include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/bits/BitBasics.h"
 #include <string>
 
 namespace game {

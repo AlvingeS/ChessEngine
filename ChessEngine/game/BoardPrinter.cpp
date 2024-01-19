@@ -1,4 +1,4 @@
-#include "headers/BoardPrinter.h"
+#include "BoardPrinter.h"
 #include <iostream>
 
 namespace game {

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "ChessEngine/game/headers/ChessBoard.h"
+#include "ChessEngine/game/ChessBoard.h"
 
 namespace game {
 

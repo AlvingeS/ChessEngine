@@ -1,6 +1,6 @@
-#include "ChessEngine/game/headers/ChessBoard.h"
-#include "ChessEngine/game/headers/BoardPrinter.h"
-#include "ChessEngine/bits/headers/BitUtils.h"
+#include "ChessEngine/game/ChessBoard.h"
+#include "ChessEngine/game/BoardPrinter.h"
+#include "ChessEngine/bits/BitUtils.h"
 #include <iostream>
 
 int main() {

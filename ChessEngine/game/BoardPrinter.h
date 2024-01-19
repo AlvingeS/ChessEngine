@@ -2,7 +2,7 @@
 #include <vector>
 #include <unordered_map>
 #include "PieceType.h"
-#include "ChessEngine/bits/headers/BitBasics.h"
+#include "ChessEngine/bits/BitBasics.h"
 
 namespace game {
     class BoardPrinter {

@@ -25,15 +25,12 @@ namespace bits {
     };
     
     U64 getFileMask(int file) {
-        U64 file_mask = 0ULL;
-
-        for (int i = 0; i < 8; i++) {
-            file_mask |= (1ULL << (file + i * 8));
-        }
-
-        return file_mask;
+        return FILE_MASK[file];
     }
 
+    U64 getRankMask(int rank) {
+        return RANK_MASK[rank];
+    }
 
     std::vector<std::vector<U64>> create_straight_ray_bitmasks() {
         std::vector<std::vector<U64>> rays_bitmasks = std::vector<std::vector<U64>>(64);

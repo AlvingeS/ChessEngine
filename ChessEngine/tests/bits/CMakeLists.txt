@@ -1,5 +1,5 @@
 add_executable(bits_tests
-    BitBasics.cpp
+    BitBasics.cpp BitMasks.cpp
 )
 
 target_link_libraries(bits_tests PRIVATE bits GTest::gtest_main)

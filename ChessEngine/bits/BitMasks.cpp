@@ -32,7 +32,7 @@ namespace bits {
         return RANK_MASK[rank];
     }
 
-    std::vector<std::vector<U64>> create_straight_ray_bitmasks() {
+    std::vector<std::vector<U64>> getAllStraightRayBitMasks() {
         std::vector<std::vector<U64>> rays_bitmasks = std::vector<std::vector<U64>>(64);
         std::vector<U64> rays = std::vector<U64>(4);
         
@@ -72,7 +72,7 @@ namespace bits {
         return rays_bitmasks;
     }
 
-    std::vector<std::vector<U64>> create_diagonal_ray_bitmasks() {
+    std::vector<std::vector<U64>> getAllDiagonalRayBitMasks() {
         std::vector<std::vector<U64>> rays_bitmasks = std::vector<std::vector<U64>>(64);
         std::vector<U64> rays = std::vector<U64>(4);
 

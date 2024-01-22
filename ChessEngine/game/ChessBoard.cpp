@@ -25,7 +25,7 @@ namespace game {
     bits::U64 ChessBoard::getWhitePiecesBitMask() {
         bits::U64 w_all = 0;
         for (int i = 0; i < 6; i++) {
-            w_all = bits::bitwiseOr(w_all, _bitboards[static_cast<PieceType>(i)]);
+            w_all |= _bitboards[static_cast<PieceType>(i)];
         }
 
         return w_all;
@@ -34,14 +34,14 @@ namespace game {
     bits::U64 ChessBoard::getBlackPiecesBitMask() {
         bits::U64 b_all = 0;
         for (int i = 6; i < 12; i++) {
-            b_all = bits::bitwiseOr(b_all, _bitboards[static_cast<PieceType>(i)]);
+            b_all |= _bitboards[static_cast<PieceType>(i)];
         }
 
         return b_all;
     }
 
     bits::U64 ChessBoard::getOccupiedSquaresBitMask() {
-        return bits::bitwiseOr(getWhitePiecesBitMask(), getBlackPiecesBitMask());
+        return getWhitePiecesBitMask() | getBlackPiecesBitMask();
     }
 
     bits::U64 ChessBoard::getEmptySquaresBitmask() {

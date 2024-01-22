@@ -3,22 +3,6 @@
 namespace bits {
     typedef unsigned long long U64;
 
-    inline U64 bitwiseAnd(U64 a, U64 b) {
-        return a & b;
-    }
-
-    inline U64 bitwiseOr(U64 a, U64 b) {
-        return a | b;
-    }
-
-    inline U64 bitwiseXor(U64 a, U64 b) {
-        return a ^ b;
-    }
-
-    inline U64 bitwiseNot(U64 a) {
-        return ~a;
-    }
-
     inline bool getBit(U64 a, int i) {
         return (a >> i) & 1;
     }

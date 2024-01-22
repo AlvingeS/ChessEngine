@@ -14,4 +14,16 @@ namespace bits {
     inline int fileFromBitIndex(int i) {
         return i % 8;
     }
+
+    inline int indexOfLSB(U64 a) {
+        if (a == 0) {
+            return 0;
+        }
+
+        return __builtin_ctzll(a);
+    }
+
+    inline int indexOfMSB(U64 a) {
+        return 63 - __builtin_clzll(a);
+    }
 }

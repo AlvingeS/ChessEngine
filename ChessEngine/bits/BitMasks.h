@@ -1,8 +1,23 @@
-
+#pragma once
 #include "BitBasics.h"
 #include <vector>
 
 namespace bits {
+
+    struct StraightRays {
+        U64 north;
+        U64 east;
+        U64 south;
+        U64 west;
+    };
+    
+    struct DiagonalRays {
+        U64 northEast;
+        U64 southEast;
+        U64 southWest;
+        U64 northWest;
+    };
+
     U64 getFileMask(int file);
     U64 getRankMask(int rank);
     U64 getNorthRay(int ind);
@@ -13,10 +28,10 @@ namespace bits {
     U64 getSouthWestRay(int ind);
     U64 getWestRay(int ind);
     U64 getNorthWestRay(int ind);
-    std::vector<U64> getStraightRays(int ind);
-    std::vector<U64> getDiagonalRays(int ind);
-    std::vector<std::vector<U64>> getAllStraightRayBitMasks();
-    std::vector<std::vector<U64>> getAllDiagonalRayBitMasks();
+    StraightRays getStraightRays(int ind);
+    DiagonalRays getDiagonalRays(int ind);
+    std::vector<StraightRays> getAllStraightRayBitMasks();
+    std::vector<DiagonalRays> getAllDiagonalRayBitMasks();
     std::vector<std::vector<U64>> getAllKnightAttackBitMasks();
     std::vector<std::vector<U64>> getAllKingAttackBitMasks();
     U64 getWhiteSquaresBitMask();

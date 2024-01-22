@@ -144,30 +144,26 @@ namespace bits {
         return north_west_ray;
     }
 
-    std::vector<U64> getStraightRays(int ind) {
-        std::vector<U64> rays;
-
-        rays.push_back(getNorthRay(ind));
-        rays.push_back(getEastRay(ind));
-        rays.push_back(getSouthRay(ind));
-        rays.push_back(getWestRay(ind));
-
-        return rays;
+    StraightRays getStraightRays(int ind) {
+        return {
+            getNorthRay(ind),
+            getEastRay(ind),
+            getSouthRay(ind),
+            getWestRay(ind)
+        };
     }
 
-    std::vector<U64> getDiagonalRays(int ind) {
-        std::vector<U64> rays;
-
-        rays.push_back(getNorthEastRay(ind));
-        rays.push_back(getSouthEastRay(ind));
-        rays.push_back(getSouthWestRay(ind));
-        rays.push_back(getNorthWestRay(ind));
-
-        return rays;
+    DiagonalRays getDiagonalRays(int ind) {
+        return {
+            getNorthEastRay(ind),
+            getSouthEastRay(ind),
+            getSouthWestRay(ind),
+            getNorthWestRay(ind)
+        };
     }
 
-    std::vector<std::vector<U64>> getAllStraightRayBitMasks() {
-        std::vector<std::vector<U64>> allStraightRayBitMasks;
+    std::vector<StraightRays> getAllStraightRayBitMasks() {
+        std::vector<StraightRays> allStraightRayBitMasks;
 
         for (int i = 0; i < 64; i++) {
             allStraightRayBitMasks.push_back(getStraightRays(i));
@@ -176,8 +172,8 @@ namespace bits {
         return allStraightRayBitMasks;
     }
 
-    std::vector<std::vector<U64>> getAllDiagonalRayBitMasks() {
-        std::vector<std::vector<U64>> allDiagonalRayBitMasks;
+    std::vector<DiagonalRays> getAllDiagonalRayBitMasks() {
+        std::vector<DiagonalRays> allDiagonalRayBitMasks;
 
         for (int i = 0; i < 64; i++) {
             allDiagonalRayBitMasks.push_back(getDiagonalRays(i));

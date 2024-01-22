@@ -97,4 +97,30 @@ namespace bits {
         int actual = bits::fileFromBitIndex(63);
         ASSERT_EQ(expected, actual);
     }
+
+    // indexOfLSB tests
+    TEST_F(BitBasics, indexOfLSB_A_ShouldReturn8) {
+        int expected = 8;
+        int actual = bits::indexOfLSB(a);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(BitBasics, indexOfLSB_0_ShouldReturn0) {
+        int expected = 0;
+        int actual = bits::indexOfLSB(0ULL);
+        ASSERT_EQ(expected, actual);
+    }
+
+    // indexOfMSB tests
+    TEST_F(BitBasics, indexOfMSB_A_ShouldReturn15) {
+        int expected = 15;
+        int actual = bits::indexOfMSB(a);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(BitBasics, indexOfMSB_0_ShouldReturn0) {
+        int expected = 0;
+        int actual = bits::indexOfMSB(0ULL);
+        ASSERT_EQ(expected, actual);
+    }
 }

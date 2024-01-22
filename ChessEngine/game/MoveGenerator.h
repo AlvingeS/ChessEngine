@@ -11,13 +11,15 @@ namespace game {
             MoveGenerator();
             std::vector<Move>& genMoves(bool is_white);
             void genRookMoves(bool is_white);
+            int getNumLegalMoves();
+            void setBoardFromFen(std::string fen);
 
             static constexpr int MAX_LEGAL_MOVES = 218;
         private:
             std::vector<Move> _moves; 
             ChessBoard _board;
-            std::vector<std::vector<bits::U64>> _straightRayBitMasks;
-            std::vector<std::vector<bits::U64>> _diagonalRayBitMasks;
+            std::vector<bits::StraightRays> _straightRayBitMasks;
+            std::vector<bits::DiagonalRays> _diagonalRayBitMasks;
             void updateGameStateBitMasks();
             bits::U64 _occupiedBitMask;
             bits::U64 _emptySquaresBitMask;
@@ -25,5 +27,7 @@ namespace game {
             bits::U64 _blackPiecesBitMask;
             bits::U64 _whiteSquaresBitMask;            
             bits::U64 _blackSquaresBitMask;
+
+            void addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, PieceType pieceType);
     };
 }

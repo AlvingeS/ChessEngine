@@ -32,87 +32,157 @@ namespace bits {
         return RANK_MASK[rank];
     }
 
-    std::vector<std::vector<U64>> getAllStraightRayBitMasks() {
-        std::vector<std::vector<U64>> rays_bitmasks = std::vector<std::vector<U64>>(64);
-        std::vector<U64> rays = std::vector<U64>(4);
-        
-        for (int ind = 0; ind < 64; ind++) {
-            U64 north_ray = 0ULL;
-            U64 south_ray = 0ULL;
-            U64 east_ray = 0ULL;
-            U64 west_ray = 0ULL;
+    U64 getNorthRay(int ind) {
+        int rank = rankFromBitIndex(ind);
+        int file = fileFromBitIndex(ind);
 
-            int rank = rankFromBitIndex(ind);
-            int file = fileFromBitIndex(ind);
+        U64 north_ray = 0ULL;
 
-            for (int i = rank + 1; i < 8; i++) {
-                north_ray |= (1ULL << (i * 8 + file));
-            }
-
-            for (int i = rank - 1; i >= 0; i--) {
-                south_ray |= (1ULL << (i * 8 + file));
-            }
-
-            for (int i = file + 1; i < 8; i++) {
-                east_ray |= (1ULL << (rank * 8 + i));
-            }
-
-            for (int i = file - 1; i >= 0; i--) {
-                west_ray |= (1ULL << (rank * 8 + i));
-            }
-
-            rays[0] = north_ray;
-            rays[1] = east_ray;
-            rays[2] = south_ray;
-            rays[3] = west_ray;
-
-            rays_bitmasks[ind] = rays;
+        for (int i = rank + 1; i < 8; i++) {
+            north_ray |= (1ULL << (i * 8 + file));
         }
 
-        return rays_bitmasks;
+        return north_ray;
+    }
+
+    U64 getNorthEastRay(int ind) {
+        int rank = rankFromBitIndex(ind);
+        int file = fileFromBitIndex(ind);
+
+        U64 north_east_ray = 0ULL;
+
+        for (int i = 1; i < 8; i++) {
+            if (rank + i < 8 && file - i >= 0) {
+                north_east_ray |= (1ULL << ((rank + i) * 8 + file - i));
+            }
+        }
+
+        return north_east_ray;
+    }
+
+    U64 getEastRay(int ind) {
+        int rank = rankFromBitIndex(ind);
+        int file = fileFromBitIndex(ind);
+
+        U64 east_ray = 0ULL;
+
+        for (int i = file - 1; i >= 0; i--) {
+            east_ray |= (1ULL << (rank * 8 + i));
+        }
+
+        return east_ray;
+    }
+
+    U64 getSouthEastRay(int ind) {
+        int rank = rankFromBitIndex(ind);
+        int file = fileFromBitIndex(ind);
+
+        U64 south_east_ray = 0ULL;
+
+        for (int i = 1; i < 8; i++) {
+            if (rank - i >= 0 && file - i >= 0) {
+                south_east_ray |= (1ULL << ((rank - i) * 8 + file - i));
+            }
+        }
+
+        return south_east_ray;
+    }
+
+    U64 getSouthRay(int ind) {
+        int rank = rankFromBitIndex(ind);
+        int file = fileFromBitIndex(ind);
+
+        U64 south_ray = 0ULL;
+
+        for (int i = rank - 1; i >= 0; i--) {
+            south_ray |= (1ULL << (i * 8 + file));
+        }
+
+        return south_ray;
+    }
+
+    U64 getSouthWestRay(int ind) {
+        int rank = rankFromBitIndex(ind);
+        int file = fileFromBitIndex(ind);
+
+        U64 south_west_ray = 0ULL;
+
+        for (int i = 1; i < 8; i++) {
+            if (rank - i >= 0 && file + i < 8) {
+                south_west_ray |= (1ULL << ((rank - i) * 8 + file + i));
+            }
+        }
+
+        return south_west_ray;
+    }
+
+    U64 getWestRay(int ind) {
+        int rank = rankFromBitIndex(ind);
+        int file = fileFromBitIndex(ind);
+
+        U64 west_ray = 0ULL;
+
+        for (int i = file + 1; i < 8; i++) {
+            west_ray |= (1ULL << (rank * 8 + i));
+        }
+
+        return west_ray;
+    }
+
+    U64 getNorthWestRay(int ind) {
+        int rank = rankFromBitIndex(ind);
+        int file = fileFromBitIndex(ind);
+
+        U64 north_west_ray = 0ULL;
+
+        for (int i = 1; i < 8; i++) {
+            if (rank + i < 8 && file + i < 8) {
+                north_west_ray |= (1ULL << ((rank + i) * 8 + file + i));
+            }
+        }
+
+        return north_west_ray;
+    }
+
+    std::vector<U64> getStraightRays(int ind) {
+        std::vector<U64> rays;
+
+        rays.push_back(getNorthRay(ind));
+        rays.push_back(getEastRay(ind));
+        rays.push_back(getSouthRay(ind));
+        rays.push_back(getWestRay(ind));
+
+        return rays;
+    }
+
+    std::vector<U64> getDiagonalRays(int ind) {
+        std::vector<U64> rays;
+
+        rays.push_back(getNorthEastRay(ind));
+        rays.push_back(getSouthEastRay(ind));
+        rays.push_back(getSouthWestRay(ind));
+        rays.push_back(getNorthWestRay(ind));
+
+        return rays;
+    }
+
+    std::vector<std::vector<U64>> getAllStraightRayBitMasks() {
+        std::vector<std::vector<U64>> allStraightRayBitMasks;
+
+        for (int i = 0; i < 64; i++) {
+            allStraightRayBitMasks.push_back(getStraightRays(i));
+        }
+
+        return allStraightRayBitMasks;
     }
 
     std::vector<std::vector<U64>> getAllDiagonalRayBitMasks() {
-        std::vector<std::vector<U64>> rays_bitmasks = std::vector<std::vector<U64>>(64);
-        std::vector<U64> rays = std::vector<U64>(4);
+        std::vector<std::vector<U64>> allDiagonalRayBitMasks;
 
-        for (int ind = 0; ind < 64; ind++) {
-            U64 north_east_ray = 0ULL;
-            U64 south_east_ray = 0ULL;
-            U64 south_west_ray = 0ULL;
-            U64 north_west_ray = 0ULL;
-
-            int rank = rankFromBitIndex(ind);
-            int file = fileFromBitIndex(ind);
-
-            for (int i = 1; i < 8; i++) {
-                if (rank + i < 8 && file + i < 8) {
-                    north_east_ray |= (1ULL << ((rank + i) * 8 + file + i));
-                }
-
-                if (rank - i >= 0 && file + i < 8) {
-                    south_east_ray |= (1ULL << ((rank - i) * 8 + file + i));
-                }
-
-                if (rank - i >= 0 && file - i >= 0) {
-                    south_west_ray |= (1ULL << ((rank - i) * 8 + file - i));
-                }
-
-                if (rank + i < 8 && file - i >= 0) {
-                    north_west_ray |= (1ULL << ((rank + i) * 8 + file - i));
-                }
-            }
-
-            rays[0] = north_east_ray;
-            rays[1] = south_east_ray;
-            rays[2] = south_west_ray;
-            rays[3] = north_west_ray;
-
-            rays_bitmasks[ind] = rays;
+        for (int i = 0; i < 64; i++) {
+            allDiagonalRayBitMasks.push_back(getDiagonalRays(i));
         }
 
-        return rays_bitmasks;
+        return allDiagonalRayBitMasks;
     }
-
-
 }

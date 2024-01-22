@@ -174,32 +174,32 @@ namespace bits {
     }
 
     // fileFromBitIndex tests
-    TEST_F(BitBasics, fileFromBitIndex_Pos0_ShouldReturn7) {
-        int expected = 7;
+    TEST_F(BitBasics, fileFromBitIndex_Pos0_ShouldReturn0) {
+        int expected = 0;
         int actual = bits::fileFromBitIndex(0);
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBasics, fileFromBitIndex_Pos7_ShouldReturn0) {
-        int expected = 0;
+    TEST_F(BitBasics, fileFromBitIndex_Pos7_ShouldReturn7) {
+        int expected = 7;
         int actual = bits::fileFromBitIndex(7);
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBasics, fileFromBitIndex_Pos8_ShouldReturn7) {
-        int expected = 7;
+    TEST_F(BitBasics, fileFromBitIndex_Pos8_ShouldReturn0) {
+        int expected = 0;
         int actual = bits::fileFromBitIndex(8);
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBasics, fileFromBitIndex_Pos15_ShouldReturn0) {
-        int expected = 0;
+    TEST_F(BitBasics, fileFromBitIndex_Pos15_ShouldReturn7) {
+        int expected = 7;
         int actual = bits::fileFromBitIndex(15);
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBasics, fileFromBitIndex_Pos63_ShouldReturn0) {
-        int expected = 0;
+    TEST_F(BitBasics, fileFromBitIndex_Pos63_ShouldReturn7) {
+        int expected = 7;
         int actual = bits::fileFromBitIndex(63);
         ASSERT_EQ(expected, actual);
     }

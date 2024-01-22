@@ -28,6 +28,6 @@ namespace bits {
     }
 
     inline int fileFromBitIndex(int i) {
-        return 7 - i % 8;
+        return i % 8;
     }
 }

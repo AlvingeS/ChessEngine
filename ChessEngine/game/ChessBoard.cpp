@@ -40,14 +40,6 @@ namespace game {
         return b_all;
     }
 
-    bits::U64 ChessBoard::getOccupiedSquaresBitMask() {
-        return getWhitePiecesBitMask() | getBlackPiecesBitMask();
-    }
-
-    bits::U64 ChessBoard::getEmptySquaresBitmask() {
-        return ~getOccupiedSquaresBitMask();
-    }
-
     void ChessBoard::setBoardFromFen(const std::string& fen) {
         for (auto& board : _bitboards) {
             board.second = 0ULL;

@@ -10,6 +10,8 @@ namespace bits {
                 int indFour;
                 int indFive;
                 int indSix;
+                U64 whitePieces;
+                U64 blackPieces;
             void SetUp() override {
                 indOne = 0;
                 indTwo = 7;
@@ -17,6 +19,8 @@ namespace bits {
                 indFour = 32;
                 indFive = 56;
                 indSix = 63;
+                whitePieces = 0x000000000000FFFFULL;
+                blackPieces = 0xFFFF000000000000ULL;
             }
     };
 
@@ -413,6 +417,18 @@ namespace bits {
     TEST_F(BitMasks, getNorthWestRay_Pos63_ShouldReturn0x0000000000000000) {
         U64 expected = 0x0000000000000000ULL;
         U64 actual = getNorthWestRay(indSix);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(BitMasks, getOccupiedSquaresBitMask_StartingPosition_ShouldReturn0xFFFF00000000FFFF) {
+        U64 expected = 0xFFFF00000000FFFFULL;
+        U64 actual = getOccupiedSquaresBitMask(whitePieces, blackPieces);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(BitMasks, getEmptySquaresBitmask_StartingPosition_ShouldReturn0x0000FFFFFFFF0000) {
+        U64 expected = 0x0000FFFFFFFF0000ULL;
+        U64 actual = getEmptySquaresBitmask(whitePieces, blackPieces);
         ASSERT_EQ(expected, actual);
     }
 }

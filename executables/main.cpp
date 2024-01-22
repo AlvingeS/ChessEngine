@@ -8,7 +8,7 @@ int main() {
     chessBoard.setBoardFromFen("8/2P5/8/8/8/b1R5/4q3/8");
     game::BoardPrinter boardPrinter = game::BoardPrinter(chessBoard.getBitboards());
     boardPrinter.printBoard();
-    unsigned long long int a = 0x0000000000000001ULL;
+    unsigned long long int a = 0x0000000000FF0501ULL;
     bits::printU64InBits(a);
     bits::printU64InBits(a & (a - 1));
     bits::printU64InBits(1ULL >> 63);

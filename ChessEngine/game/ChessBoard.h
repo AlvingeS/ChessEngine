@@ -21,8 +21,6 @@ namespace game {
             
             bits::U64 getWhitePiecesBitMask();
             bits::U64 getBlackPiecesBitMask();
-            bits::U64 getOccupiedSquaresBitMask();
-            bits::U64 getEmptySquaresBitmask();
             bits::U64 getWhiteSquaresBitMask();
             bits::U64 getBlackSquaresBitMask();
 

@@ -193,4 +193,12 @@ namespace bits {
     U64 getBlackSquaresBitMask() {
         return 0x55AA55AA55AA55AAULL;
     }
+
+    U64 getOccupiedSquaresBitMask(U64 whitePieces, U64 blackPieces) {
+        return whitePieces | blackPieces;
+    }
+
+    U64 getEmptySquaresBitmask(U64 whitePieces, U64 blackPieces) {
+        return ~getOccupiedSquaresBitMask(whitePieces, blackPieces);
+    }
 }

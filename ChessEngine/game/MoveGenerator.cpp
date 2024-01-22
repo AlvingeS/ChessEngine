@@ -36,10 +36,10 @@ namespace game {
     }
 
     void MoveGenerator::updateGameStateBitMasks() {
-        _occupiedBitMask = _board.getOccupiedSquaresBitMask();
-        _emptySquaresBitMask = _board.getEmptySquaresBitmask();
         _whitePiecesBitMask = _board.getWhitePiecesBitMask();
         _blackPiecesBitMask = _board.getBlackPiecesBitMask();
+        _occupiedBitMask = bits::getOccupiedSquaresBitMask(_whitePiecesBitMask, _blackPiecesBitMask);
+        _emptySquaresBitMask = bits::getEmptySquaresBitmask(_whitePiecesBitMask, _blackPiecesBitMask);
     }
 
     std::vector<Move>& MoveGenerator::genMoves(bool is_white) {

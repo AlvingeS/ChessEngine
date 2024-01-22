@@ -21,4 +21,6 @@ namespace bits {
     std::vector<std::vector<U64>> getAllKingAttackBitMasks();
     U64 getWhiteSquaresBitMask();
     U64 getBlackSquaresBitMask();
+    U64 getOccupiedSquaresBitMask(U64 whitePieces, U64 blackPieces);
+    U64 getEmptySquaresBitmask(U64 whitePieces, U64 blackPieces);
 }

@@ -1,9 +1,11 @@
 #include "ChessEngine/game/ChessBoard.h"
 #include "ChessEngine/game/BoardPrinter.h"
 #include "ChessEngine/bits/BitUtils.h"
+#include "ChessEngine/game/MoveGenerator.h"
 #include <iostream>
 
 int main() {
+    game::MoveGenerator moveGenerator = game::MoveGenerator();
     game::ChessBoard chessBoard = game::ChessBoard();
     chessBoard.setBoardFromFen("8/2P5/8/8/8/b1R5/4q3/8");
     game::BoardPrinter boardPrinter = game::BoardPrinter(chessBoard.getBitboards());

@@ -19,4 +19,6 @@ namespace bits {
     std::vector<std::vector<U64>> getAllDiagonalRayBitMasks();
     std::vector<std::vector<U64>> getAllKnightAttackBitMasks();
     std::vector<std::vector<U64>> getAllKingAttackBitMasks();
+    U64 getWhiteSquaresBitMask();
+    U64 getBlackSquaresBitMask();
 }

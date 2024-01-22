@@ -16,10 +16,7 @@ namespace game {
         B_ROOK,
         B_QUEEN,
         B_KING,
-        W_ALL,
-        B_ALL,
-        OCCUPIED,
-        EMPTY
+        ERROR
     };
 
     inline PieceType char_to_piece_type(char c) {
@@ -36,7 +33,7 @@ namespace game {
             case 'r': return PieceType::B_ROOK;
             case 'q': return PieceType::B_QUEEN;
             case 'k': return PieceType::B_KING;
-            default:  return PieceType::EMPTY;
+            default : return PieceType::ERROR;
         }
     }
 
@@ -54,11 +51,7 @@ namespace game {
             case PieceType::B_ROOK: return 'r';
             case PieceType::B_QUEEN: return 'q';
             case PieceType::B_KING: return 'k';
-            case PieceType::W_ALL: return 'x';
-            case PieceType::B_ALL: return 'y';
-            case PieceType::OCCUPIED: return 'o';
-            case PieceType::EMPTY: return 'e';
-            default : return ' ';
+            default : return 'e';
         }
     }
 }

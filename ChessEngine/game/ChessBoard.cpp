@@ -4,7 +4,6 @@ namespace game {
 
     ChessBoard::ChessBoard() {
         initPieceBitboards();
-        initMacroBitboards();
     }
 
     void ChessBoard::initPieceBitboards() {
@@ -23,14 +22,7 @@ namespace game {
         _bitboards[PieceType::B_KING] = 0x0800000000000000ULL;
     }
 
-    void ChessBoard::initMacroBitboards() {
-        _bitboards[PieceType::W_ALL] = genWhiteBitboards();
-        _bitboards[PieceType::B_ALL] = genBlackBitboards();
-        _bitboards[PieceType::OCCUPIED] = genOccupiedBitboard();
-        _bitboards[PieceType::EMPTY] = genEmptyBitboard();
-    }
-
-    bits::U64 ChessBoard::genWhiteBitboards() {
+    bits::U64 ChessBoard::getWhitePiecesBitMask() {
         bits::U64 w_all = 0;
         for (int i = 0; i < 6; i++) {
             w_all = bits::bitwiseOr(w_all, _bitboards[static_cast<PieceType>(i)]);
@@ -39,7 +31,7 @@ namespace game {
         return w_all;
     }
 
-    bits::U64 ChessBoard::genBlackBitboards() {
+    bits::U64 ChessBoard::getBlackPiecesBitMask() {
         bits::U64 b_all = 0;
         for (int i = 6; i < 12; i++) {
             b_all = bits::bitwiseOr(b_all, _bitboards[static_cast<PieceType>(i)]);
@@ -48,12 +40,12 @@ namespace game {
         return b_all;
     }
 
-    bits::U64 ChessBoard::genOccupiedBitboard() {
-        return bits::bitwiseOr(_bitboards[PieceType::W_ALL], _bitboards[PieceType::B_ALL]);
+    bits::U64 ChessBoard::getOccupiedSquaresBitMask() {
+        return bits::bitwiseOr(getWhitePiecesBitMask(), getBlackPiecesBitMask());
     }
 
-    bits::U64 ChessBoard::genEmptyBitboard() {
-        return bits::bitwiseNot(_bitboards[PieceType::OCCUPIED]);
+    bits::U64 ChessBoard::getEmptySquaresBitmask() {
+        return ~getOccupiedSquaresBitMask();
     }
 
     void ChessBoard::setBoardFromFen(const std::string& fen) {

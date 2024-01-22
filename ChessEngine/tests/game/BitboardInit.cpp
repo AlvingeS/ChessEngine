@@ -107,36 +107,4 @@ namespace game {
         ASSERT_EQ(expected, actual) << "BlackKing: Expected: 0x" << std::hex << expected 
                                     << ", Actual: 0x" << std::hex << actual;
     }
-
-    TEST_F(BitboardInit, WhiteAll) {
-        bits::U64 expected = 0x000000000000FFFFULL;
-        bits::U64 actual = chessboard.getBitboard(PieceType::W_ALL);
-
-        ASSERT_EQ(expected, actual) << "WhiteAll: Expected: 0x" << std::hex << expected 
-                                    << ", Actual: 0x" << std::hex << actual;
-    }
-
-    TEST_F(BitboardInit, BlackAll) {
-        bits::U64 expected = 0xFFFF000000000000ULL;
-        bits::U64 actual = chessboard.getBitboard(PieceType::B_ALL);
-
-        ASSERT_EQ(expected, actual) << "BlackAll: Expected: 0x" << std::hex << expected 
-                                    << ", Actual: 0x" << std::hex << actual;
-    }
-
-    TEST_F(BitboardInit, Occupied) {
-        bits::U64 expected = 0xFFFF00000000FFFFULL;
-        bits::U64 actual = chessboard.getBitboard(PieceType::OCCUPIED);
-
-        ASSERT_EQ(expected, actual) << "Occupied: Expected: 0x" << std::hex << expected 
-                                    << ", Actual: 0x" << std::hex << actual;
-    }
-
-    TEST_F(BitboardInit, Empty) {
-        bits::U64 expected = 0x0000FFFFFFFF0000ULL;
-        bits::U64 actual = chessboard.getBitboard(PieceType::EMPTY);
-
-        ASSERT_EQ(expected, actual) << "Empty: Expected: 0x" << std::hex << expected 
-                                    << ", Actual: 0x" << std::hex << actual;
-    }
 }

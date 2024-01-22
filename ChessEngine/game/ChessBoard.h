@@ -1,6 +1,6 @@
 #pragma once
 #include <unordered_map>
-#include "ChessEngine/game/PieceType.h"
+#include "PieceType.h"
 #include "ChessEngine/bits/BitBasics.h"
 #include <string>
 
@@ -18,15 +18,17 @@ namespace game {
             }
 
             void setBoardFromFen(const std::string& fen);
+            
+            bits::U64 getWhitePiecesBitMask();
+            bits::U64 getBlackPiecesBitMask();
+            bits::U64 getOccupiedSquaresBitMask();
+            bits::U64 getEmptySquaresBitmask();
+            bits::U64 getWhiteSquaresBitMask();
+            bits::U64 getBlackSquaresBitMask();
 
             private:
                 std::unordered_map<PieceType, bits::U64> _bitboards;
 
                 void initPieceBitboards();
-                void initMacroBitboards();
-                bits::U64 genWhiteBitboards();
-                bits::U64 genBlackBitboards();
-                bits::U64 genOccupiedBitboard();
-                bits::U64 genEmptyBitboard();
     };
 }

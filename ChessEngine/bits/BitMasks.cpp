@@ -185,4 +185,12 @@ namespace bits {
 
         return allDiagonalRayBitMasks;
     }
+
+    U64 getWhiteSquaresBitMask() {
+        return 0xAA55AA55AA55AA55ULL;
+    }
+
+    U64 getBlackSquaresBitMask() {
+        return 0x55AA55AA55AA55AAULL;
+    }
 }

@@ -28,6 +28,18 @@ namespace game {
     MoveGenerator::MoveGenerator() {
         _moves = std::vector<Move>(MAX_LEGAL_MOVES);
         _board = ChessBoard();
+        _straightRayBitMasks = bits::getAllStraightRayBitMasks();
+        _diagonalRayBitMasks = bits::getAllDiagonalRayBitMasks();
+        _whiteSquaresBitMask = bits::getWhiteSquaresBitMask();
+        _blackSquaresBitMask = bits::getBlackSquaresBitMask();
+        updateGameStateBitMasks();
+    }
+
+    void MoveGenerator::updateGameStateBitMasks() {
+        _occupiedBitMask = _board.getOccupiedSquaresBitMask();
+        _emptySquaresBitMask = _board.getEmptySquaresBitmask();
+        _whitePiecesBitMask = _board.getWhitePiecesBitMask();
+        _blackPiecesBitMask = _board.getBlackPiecesBitMask();
     }
 
     std::vector<Move>& MoveGenerator::genMoves(bool is_white) {
@@ -38,14 +50,25 @@ namespace game {
 
     void MoveGenerator::genRookMoves(bool is_white) {
         std::vector<int> indices;
-        bits::U64 iso_rook_bitboard;
-        std::vector<bits::U64> ray_bitmasks;
+        bits::U64 isoRookBitboard;
+        std::vector<bits::U64> rays;
         std::vector<bool> ray_blocked;
 
         if (is_white) {
             indices = bits::getBitIndices(_board.getBitboard(PieceType::W_ROOK));
         } else {
             indices = bits::getBitIndices(_board.getBitboard(PieceType::B_ROOK));
+        }
+
+        // Loop through all rooks and isolate them
+        for (int index : indices) {
+            rays = _straightRayBitMasks[index];
+            isoRookBitboard = _board.getBitboard(PieceType::W_ROOK);
+
+            // Loop through all rays, see if they are blocked
+            for (bits::U64 ray : rays) {
+                continue;
+            }
         }
     }
 }

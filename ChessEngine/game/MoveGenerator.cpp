@@ -1,6 +1,7 @@
 #include "MoveGenerator.h"
 #include "ChessEngine/bits/BitMasks.h"
 #include "ChessEngine/bits/BitUtils.h"
+#include <iostream>
 
 /*
 IDEA FOR CHECK-CHECKING
@@ -74,6 +75,22 @@ namespace game {
         }
     }
 
+    bool MoveGenerator::processRay(bits::U64 ray, int pieceIndex, PieceType pieceType, bool isWhite, int blockerIndex) {
+    bits::U64 blockerMask = ray & _occupiedBitMask;
+    if (blockerMask == 0) {
+        addMovesFromFreeRay(ray, pieceIndex, pieceType);
+        return false;
+    } else {
+        bool blockerIsWhite = bits::getBit(_whitePiecesBitMask, blockerIndex);
+
+        if (blockerIsWhite != isWhite) {
+            _moves.push_back(Move(pieceType, pieceIndex, blockerIndex));
+        }
+    }
+
+    return true;
+}
+
     void MoveGenerator::genRookMoves(bool isWhite) {
         std::vector<int> rookIndices;
         bits::StraightRays rays;
@@ -85,73 +102,45 @@ namespace game {
         // Loop through all rooks and isolate them
         for (int currentRookIndex : rookIndices) {
             rays = _straightRayBitMasks[currentRookIndex];
+            int rookRank = bits::rankFromBitIndex(currentRookIndex);
+            int rookFile = bits::fileFromBitIndex(currentRookIndex);
+            int blockerIndex;
+            int blockerRank;
+            int blockerFile;
+            bool blockerFound;
 
             // Handle north ray. If the ray is free, add all moves from it.
-            if ((rays.north & _occupiedBitMask) == 0) {
-                addMovesFromFreeRay(rays.north, currentRookIndex, currentPieceType);
-            } else {
+            blockerIndex = bits::indexOfLSB(rays.north & _occupiedBitMask);
+            blockerFound  = processRay(rays.north, currentRookIndex, currentPieceType, isWhite, blockerIndex);
 
-                // For the north ray, the first blocker will be the LSB of the union of the ray and the occupied squares bit mask.
-                int indexOfLSB = bits::indexOfLSB(rays.north & _occupiedBitMask);
-                bool blockerIsWhite = bits::getBit(_whitePiecesBitMask, indexOfLSB);
-
-                // If the blocker is an enemy piece, add the move.
-                if (blockerIsWhite != isWhite) {
-                    _moves.push_back(Move(currentPieceType, currentRookIndex, indexOfLSB));
-                }
-
-                // For all squares between the rook and the blocker, add the moves.
-                int rookRank = bits::rankFromBitIndex(currentRookIndex);
-                int blockerRank = bits::rankFromBitIndex(indexOfLSB);
-                int rookFile = bits::fileFromBitIndex(currentRookIndex);
+            if (blockerFound) {
+                blockerRank = bits::rankFromBitIndex(blockerIndex);
 
                 for (int i = blockerRank - 1; i > rookRank; i--) {
                     _moves.push_back(Move(currentPieceType, currentRookIndex, i * 8 + rookFile));
                 }
             }
-
+            
             // Handle east ray. If the ray is free, add all moves from it.
-            if ((rays.east & _occupiedBitMask) == 0) {
-                addMovesFromFreeRay(rays.east, currentRookIndex, currentPieceType);
-            } else {
+            blockerIndex = bits::indexOfMSB(rays.east & _occupiedBitMask);
+            blockerFound  = processRay(rays.east, currentRookIndex, currentPieceType, isWhite, blockerIndex);
 
-                // For the east ray, the first blocker will be the MSB of the union of the ray and the occupied squares bit mask.
-                int indexOfMSB = bits::indexOfMSB(rays.east & _occupiedBitMask);
-                bool blockerIsWhite = bits::getBit(_whitePiecesBitMask, indexOfMSB);
-
-                // If the blocker is an enemy piece, add the move.
-                if (blockerIsWhite != isWhite) {
-                    _moves.push_back(Move(currentPieceType, currentRookIndex, indexOfMSB));
-                }
-
-                // For all squares between the rook and the blocker, add the moves.
-                int rookRank = bits::rankFromBitIndex(currentRookIndex);
-                int rookFile = bits::fileFromBitIndex(currentRookIndex);
-                int blockerFile = bits::fileFromBitIndex(indexOfMSB);
+            if (blockerFound) {
+                blockerFile = bits::fileFromBitIndex(blockerIndex);
 
                 for (int i = blockerFile + 1; i < rookFile; i++) {
                     _moves.push_back(Move(currentPieceType, currentRookIndex, rookRank * 8 + i));
                 }
             }
 
+
             // Handle south ray. If the ray is free, add all moves from it.
-            if ((rays.south & _occupiedBitMask) == 0) {
-                addMovesFromFreeRay(rays.south, currentRookIndex, currentPieceType);
-            } else {
+            blockerIndex = bits::indexOfMSB(rays.south & _occupiedBitMask);
+            blockerFound  = processRay(rays.south, currentRookIndex, currentPieceType, isWhite, blockerIndex);
 
-                // For the south ray, the first blocker will be the MSB of the union of the ray and the occupied squares bit mask.
-                int indexOfMSB = bits::indexOfMSB(rays.south & _occupiedBitMask);
-                bool blockerIsWhite = bits::getBit(_whitePiecesBitMask, indexOfMSB);
 
-                // If the blocker is an enemy piece, add the move.
-                if (blockerIsWhite != isWhite) {
-                    _moves.push_back(Move(currentPieceType, currentRookIndex, indexOfMSB));
-                }
-
-                // For all squares between the rook and the blocker, add the moves.
-                int rookRank = bits::rankFromBitIndex(currentRookIndex);
-                int blockerRank = bits::rankFromBitIndex(indexOfMSB);
-                int rookFile = bits::fileFromBitIndex(currentRookIndex);
+            if (blockerFound) {
+                blockerRank = bits::rankFromBitIndex(blockerIndex);
 
                 for (int i = blockerRank + 1; i < rookRank; i++) {
                     _moves.push_back(Move(currentPieceType, currentRookIndex, i * 8 + rookFile));
@@ -159,23 +148,11 @@ namespace game {
             }
 
             // Handle west ray. If the ray is free, add all moves from it.
-            if ((rays.west & _occupiedBitMask) == 0) {
-                addMovesFromFreeRay(rays.west, currentRookIndex, currentPieceType);
-            } else {
+            blockerIndex = bits::indexOfLSB(rays.west & _occupiedBitMask);
+            blockerFound = processRay(rays.west, currentRookIndex, currentPieceType, isWhite, blockerIndex);
 
-                // For the west ray, the first blocker will be the LSB of the union of the ray and the occupied squares bit mask.
-                int indexOfLSB = bits::indexOfLSB(rays.west & _occupiedBitMask);
-                bool blockerIsWhite = bits::getBit(_whitePiecesBitMask, indexOfLSB);
-
-                // If the blocker is an enemy piece, add the move.
-                if (blockerIsWhite != isWhite) {
-                    _moves.push_back(Move(currentPieceType, currentRookIndex, indexOfLSB));
-                }
-
-                // For all squares between the rook and the blocker, add the moves.
-                int rookRank = bits::rankFromBitIndex(currentRookIndex);
-                int rookFile = bits::fileFromBitIndex(currentRookIndex);
-                int blockerFile = bits::fileFromBitIndex(indexOfLSB);
+            if (blockerFound) {
+                blockerFile = bits::fileFromBitIndex(blockerIndex);
 
                 for (int i = blockerFile - 1; i > rookFile; i--) {
                     _moves.push_back(Move(currentPieceType, currentRookIndex, rookRank * 8 + i));

@@ -29,5 +29,6 @@ namespace game {
             bits::U64 _blackSquaresBitMask;
 
             void addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, PieceType pieceType);
+            bool processRay(bits::U64 ray, int bitIndexFrom, PieceType pieceType, bool isWhite, int blockerIndex);
     };
 }

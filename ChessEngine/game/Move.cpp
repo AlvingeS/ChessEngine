@@ -12,8 +12,4 @@ namespace game {
         _bitIndexFrom = bitIndexFrom;
         _bitIndexTo = bitIndexTo;
     }
-
-    PieceType Move::getPieceType() {
-        return _pieceType;
-    }
 }

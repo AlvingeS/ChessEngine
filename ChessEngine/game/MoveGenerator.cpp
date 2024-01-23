@@ -27,7 +27,7 @@ attempt to find moves that could block the check, move the king or eliminate the
 
 namespace game {
     MoveGenerator::MoveGenerator() {
-        _moves = std::vector<Move>(MAX_LEGAL_MOVES);
+        _moves.reserve(MAX_LEGAL_MOVES);
         _board = ChessBoard();
         _straightRayBitMasks = bits::getAllStraightRayBitMasks();
         _diagonalRayBitMasks = bits::getAllDiagonalRayBitMasks();
@@ -75,21 +75,13 @@ namespace game {
         }
     }
 
-    bool MoveGenerator::processRay(bits::U64 ray, int pieceIndex, PieceType pieceType, bool isWhite, int blockerIndex) {
-    bits::U64 blockerMask = ray & _occupiedBitMask;
-    if (blockerMask == 0) {
-        addMovesFromFreeRay(ray, pieceIndex, pieceType);
-        return false;
-    } else {
+    void MoveGenerator::addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, PieceType pieceType) {
         bool blockerIsWhite = bits::getBit(_whitePiecesBitMask, blockerIndex);
 
         if (blockerIsWhite != isWhite) {
-            _moves.push_back(Move(pieceType, pieceIndex, blockerIndex));
+            _moves.push_back(Move(pieceType, bitIndexFrom, blockerIndex));
         }
     }
-
-    return true;
-}
 
     void MoveGenerator::genRookMoves(bool isWhite) {
         std::vector<int> rookIndices;
@@ -109,54 +101,67 @@ namespace game {
             int blockerFile;
             bool blockerFound;
 
-            // Handle north ray. If the ray is free, add all moves from it.
-            blockerIndex = bits::indexOfLSB(rays.north & _occupiedBitMask);
-            blockerFound  = processRay(rays.north, currentRookIndex, currentPieceType, isWhite, blockerIndex);
+            // North ray
+            blockerFound = (rays.north & _occupiedBitMask) != 0;
 
             if (blockerFound) {
+                blockerIndex = bits::indexOfLSB(rays.north & _occupiedBitMask);
+                addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
+                
                 blockerRank = bits::rankFromBitIndex(blockerIndex);
 
                 for (int i = blockerRank - 1; i > rookRank; i--) {
                     _moves.push_back(Move(currentPieceType, currentRookIndex, i * 8 + rookFile));
                 }
+            } else {
+                addMovesFromFreeRay(rays.north, currentRookIndex, currentPieceType);
             }
-            
-            // Handle east ray. If the ray is free, add all moves from it.
-            blockerIndex = bits::indexOfMSB(rays.east & _occupiedBitMask);
-            blockerFound  = processRay(rays.east, currentRookIndex, currentPieceType, isWhite, blockerIndex);
 
+            // East ray
+            blockerFound  = (rays.east & _occupiedBitMask) != 0;
+            
             if (blockerFound) {
+                blockerIndex = bits::indexOfMSB(rays.east & _occupiedBitMask);
+                addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
+
                 blockerFile = bits::fileFromBitIndex(blockerIndex);
 
                 for (int i = blockerFile + 1; i < rookFile; i++) {
                     _moves.push_back(Move(currentPieceType, currentRookIndex, rookRank * 8 + i));
                 }
+            } else {
+                addMovesFromFreeRay(rays.east, currentRookIndex, currentPieceType);
             }
 
-
-            // Handle south ray. If the ray is free, add all moves from it.
-            blockerIndex = bits::indexOfMSB(rays.south & _occupiedBitMask);
-            blockerFound  = processRay(rays.south, currentRookIndex, currentPieceType, isWhite, blockerIndex);
-
-
+            // South ray
+            blockerFound  = (rays.south & _occupiedBitMask) != 0;
+            
             if (blockerFound) {
+                blockerIndex = bits::indexOfMSB(rays.south & _occupiedBitMask);
+                addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
+
                 blockerRank = bits::rankFromBitIndex(blockerIndex);
 
                 for (int i = blockerRank + 1; i < rookRank; i++) {
                     _moves.push_back(Move(currentPieceType, currentRookIndex, i * 8 + rookFile));
                 }
+            } else {
+                addMovesFromFreeRay(rays.south, currentRookIndex, currentPieceType);
             }
 
-            // Handle west ray. If the ray is free, add all moves from it.
-            blockerIndex = bits::indexOfLSB(rays.west & _occupiedBitMask);
-            blockerFound = processRay(rays.west, currentRookIndex, currentPieceType, isWhite, blockerIndex);
-
+            // West ray
+            blockerFound  = (rays.west & _occupiedBitMask) != 0;
             if (blockerFound) {
+                blockerIndex = bits::indexOfLSB(rays.west & _occupiedBitMask);
+                addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
+
                 blockerFile = bits::fileFromBitIndex(blockerIndex);
 
                 for (int i = blockerFile - 1; i > rookFile; i--) {
                     _moves.push_back(Move(currentPieceType, currentRookIndex, rookRank * 8 + i));
                 }
+            } else {
+                addMovesFromFreeRay(rays.west, currentRookIndex, currentPieceType);
             }
         }
     }

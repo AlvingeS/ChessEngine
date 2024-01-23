@@ -6,7 +6,17 @@ namespace game {
         public:
             Move();
             Move(PieceType pieceType, int bitIndexFrom, int bitIndexTo);
-            PieceType getPieceType();
+            PieceType getPieceType() {
+                return _pieceType;
+            }
+
+            int getBitIndexFrom() {
+                return _bitIndexFrom;
+            }
+
+            int getBitIndexTo() {
+                return _bitIndexTo;
+            }
 
         private:
             PieceType _pieceType;

@@ -14,6 +14,10 @@ namespace game {
             int getNumLegalMoves();
             void setBoardFromFen(std::string fen);
 
+            std::vector<Move>& getMoves() {
+                return _moves;
+            }
+
             static constexpr int MAX_LEGAL_MOVES = 218;
         private:
             std::vector<Move> _moves; 
@@ -29,6 +33,6 @@ namespace game {
             bits::U64 _blackSquaresBitMask;
 
             void addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, PieceType pieceType);
-            bool processRay(bits::U64 ray, int bitIndexFrom, PieceType pieceType, bool isWhite, int blockerIndex);
+            void addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, PieceType pieceType);
     };
 }

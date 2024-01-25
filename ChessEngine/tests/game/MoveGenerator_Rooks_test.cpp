@@ -18,6 +18,14 @@ namespace game {
                 fenOne = "8/2P5/8/8/8/b1R5/4q3/8";
                 fenTwo = "7r/8/8/1P6/8/1R1p3R/8/8";
             }
+
+            std::unordered_set<Move> createExpectedMoves(int fromBitIndex, const std::vector<int>& toBitIndices, PieceType pieceType) {
+                std::unordered_set<Move> moves;
+                for (int toBitIndex : toBitIndices) {
+                    moves.insert(Move(pieceType, fromBitIndex, toBitIndex)); // Replace PIECE_TYPE with actual type
+                }
+            return moves;
+    }
     };
 
     TEST_F(MoveGeneratorTest, genRookMoves_fenOneWhite_ShouldReturn12Moves) {
@@ -25,14 +33,15 @@ namespace game {
         moveGenerator.genRookMoves(true);
 
         std::vector<Move> moves = moveGenerator.getMoves();
-        std::unordered_set<int> expectedToBitIndices = {29, 37, 45, 16, 17, 18, 19, 20, 5, 13, 23, 22}; 
-        int expectedBitIndexFrom = 21;
+        std::unordered_set<Move> expectedMoves = createExpectedMoves(21, {29, 37, 45, 16, 17, 18, 19, 20, 5, 13, 23, 22}, PieceType::W_ROOK); 
 
         for (Move move : moves) {
-            int bitIndexTo = move.getBitIndexTo();
-            ASSERT_EQ(move.getBitIndexFrom(), expectedBitIndexFrom);
-            ASSERT_TRUE(expectedToBitIndices.find(bitIndexTo) != expectedToBitIndices.end());
+            auto found = expectedMoves.find(move);
+            ASSERT_TRUE(found != expectedMoves.end());
+            expectedMoves.erase(found); // Remove found move from the set
         }
+
+        ASSERT_TRUE(expectedMoves.empty());
     }
 
     TEST_F(MoveGeneratorTest, genRookMoves_fenOneBlack_ShouldReturn0Moves) {

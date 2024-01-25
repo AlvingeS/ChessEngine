@@ -1,5 +1,6 @@
 #pragma once
 #include "PieceType.h"
+#include <functional>
 
 namespace game {
     class Move {
@@ -11,13 +12,19 @@ namespace game {
                 return _pieceType;
             }
 
-            int getBitIndexFrom() {
+            int getBitIndexFrom() const {
                 return _bitIndexFrom;
             }
 
-            int getBitIndexTo() {
+            int getBitIndexTo() const {
                 return _bitIndexTo;
             }
+
+            friend bool operator==(const Move& lhs, const Move& rhs) {
+                return lhs._pieceType == rhs._pieceType &&
+                       lhs._bitIndexFrom == rhs._bitIndexFrom &&
+                       lhs._bitIndexTo == rhs._bitIndexTo;
+        }
 
         private:
             // Private member variables
@@ -26,5 +33,15 @@ namespace game {
             int _bitIndexTo;
 
             // Private member functions
+    };
+}
+
+namespace std {
+    template <>
+    struct hash<game::Move> {
+        size_t operator()(const game::Move& move) const {
+            // Example hash combination of two integers
+            return std::hash<int>()(move.getBitIndexFrom()) ^ std::hash<int>()(move.getBitIndexTo());
+        }
     };
 }

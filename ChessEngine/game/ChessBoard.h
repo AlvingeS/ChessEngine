@@ -3,6 +3,7 @@
 #include "PieceType.h"
 #include "ChessEngine/bits/BitBasics.h"
 #include <string>
+#include <functional>
 
 namespace game {
     class ChessBoard {

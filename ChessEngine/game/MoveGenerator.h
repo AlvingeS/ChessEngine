@@ -2,7 +2,7 @@
 #include "Move.h"
 #include <vector>
 #include "ChessBoard.h"
-#include "ChessEngine/bits/Bitmasks.h"
+#include "ChessEngine/bits/RayBitMasks.h"
 #include "ChessEngine/bits/BitBasics.h"
 
 namespace game {

@@ -1,6 +1,6 @@
 add_executable(bits_tests
     BitBasics_test.cpp
-    Bitmasks_test.cpp
+    RayBitMasks_test.cpp
     BitUtils_test.cpp
 )
 

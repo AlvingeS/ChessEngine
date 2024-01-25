@@ -18,6 +18,7 @@ namespace bits {
         U64 northWest;
     };
 
+    
     U64 getFileMask(int file);
     U64 getRankMask(int rank);
     U64 getNorthRay(int ind);

@@ -1,5 +1,5 @@
 #include "MoveGenerator.h"
-#include "ChessEngine/bits/Bitmasks.h"
+#include "ChessEngine/bits/RayBitMasks.h"
 #include "ChessEngine/bits/BitUtils.h"
 #include <iostream>
 

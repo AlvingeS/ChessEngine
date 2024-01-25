@@ -1,4 +1,4 @@
-#include "Bitmasks.h"
+#include "RayBitMasks.h"
 #include "BitDir.h"
 
 namespace bits {
@@ -24,12 +24,6 @@ namespace bits {
         0xFF00000000000000ULL
     };
     
-    /**
-     * @brief Gets the Bitmask of a file for a given index
-     * 
-     * @param file Index of file counted right to left, where 0 is the h-file, and 7 is the a-file
-     * @return U64 Bitmask of the file
-     */
     U64 getFileMask(int file) {
         return FILE_MASK[file];
     }

@@ -7,10 +7,14 @@ namespace bits {
             U64 a;
             U64 b;
             U64 c;
+            U64 whitePieces;
+            U64 blackPieces;
             void SetUp() override {
                 a = 0x0000000000FF0501;
                 b = 0x0000000000000000;
                 c = 0xFFFFFFFFFFFFFFFF;
+                whitePieces = 0x000000000000FFFFULL;
+                blackPieces = 0xFFFF000000000000ULL;
             }
     };
 
@@ -193,6 +197,18 @@ namespace bits {
         }
         
         std::vector<int> actual = getBitIndices(c);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(ChessUtils, getOccupiedSquaresBitmask_StartingPosition_ShouldReturn0xFFFF00000000FFFF) {
+        U64 expected = 0xFFFF00000000FFFFULL;
+        U64 actual = getOccupiedSquaresBitmask(whitePieces, blackPieces);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(ChessUtils, getEmptySquaresBitmask_StartingPosition_ShouldReturn0x0000FFFFFFFF0000) {
+        U64 expected = 0x0000FFFFFFFF0000ULL;
+        U64 actual = getEmptySquaresBitmask(whitePieces, blackPieces);
         ASSERT_EQ(expected, actual);
     }
 }

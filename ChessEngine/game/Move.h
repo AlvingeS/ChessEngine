@@ -4,6 +4,7 @@
 namespace game {
     class Move {
         public:
+            // Public member functions
             Move();
             Move(PieceType pieceType, int bitIndexFrom, int bitIndexTo);
             PieceType getPieceType() {
@@ -19,8 +20,11 @@ namespace game {
             }
 
         private:
+            // Private member variables
             PieceType _pieceType;
             int _bitIndexFrom;
             int _bitIndexTo;
+
+            // Private member functions
     };
 }

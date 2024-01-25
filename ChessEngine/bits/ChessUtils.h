@@ -43,4 +43,20 @@ namespace bits {
     inline int fileFromBitIndex(int i) {
         return i % 8;
     }
+
+    inline U64 getOccupiedSquaresBitmask(U64 whitePieces, U64 blackPieces) {
+        return whitePieces | blackPieces;
+    }
+
+    inline U64 getEmptySquaresBitmask(U64 whitePieces, U64 blackPieces) {
+        return ~getOccupiedSquaresBitmask(whitePieces, blackPieces);
+    }
+
+    inline U64 getWhiteSquaresBitmask() {
+        return 0xAA55AA55AA55AA55ULL;
+    }
+
+    inline U64 getBlackSquaresBitmask() {
+        return 0x55AA55AA55AA55AAULL;
+    }
 }

@@ -151,20 +151,4 @@ namespace bits {
 
         return allDiagonalRayBitmasks;
     }
-
-    U64 getWhiteSquaresBitmask() {
-        return 0xAA55AA55AA55AA55ULL;
-    }
-
-    U64 getBlackSquaresBitmask() {
-        return 0x55AA55AA55AA55AAULL;
-    }
-
-    U64 getOccupiedSquaresBitmask(U64 whitePieces, U64 blackPieces) {
-        return whitePieces | blackPieces;
-    }
-
-    U64 getEmptySquaresBitmask(U64 whitePieces, U64 blackPieces) {
-        return ~getOccupiedSquaresBitmask(whitePieces, blackPieces);
-    }
 }

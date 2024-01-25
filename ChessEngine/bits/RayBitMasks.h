@@ -18,9 +18,6 @@ namespace bits {
         U64 northWest;
     };
 
-    
-    U64 getFileMask(int file);
-    U64 getRankMask(int rank);
     U64 getNorthRay(int ind);
     U64 getNorthEastRay(int ind);
     U64 getEastRay(int ind);
@@ -29,14 +26,10 @@ namespace bits {
     U64 getSouthWestRay(int ind);
     U64 getWestRay(int ind);
     U64 getNorthWestRay(int ind);
+
     StraightRays getStraightRays(int ind);
     DiagonalRays getDiagonalRays(int ind);
+
     std::vector<StraightRays> getAllStraightRayBitmasks();
     std::vector<DiagonalRays> getAllDiagonalRayBitmasks();
-    std::vector<std::vector<U64>> getAllKnightAttackBitmasks();
-    std::vector<std::vector<U64>> getAllKingAttackBitmasks();
-    U64 getWhiteSquaresBitmask();
-    U64 getBlackSquaresBitmask();
-    U64 getOccupiedSquaresBitmask(U64 whitePieces, U64 blackPieces);
-    U64 getEmptySquaresBitmask(U64 whitePieces, U64 blackPieces);
 }

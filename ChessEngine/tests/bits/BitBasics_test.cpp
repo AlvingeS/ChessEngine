@@ -43,8 +43,8 @@ namespace bits {
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBasics, indexOfLSB_0_ShouldReturn0) {
-        int expected = 0;
+    TEST_F(BitBasics, indexOfLSB_0_ShouldReturnNeg1) {
+        int expected = -1;
         int actual = indexOfLSB(0ULL);
         ASSERT_EQ(expected, actual);
     }
@@ -56,8 +56,8 @@ namespace bits {
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBasics, indexOfMSB_0_ShouldReturn0) {
-        int expected = 0;
+    TEST_F(BitBasics, indexOfMSB_0_ShouldReturnNeg1) {
+        int expected = -1;
         int actual = indexOfMSB(0ULL);
         ASSERT_EQ(expected, actual);
     }

@@ -322,16 +322,4 @@ namespace bits {
         U64 actual = getNorthWestRay(indSix);
         ASSERT_EQ(expected, actual);
     }
-
-    TEST_F(RayBitMasks, getOccupiedSquaresBitmask_StartingPosition_ShouldReturn0xFFFF00000000FFFF) {
-        U64 expected = 0xFFFF00000000FFFFULL;
-        U64 actual = getOccupiedSquaresBitmask(whitePieces, blackPieces);
-        ASSERT_EQ(expected, actual);
-    }
-
-    TEST_F(RayBitMasks, getEmptySquaresBitmask_StartingPosition_ShouldReturn0x0000FFFFFFFF0000) {
-        U64 expected = 0x0000FFFFFFFF0000ULL;
-        U64 actual = getEmptySquaresBitmask(whitePieces, blackPieces);
-        ASSERT_EQ(expected, actual);
-    }
 }

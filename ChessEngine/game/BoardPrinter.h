@@ -7,11 +7,16 @@
 namespace game {
     class BoardPrinter {
         public:
+            // Public member functions
             BoardPrinter(std::unordered_map<PieceType, bits::U64> bitboards);
             void fillBoard(std::unordered_map<PieceType, bits::U64> bitboards);
             void printBoard();
+
         private:
+            // Private member variables
             std::vector<std::vector<char>> _board;
+
+            // Private member functions
             bool isValidPiece(PieceType piece_type);
     };
 }

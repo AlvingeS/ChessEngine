@@ -8,23 +8,24 @@
 namespace game {
     class MoveGenerator {
         public:
+            // Public member variables
+            static constexpr int MAX_LEGAL_MOVES = 218;
+
+            // Public member functions
             MoveGenerator();
             std::vector<Move>& genMoves(bool is_white);
-            void genRookMoves(bool is_white);
             int getNumLegalMoves();
             void setBoardFromFen(std::string fen);
+            void genRookMoves(bool is_white);
 
             std::vector<Move>& getMoves() {
                 return _moves;
             }
 
-            static constexpr int MAX_LEGAL_MOVES = 218;
         private:
-            // Member variables
+            // Private member variables
             std::vector<Move> _moves; 
             ChessBoard _board;
-
-            // Masks
             std::vector<bits::StraightRays> _straightRayBitmasks;
             std::vector<bits::DiagonalRays> _diagonalRayBitmasks;
             bits::U64 _occupiedBitmask;

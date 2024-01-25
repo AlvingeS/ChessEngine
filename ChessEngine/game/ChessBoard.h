@@ -7,6 +7,8 @@
 namespace game {
     class ChessBoard {
         public:
+
+            // Public member functions
             ChessBoard();
 
             bits::U64 getBitboard(PieceType piece_type) {
@@ -21,12 +23,12 @@ namespace game {
             
             bits::U64 getWhitePiecesBitmask();
             bits::U64 getBlackPiecesBitmask();
-            bits::U64 getWhiteSquaresBitmask();
-            bits::U64 getBlackSquaresBitmask();
 
-            private:
-                std::unordered_map<PieceType, bits::U64> _bitboards;
+        private:
+            // Private member variables
+            std::unordered_map<PieceType, bits::U64> _bitboards;
 
-                void initPieceBitboards();
+            // Private member functions
+            void initPieceBitboards();
     };
 }

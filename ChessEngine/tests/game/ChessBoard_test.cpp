@@ -96,16 +96,16 @@ namespace game {
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(ChessBoardTest, getWhitePiecesBitMask_ShouldReturn0x000000000000FFFF) {
+    TEST_F(ChessBoardTest, getWhitePiecesBitmask_ShouldReturn0x000000000000FFFF) {
         bits::U64 expected = 0x000000000000FFFFULL;
-        bits::U64 actual = chessboard.getWhitePiecesBitMask();
+        bits::U64 actual = chessboard.getWhitePiecesBitmask();
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(ChessBoardTest, getBlackPiecesBitMask_ShouldReturn0xFFFF000000000000) {
+    TEST_F(ChessBoardTest, getBlackPiecesBitmask_ShouldReturn0xFFFF000000000000) {
         bits::U64 expected = 0xFFFF000000000000ULL;
-        bits::U64 actual = chessboard.getBlackPiecesBitMask();
+        bits::U64 actual = chessboard.getBlackPiecesBitmask();
 
         ASSERT_EQ(expected, actual);
     }

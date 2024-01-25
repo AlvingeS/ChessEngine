@@ -1,5 +1,5 @@
 #include "MoveGenerator.h"
-#include "ChessEngine/bits/BitMasks.h"
+#include "ChessEngine/bits/Bitmasks.h"
 #include "ChessEngine/bits/BitUtils.h"
 #include <iostream>
 
@@ -29,23 +29,27 @@ namespace game {
     MoveGenerator::MoveGenerator() {
         _moves.reserve(MAX_LEGAL_MOVES);
         _board = ChessBoard();
-        _straightRayBitMasks = bits::getAllStraightRayBitMasks();
-        _diagonalRayBitMasks = bits::getAllDiagonalRayBitMasks();
-        _whiteSquaresBitMask = bits::getWhiteSquaresBitMask();
-        _blackSquaresBitMask = bits::getBlackSquaresBitMask();
-        updateGameStateBitMasks();
+        _straightRayBitmasks = bits::getAllStraightRayBitmasks();
+        _diagonalRayBitmasks = bits::getAllDiagonalRayBitmasks();
+        _whiteSquaresBitmask = bits::getWhiteSquaresBitmask();
+        _blackSquaresBitmask = bits::getBlackSquaresBitmask();
+        updateGameStateBitmasks();
     }
 
-    void MoveGenerator::updateGameStateBitMasks() {
-        _whitePiecesBitMask = _board.getWhitePiecesBitMask();
-        _blackPiecesBitMask = _board.getBlackPiecesBitMask();
-        _occupiedBitMask = bits::getOccupiedSquaresBitMask(_whitePiecesBitMask, _blackPiecesBitMask);
-        _emptySquaresBitMask = bits::getEmptySquaresBitmask(_whitePiecesBitMask, _blackPiecesBitMask);
+    void MoveGenerator::updateGameStateBitmasks() {
+        _whitePiecesBitmask = _board.getWhitePiecesBitmask();
+        _blackPiecesBitmask = _board.getBlackPiecesBitmask();
+        _occupiedBitmask = bits::getOccupiedSquaresBitmask(_whitePiecesBitmask, _blackPiecesBitmask);
+        _emptySquaresBitmask = bits::getEmptySquaresBitmask(_whitePiecesBitmask, _blackPiecesBitmask);
     }
 
     void MoveGenerator::setBoardFromFen(std::string fen) {
         _board.setBoardFromFen(fen);
-        updateGameStateBitMasks();
+        updateGameStateBitmasks();
+    }
+
+    void MoveGenerator::addMove(int bitIndexFrom, int bitIndexTo, PieceType pieceType) {
+        _moves.push_back(Move(pieceType, bitIndexFrom, bitIndexTo));
     }
 
     // count the number of elements in a vector that are not null
@@ -71,15 +75,15 @@ namespace game {
         std::vector<int> bitIndicesFreeRay = bits::getBitIndices(freeRay);
 
         for (int bitIndex : bitIndicesFreeRay) {
-            _moves.push_back(Move(pieceType, bitIndexFrom, bitIndex));
+            addMove(bitIndexFrom, bitIndex, pieceType);
         }
     }
 
     void MoveGenerator::addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, PieceType pieceType) {
-        bool blockerIsWhite = bits::getBit(_whitePiecesBitMask, blockerIndex);
+        bool blockerIsWhite = bits::getBit(_whitePiecesBitmask, blockerIndex);
 
         if (blockerIsWhite != isWhite) {
-            _moves.push_back(Move(pieceType, bitIndexFrom, blockerIndex));
+            addMove(bitIndexFrom, blockerIndex, pieceType);
         }
     }
 
@@ -93,7 +97,7 @@ namespace game {
 
         // Loop through all rooks and isolate them
         for (int currentRookIndex : rookIndices) {
-            rays = _straightRayBitMasks[currentRookIndex];
+            rays = _straightRayBitmasks[currentRookIndex];
             int rookRank = bits::rankFromBitIndex(currentRookIndex);
             int rookFile = bits::fileFromBitIndex(currentRookIndex);
             int blockerIndex;
@@ -102,10 +106,10 @@ namespace game {
             bool blockerFound;
 
             // North ray
-            blockerFound = (rays.north & _occupiedBitMask) != 0;
+            blockerFound = (rays.north & _occupiedBitmask) != 0;
 
             if (blockerFound) {
-                blockerIndex = bits::indexOfLSB(rays.north & _occupiedBitMask);
+                blockerIndex = bits::indexOfLSB(rays.north & _occupiedBitmask);
                 addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
                 
                 blockerRank = bits::rankFromBitIndex(blockerIndex);
@@ -118,10 +122,10 @@ namespace game {
             }
 
             // East ray
-            blockerFound  = (rays.east & _occupiedBitMask) != 0;
+            blockerFound  = (rays.east & _occupiedBitmask) != 0;
             
             if (blockerFound) {
-                blockerIndex = bits::indexOfMSB(rays.east & _occupiedBitMask);
+                blockerIndex = bits::indexOfMSB(rays.east & _occupiedBitmask);
                 addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
 
                 blockerFile = bits::fileFromBitIndex(blockerIndex);
@@ -134,10 +138,10 @@ namespace game {
             }
 
             // South ray
-            blockerFound  = (rays.south & _occupiedBitMask) != 0;
+            blockerFound  = (rays.south & _occupiedBitmask) != 0;
             
             if (blockerFound) {
-                blockerIndex = bits::indexOfMSB(rays.south & _occupiedBitMask);
+                blockerIndex = bits::indexOfMSB(rays.south & _occupiedBitmask);
                 addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
 
                 blockerRank = bits::rankFromBitIndex(blockerIndex);
@@ -150,9 +154,9 @@ namespace game {
             }
 
             // West ray
-            blockerFound  = (rays.west & _occupiedBitMask) != 0;
+            blockerFound  = (rays.west & _occupiedBitmask) != 0;
             if (blockerFound) {
-                blockerIndex = bits::indexOfLSB(rays.west & _occupiedBitMask);
+                blockerIndex = bits::indexOfLSB(rays.west & _occupiedBitmask);
                 addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
 
                 blockerFile = bits::fileFromBitIndex(blockerIndex);

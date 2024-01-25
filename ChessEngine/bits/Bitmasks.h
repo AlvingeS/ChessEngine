@@ -10,7 +10,7 @@ namespace bits {
         U64 south;
         U64 west;
     };
-    
+
     struct DiagonalRays {
         U64 northEast;
         U64 southEast;
@@ -30,12 +30,12 @@ namespace bits {
     U64 getNorthWestRay(int ind);
     StraightRays getStraightRays(int ind);
     DiagonalRays getDiagonalRays(int ind);
-    std::vector<StraightRays> getAllStraightRayBitMasks();
-    std::vector<DiagonalRays> getAllDiagonalRayBitMasks();
-    std::vector<std::vector<U64>> getAllKnightAttackBitMasks();
-    std::vector<std::vector<U64>> getAllKingAttackBitMasks();
-    U64 getWhiteSquaresBitMask();
-    U64 getBlackSquaresBitMask();
-    U64 getOccupiedSquaresBitMask(U64 whitePieces, U64 blackPieces);
+    std::vector<StraightRays> getAllStraightRayBitmasks();
+    std::vector<DiagonalRays> getAllDiagonalRayBitmasks();
+    std::vector<std::vector<U64>> getAllKnightAttackBitmasks();
+    std::vector<std::vector<U64>> getAllKingAttackBitmasks();
+    U64 getWhiteSquaresBitmask();
+    U64 getBlackSquaresBitmask();
+    U64 getOccupiedSquaresBitmask(U64 whitePieces, U64 blackPieces);
     U64 getEmptySquaresBitmask(U64 whitePieces, U64 blackPieces);
 }

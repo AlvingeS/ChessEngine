@@ -26,7 +26,7 @@ namespace game {
 
         std::vector<Move> moves = moveGenerator.getMoves();
         std::unordered_set<int> expectedToBitIndices = {29, 37, 45, 16, 17, 18, 19, 20, 5, 13, 23, 22}; 
-        int expectedBitIndexFrom = 36;
+        int expectedBitIndexFrom = 21;
 
         for (Move move : moves) {
             int bitIndexTo = move.getBitIndexTo();

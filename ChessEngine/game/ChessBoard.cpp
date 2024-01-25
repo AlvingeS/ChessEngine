@@ -22,7 +22,7 @@ namespace game {
         _bitboards[PieceType::B_KING] = 0x0800000000000000ULL;
     }
 
-    bits::U64 ChessBoard::getWhitePiecesBitMask() {
+    bits::U64 ChessBoard::getWhitePiecesBitmask() {
         bits::U64 w_all = 0;
         for (int i = 0; i < 6; i++) {
             w_all |= _bitboards[static_cast<PieceType>(i)];
@@ -31,7 +31,7 @@ namespace game {
         return w_all;
     }
 
-    bits::U64 ChessBoard::getBlackPiecesBitMask() {
+    bits::U64 ChessBoard::getBlackPiecesBitmask() {
         bits::U64 b_all = 0;
         for (int i = 6; i < 12; i++) {
             b_all |= _bitboards[static_cast<PieceType>(i)];

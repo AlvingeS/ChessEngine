@@ -19,10 +19,10 @@ namespace game {
 
             void setBoardFromFen(const std::string& fen);
             
-            bits::U64 getWhitePiecesBitMask();
-            bits::U64 getBlackPiecesBitMask();
-            bits::U64 getWhiteSquaresBitMask();
-            bits::U64 getBlackSquaresBitMask();
+            bits::U64 getWhitePiecesBitmask();
+            bits::U64 getBlackPiecesBitmask();
+            bits::U64 getWhiteSquaresBitmask();
+            bits::U64 getBlackSquaresBitmask();
 
             private:
                 std::unordered_map<PieceType, bits::U64> _bitboards;

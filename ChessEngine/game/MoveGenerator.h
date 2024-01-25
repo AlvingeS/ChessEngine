@@ -2,7 +2,7 @@
 #include "Move.h"
 #include <vector>
 #include "ChessBoard.h"
-#include "ChessEngine/bits/BitMasks.h"
+#include "ChessEngine/bits/Bitmasks.h"
 #include "ChessEngine/bits/BitBasics.h"
 
 namespace game {
@@ -20,18 +20,23 @@ namespace game {
 
             static constexpr int MAX_LEGAL_MOVES = 218;
         private:
+            // Member variables
             std::vector<Move> _moves; 
             ChessBoard _board;
-            std::vector<bits::StraightRays> _straightRayBitMasks;
-            std::vector<bits::DiagonalRays> _diagonalRayBitMasks;
-            void updateGameStateBitMasks();
-            bits::U64 _occupiedBitMask;
-            bits::U64 _emptySquaresBitMask;
-            bits::U64 _whitePiecesBitMask;
-            bits::U64 _blackPiecesBitMask;
-            bits::U64 _whiteSquaresBitMask;            
-            bits::U64 _blackSquaresBitMask;
 
+            // Masks
+            std::vector<bits::StraightRays> _straightRayBitmasks;
+            std::vector<bits::DiagonalRays> _diagonalRayBitmasks;
+            bits::U64 _occupiedBitmask;
+            bits::U64 _emptySquaresBitmask;
+            bits::U64 _whitePiecesBitmask;
+            bits::U64 _blackPiecesBitmask;
+            bits::U64 _whiteSquaresBitmask;            
+            bits::U64 _blackSquaresBitmask;
+
+            // Member functions
+            void updateGameStateBitmasks();
+            void addMove(int bitIndexFrom, int bitIndexTo, PieceType pieceType);
             void addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, PieceType pieceType);
             void addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, PieceType pieceType);
     };

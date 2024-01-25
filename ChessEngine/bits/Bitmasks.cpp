@@ -1,4 +1,4 @@
-#include "BitMasks.h"
+#include "Bitmasks.h"
 #include "BitDir.h"
 
 namespace bits {
@@ -24,6 +24,12 @@ namespace bits {
         0xFF00000000000000ULL
     };
     
+    /**
+     * @brief Gets the Bitmask of a file for a given index
+     * 
+     * @param file Index of file counted right to left, where 0 is the h-file, and 7 is the a-file
+     * @return U64 Bitmask of the file
+     */
     U64 getFileMask(int file) {
         return FILE_MASK[file];
     }
@@ -162,39 +168,39 @@ namespace bits {
         };
     }
 
-    std::vector<StraightRays> getAllStraightRayBitMasks() {
-        std::vector<StraightRays> allStraightRayBitMasks;
+    std::vector<StraightRays> getAllStraightRayBitmasks() {
+        std::vector<StraightRays> allStraightRayBitmasks;
 
         for (int i = 0; i < 64; i++) {
-            allStraightRayBitMasks.push_back(getStraightRays(i));
+            allStraightRayBitmasks.push_back(getStraightRays(i));
         }
 
-        return allStraightRayBitMasks;
+        return allStraightRayBitmasks;
     }
 
-    std::vector<DiagonalRays> getAllDiagonalRayBitMasks() {
-        std::vector<DiagonalRays> allDiagonalRayBitMasks;
+    std::vector<DiagonalRays> getAllDiagonalRayBitmasks() {
+        std::vector<DiagonalRays> allDiagonalRayBitmasks;
 
         for (int i = 0; i < 64; i++) {
-            allDiagonalRayBitMasks.push_back(getDiagonalRays(i));
+            allDiagonalRayBitmasks.push_back(getDiagonalRays(i));
         }
 
-        return allDiagonalRayBitMasks;
+        return allDiagonalRayBitmasks;
     }
 
-    U64 getWhiteSquaresBitMask() {
+    U64 getWhiteSquaresBitmask() {
         return 0xAA55AA55AA55AA55ULL;
     }
 
-    U64 getBlackSquaresBitMask() {
+    U64 getBlackSquaresBitmask() {
         return 0x55AA55AA55AA55AAULL;
     }
 
-    U64 getOccupiedSquaresBitMask(U64 whitePieces, U64 blackPieces) {
+    U64 getOccupiedSquaresBitmask(U64 whitePieces, U64 blackPieces) {
         return whitePieces | blackPieces;
     }
 
     U64 getEmptySquaresBitmask(U64 whitePieces, U64 blackPieces) {
-        return ~getOccupiedSquaresBitMask(whitePieces, blackPieces);
+        return ~getOccupiedSquaresBitmask(whitePieces, blackPieces);
     }
 }

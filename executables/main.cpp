@@ -10,7 +10,7 @@ int main() {
     moveGenerator.genMoves(true);
     std::cout << moveGenerator.getNumLegalMoves() << std::endl;
     game::ChessBoard chessBoard = game::ChessBoard();
-    chessBoard.setBoardFromFen("8/2P5/8/8/8/b1R5/4q3/8");
+    chessBoard.setBoardFromFen("7r/8/8/1P6/8/1R1p3R/8/8");
     game::BoardPrinter boardPrinter = game::BoardPrinter(chessBoard.getBitboards());
     boardPrinter.printBoard();
     //unsigned long long int a = 0x0000000000FF0501ULL;

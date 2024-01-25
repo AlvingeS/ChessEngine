@@ -47,15 +47,25 @@ namespace game {
         }
     }
 
-    void BoardPrinter::printBoard() {
-        for (int i = 7; i >= 0; i--) {  // Start from the bottom row (row 7) and go upwards.
-            std::cout << "----------------------------------" << std::endl;
-            for (int j = 7; j >= 0; j--) {  // Start from the rightmost column (column 7) and go leftwards.
-                std::cout << "| " << _board[i][j] << " ";
-            }
-            std::cout << "|" << std::endl;
+void BoardPrinter::printBoard() {
+    for (int row = 7; row >= 0; row--) {  // Start from the bottom row (row 7) and go upwards.
+        std::cout << "---------------------------------   ---------------------------------" << std::endl;
+        for (int col = 7; col >= 0; col--) {  // Iterate through columns from left to right.
+            char piece = _board[row][col];
+            std::cout << "| " << piece << " ";  // Print the piece character.
         }
-        std::cout << "----------------------------------" << std::endl;
+
+        std::cout << "|   ";  // Separate the two boards.
+
+        for (int col = 7; col >= 0; col--) {  // Iterate again for bit indices.
+            int bitIndex = row * 8 + col;
+            std::cout << "| " << bitIndex << (bitIndex < 10 ? " " : "");  // Print the bit index, add extra space for single digit numbers.
+        }
+
+        std::cout << "|" << std::endl;  // End of the row.
     }
+    std::cout << "----------------------------------  ----------------------------------" << std::endl;
+}
+
 
 }

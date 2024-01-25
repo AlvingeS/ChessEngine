@@ -110,6 +110,68 @@ namespace bits {
         ASSERT_EQ(expected, actual);
     }
 
+        // rankFromBitIndex tests
+    TEST_F(ChessBitTools, rankFromBitIndex_Pos0_ShouldReturn0) {
+        int expected = 0;
+        int actual = rankFromBitIndex(0);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(ChessBitTools, rankFromBitIndex_Pos7_ShouldReturn0) {
+        int expected = 0;
+        int actual = rankFromBitIndex(7);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(ChessBitTools, rankFromBitIndex_Pos8_ShouldReturn1) {
+        int expected = 1;
+        int actual = rankFromBitIndex(8);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(ChessBitTools, rankFromBitIndex_Pos15_ShouldReturn1) {
+        int expected = 1;
+        int actual = rankFromBitIndex(15);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(ChessBitTools, rankFromBitIndex_Pos63_ShouldReturn7) {
+        int expected = 7;
+        int actual = rankFromBitIndex(63);
+        ASSERT_EQ(expected, actual);
+    }
+
+    // fileFromBitIndex tests
+    TEST_F(ChessBitTools, fileFromBitIndex_Pos0_ShouldReturn0) {
+        int expected = 0;
+        int actual = fileFromBitIndex(0);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(ChessBitTools, fileFromBitIndex_Pos7_ShouldReturn7) {
+        int expected = 7;
+        int actual = fileFromBitIndex(7);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(ChessBitTools, fileFromBitIndex_Pos8_ShouldReturn0) {
+        int expected = 0;
+        int actual = fileFromBitIndex(8);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(ChessBitTools, fileFromBitIndex_Pos15_ShouldReturn7) {
+        int expected = 7;
+        int actual = fileFromBitIndex(15);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST_F(ChessBitTools, fileFromBitIndex_Pos63_ShouldReturn7) {
+        int expected = 7;
+        int actual = fileFromBitIndex(63);
+        ASSERT_EQ(expected, actual);
+    }
+
     
     TEST_F(ChessBitTools, getBitIndices_a_ShouldReturn0_8_10_16to23) {
         std::vector<int> expected = {0, 8, 10, 16, 17, 18, 19, 20, 21, 22, 23};

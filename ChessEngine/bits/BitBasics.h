@@ -7,14 +7,6 @@ namespace bits {
         return (a >> i) & 1;
     }
 
-    inline int rankFromBitIndex(int i) {
-        return i / 8;
-    }
-
-    inline int fileFromBitIndex(int i) {
-        return i % 8;
-    }
-
     inline int indexOfLSB(U64 a) {
         if (a == 0) {
             return 0;

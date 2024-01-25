@@ -1,6 +1,6 @@
 #include "MoveGenerator.h"
 #include "ChessEngine/bits/RayBitMasks.h"
-#include "ChessEngine/bits/ChessBitTools.h"
+#include "ChessEngine/bits/ChessUtils.h"
 #include <iostream>
 
 /*

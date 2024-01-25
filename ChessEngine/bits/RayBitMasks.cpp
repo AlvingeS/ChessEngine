@@ -1,5 +1,5 @@
 #include "RayBitMasks.h"
-#include "ChessBitTools.h"
+#include "ChessUtils.h"
 
 namespace bits {
     U64 getNorthRay(int ind) {

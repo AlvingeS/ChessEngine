@@ -1,6 +1,6 @@
 #include <iostream>
 #include <bitset>
-#include "ChessBitTools.h"
+#include "ChessUtils.h"
 
 namespace bits {
     void printU64InBits(unsigned long long int n) {

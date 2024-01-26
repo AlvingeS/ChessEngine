@@ -17,8 +17,5 @@ int main() {
     //bits::printU64InBits(a);
     //bits::printU64InBits(a & (a - 1));
     //bits::printU64InBits(1ULL >> 63);
-
-
-    std::cout << "Done!" << std::endl;
     return 0;
 }

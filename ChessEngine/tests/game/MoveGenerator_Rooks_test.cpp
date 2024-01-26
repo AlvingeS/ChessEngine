@@ -84,4 +84,21 @@ namespace game {
 
         ASSERT_TRUE(expectedMoves.empty());        
     }
+
+    TEST_F(MoveGeneratorTest, genRookMoves_fenTwoBlack_ShouldReturn12Moves) {
+        moveGenerator.setBoardFromFen(fenTwo);
+        moveGenerator.genRookMoves(false);
+
+        std::vector<Move> moves = moveGenerator.getMoves();
+        std::unordered_set<Move> expectedMoves;
+        insertExpectedMoves(expectedMoves, 56, {48, 40, 32, 24, 16, 57, 58, 59, 60, 61, 62, 63}, PieceType::B_ROOK);
+
+        for (Move move : moves) {
+            auto found = expectedMoves.find(move);
+            ASSERT_TRUE(found != expectedMoves.end());
+            expectedMoves.erase(found); // Remove found move from the set
+        }
+
+        ASSERT_TRUE(expectedMoves.empty());   
+    }
 }

@@ -13,10 +13,11 @@ namespace game {
 
             // Public member functions
             MoveGenerator();
-            std::vector<Move>& genMoves(bool is_white);
+            std::vector<Move>& genMoves(bool isWhite);
             int getNumLegalMoves();
             void setBoardFromFen(std::string fen);
-            void genRookMoves(bool is_white);
+            void genRookMoves(bool isWhite);
+            void genKnightMoves(bool isWite);
 
             std::vector<Move>& getMoves() {
                 return _moves;

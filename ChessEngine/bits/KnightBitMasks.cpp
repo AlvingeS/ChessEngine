@@ -8,22 +8,13 @@ namespace bits {
         U64 knightMoves = 0ULL;
 
         if (ind + 15 <= 63) knightMoves |= (1ULL << (ind + 15));
-        printU64InBits(knightMoves);
         if (ind + 6 <= 63) knightMoves |= (1ULL << (ind + 6));
-        printU64InBits(knightMoves);
         if (ind - 10 >= 0) knightMoves |= (1ULL << (ind - 10));
-        printU64InBits(knightMoves);
         if (ind - 17 >= 0) knightMoves |= (1ULL << (ind - 17));
-        printU64InBits(knightMoves);
         if (ind - 15 >= 0) knightMoves |= (1ULL << (ind - 15));
-        printU64InBits(knightMoves);
         if (ind - 6 >= 0) knightMoves |= (1ULL << (ind - 6));
-        printU64InBits(knightMoves);
         if (ind + 10 <= 63) knightMoves |= (1ULL << (ind + 10));
-        printU64InBits(knightMoves);
         if (ind + 17 <= 63) knightMoves |= (1ULL << (ind + 17));
-printU64InBits(knightMoves);
-
 
         return knightMoves;
     }

@@ -69,6 +69,7 @@ namespace game {
 
     std::vector<Move>& MoveGenerator::genMoves(bool isWhite) {
         genRookMoves(isWhite);
+        genKnightMoves(isWhite);
 
         return _moves;
     }
@@ -126,7 +127,6 @@ namespace game {
     void MoveGenerator::genRookMoves(bool isWhite) {
         std::vector<int> rookIndices;
         bits::StraightRays rays;
-        std::vector<int> bitIndicesFreeRay;
 
         PieceType currentPieceType = isWhite ? PieceType::W_ROOK : PieceType::B_ROOK;
         rookIndices = bits::getBitIndices(_board.getBitboard(currentPieceType));
@@ -141,6 +141,32 @@ namespace game {
             getMovesFromStraightRay(rays.east, false, true, isWhite, currentRookIndex, currentPieceType, rookRank, rookFile);
             getMovesFromStraightRay(rays.south, false, false, isWhite, currentRookIndex, currentPieceType, rookRank, rookFile);
             getMovesFromStraightRay(rays.west, true, true, isWhite, currentRookIndex, currentPieceType, rookRank, rookFile);
+        }
+    }
+
+    void MoveGenerator::genKnightMoves(bool isWhite) {
+        std::vector<int> knightIndices;
+
+        PieceType currentPieceType = isWhite ? PieceType::W_KNIGHT : PieceType::B_KNIGHT;
+        knightIndices = bits::getBitIndices(_board.getBitboard(currentPieceType));
+
+        for (int currentKnightIndex : knightIndices) {
+            bits::U64 knightBitMask = _knightBitmasks[currentKnightIndex];
+
+            bits::U64 freeKnightMoves = knightBitMask & _emptySquaresBitmask;
+            bits::U64 enemyPieces = isWhite ? _blackPiecesBitmask : _whitePiecesBitmask;
+            bits::U64 capturableKnightMoves = knightBitMask & enemyPieces;
+
+            std::vector<int> freeKnightMovesIndices = bits::getBitIndices(freeKnightMoves);
+            std::vector<int> capturableKnightMovesIndices = bits::getBitIndices(capturableKnightMoves);
+
+            for (int freeKnightMoveIndex : freeKnightMovesIndices) {
+                addMove(currentKnightIndex, freeKnightMoveIndex, currentPieceType);
+            }
+
+            for (int capturableKnightMoveIndex : capturableKnightMovesIndices) {
+                addMove(currentKnightIndex, capturableKnightMoveIndex, currentPieceType);
+            }
         }
     }
 }

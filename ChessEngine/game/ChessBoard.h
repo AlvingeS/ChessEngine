@@ -12,8 +12,8 @@ namespace game {
             // Public member functions
             ChessBoard();
 
-            bits::U64 getBitboard(PieceType piece_type) {
-                return _bitboards[piece_type];
+            bits::U64 getBitboard(PieceType pieceType) {
+                return _bitboards[pieceType];
             }
 
             std::unordered_map<PieceType, bits::U64> getBitboards() {

@@ -5,7 +5,7 @@
 
 namespace game {
 
-    class MoveGeneratorTest : public ::testing::Test {
+    class MoveGeneratorKnightTest : public ::testing::Test {
         protected:
             MoveGenerator moveGenerator;
             std::string startingPos;
@@ -26,7 +26,7 @@ namespace game {
             }
     };
 
-    TEST_F(MoveGeneratorTest, genRookMoves_fenOneWhite_ShouldReturn12Moves) {
+    TEST_F(MoveGeneratorKnightTest, genRookMoves_fenOneWhite_ShouldReturn12Moves) {
         moveGenerator.setBoardFromFen(fenOne);
         moveGenerator.genRookMoves(true);
 
@@ -43,7 +43,7 @@ namespace game {
         ASSERT_TRUE(expectedMoves.empty());
     }
 
-    TEST_F(MoveGeneratorTest, genRookMoves_fenOneBlack_ShouldReturn0Moves) {
+    TEST_F(MoveGeneratorKnightTest, genRookMoves_fenOneBlack_ShouldReturn0Moves) {
         moveGenerator.setBoardFromFen(fenOne);
         moveGenerator.genRookMoves(false);
 
@@ -51,7 +51,7 @@ namespace game {
         ASSERT_EQ(moves.size(), 0);
     }
 
-    TEST_F(MoveGeneratorTest, genRookMoves_startingPosWhite_ShouldReturn0Moves) {
+    TEST_F(MoveGeneratorKnightTest, genRookMoves_startingPosWhite_ShouldReturn0Moves) {
         moveGenerator.setBoardFromFen(startingPos);
         moveGenerator.genRookMoves(true);
 
@@ -59,7 +59,7 @@ namespace game {
         ASSERT_EQ(moves.size(), 0);
     }
 
-    TEST_F(MoveGeneratorTest, genRookMoves_startingPosBlack_ShouldReturn0Moves) {
+    TEST_F(MoveGeneratorKnightTest, genRookMoves_startingPosBlack_ShouldReturn0Moves) {
         moveGenerator.setBoardFromFen(startingPos);
         moveGenerator.genRookMoves(false);
 
@@ -67,7 +67,7 @@ namespace game {
         ASSERT_EQ(moves.size(), 0);
     }
 
-    TEST_F(MoveGeneratorTest, genRookMoves_fenTwoWhite_ShouldReturn17Moves) {
+    TEST_F(MoveGeneratorKnightTest, genRookMoves_fenTwoWhite_ShouldReturn17Moves) {
         moveGenerator.setBoardFromFen(fenTwo);
         moveGenerator.genRookMoves(true);
 
@@ -85,7 +85,7 @@ namespace game {
         ASSERT_TRUE(expectedMoves.empty());        
     }
 
-    TEST_F(MoveGeneratorTest, genRookMoves_fenTwoBlack_ShouldReturn12Moves) {
+    TEST_F(MoveGeneratorKnightTest, genRookMoves_fenTwoBlack_ShouldReturn12Moves) {
         moveGenerator.setBoardFromFen(fenTwo);
         moveGenerator.genRookMoves(false);
 

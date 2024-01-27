@@ -40,6 +40,7 @@ namespace game {
             void addMove(int bitIndexFrom, int bitIndexTo, PieceType pieceType);
             void addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, PieceType pieceType);
             void addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, PieceType pieceType);
-            void addMovesBetweenBlockerAndPiece(int blockerIndex, bool traverseFile, bool useLSB, int rookRank, int rookFile, PieceType pieceType, int bitIndexFrom);
+            void addMovesBetweenBlockerAndPiece(int blockerIndex, bool alongFile, bool startFromBlocker, int rookRank, int rookFile, PieceType pieceType, int bitIndexFrom);
+            void getMovesFromStraightRay(bits::U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, PieceType pieceType, int pieceRank, int pieceFile);
     };
 }

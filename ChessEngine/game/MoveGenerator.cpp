@@ -109,6 +109,18 @@ namespace game {
         }
     }
 
+    void MoveGenerator::getMovesFromStraightRay(bits::U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, PieceType pieceType, int pieceRank, int pieceFile) {
+            bits::U64 blockerBitMask = ray & _occupiedBitmask;          
+
+            if (blockerBitMask != 0) {
+                int blockerIndex = blockerOnLSB ? bits::indexOfLSB(blockerBitMask) : bits::indexOfMSB(blockerBitMask);
+                addMoveIfBlockerIsEnemy(blockerIndex, isWhite, pieceIndex, pieceType);
+                addMovesBetweenBlockerAndPiece(blockerIndex, alongFile, blockerOnLSB, pieceRank, pieceFile, pieceType, pieceIndex);
+            } else {
+                addMovesFromFreeRay(ray, pieceIndex, pieceType);
+            }
+    }
+
     void MoveGenerator::genRookMoves(bool isWhite) {
         std::vector<int> rookIndices;
         bits::StraightRays rays;
@@ -122,51 +134,11 @@ namespace game {
             rays = _straightRayBitmasks[currentRookIndex];
             int rookRank = bits::rankFromBitIndex(currentRookIndex);
             int rookFile = bits::fileFromBitIndex(currentRookIndex);
-            int blockerIndex;
-            bool blockerFound;
 
-            // North ray
-            blockerFound = (rays.north & _occupiedBitmask) != 0;
-
-            if (blockerFound) {
-                blockerIndex = bits::indexOfLSB(rays.north & _occupiedBitmask);
-                addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
-                addMovesBetweenBlockerAndPiece(blockerIndex, false, true, rookRank, rookFile, currentPieceType, currentRookIndex);
-            } else {
-                addMovesFromFreeRay(rays.north, currentRookIndex, currentPieceType);
-            }
-
-            // East ray
-            blockerFound  = (rays.east & _occupiedBitmask) != 0;
-            
-            if (blockerFound) {
-                blockerIndex = bits::indexOfMSB(rays.east & _occupiedBitmask);
-                addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
-                addMovesBetweenBlockerAndPiece(blockerIndex, true, false, rookRank, rookFile, currentPieceType, currentRookIndex);
-            } else {
-                addMovesFromFreeRay(rays.east, currentRookIndex, currentPieceType);
-            }
-
-            // South ray
-            blockerFound  = (rays.south & _occupiedBitmask) != 0;
-            
-            if (blockerFound) {
-                blockerIndex = bits::indexOfMSB(rays.south & _occupiedBitmask);
-                addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
-                addMovesBetweenBlockerAndPiece(blockerIndex, false, false, rookRank, rookFile, currentPieceType, currentRookIndex);
-            } else {
-                addMovesFromFreeRay(rays.south, currentRookIndex, currentPieceType);
-            }
-
-            // West ray
-            blockerFound  = (rays.west & _occupiedBitmask) != 0;
-            if (blockerFound) {
-                blockerIndex = bits::indexOfLSB(rays.west & _occupiedBitmask);
-                addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
-                addMovesBetweenBlockerAndPiece(blockerIndex, true, true, rookRank, rookFile, currentPieceType, currentRookIndex);
-            } else {
-                addMovesFromFreeRay(rays.west, currentRookIndex, currentPieceType);
-            }
+            getMovesFromStraightRay(rays.north, true, false, isWhite, currentRookIndex, currentPieceType, rookRank, rookFile);
+            getMovesFromStraightRay(rays.east, false, true, isWhite, currentRookIndex, currentPieceType, rookRank, rookFile);
+            getMovesFromStraightRay(rays.south, false, false, isWhite, currentRookIndex, currentPieceType, rookRank, rookFile);
+            getMovesFromStraightRay(rays.west, true, true, isWhite, currentRookIndex, currentPieceType, rookRank, rookFile);
         }
     }
 }

@@ -1,6 +1,7 @@
 #include "MoveGenerator.h"
 #include "ChessEngine/bits/RayBitMasks.h"
 #include "ChessEngine/bits/ChessUtils.h"
+#include "ChessEngine/bits/KnightBitMasks.h"
 #include <iostream>
 
 /*
@@ -33,6 +34,7 @@ namespace game {
         _diagonalRayBitmasks = bits::getAllDiagonalRayBitmasks();
         _whiteSquaresBitmask = bits::getWhiteSquaresBitmask();
         _blackSquaresBitmask = bits::getBlackSquaresBitmask();
+        _knightBitmasks = bits::getAllKnightBitMasks();
         updateGameStateBitmasks();
     }
 

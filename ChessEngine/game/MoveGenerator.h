@@ -28,6 +28,7 @@ namespace game {
             ChessBoard _board;
             std::vector<bits::StraightRays> _straightRayBitmasks;
             std::vector<bits::DiagonalRays> _diagonalRayBitmasks;
+            std::vector<bits::U64> _knightBitmasks;
             bits::U64 _occupiedBitmask;
             bits::U64 _emptySquaresBitmask;
             bits::U64 _whitePiecesBitmask;

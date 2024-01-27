@@ -6,9 +6,10 @@
 
 int main() {
     game::MoveGenerator moveGenerator = game::MoveGenerator();
-    moveGenerator.setBoardFromFen("8/2P5/8/8/8/b1R5/4q3/8");
+    moveGenerator.setBoardFromFen("7r/8/8/1P6/8/1R1p3R/8/8");
     moveGenerator.genMoves(true);
     std::cout << moveGenerator.getNumLegalMoves() << std::endl;
+    
     game::ChessBoard chessBoard = game::ChessBoard();
     chessBoard.setBoardFromFen("7r/8/8/1P6/8/1R1p3R/8/8");
     game::BoardPrinter boardPrinter = game::BoardPrinter(chessBoard.getBitboards());

@@ -87,12 +87,25 @@ namespace game {
         }
     }
 
-    void MoveGenerator::addMovesBetweenBlockerAndPiece(int blockerIndex, bool traverseFile, int rookRank, int rookFile, PieceType pieceType) {
-        int start = traverseFile ? bits::fileFromBitIndex(blockerIndex) : bits::rankFromBitIndex(blockerIndex);
-        int stop = traverseFile ? rookFile : rookRank;
+    void MoveGenerator::addMovesBetweenBlockerAndPiece(int blockerIndex, bool alongFile, 
+                                                    bool startFromBlocker, int rookRank, 
+                                                    int rookFile, PieceType pieceType, 
+                                                    int bitIndexFrom) {
+        int start = startFromBlocker 
+                    ? (alongFile ? bits::fileFromBitIndex(blockerIndex) 
+                                : bits::rankFromBitIndex(blockerIndex)) 
+                    : (alongFile ? rookFile 
+                                : rookRank);
+                                
+        int stop = startFromBlocker 
+                ? (alongFile ? rookFile 
+                                : rookRank) 
+                : (alongFile ? bits::fileFromBitIndex(blockerIndex) 
+                                : bits::rankFromBitIndex(blockerIndex));
 
-        for (int i = start - 1; i > stop; i--) {
-            _moves.push_back(Move(pieceType, stop, traverseFile ? rookRank * 8 + i : i * 8 + rookFile));
+        for (int i = start - 1; i > stop; --i) {
+            int rankOrFileIndex = alongFile ? rookRank * 8 + i : i * 8 + rookFile;
+            _moves.push_back(Move(pieceType, bitIndexFrom, rankOrFileIndex));
         }
     }
 
@@ -118,7 +131,7 @@ namespace game {
             if (blockerFound) {
                 blockerIndex = bits::indexOfLSB(rays.north & _occupiedBitmask);
                 addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
-                addMovesBetweenBlockerAndPiece(blockerIndex, false, rookRank, rookFile, currentPieceType);
+                addMovesBetweenBlockerAndPiece(blockerIndex, false, true, rookRank, rookFile, currentPieceType, currentRookIndex);
             } else {
                 addMovesFromFreeRay(rays.north, currentRookIndex, currentPieceType);
             }
@@ -129,7 +142,7 @@ namespace game {
             if (blockerFound) {
                 blockerIndex = bits::indexOfMSB(rays.east & _occupiedBitmask);
                 addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
-                addMovesBetweenBlockerAndPiece(blockerIndex, true, rookRank, rookFile, currentPieceType);
+                addMovesBetweenBlockerAndPiece(blockerIndex, true, false, rookRank, rookFile, currentPieceType, currentRookIndex);
             } else {
                 addMovesFromFreeRay(rays.east, currentRookIndex, currentPieceType);
             }
@@ -140,7 +153,7 @@ namespace game {
             if (blockerFound) {
                 blockerIndex = bits::indexOfMSB(rays.south & _occupiedBitmask);
                 addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
-                addMovesBetweenBlockerAndPiece(blockerIndex, false, rookRank, rookFile, currentPieceType);
+                addMovesBetweenBlockerAndPiece(blockerIndex, false, false, rookRank, rookFile, currentPieceType, currentRookIndex);
             } else {
                 addMovesFromFreeRay(rays.south, currentRookIndex, currentPieceType);
             }
@@ -150,7 +163,7 @@ namespace game {
             if (blockerFound) {
                 blockerIndex = bits::indexOfLSB(rays.west & _occupiedBitmask);
                 addMoveIfBlockerIsEnemy(blockerIndex, isWhite, currentRookIndex, currentPieceType);
-                addMovesBetweenBlockerAndPiece(blockerIndex, true, rookRank, rookFile, currentPieceType);
+                addMovesBetweenBlockerAndPiece(blockerIndex, true, true, rookRank, rookFile, currentPieceType, currentRookIndex);
             } else {
                 addMovesFromFreeRay(rays.west, currentRookIndex, currentPieceType);
             }

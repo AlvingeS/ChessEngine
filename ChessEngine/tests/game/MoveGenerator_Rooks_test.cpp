@@ -67,7 +67,7 @@ namespace game {
         ASSERT_EQ(moves.size(), 0);
     }
 
-    TEST_F(MoveGeneratorTest, genRookMoves_fenTwoWhite_ShouldReturn15Moves) {
+    TEST_F(MoveGeneratorTest, genRookMoves_fenTwoWhite_ShouldReturn17Moves) {
         moveGenerator.setBoardFromFen(fenTwo);
         moveGenerator.genRookMoves(true);
 

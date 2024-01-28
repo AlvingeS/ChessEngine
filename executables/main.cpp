@@ -6,12 +6,12 @@
 
 int main() {
     game::MoveGenerator moveGenerator = game::MoveGenerator();
-    moveGenerator.setBoardFromFen("8/1n1n4/5R2/2N5/4P3/8/5p2/7N");
+    moveGenerator.setBoardFromFen("5k2/2P5/5q2/b4N2/1q6/2Q2Q2/8/8");
     moveGenerator.genMoves(true);
     std::cout << moveGenerator.getNumLegalMoves() << std::endl;
     
     game::ChessBoard chessBoard = game::ChessBoard();
-    chessBoard.setBoardFromFen("8/1n1n4/5R2/2N5/4P3/8/5p2/7N");
+    chessBoard.setBoardFromFen("5k2/2P5/5q2/b4N2/1q6/2Q2Q2/8/8");
     game::BoardPrinter boardPrinter = game::BoardPrinter(chessBoard.getBitboards());
     boardPrinter.printBoard();
     // unsigned long long int a = 0x0000000000FF0501ULL;

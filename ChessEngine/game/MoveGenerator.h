@@ -17,7 +17,9 @@ namespace game {
             int getNumLegalMoves();
             void setBoardFromFen(std::string fen);
             void genRookMoves(bool isWhite);
+            void genBishopMoves(bool isWhite);
             void genKnightMoves(bool isWite);
+            void genQueenMoves(bool isWhite);
 
             std::vector<Move>& getMoves() {
                 return _moves;
@@ -42,7 +44,9 @@ namespace game {
             void addMove(int bitIndexFrom, int bitIndexTo, PieceType pieceType);
             void addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, PieceType pieceType);
             void addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, PieceType pieceType);
-            void addMovesBetweenBlockerAndPiece(int blockerIndex, bool alongFile, bool startFromBlocker, int rookRank, int rookFile, PieceType pieceType, int bitIndexFrom);
+            void addMovesBetweenBlockerAndPieceOnStraightRay(int blockerIndex, bool alongFile, bool startFromBlocker, int rookRank, int rookFile, PieceType pieceType, int bitIndexFrom);
+            void addMovesBetweenBlockerAndPieceOnDiagonalRay(int blockerIndex, bool startFromBlocker, int bishopRank, int bishopFile, PieceType pieceType, int bitIndexFrom);
             void getMovesFromStraightRay(bits::U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, PieceType pieceType, int pieceRank, int pieceFile);
+            void getMovesFromDiagonalRay(bits::U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, PieceType pieceType, int pieceRank, int pieceFile);
     };
 }

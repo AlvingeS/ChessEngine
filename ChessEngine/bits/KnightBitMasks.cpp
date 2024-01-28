@@ -20,7 +20,7 @@ namespace bits {
     }
 
     // Applies file masks to knight moves to prevent looping around the board
-    void applyFileMasks(U64& knightMoves, int ind) {
+    void removeWrapAroundKnightMoves(U64& knightMoves, int ind) {
         U64 aFile = getFileMask(7);
         U64 bFile = getFileMask(6);
         U64 notAorBFile = ~(aFile | bFile);
@@ -47,7 +47,7 @@ namespace bits {
 
     U64 getKnightBitMask(int ind) {
         U64 knightMoves = applyKnightMoves(ind);
-        applyFileMasks(knightMoves, ind);
+        removeWrapAroundKnightMoves(knightMoves, ind);
         return knightMoves;
     }
 

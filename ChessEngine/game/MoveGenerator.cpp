@@ -2,6 +2,7 @@
 #include "ChessEngine/bits/RayBitMasks.h"
 #include "ChessEngine/bits/ChessUtils.h"
 #include "ChessEngine/bits/KnightBitMasks.h"
+#include "ChessEngine/bits/KingBitMasks.h"
 #include <iostream>
 
 /*
@@ -35,6 +36,8 @@ namespace game {
         _whiteSquaresBitmask = bits::getWhiteSquaresBitmask();
         _blackSquaresBitmask = bits::getBlackSquaresBitmask();
         _knightBitmasks = bits::getAllKnightBitMasks();
+        _kingBitmasks = bits::getAllKingBitMasks();
+
         updateGameStateBitmasks();
     }
 

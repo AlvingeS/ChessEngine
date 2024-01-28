@@ -20,6 +20,7 @@ namespace game {
             void genBishopMoves(bool isWhite);
             void genKnightMoves(bool isWite);
             void genQueenMoves(bool isWhite);
+            void genKingMoves(bool isWhite);
 
             std::vector<Move>& getMoves() {
                 return _moves;

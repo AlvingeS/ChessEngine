@@ -75,6 +75,7 @@ namespace game {
         genKnightMoves(isWhite);
         genBishopMoves(isWhite);
         genQueenMoves(isWhite);
+        genKingMoves(isWhite);
 
         return _moves;
     }
@@ -248,6 +249,32 @@ namespace game {
             getMovesFromDiagonalRay(diagonalRays.southEast, false, isWhite, currentQueenIndex, currentPieceType, queenRank, queenFile);
             getMovesFromDiagonalRay(diagonalRays.southWest, false, isWhite, currentQueenIndex, currentPieceType, queenRank, queenFile);
             getMovesFromDiagonalRay(diagonalRays.northWest, true, isWhite, currentQueenIndex, currentPieceType, queenRank, queenFile);
+        }
+    }
+
+    void MoveGenerator::genKingMoves(bool isWhite) {
+        std::vector<int> kingIndices;
+
+        PieceType currentPieceType = isWhite ? PieceType::W_KING : PieceType::B_KING;
+        kingIndices = bits::getBitIndices(_board.getBitboard(currentPieceType));
+
+        for (int currentKingIndex : kingIndices) {
+            bits::U64 kingBitMask = _kingBitmasks[currentKingIndex];
+
+            bits::U64 freeKingMoves = kingBitMask & _emptySquaresBitmask;
+            bits::U64 enemyPieces = isWhite ? _blackPiecesBitmask : _whitePiecesBitmask;
+            bits::U64 capturableKingMoves = kingBitMask & enemyPieces;
+
+            std::vector<int> freeKingMovesIndices = bits::getBitIndices(freeKingMoves);
+            std::vector<int> capturableKingMovesIndices = bits::getBitIndices(capturableKingMoves);
+
+            for (int freeKingMoveIndex : freeKingMovesIndices) {
+                addMove(currentKingIndex, freeKingMoveIndex, currentPieceType);
+            }
+
+            for (int capturableKingMoveIndex : capturableKingMovesIndices) {
+                addMove(currentKingIndex, capturableKingMoveIndex, currentPieceType);
+            }
         }
     }
 }

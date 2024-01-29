@@ -3,6 +3,7 @@
 #include "ChessEngine/bits/ChessUtils.h"
 #include "ChessEngine/bits/KnightBitMasks.h"
 #include "ChessEngine/bits/KingBitMasks.h"
+#include "ChessEngine/bits/PawnBitMasks.h"
 #include <iostream>
 
 /*
@@ -37,6 +38,8 @@ namespace game {
         _blackSquaresBitmask = bits::getBlackSquaresBitmask();
         _knightBitmasks = bits::getAllKnightBitMasks();
         _kingBitmasks = bits::getAllKingBitMasks();
+        _whitePawnBitmask = bits::getAllPawnBitMasks(true);
+        _blackPawnBitmask = bits::getAllPawnBitMasks(false);
 
         updateGameStateBitmasks();
     }
@@ -276,5 +279,9 @@ namespace game {
                 addMove(currentKingIndex, capturableKingMoveIndex, currentPieceType);
             }
         }
+    }
+
+    void MoveGenerator::genPawnMoves(bool isWhite) {
+        
     }
 }

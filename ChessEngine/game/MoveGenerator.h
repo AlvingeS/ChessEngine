@@ -21,6 +21,7 @@ namespace game {
             void genKnightMoves(bool isWite);
             void genQueenMoves(bool isWhite);
             void genKingMoves(bool isWhite);
+            void genPawnMoves(bool isWhite);
 
             std::vector<Move>& getMoves() {
                 return _moves;
@@ -34,6 +35,8 @@ namespace game {
             std::vector<bits::DiagonalRays> _diagonalRayBitmasks;
             std::vector<bits::U64> _knightBitmasks;
             std::vector<bits::U64> _kingBitmasks;
+            std::vector<bits::U64> _whitePawnBitmask;
+            std::vector<bits::U64> _blackPawnBitmask;
             bits::U64 _occupiedBitmask;
             bits::U64 _emptySquaresBitmask;
             bits::U64 _whitePiecesBitmask;

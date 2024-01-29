@@ -4,6 +4,7 @@ add_executable(bits_tests
     ChessUtils_test.cpp
     KnightBitMasks_test.cpp
     KingBitMasks_test.cpp
+    PawnBitMasks_test.cpp
 )
 
 target_link_libraries(bits_tests PRIVATE bits GTest::gtest_main)

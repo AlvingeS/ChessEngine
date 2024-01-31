@@ -35,8 +35,10 @@ namespace game {
             std::vector<bits::DiagonalRays> _diagonalRayBitmasks;
             std::vector<bits::U64> _knightBitmasks;
             std::vector<bits::U64> _kingBitmasks;
-            std::vector<bits::U64> _whitePawnBitmask;
-            std::vector<bits::U64> _blackPawnBitmask;
+            std::vector<bits::U64> _whitePawnStraightMoveBitmasks;
+            std::vector<bits::U64> _blackPawnStraightMoveBitmasks;
+            std::vector<bits::U64> _whitePawnCaptureMoveBitmasks;
+            std::vector<bits::U64> _blackPawnCaptureMoveBitmasks;
             bits::U64 _occupiedBitmask;
             bits::U64 _emptySquaresBitmask;
             bits::U64 _whitePiecesBitmask;

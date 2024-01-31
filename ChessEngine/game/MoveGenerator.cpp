@@ -38,8 +38,10 @@ namespace game {
         _blackSquaresBitmask = bits::getBlackSquaresBitmask();
         _knightBitmasks = bits::getAllKnightBitMasks();
         _kingBitmasks = bits::getAllKingBitMasks();
-        _whitePawnBitmask = bits::getAllPawnBitMasks(true);
-        _blackPawnBitmask = bits::getAllPawnBitMasks(false);
+        _whitePawnStraightMoveBitmasks = bits::getAllStraightPawnMoveBitmasks(true);
+        _whitePawnCaptureMoveBitmasks = bits::getAllCapturePawnMoveBitmasks(true);
+        _blackPawnStraightMoveBitmasks = bits::getAllStraightPawnMoveBitmasks(false);
+        _blackPawnCaptureMoveBitmasks = bits::getAllCapturePawnMoveBitmasks(false);
 
         updateGameStateBitmasks();
     }

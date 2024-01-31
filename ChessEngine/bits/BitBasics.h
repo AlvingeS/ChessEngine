@@ -13,7 +13,7 @@ namespace bits {
         }
 
         return __builtin_ctzll(a);
-    }
+    }   
 
     inline int indexOfMSB(U64 a) {
         if (a == 0) {

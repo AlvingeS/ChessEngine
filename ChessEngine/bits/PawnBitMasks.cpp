@@ -38,9 +38,14 @@ namespace bits {
         U64 straightMoves = 0ULL;
 
         int shiftUp = isWhite ? 8 : -8;
+        int shiftUpTwice = isWhite ? 16 : -16;
 
         if (ind + shiftUp <= 63 && ind + shiftUp >= 0) straightMoves |= (1ULL << (ind + shiftUp));
-
+        if (isWhite && (ind >= 8 && ind <= 15)) {
+            if (ind + shiftUpTwice <= 63 && ind + shiftUpTwice >= 0) straightMoves |= (1ULL << (ind + shiftUpTwice));
+        } else if (!isWhite && (ind >= 48 && ind <= 55)) {
+            if (ind + shiftUpTwice <= 63 && ind + shiftUpTwice >= 0) straightMoves |= (1ULL << (ind + shiftUpTwice));
+        }
         return straightMoves;
     }
 

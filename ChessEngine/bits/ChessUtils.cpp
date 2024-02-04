@@ -7,8 +7,8 @@ namespace bits {
         std::cout << std::bitset<64>(n) << std::endl;
     }
 
-    std::vector<int> getBitIndices(U64 bitboard) {
-        std::vector<int> indices;
+    void getBitIndices(std::vector<int>& indices, U64 bitboard) {
+        indices.clear();
 
         while (bitboard != 0) {
             int index = __builtin_ctzll(bitboard);
@@ -17,7 +17,5 @@ namespace bits {
 
             bitboard &= (bitboard - 1);
         }
-
-        return indices;
     }
 }

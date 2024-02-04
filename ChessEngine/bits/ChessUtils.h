@@ -4,7 +4,7 @@
 
 namespace bits {
     void printU64InBits(unsigned long long int n);
-    std::vector<int> getBitIndices(U64 bitboard);
+    void getBitIndices(std::vector<int>& indices, U64 bitboard);
 
     constexpr U64 FILE_MASK[8] = {
         0x0101010101010101ULL,

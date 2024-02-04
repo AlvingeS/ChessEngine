@@ -31,6 +31,18 @@ attempt to find moves that could block the check, move the king or eliminate the
 namespace game {
     MoveGenerator::MoveGenerator() {
         _moves.reserve(MAX_LEGAL_MOVES);
+        _freeRayIndices.reserve(8);
+        _freeMovesIndices.reserve(8);
+        _capturableMovesIndices.reserve(8);
+
+        _rookIndices.reserve(64);
+        _bishopIndices.reserve(64);
+        _queenIndices.reserve(64);
+        _knightIndices.reserve(64);
+        //TODO: Remove king vector
+        _kingIndices.reserve(64); 
+        _pawnIndices.reserve(64);
+
         _board = ChessBoard();
         _straightRayBitmasks = bits::getAllStraightRayBitmasks();
         _diagonalRayBitmasks = bits::getAllDiagonalRayBitmasks();
@@ -86,10 +98,14 @@ namespace game {
         return _moves;
     }
 
-    void MoveGenerator::addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, PieceType pieceType) {
-        std::vector<int> bitIndicesFreeRay = bits::getBitIndices(freeRay);
+    void MoveGenerator::resetMoves() {
+        _moves.clear();
+    }
 
-        for (int bitIndex : bitIndicesFreeRay) {
+    void MoveGenerator::addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, PieceType pieceType) {
+        bits::getBitIndices(_freeRayIndices, freeRay);
+
+        for (int bitIndex : _freeRayIndices) {
             addMove(bitIndexFrom, bitIndex, pieceType);
         }
     }
@@ -171,14 +187,13 @@ namespace game {
     }
 
     void MoveGenerator::genRookMoves(bool isWhite) {
-        std::vector<int> rookIndices;
         bits::StraightRays rays;
 
         PieceType currentPieceType = isWhite ? PieceType::W_ROOK : PieceType::B_ROOK;
-        rookIndices = bits::getBitIndices(_board.getBitboard(currentPieceType));
+        bits::getBitIndices(_rookIndices, _board.getBitboard(currentPieceType));
 
         // Loop through all rooks and isolate them
-        for (int currentRookIndex : rookIndices) {
+        for (int currentRookIndex : _rookIndices) {
             rays = _straightRayBitmasks[currentRookIndex];
             int rookRank = bits::rankFromBitIndex(currentRookIndex);
             int rookFile = bits::fileFromBitIndex(currentRookIndex);
@@ -191,12 +206,10 @@ namespace game {
     }
 
     void MoveGenerator::genBishopMoves(bool isWhite) {
-        std::vector<int> bishopIndices;
-
         PieceType currentPieceType = isWhite ? PieceType::W_BISHOP : PieceType::B_BISHOP;
-        bishopIndices = bits::getBitIndices(_board.getBitboard(currentPieceType));
+        bits::getBitIndices(_bishopIndices, _board.getBitboard(currentPieceType));
 
-        for (int currentBishopIndex : bishopIndices) {
+        for (int currentBishopIndex : _bishopIndices) {
             bits::DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];
             int bishopRank = bits::rankFromBitIndex(currentBishopIndex);
             int bishopFile = bits::fileFromBitIndex(currentBishopIndex);
@@ -209,38 +222,34 @@ namespace game {
     }
 
     void MoveGenerator::genKnightMoves(bool isWhite) {
-        std::vector<int> knightIndices;
-
         PieceType currentPieceType = isWhite ? PieceType::W_KNIGHT : PieceType::B_KNIGHT;
-        knightIndices = bits::getBitIndices(_board.getBitboard(currentPieceType));
+        bits::getBitIndices(_knightIndices, _board.getBitboard(currentPieceType));
 
-        for (int currentKnightIndex : knightIndices) {
+        for (int currentKnightIndex : _knightIndices) {
             bits::U64 knightBitMask = _knightBitmasks[currentKnightIndex];
 
             bits::U64 freeKnightMoves = knightBitMask & _emptySquaresBitmask;
             bits::U64 enemyPieces = isWhite ? _blackPiecesBitmask : _whitePiecesBitmask;
             bits::U64 capturableKnightMoves = knightBitMask & enemyPieces;
 
-            std::vector<int> freeKnightMovesIndices = bits::getBitIndices(freeKnightMoves);
-            std::vector<int> capturableKnightMovesIndices = bits::getBitIndices(capturableKnightMoves);
+            bits::getBitIndices(_freeMovesIndices, freeKnightMoves);
+            bits::getBitIndices(_capturableMovesIndices, capturableKnightMoves);
 
-            for (int freeKnightMoveIndex : freeKnightMovesIndices) {
+            for (int freeKnightMoveIndex : _freeMovesIndices) {
                 addMove(currentKnightIndex, freeKnightMoveIndex, currentPieceType);
             }
 
-            for (int capturableKnightMoveIndex : capturableKnightMovesIndices) {
+            for (int capturableKnightMoveIndex : _capturableMovesIndices) {
                 addMove(currentKnightIndex, capturableKnightMoveIndex, currentPieceType);
             }
         }
     }
 
     void MoveGenerator::genQueenMoves(bool isWhite) {
-        std::vector<int> queenIndices;
-
         PieceType currentPieceType = isWhite ? PieceType::W_QUEEN : PieceType::B_QUEEN;
-        queenIndices = bits::getBitIndices(_board.getBitboard(currentPieceType));
+        bits::getBitIndices(_queenIndices, _board.getBitboard(currentPieceType));
 
-        for (int currentQueenIndex : queenIndices) {
+        for (int currentQueenIndex : _queenIndices) {
             bits::StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];
             bits::DiagonalRays diagonalRays = _diagonalRayBitmasks[currentQueenIndex];
             int queenRank = bits::rankFromBitIndex(currentQueenIndex);
@@ -259,33 +268,30 @@ namespace game {
     }
 
     void MoveGenerator::genKingMoves(bool isWhite) {
-        std::vector<int> kingIndices;
-
         PieceType currentPieceType = isWhite ? PieceType::W_KING : PieceType::B_KING;
-        kingIndices = bits::getBitIndices(_board.getBitboard(currentPieceType));
+        bits::getBitIndices(_kingIndices, _board.getBitboard(currentPieceType));
 
-        for (int currentKingIndex : kingIndices) {
+        for (int currentKingIndex : _kingIndices) {
             bits::U64 kingBitMask = _kingBitmasks[currentKingIndex];
 
             bits::U64 freeKingMoves = kingBitMask & _emptySquaresBitmask;
             bits::U64 enemyPieces = isWhite ? _blackPiecesBitmask : _whitePiecesBitmask;
             bits::U64 capturableKingMoves = kingBitMask & enemyPieces;
 
-            std::vector<int> freeKingMovesIndices = bits::getBitIndices(freeKingMoves);
-            std::vector<int> capturableKingMovesIndices = bits::getBitIndices(capturableKingMoves);
+            bits::getBitIndices(_freeMovesIndices, freeKingMoves);
+            bits::getBitIndices(_capturableMovesIndices, capturableKingMoves);
 
-            for (int freeKingMoveIndex : freeKingMovesIndices) {
+            for (int freeKingMoveIndex : _freeMovesIndices) {
                 addMove(currentKingIndex, freeKingMoveIndex, currentPieceType);
             }
 
-            for (int capturableKingMoveIndex : capturableKingMovesIndices) {
+            for (int capturableKingMoveIndex : _capturableMovesIndices) {
                 addMove(currentKingIndex, capturableKingMoveIndex, currentPieceType);
             }
         }
     }
 
     void MoveGenerator::genPawnMoves(bool isWhite) {
-        std::vector<int> pawnIndices;
         std::vector<bits::U64> straightPawnMoveBitmasks;
         std::vector<bits::U64> capturePawnMoveBitmasks;
 
@@ -298,9 +304,9 @@ namespace game {
         }
 
         PieceType currentPieceType = isWhite ? PieceType::W_PAWN : PieceType::B_PAWN;
-        pawnIndices = bits::getBitIndices(_board.getBitboard(currentPieceType));
+        bits::getBitIndices(_pawnIndices, _board.getBitboard(currentPieceType));
 
-        for (int currentPawnIndex : pawnIndices) {
+        for (int currentPawnIndex : _pawnIndices) {
             bits::U64 straightPawnMoveBitmask = straightPawnMoveBitmasks[currentPawnIndex];
             bits::U64 capturePawnMoveBitmask = capturePawnMoveBitmasks[currentPawnIndex];
 
@@ -308,19 +314,19 @@ namespace game {
             bits::U64 enemyPieces = isWhite ? _blackPiecesBitmask : _whitePiecesBitmask;
             bits::U64 capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
 
-            std::vector<int> freePawnMovesIndices = bits::getBitIndices(freePawnMoves);
-            std::vector<int> capturablePawnMovesIndices = bits::getBitIndices(capturablePawnMoves);
+            bits::getBitIndices(_freeMovesIndices, freePawnMoves);
+            bits::getBitIndices(_capturableMovesIndices, capturablePawnMoves);
             int offset = isWhite ? 8 : -8;
 
-            if (freePawnMovesIndices.size() == 2) {
-                addMove(currentPawnIndex, freePawnMovesIndices[0], currentPieceType);
-                addMove(currentPawnIndex, freePawnMovesIndices[1], currentPieceType);
-            } else if (freePawnMovesIndices.size() == 1 && freePawnMovesIndices[0] == currentPawnIndex + offset) {
+            if (_freeMovesIndices.size() == 2) {
+                addMove(currentPawnIndex, _freeMovesIndices[0], currentPieceType);
+                addMove(currentPawnIndex, _freeMovesIndices[1], currentPieceType);
+            } else if (_freeMovesIndices.size() == 1 && _freeMovesIndices[0] == currentPawnIndex + offset) {
                 // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces
-                addMove(currentPawnIndex, freePawnMovesIndices[0], currentPieceType);
+                addMove(currentPawnIndex, _freeMovesIndices[0], currentPieceType);
             }
 
-            for (int capturablePawnMoveIndex : capturablePawnMovesIndices) {
+            for (int capturablePawnMoveIndex : _capturableMovesIndices) {
                 addMove(currentPawnIndex, capturablePawnMoveIndex, currentPieceType);
             }
         }   

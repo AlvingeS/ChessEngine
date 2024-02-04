@@ -284,6 +284,43 @@ namespace game {
     }
 
     void MoveGenerator::genPawnMoves(bool isWhite) {
-        
+        std::vector<int> pawnIndices;
+        std::vector<bits::U64> straightPawnMoveBitmasks;
+        std::vector<bits::U64> capturePawnMoveBitmasks;
+
+        if (isWhite) {
+            straightPawnMoveBitmasks = _whitePawnStraightMoveBitmasks;
+            capturePawnMoveBitmasks = _whitePawnCaptureMoveBitmasks;
+        } else {
+            straightPawnMoveBitmasks = _blackPawnStraightMoveBitmasks;
+            capturePawnMoveBitmasks = _blackPawnCaptureMoveBitmasks;
+        }
+
+        PieceType currentPieceType = isWhite ? PieceType::W_PAWN : PieceType::B_PAWN;
+        pawnIndices = bits::getBitIndices(_board.getBitboard(currentPieceType));
+
+        for (int currentPawnIndex : pawnIndices) {
+            bits::U64 straightPawnMoveBitmask = straightPawnMoveBitmasks[currentPawnIndex];
+            bits::U64 capturePawnMoveBitmask = capturePawnMoveBitmasks[currentPawnIndex];
+
+            bits::U64 freePawnMoves = straightPawnMoveBitmask & _emptySquaresBitmask;
+            bits::U64 enemyPieces = isWhite ? _blackPiecesBitmask : _whitePiecesBitmask;
+            bits::U64 capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
+
+            std::vector<int> freePawnMovesIndices = bits::getBitIndices(freePawnMoves);
+            std::vector<int> capturablePawnMovesIndices = bits::getBitIndices(capturablePawnMoves);
+
+            if (freePawnMovesIndices.size() == 2) {
+                addMove(currentPawnIndex, freePawnMovesIndices[0], currentPieceType);
+                addMove(currentPawnIndex, freePawnMovesIndices[1], currentPieceType);
+            } else if (freePawnMovesIndices.size() == 1 && freePawnMovesIndices[0] == currentPawnIndex + 8) {
+                // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces
+                addMove(currentPawnIndex, freePawnMovesIndices[0], currentPieceType);
+            }
+
+            for (int capturablePawnMoveIndex : capturablePawnMovesIndices) {
+                addMove(currentPawnIndex, capturablePawnMoveIndex, currentPieceType);
+            }
+        }   
     }
 }

@@ -7,7 +7,7 @@
 int main() {
     game::MoveGenerator moveGenerator = game::MoveGenerator();
     moveGenerator.setBoardFromFen("8/5p1p/5R1p/2p5/3P4/8/p4P1P/8");
-    moveGenerator.genMoves(true);
+    moveGenerator.genMoves(false);
     std::cout << moveGenerator.getNumLegalMoves() << std::endl;
     
     game::ChessBoard chessBoard = game::ChessBoard();

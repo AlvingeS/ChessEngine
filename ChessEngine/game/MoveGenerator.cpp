@@ -81,6 +81,7 @@ namespace game {
         genBishopMoves(isWhite);
         genQueenMoves(isWhite);
         genKingMoves(isWhite);
+        genPawnMoves(isWhite);
 
         return _moves;
     }
@@ -309,11 +310,12 @@ namespace game {
 
             std::vector<int> freePawnMovesIndices = bits::getBitIndices(freePawnMoves);
             std::vector<int> capturablePawnMovesIndices = bits::getBitIndices(capturablePawnMoves);
+            int offset = isWhite ? 8 : -8;
 
             if (freePawnMovesIndices.size() == 2) {
                 addMove(currentPawnIndex, freePawnMovesIndices[0], currentPieceType);
                 addMove(currentPawnIndex, freePawnMovesIndices[1], currentPieceType);
-            } else if (freePawnMovesIndices.size() == 1 && freePawnMovesIndices[0] == currentPawnIndex + 8) {
+            } else if (freePawnMovesIndices.size() == 1 && freePawnMovesIndices[0] == currentPawnIndex + offset) {
                 // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces
                 addMove(currentPawnIndex, freePawnMovesIndices[0], currentPieceType);
             }

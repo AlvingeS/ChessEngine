@@ -36,3 +36,5 @@ Testing/
 *.exe
 *.out
 *.app
+
+*callgrind.out.*

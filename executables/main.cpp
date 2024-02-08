@@ -15,7 +15,7 @@ int main() {
 
     moveGenerator.genMoves(true);
 
-    std::cout << "Number of legal moves: " << moveGenerator.getNumLegalMoves() << std::endl;
+    std::cout << "Number of legal moves: " << moveGenerator.getMoveIndex() << std::endl;
     
     return 0;
 }

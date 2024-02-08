@@ -30,7 +30,7 @@ attempt to find moves that could block the check, move the king or eliminate the
 
 namespace game {
     MoveGenerator::MoveGenerator() {
-        _moves.reserve(MAX_LEGAL_MOVES);
+        _moves = std::vector<Move>(MAX_LEGAL_MOVES);
         _freeRayIndices.reserve(8);
         _freeMovesIndices.reserve(8);
         _capturableMovesIndices.reserve(8);
@@ -71,7 +71,8 @@ namespace game {
     }
 
     void MoveGenerator::addMove(int bitIndexFrom, int bitIndexTo, PieceType pieceType) {
-        _moves.push_back(Move(pieceType, bitIndexFrom, bitIndexTo));
+        _moves[_moveIndex] = Move(pieceType, bitIndexFrom, bitIndexTo);
+        _moveIndex++;
     }
 
     // count the number of elements in a vector that are not null
@@ -100,6 +101,7 @@ namespace game {
 
     void MoveGenerator::resetMoves() {
         _moves.clear();
+        _moveIndex = 0;
     }
 
     void MoveGenerator::addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, PieceType pieceType) {
@@ -136,7 +138,7 @@ namespace game {
 
         for (int i = start - 1; i > stop; --i) {
             int rankOrFileIndex = alongFile ? rookRank * 8 + i : i * 8 + rookFile;
-            _moves.push_back(Move(pieceType, bitIndexFrom, rankOrFileIndex));
+            addMove(bitIndexFrom, rankOrFileIndex, pieceType);
         }
     }
 
@@ -158,7 +160,7 @@ namespace game {
 
         for (int i = startRank + rankIncrement, j = startFile + fileIncrement; i != stopRank; i += rankIncrement, j += fileIncrement) {
             int rankOrFileIndex = i * 8 + j;
-            _moves.push_back(Move(pieceType, bitIndexFrom, rankOrFileIndex));
+            addMove(bitIndexFrom, rankOrFileIndex, pieceType);
         }
     }
 

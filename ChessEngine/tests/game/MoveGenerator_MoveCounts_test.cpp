@@ -34,8 +34,8 @@ namespace game {
         insertExpectedMoves(expectedMoves, 1, {16, 18}, PieceType::W_KNIGHT);
         insertExpectedMoves(expectedMoves, 6, {21, 23}, PieceType::W_KNIGHT);
 
-        for (Move move : moves) {
-            auto found = expectedMoves.find(move);
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(moves[i]);
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -52,8 +52,8 @@ namespace game {
         insertExpectedMoves(expectedMoves, 57, {40, 42}, PieceType::B_KNIGHT);
         insertExpectedMoves(expectedMoves, 62, {45, 47}, PieceType::B_KNIGHT);
 
-        for (Move move : moves) {
-            auto found = expectedMoves.find(move);
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(moves[i]);
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -70,8 +70,8 @@ namespace game {
         insertExpectedMoves(expectedMoves, 0, {10, 17}, PieceType::W_KNIGHT);
         insertExpectedMoves(expectedMoves, 37, {52, 43, 20, 22, 31, 47, 54}, PieceType::W_KNIGHT);
 
-        for (Move move : moves) {
-            auto found = expectedMoves.find(move);
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(moves[i]);
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -88,8 +88,8 @@ namespace game {
         insertExpectedMoves(expectedMoves, 52, {58, 42, 35, 37, 46, 62}, PieceType::B_KNIGHT);
         insertExpectedMoves(expectedMoves, 54, {60, 44, 37, 39}, PieceType::B_KNIGHT);
 
-        for (Move move : moves) {
-            auto found = expectedMoves.find(move);
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(moves[i]);
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }

@@ -34,8 +34,8 @@ namespace game {
         insertExpectedMoves(expectedMoves, 34, {41, 48, 25, 16, 27, 20, 13, 6, 43, 52, 61}, PieceType::W_BISHOP);
         insertExpectedMoves(expectedMoves, 37, {44, 51, 28, 19, 10, 1, 30}, PieceType::W_BISHOP);
 
-        for (Move move : moves) {
-            auto found = expectedMoves.find(move);
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(moves[i]);
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -52,8 +52,8 @@ namespace game {
         insertExpectedMoves(expectedMoves, 51, {58, 42, 33, 24, 44, 37, 60}, PieceType::B_BISHOP);
         insertExpectedMoves(expectedMoves, 26, {33, 40, 17, 8, 19, 12, 5, 35, 44, 53, 62}, PieceType::B_BISHOP);
 
-        for (Move move : moves) {
-            auto found = expectedMoves.find(move);
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(moves[i]);
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -65,15 +65,13 @@ namespace game {
         moveGenerator.setBoardFromFen(startingPos);
         moveGenerator.genBishopMoves(true);
 
-        std::vector<Move> moves = moveGenerator.getMoves();
-        ASSERT_EQ(moves.size(), 0);
+        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }
 
     TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosBlack_ShouldReturn0Moves) {
         moveGenerator.setBoardFromFen(startingPos);
         moveGenerator.genBishopMoves(false);
 
-        std::vector<Move> moves = moveGenerator.getMoves();
-        ASSERT_EQ(moves.size(), 0);
+        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }
 }

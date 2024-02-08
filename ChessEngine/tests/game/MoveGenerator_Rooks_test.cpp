@@ -34,8 +34,8 @@ namespace game {
         std::unordered_set<Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 21, {29, 37, 45, 16, 17, 18, 19, 20, 5, 13, 23, 22}, PieceType::W_ROOK); 
 
-        for (Move move : moves) {
-            auto found = expectedMoves.find(move);
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(moves[i]);
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -47,24 +47,21 @@ namespace game {
         moveGenerator.setBoardFromFen(fenOne);
         moveGenerator.genRookMoves(false);
 
-        std::vector<Move> moves = moveGenerator.getMoves();
-        ASSERT_EQ(moves.size(), 0);
+        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }
 
     TEST_F(MoveGeneratorRookTest, genRookMoves_startingPosWhite_ShouldReturn0Moves) {
         moveGenerator.setBoardFromFen(startingPos);
         moveGenerator.genRookMoves(true);
 
-        std::vector<Move> moves = moveGenerator.getMoves();
-        ASSERT_EQ(moves.size(), 0);
+        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }
 
     TEST_F(MoveGeneratorRookTest, genRookMoves_startingPosBlack_ShouldReturn0Moves) {
         moveGenerator.setBoardFromFen(startingPos);
         moveGenerator.genRookMoves(false);
 
-        std::vector<Move> moves = moveGenerator.getMoves();
-        ASSERT_EQ(moves.size(), 0);
+        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }
 
     TEST_F(MoveGeneratorRookTest, genRookMoves_fenTwoWhite_ShouldReturn17Moves) {
@@ -76,8 +73,8 @@ namespace game {
         insertExpectedMoves(expectedMoves, 16, {24, 32, 40, 48, 56, 8, 0, 17, 18, 19, 20}, PieceType::W_ROOK);
         insertExpectedMoves(expectedMoves, 22, {30, 21, 20, 14, 6, 23}, PieceType::W_ROOK);
 
-        for (Move move : moves) {
-            auto found = expectedMoves.find(move);
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(moves[i]);
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -93,8 +90,8 @@ namespace game {
         std::unordered_set<Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 56, {48, 40, 32, 24, 16, 57, 58, 59, 60, 61, 62, 63}, PieceType::B_ROOK);
 
-        for (Move move : moves) {
-            auto found = expectedMoves.find(move);
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(moves[i]);
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }

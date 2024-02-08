@@ -28,10 +28,15 @@ namespace game {
                 return _moves;
             }
 
+            size_t getMoveIndex() {
+                return _moveIndex;
+            }
+
         private:
             // Private member variables
             std::vector<Move> _moves; 
             ChessBoard _board;
+            size_t _moveIndex = 0;
 
             std::vector<bits::StraightRays> _straightRayBitmasks;
             std::vector<bits::DiagonalRays> _diagonalRayBitmasks;

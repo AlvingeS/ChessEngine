@@ -20,6 +20,14 @@ namespace game {
                 return _bitboards;
             }
 
+            bits::U64 getEnPessantTarget() {
+                return _enPessantTarget;
+            }
+
+            void setEnPessantTargetAtIndex(int index) {
+                _enPessantTarget = (1ULL << index);
+            }
+
             void setBoardFromFen(const std::string& fen);
             
             bits::U64 getWhitePiecesBitmask();
@@ -28,6 +36,7 @@ namespace game {
         private:
             // Private member variables
             std::unordered_map<PieceType, bits::U64> _bitboards;
+            bits::U64 _enPessantTarget;
 
             // Private member functions
             void initPieceBitboards();

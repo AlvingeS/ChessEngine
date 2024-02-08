@@ -6,7 +6,9 @@
 
 int main() {
     game::MoveGenerator moveGenerator = game::MoveGenerator();
-    moveGenerator.setBoardFromFen("1k6/R2n2p1/1p2NP2/8/1Q1Bq3/2b5/1P4r1/5K2");
+    moveGenerator.setBoardFromFen("rnbqkb1r/pppp1ppp/5n2/3Pp3/8/8/8/RNBQKBNR");
+    game::BoardPrinter boardPrinter = game::BoardPrinter(moveGenerator.getBoard().getBitboards());
+    boardPrinter.printBoard();
 
     for (int i = 0; i < 100000 - 1; i++) {
         moveGenerator.genMoves(true);

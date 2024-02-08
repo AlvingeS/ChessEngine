@@ -10,12 +10,13 @@ namespace game {
             MoveGenerator moveGenerator;
             std::string startingPos;
             std::string fenOne;
-            std::string fenTwo;
+            std::string fenEnPessantForWhiteTest;
 
             void SetUp() override {
                 moveGenerator = MoveGenerator();
                 startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
                 fenOne = "8/5p1p/5R1p/2p5/3P4/p7/5P1P/8";
+                fenEnPessantForWhiteTest = "rnbqkb1r/pppp1ppp/5n2/3Pp3/8/8/8/RNBQKBNR";
             }
 
             void insertExpectedMoves(std::unordered_set<Move>& moves, int fromBitIndex, const std::vector<int>& toBitIndices, PieceType pieceType) {
@@ -101,6 +102,24 @@ namespace game {
         insertExpectedMoves(expectedMoves, 40, {32}, PieceType::B_PAWN);
         insertExpectedMoves(expectedMoves, 37, {28, 29}, PieceType::B_PAWN);
         insertExpectedMoves(expectedMoves, 23, {15}, PieceType::B_PAWN);
+
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(moves[i]);
+            ASSERT_TRUE(found != expectedMoves.end());
+            expectedMoves.erase(found); // Remove found move from the set
+        }
+
+        ASSERT_TRUE(expectedMoves.empty());
+    }
+
+    TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Moves) {
+        moveGenerator.setBoardFromFen(fenEnPessantForWhiteTest);
+        moveGenerator.genPawnMoves(true);
+        moveGenerator.getBoard().setEnPessantTargetAtIndex(43);
+
+        std::vector<Move> moves = moveGenerator.getMoves();
+        std::unordered_set<Move> expectedMoves;
+        insertExpectedMoves(expectedMoves, 36, {44, 43}, PieceType::W_PAWN);
 
         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
             auto found = expectedMoves.find(moves[i]);

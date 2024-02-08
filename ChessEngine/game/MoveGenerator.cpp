@@ -314,7 +314,8 @@ namespace game {
 
             bits::U64 freePawnMoves = straightPawnMoveBitmask & _emptySquaresBitmask;
             bits::U64 enemyPieces = isWhite ? _blackPiecesBitmask : _whitePiecesBitmask;
-            bits::U64 capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
+            bits::U64 enPessantTarget = _board.getEnPessantTarget();
+            bits::U64 capturablePawnMoves = capturePawnMoveBitmask & (enemyPieces | enPessantTarget);
 
             bits::getBitIndices(_freeMovesIndices, freePawnMoves);
             bits::getBitIndices(_capturableMovesIndices, capturablePawnMoves);

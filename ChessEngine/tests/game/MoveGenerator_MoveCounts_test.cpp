@@ -25,75 +25,19 @@ namespace game {
             }
     };
 
-    TEST_F(MoveGeneratorCountsTest, genKnightMoves_startPosWhite_ShouldReturn4Moves) {
+    TEST_F(MoveGeneratorCountsTest, genAllMoves_startPosWhite_ShouldReturn20Moves) {
         moveGenerator.setBoardFromFen(startingPos);
-        moveGenerator.genKnightMoves(true);
+        moveGenerator.genMoves(true);
 
         std::vector<Move> moves = moveGenerator.getMoves();
-        std::unordered_set<Move> expectedMoves;
-        insertExpectedMoves(expectedMoves, 1, {16, 18}, PieceType::W_KNIGHT);
-        insertExpectedMoves(expectedMoves, 6, {21, 23}, PieceType::W_KNIGHT);
-
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
-            ASSERT_TRUE(found != expectedMoves.end());
-            expectedMoves.erase(found); // Remove found move from the set
-        }
-
-        ASSERT_TRUE(expectedMoves.empty());
+        ASSERT_EQ(moveGenerator.getMoveIndex(), 20);
     }
 
-    TEST_F(MoveGeneratorCountsTest, genKnightMoves_startPosBlack_ShouldReturn4Moves) {
+    TEST_F(MoveGeneratorCountsTest, genAllMoves_startPosBlack_ShouldReturn20Moves) {
         moveGenerator.setBoardFromFen(startingPos);
-        moveGenerator.genKnightMoves(false);
+        moveGenerator.genMoves(false);
 
         std::vector<Move> moves = moveGenerator.getMoves();
-        std::unordered_set<Move> expectedMoves;
-        insertExpectedMoves(expectedMoves, 57, {40, 42}, PieceType::B_KNIGHT);
-        insertExpectedMoves(expectedMoves, 62, {45, 47}, PieceType::B_KNIGHT);
-
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
-            ASSERT_TRUE(found != expectedMoves.end());
-            expectedMoves.erase(found); // Remove found move from the set
-        }
-
-        ASSERT_TRUE(expectedMoves.empty());
-    }
-
-    TEST_F(MoveGeneratorCountsTest, genKnightMoves_fenOneWhite_ShouldReturn8Moves) {
-        moveGenerator.setBoardFromFen(fenOne);
-        moveGenerator.genKnightMoves(true);
-
-        std::vector<Move> moves = moveGenerator.getMoves();
-        std::unordered_set<Move> expectedMoves;
-        insertExpectedMoves(expectedMoves, 0, {10, 17}, PieceType::W_KNIGHT);
-        insertExpectedMoves(expectedMoves, 37, {52, 43, 20, 22, 31, 47, 54}, PieceType::W_KNIGHT);
-
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
-            ASSERT_TRUE(found != expectedMoves.end());
-            expectedMoves.erase(found); // Remove found move from the set
-        }
-
-        ASSERT_TRUE(expectedMoves.empty());
-    }
-
-    TEST_F(MoveGeneratorCountsTest, genKnightMoves_fenOneBlack_ShouldReturn10Moves) {
-        moveGenerator.setBoardFromFen(fenOne);
-        moveGenerator.genKnightMoves(false);
-
-        std::vector<Move> moves = moveGenerator.getMoves();
-        std::unordered_set<Move> expectedMoves;
-        insertExpectedMoves(expectedMoves, 52, {58, 42, 35, 37, 46, 62}, PieceType::B_KNIGHT);
-        insertExpectedMoves(expectedMoves, 54, {60, 44, 37, 39}, PieceType::B_KNIGHT);
-
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
-            ASSERT_TRUE(found != expectedMoves.end());
-            expectedMoves.erase(found); // Remove found move from the set
-        }
-
-        ASSERT_TRUE(expectedMoves.empty());
+        ASSERT_EQ(moveGenerator.getMoveIndex(), 20);
     }
 }

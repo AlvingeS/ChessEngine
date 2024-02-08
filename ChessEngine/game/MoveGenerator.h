@@ -32,6 +32,10 @@ namespace game {
                 return _moveIndex;
             }
 
+            ChessBoard& getBoard() {
+                return _board;
+            }
+
         private:
             // Private member variables
             std::vector<Move> _moves; 

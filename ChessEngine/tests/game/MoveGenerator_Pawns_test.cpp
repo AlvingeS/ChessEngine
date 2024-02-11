@@ -114,8 +114,8 @@ namespace game {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Moves) {
         moveGenerator.setBoardFromFen(fenEnPessantForWhiteTest);
-        moveGenerator.genPawnMoves(true);
         moveGenerator.getBoard().setEnPessantTargetAtIndex(43);
+        moveGenerator.genPawnMoves(true);
 
         std::vector<Move> moves = moveGenerator.getMoves();
         std::unordered_set<Move> expectedMoves;

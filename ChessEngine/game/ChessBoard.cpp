@@ -20,6 +20,7 @@ namespace game {
         _bitboards[PieceType::B_ROOK] = 0x8100000000000000ULL;
         _bitboards[PieceType::B_QUEEN] = 0x1000000000000000ULL;
         _bitboards[PieceType::B_KING] = 0x0800000000000000ULL;
+        _enPessantTarget = 0ULL;
     }
 
     bits::U64 ChessBoard::getWhitePiecesBitmask() {

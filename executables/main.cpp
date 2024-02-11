@@ -7,6 +7,7 @@
 int main() {
     game::MoveGenerator moveGenerator = game::MoveGenerator();
     moveGenerator.setBoardFromFen("rnbqkb1r/pppp1ppp/5n2/3Pp3/8/8/8/RNBQKBNR");
+    moveGenerator.getBoard().setEnPessantTargetAtIndex(43);
     game::BoardPrinter boardPrinter = game::BoardPrinter(moveGenerator.getBoard().getBitboards());
     boardPrinter.printBoard();
 

@@ -7,6 +7,7 @@ add_executable(game_tests
     MoveGenerator_Queens_test.cpp
     MoveGenerator_Pawns_test.cpp
     MoveGenerator_MoveCounts_test.cpp
+    MoveGenerator_Castling_test.cpp
 )
 
 target_link_libraries(game_tests PRIVATE game bits GTest::gtest_main)

@@ -55,6 +55,13 @@ namespace game {
         _blackPawnStraightMoveBitmasks = bits::getAllStraightPawnMoveBitmasks(false);
         _blackPawnCaptureMoveBitmasks = bits::getAllCapturePawnMoveBitmasks(false);
 
+        _castlingRights = {false, false, false, false};
+
+        _whiteKingSideCastleBitmask = bits::whiteKingSideCastleMask;
+        _whiteQueenSideCastleBitmask = bits::whiteQueenSideCastleMask;
+        _blackKingSideCastleBitmask = bits::blackKingSideCastleMask;
+        _blackQueenSideCastleBitmask = bits::blackQueenSideCastleMask;
+
         updateGameStateBitmasks();
     }
 
@@ -95,6 +102,7 @@ namespace game {
         genQueenMoves(isWhite);
         genKingMoves(isWhite);
         genPawnMoves(isWhite);
+        genCastlingMoves(isWhite);
 
         return _moves;
     }
@@ -102,6 +110,7 @@ namespace game {
     void MoveGenerator::resetMoves() {
         _moves.clear();
         _moveIndex = 0;
+        _castlingRights = {false, false, false, false};
     }
 
     void MoveGenerator::addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, PieceType pieceType) {
@@ -332,6 +341,39 @@ namespace game {
             for (int capturablePawnMoveIndex : _capturableMovesIndices) {
                 addMove(currentPawnIndex, capturablePawnMoveIndex, currentPieceType);
             }
-        }   
+        }
+    }
+
+    void MoveGenerator::genCastlingMoves(bool isWhite) {
+        if (isWhite && !_board.getHasCastled(true)) {
+            // King side castling
+            if (!_board.kingSideCastlersHasMoved(true)) {
+                if ((_whiteKingSideCastleBitmask & _occupiedBitmask) == 0) {
+                    _castlingRights.whiteCanCastleKingSide = true;
+                }
+            }
+
+            // Queen side castling
+            if (!_board.queenSideCastlersHasMoved(true)) {
+                if ((_whiteQueenSideCastleBitmask & _occupiedBitmask) == 0) {
+                    _castlingRights.whiteCanCastleQueenSide = true;
+                }
+            }
+
+        } else if (!isWhite && !_board.getHasCastled(false)) {
+            // King side castling
+            if (!_board.kingSideCastlersHasMoved(false)) {
+                if ((_blackKingSideCastleBitmask & _occupiedBitmask) == 0) {
+                    _castlingRights.blackCanCastleKingSide = true;
+                }
+            }
+
+            // Queen side castling
+            if (!_board.queenSideCastlersHasMoved(false)) {
+                if ((_blackQueenSideCastleBitmask & _occupiedBitmask) == 0) {
+                    _castlingRights.blackCanCastleQueenSide = true;
+                }
+            }
+        }
     }
 }

@@ -20,7 +20,32 @@ namespace game {
         _bitboards[PieceType::B_ROOK] = 0x8100000000000000ULL;
         _bitboards[PieceType::B_QUEEN] = 0x1000000000000000ULL;
         _bitboards[PieceType::B_KING] = 0x0800000000000000ULL;
+        
         _enPessantTarget = 0ULL;
+        _whiteRookAMoved = false;
+        _whiteRookHMoved = false;
+        _blackRookAMoved = false;
+        _blackRookHMoved = false;
+        _whiteKingMoved = false;
+        _blackKingMoved = false;
+        _whiteHasCastled = false;
+        _blackHasCastled = false;
+    }
+
+    bool ChessBoard::kingSideCastlersHasMoved(bool isWhite) {
+        if (isWhite) {
+            return _whiteKingMoved || _whiteRookHMoved;
+        } else {
+            return _blackKingMoved || _blackRookHMoved;
+        }
+    }
+
+    bool ChessBoard::queenSideCastlersHasMoved(bool isWhite) {
+        if (isWhite) {
+            return _whiteKingMoved || _whiteRookAMoved;
+        } else {
+            return _blackKingMoved || _blackRookAMoved;
+        }
     }
 
     bits::U64 ChessBoard::getWhitePiecesBitmask() {

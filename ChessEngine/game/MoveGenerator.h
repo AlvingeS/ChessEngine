@@ -4,8 +4,17 @@
 #include "ChessBoard.h"
 #include "ChessEngine/bits/RayBitMasks.h"
 #include "ChessEngine/bits/BitBasics.h"
+#include "ChessEngine/bits/Castling.h"
 
 namespace game {
+
+    struct castlingRights {
+        bool whiteCanCastleKingSide;
+        bool whiteCanCastleQueenSide;
+        bool blackCanCastleKingSide;
+        bool blackCanCastleQueenSide;
+    };
+
     class MoveGenerator {
         public:
             // Public member variables
@@ -23,6 +32,7 @@ namespace game {
             void genQueenMoves(bool isWhite);
             void genKingMoves(bool isWhite);
             void genPawnMoves(bool isWhite);
+            void genCastlingMoves(bool isWhite);
 
             std::vector<Move>& getMoves() {
                 return _moves;
@@ -36,9 +46,16 @@ namespace game {
                 return _board;
             }
 
+            castlingRights getCastlingRights() {
+                return _castlingRights;
+            }
+
         private:
             // Private member variables
-            std::vector<Move> _moves; 
+            std::vector<Move> _moves;
+
+            castlingRights _castlingRights;
+
             ChessBoard _board;
             size_t _moveIndex = 0;
 
@@ -57,6 +74,10 @@ namespace game {
             bits::U64 _blackPiecesBitmask;
             bits::U64 _whiteSquaresBitmask;            
             bits::U64 _blackSquaresBitmask;
+            bits::U64 _whiteQueenSideCastleBitmask;
+            bits::U64 _whiteKingSideCastleBitmask;
+            bits::U64 _blackQueenSideCastleBitmask;
+            bits::U64 _blackKingSideCastleBitmask;
 
             std::vector<int> _freeRayIndices;
             std::vector<int> _rookIndices;

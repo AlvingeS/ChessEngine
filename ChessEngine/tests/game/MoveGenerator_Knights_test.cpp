@@ -1,27 +1,15 @@
 #include <gtest/gtest.h>
-#include "ChessEngine/game/MoveGenerator.h"
-#include <unordered_set>
-#include "ChessEngine/game/Move.h"
+#include "BaseMoveGeneratorTest.h"
 
 namespace game {
 
-    class MoveGeneratorKnightTest : public ::testing::Test {
+    class MoveGeneratorKnightTest : public BaseMoveGeneratorTest {
         protected:
-            MoveGenerator moveGenerator;
-            std::string startingPos;
             std::string fenOne;
-            std::string fenTwo;
 
             void SetUp() override {
-                moveGenerator = MoveGenerator();
-                startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+                BaseMoveGeneratorTest::SetUp();
                 fenOne = "8/1n1n4/5R2/2N5/4P3/8/5p2/7N";
-            }
-
-            void insertExpectedMoves(std::unordered_set<Move>& moves, int fromBitIndex, const std::vector<int>& toBitIndices, PieceType pieceType) {
-                for (int toBitIndex : toBitIndices) {
-                    moves.insert(Move(pieceType, fromBitIndex, toBitIndex)); // Replace PIECE_TYPE with actual type
-                }
             }
     };
 
@@ -31,8 +19,8 @@ namespace game {
 
         std::vector<Move> moves = moveGenerator.getMoves();
         std::unordered_set<Move> expectedMoves;
-        insertExpectedMoves(expectedMoves, 1, {16, 18}, PieceType::W_KNIGHT);
-        insertExpectedMoves(expectedMoves, 6, {21, 23}, PieceType::W_KNIGHT);
+        insertExpectedMoves(expectedMoves, 1, {16, 18}, {0, 0});
+        insertExpectedMoves(expectedMoves, 6, {21, 23}, {0, 0});
 
         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
             auto found = expectedMoves.find(moves[i]);
@@ -49,8 +37,8 @@ namespace game {
 
         std::vector<Move> moves = moveGenerator.getMoves();
         std::unordered_set<Move> expectedMoves;
-        insertExpectedMoves(expectedMoves, 57, {40, 42}, PieceType::B_KNIGHT);
-        insertExpectedMoves(expectedMoves, 62, {45, 47}, PieceType::B_KNIGHT);
+        insertExpectedMoves(expectedMoves, 57, {40, 42}, {0, 0});
+        insertExpectedMoves(expectedMoves, 62, {45, 47}, {0, 0});
 
         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
             auto found = expectedMoves.find(moves[i]);
@@ -67,8 +55,8 @@ namespace game {
 
         std::vector<Move> moves = moveGenerator.getMoves();
         std::unordered_set<Move> expectedMoves;
-        insertExpectedMoves(expectedMoves, 0, {10, 17}, PieceType::W_KNIGHT);
-        insertExpectedMoves(expectedMoves, 37, {52, 43, 20, 22, 31, 47, 54}, PieceType::W_KNIGHT);
+        insertExpectedMoves(expectedMoves, 0, {10, 17}, {1, 0});
+        insertExpectedMoves(expectedMoves, 37, {52, 43, 20, 22, 31, 47, 54}, {1, 0, 0, 0, 0, 0, 1});
 
         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
             auto found = expectedMoves.find(moves[i]);
@@ -85,8 +73,8 @@ namespace game {
 
         std::vector<Move> moves = moveGenerator.getMoves();
         std::unordered_set<Move> expectedMoves;
-        insertExpectedMoves(expectedMoves, 52, {58, 42, 35, 37, 46, 62}, PieceType::B_KNIGHT);
-        insertExpectedMoves(expectedMoves, 54, {60, 44, 37, 39}, PieceType::B_KNIGHT);
+        insertExpectedMoves(expectedMoves, 52, {58, 42, 35, 37, 46, 62}, {0, 1, 0, 1, 0, 0});
+        insertExpectedMoves(expectedMoves, 54, {60, 44, 37, 39}, {0, 0, 1, 0});
 
         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
             auto found = expectedMoves.find(moves[i]);

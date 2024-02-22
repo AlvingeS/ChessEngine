@@ -7,14 +7,6 @@
 #include "ChessEngine/bits/Castling.h"
 
 namespace game {
-
-    struct castlingRights {
-        bool whiteCanCastleKingSide;
-        bool whiteCanCastleQueenSide;
-        bool blackCanCastleKingSide;
-        bool blackCanCastleQueenSide;
-    };
-
     class MoveGenerator {
         public:
             // Public member variables
@@ -46,15 +38,9 @@ namespace game {
                 return _board;
             }
 
-            castlingRights getCastlingRights() {
-                return _castlingRights;
-            }
-
         private:
             // Private member variables
             std::vector<Move> _moves;
-
-            castlingRights _castlingRights;
 
             ChessBoard _board;
             size_t _moveIndex = 0;
@@ -91,12 +77,12 @@ namespace game {
 
             // Member functions
             void updateGameStateBitmasks();
-            void addMove(int bitIndexFrom, int bitIndexTo, PieceType pieceType);
-            void addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, PieceType pieceType);
-            void addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, PieceType pieceType);
-            void addMovesBetweenBlockerAndPieceOnStraightRay(int blockerIndex, bool alongFile, bool startFromBlocker, int rookRank, int rookFile, PieceType pieceType, int bitIndexFrom);
-            void addMovesBetweenBlockerAndPieceOnDiagonalRay(int blockerIndex, bool startFromBlocker, int bishopRank, int bishopFile, PieceType pieceType, int bitIndexFrom);
-            void getMovesFromStraightRay(bits::U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, PieceType pieceType, int pieceRank, int pieceFile);
-            void getMovesFromDiagonalRay(bits::U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, PieceType pieceType, int pieceRank, int pieceFile);
+            void addMove(int bitIndexFrom, int bitIndexTo, int flag);
+            void addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom);
+            void addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom);
+            void addMovesBetweenBlockerAndPieceOnStraightRay(int blockerIndex, bool alongFile, bool startFromBlocker, int rookRank, int rookFile, int bitIndexFrom);
+            void addMovesBetweenBlockerAndPieceOnDiagonalRay(int blockerIndex, bool startFromBlocker, int bishopRank, int bishopFile, int bitIndexFrom);
+            void getMovesFromStraightRay(bits::U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile);
+            void getMovesFromDiagonalRay(bits::U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, int pieceRank, int pieceFile);
     };
 }

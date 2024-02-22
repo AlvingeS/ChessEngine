@@ -6,10 +6,25 @@
 
 int main() {
     game::MoveGenerator moveGenerator = game::MoveGenerator();
-    moveGenerator.setBoardFromFen("rnbqkb1r/pppp1ppp/5n2/3Pp3/8/8/8/RNBQKBNR");
-    moveGenerator.getBoard().setEnPessantTargetAtIndex(43);
-    game::BoardPrinter boardPrinter = game::BoardPrinter(moveGenerator.getBoard().getBitboards());
-    boardPrinter.printBoard();
+    std::string fenOne;
+    std::string fenTwo;
+    std::string fenThree;
+
+    fenOne = "r3k2r/8/8/8/8/8/8/R3K2R";
+    fenTwo = "r1n1k1Nr/8/8/8/8/8/8/R2pK1PR";
+    fenThree = "4k2r/r7/8/8/8/8/7R/R3K3";
+
+    moveGenerator.setBoardFromFen(fenOne);
+    game::BoardPrinter boardPrinterOne = game::BoardPrinter(moveGenerator.getBoard().getBitboards());
+    boardPrinterOne.printBoard();
+
+    moveGenerator.setBoardFromFen(fenTwo);
+    game::BoardPrinter boardPrinterTwo = game::BoardPrinter(moveGenerator.getBoard().getBitboards());
+    boardPrinterTwo.printBoard();
+
+    moveGenerator.setBoardFromFen(fenThree);
+    game::BoardPrinter boardPrinterThree = game::BoardPrinter(moveGenerator.getBoard().getBitboards());
+    boardPrinterThree.printBoard();
 
     for (int i = 0; i < 100000 - 1; i++) {
         moveGenerator.genMoves(true);
@@ -18,7 +33,7 @@ int main() {
 
     moveGenerator.genMoves(true);
 
-    std::cout << "Number of legal moves: " << moveGenerator.getMoveIndex() << std::endl;
+    // std::cout << "Number of legal moves: " << moveGenerator.getMoveIndex() << std::endl;
     
     return 0;
 }

@@ -130,7 +130,11 @@ namespace std {
     template <>
     struct hash<game::Move> {
         size_t operator()(const game::Move& move) const {
-            return std::hash<int>()(move.getBitIndexFrom()) ^ std::hash<int>()(move.getBitIndexTo()) ^ std::hash<int>()(move.getFlag());
+            size_t h1 = std::hash<int>()(move.getBitIndexFrom());
+            size_t h2 = std::hash<int>()(move.getBitIndexTo());
+            size_t h3 = std::hash<int>()(move.getFlag());
+
+            return h1 ^ (h2 << 1) ^ (h3 << 2);
         }
     };
 }

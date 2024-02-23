@@ -8,12 +8,14 @@ namespace game {
             std::string fenOne;
             std::string fenEnPessantForWhiteTest;
             std::string fenEnPessantForBlackTest;
+            std::string fenPromotionTest;
 
             void SetUp() override {
                 BaseMoveGeneratorTest::SetUp();
                 fenOne = "8/5p1p/5R1p/2p5/3P4/p7/5P1P/8";
                 fenEnPessantForWhiteTest = "rnbqkb1r/pppp1ppp/5n2/3Pp3/8/8/8/RNBQKBNR";
                 fenEnPessantForBlackTest = "rnbqkbnr/8/8/8/Pp6/8/1PPPPPPP/RNBQKBNR";
+                fenPromotionTest = "3q4/2P3P1/8/8/8/8/1p5p/2N5";
             }
     };
 
@@ -138,4 +140,44 @@ namespace game {
 
         ASSERT_TRUE(expectedMoves.empty());
     }
+
+    TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12Moves) {
+        moveGenerator.setBoardFromFen(fenPromotionTest);
+        moveGenerator.genPawnMoves(true);
+
+        std::vector<Move> moves = moveGenerator.getMoves();
+        std::unordered_set<Move> expectedMoves;
+        insertExpectedMoves(expectedMoves, 53, {61, 61, 61, 61}, {Move::KNIGHT_PROMO_FLAG, Move::BISHOP_PROMO_FLAG, Move::ROOK_PROMO_FLAG, Move::QUEEN_PROMO_FLAG});
+        insertExpectedMoves(expectedMoves, 53, {60, 60, 60, 60}, {Move::KNIGHT_PROMO_CAPTURE_FLAG, Move::BISHOP_PROMO_CAPTURE_FLAG, Move::ROOK_PROMO_CAPTURE_FLAG, Move::QUEEN_PROMO_CAPTURE_FLAG});
+        insertExpectedMoves(expectedMoves, 49, {57, 57, 57, 57}, {Move::KNIGHT_PROMO_FLAG, Move::BISHOP_PROMO_FLAG, Move::ROOK_PROMO_FLAG, Move::QUEEN_PROMO_FLAG});
+
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(moves[i]);
+            ASSERT_TRUE(found != expectedMoves.end());
+            expectedMoves.erase(found); // Remove found move from the set
+        }
+
+        ASSERT_TRUE(expectedMoves.empty());
+    }
+
+    TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12Moves) {
+        moveGenerator.setBoardFromFen(fenPromotionTest);
+        moveGenerator.genPawnMoves(false);
+
+        std::vector<Move> moves = moveGenerator.getMoves();
+        std::unordered_set<Move> expectedMoves;
+        insertExpectedMoves(expectedMoves, 8, {0, 0, 0, 0}, {Move::KNIGHT_PROMO_FLAG, Move::BISHOP_PROMO_FLAG, Move::ROOK_PROMO_FLAG, Move::QUEEN_PROMO_FLAG});
+        insertExpectedMoves(expectedMoves, 14, {5, 5, 5, 5}, {Move::KNIGHT_PROMO_CAPTURE_FLAG, Move::BISHOP_PROMO_CAPTURE_FLAG, Move::ROOK_PROMO_CAPTURE_FLAG, Move::QUEEN_PROMO_CAPTURE_FLAG});
+        insertExpectedMoves(expectedMoves, 14, {6, 6, 6, 6}, {Move::KNIGHT_PROMO_FLAG, Move::BISHOP_PROMO_FLAG, Move::ROOK_PROMO_FLAG, Move::QUEEN_PROMO_FLAG});
+
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(moves[i]);
+            ASSERT_TRUE(found != expectedMoves.end());
+            expectedMoves.erase(found); // Remove found move from the set
+        }
+
+        ASSERT_TRUE(expectedMoves.empty());
+    }
+
+
 }

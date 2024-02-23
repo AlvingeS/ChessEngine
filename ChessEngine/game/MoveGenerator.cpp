@@ -327,17 +327,35 @@ namespace game {
             bits::getBitIndices(_freeMovesIndices, freePawnMoves);
             bits::getBitIndices(_capturableMovesIndices, capturablePawnMoves);
             int offset = isWhite ? 8 : -8;
+            bool canPromote = (isWhite && bits::rankFromBitIndex(currentPawnIndex) == 6) || (!isWhite && bits::rankFromBitIndex(currentPawnIndex) == 1);
 
             if (_freeMovesIndices.size() == 2) {
-                addMove(currentPawnIndex, _freeMovesIndices[0], (isWhite ? Move::QUITE_FLAG : Move::DOUBLE_PAWN_PUSH_FLAG));
-                addMove(currentPawnIndex, _freeMovesIndices[1], (isWhite ? Move::DOUBLE_PAWN_PUSH_FLAG : Move::QUITE_FLAG));
+                int singleStepIndex = (isWhite ? 0 : 1);
+                int doubleStepIndex = (isWhite ? 1 : 0);
+
+                addMove(currentPawnIndex, _freeMovesIndices[singleStepIndex], (Move::QUITE_FLAG));
+                addMove(currentPawnIndex, _freeMovesIndices[doubleStepIndex], (Move::DOUBLE_PAWN_PUSH_FLAG));
             } else if (_freeMovesIndices.size() == 1 && _freeMovesIndices[0] == currentPawnIndex + offset) {
                 // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces
-                addMove(currentPawnIndex, _freeMovesIndices[0], Move::QUITE_FLAG);
+                if (canPromote) {
+                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::KNIGHT_PROMO_FLAG);
+                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::BISHOP_PROMO_FLAG);
+                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::ROOK_PROMO_FLAG);
+                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::QUEEN_PROMO_FLAG);
+                } else {
+                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::QUITE_FLAG);
+                }
             }
 
             for (int capturablePawnMoveIndex : _capturableMovesIndices) {
-                addMove(currentPawnIndex, capturablePawnMoveIndex, Move::CAPTURE_FLAG);
+                if (canPromote) {
+                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::KNIGHT_PROMO_CAPTURE_FLAG);
+                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::BISHOP_PROMO_CAPTURE_FLAG);
+                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::ROOK_PROMO_CAPTURE_FLAG);
+                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::QUEEN_PROMO_CAPTURE_FLAG);
+                } else {
+                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::CAPTURE_FLAG);
+                }
             }
 
             if ((capturePawnMoveBitmask & enPessantTarget) != 0) {

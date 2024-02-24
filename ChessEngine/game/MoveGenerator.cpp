@@ -30,7 +30,7 @@ attempt to find moves that could block the check, move the king or eliminate the
 
 
 namespace game {
-    MoveGenerator::MoveGenerator() {
+    MoveGenerator::MoveGenerator(ChessBoard& board) : _board(board) {
         _moves = std::vector<Move>(MAX_LEGAL_MOVES);
         _freeRayIndices.reserve(8);
         _freeMovesIndices.reserve(8);
@@ -44,7 +44,6 @@ namespace game {
         _kingIndices.reserve(64); 
         _pawnIndices.reserve(64);
 
-        _board = ChessBoard();
         _straightRayBitmasks = bits::getAllStraightRayBitmasks();
         _diagonalRayBitmasks = bits::getAllDiagonalRayBitmasks();
         _whiteSquaresBitmask = bits::getWhiteSquaresBitmask();

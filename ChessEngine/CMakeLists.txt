@@ -1,5 +1,5 @@
 add_subdirectory(bits)
-add_subdirectory(tests)
 add_subdirectory(game)
 add_subdirectory(search)
 add_subdirectory(evaluation)
+add_subdirectory(tests)

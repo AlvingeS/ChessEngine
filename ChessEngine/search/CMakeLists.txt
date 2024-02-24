@@ -1,2 +1,4 @@
-add_library(search dummy_file.cpp)
-target_link_libraries(search PUBLIC cxx_setup)
+add_library(search
+    Searcher.cpp
+)
+target_link_libraries(search PUBLIC game evaluation cxx_setup)

@@ -9,11 +9,15 @@ namespace game {
 
     class BaseMoveGeneratorTest : public ::testing::Test {
         protected:
+            ChessBoard board;
             MoveGenerator moveGenerator;
             std::string startingPos;
 
+            BaseMoveGeneratorTest() : board(ChessBoard()), moveGenerator(MoveGenerator(board)) {}
+
             virtual void SetUp() override {
-                moveGenerator = MoveGenerator();
+                board = ChessBoard();
+                moveGenerator = MoveGenerator(board);
                 startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
             }
 

@@ -3,4 +3,4 @@ add_library(game
     BoardPrinter.cpp 
     MoveGenerator.cpp
 )
-target_link_libraries(game PUBLIC cxx_setup)
+target_link_libraries(game PUBLIC bits cxx_setup)

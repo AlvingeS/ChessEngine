@@ -13,7 +13,7 @@ namespace game {
             static constexpr int MAX_LEGAL_MOVES = 218;
 
             // Public member functions
-            MoveGenerator();
+            MoveGenerator(ChessBoard& board);
             std::vector<Move>& genMoves(bool isWhite);
             void resetMoves();
             int getNumLegalMoves();

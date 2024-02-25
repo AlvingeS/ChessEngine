@@ -14,6 +14,7 @@ namespace game {
 
             // Public member functions
             MoveGenerator(ChessBoard& board);
+            bool isInCheck(bool isWhite);
             std::vector<Move>& genMoves(bool isWhite);
             void resetMoves();
             int getNumLegalMoves();
@@ -84,5 +85,9 @@ namespace game {
             void addMovesBetweenBlockerAndPieceOnDiagonalRay(int blockerIndex, bool startFromBlocker, int bishopRank, int bishopFile, int bitIndexFrom);
             void getMovesFromStraightRay(bits::U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile);
             void getMovesFromDiagonalRay(bits::U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, int pieceRank, int pieceFile);
+
+            // Check detection
+            bool checkStraightRay(bits::U64& straightRay, bool firstBlockerOnLSB, bits::U64& opponentRooksAndQueens);
+            bool checkDiagonalRay(bits::U64& diagonalRay, bool firstBlockerOnLSB, bits::U64& opponentBishopsAndQueens);
     };
 }

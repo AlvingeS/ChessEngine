@@ -22,4 +22,8 @@ namespace bits {
 
         return 63 - __builtin_clzll(a);
     }
+
+    inline int popCount(U64 a) {
+        return __builtin_popcountll(a);
+    }
 }

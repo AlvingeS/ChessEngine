@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "BitBasics.h"
+#include "ChessEngine/game/PieceType.h"
 
 namespace bits {
     void printU64InBits(unsigned long long int n);

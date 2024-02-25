@@ -7,11 +7,8 @@
 
 int main() {
 
-    search::Searcher searcher = search::Searcher();
+    //search::Searcher searcher = search::Searcher();
 
-    // std::string fenOne;
-    // std::string fenTwo;
-    // std::string fenThree;
 
     // fenOne = "3q4/2P3P1/8/8/8/8/1p5p/2N5";
     // fenTwo = "r1n1k1Nr/8/8/8/8/8/8/R2pK1PR";

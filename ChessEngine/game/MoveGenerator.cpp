@@ -395,4 +395,115 @@ namespace game {
             }
         }
     }
+
+    bool MoveGenerator::checkStraightRay(bits::U64& straightRay, bool firstBlockerOnLSB, bits::U64& opponentRooksAndQueens) {
+        bits::U64 rooksAndQueensBlockerBitMask = straightRay & opponentRooksAndQueens;
+        
+        // There must be a rook or a queen on the file or rank to be in check
+        if ((rooksAndQueensBlockerBitMask) != 0) {
+            bits::U64 occupiedBlockerBitMask = straightRay & _occupiedBitmask;
+
+            // If there is only one blocker out of all pieces, then it must be a rook or a queen thus the king is in check
+            if (bits::popCount(occupiedBlockerBitMask) == 1) {
+                return true;
+            } else {
+                int occupiedBlockerIndex = firstBlockerOnLSB ? bits::indexOfLSB(occupiedBlockerBitMask)
+                                                             : bits::indexOfMSB(occupiedBlockerBitMask);
+                int rooksAndQueensBlockerIndex = firstBlockerOnLSB ? bits::indexOfLSB(rooksAndQueensBlockerBitMask)
+                                                                   : bits::indexOfMSB(rooksAndQueensBlockerBitMask);
+
+                // If the the first blocker of any piece is the same as the first blocker of a rook or queen, then the king is in check
+                if (occupiedBlockerIndex == rooksAndQueensBlockerIndex) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    bool MoveGenerator::checkDiagonalRay(bits::U64& diagonalRay, bool firstBlockerOnLSB, bits::U64& opponentBishopsAndQueens) {
+        bits::U64 bishopsAndQueensBlockerBitMask = diagonalRay & opponentBishopsAndQueens;
+
+        if ((bishopsAndQueensBlockerBitMask) != 0) {
+            bits::U64 occupiedBlockerBitMask = diagonalRay & _occupiedBitmask;
+
+            if (bits::popCount(occupiedBlockerBitMask) == 1) {
+                return true;
+            } else {
+                int occupiedBlockerIndex = firstBlockerOnLSB ? bits::indexOfLSB(occupiedBlockerBitMask)
+                                                             : bits::indexOfMSB(occupiedBlockerBitMask);
+                int bishopsAndQueensBlockerIndex = firstBlockerOnLSB ? bits::indexOfLSB(bishopsAndQueensBlockerBitMask)
+                                                                   : bits::indexOfMSB(bishopsAndQueensBlockerBitMask);
+
+                if (occupiedBlockerIndex == bishopsAndQueensBlockerIndex) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    bool MoveGenerator::isInCheck(bool isWhite) {
+        int kingIndex = bits::indexOfLSB(isWhite ? _board.getBitboard(PieceType::W_KING)
+                                                 : _board.getBitboard(PieceType::B_KING));
+
+        bits::StraightRays straightRays = _straightRayBitmasks[kingIndex];
+        bits::DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
+        bits::U64 knightMoves = _knightBitmasks[kingIndex];
+        bits::U64 pawnAttackingMoves = isWhite ? _whitePawnCaptureMoveBitmasks[kingIndex] 
+                                               : _blackPawnCaptureMoveBitmasks[kingIndex];
+        bits::U64 opponentRooksAndQueens = isWhite ? _board.getBitboard(PieceType::B_ROOK) | _board.getBitboard(PieceType::B_QUEEN) 
+                                                   : _board.getBitboard(PieceType::W_ROOK) | _board.getBitboard(PieceType::W_QUEEN);
+
+        bits::U64 opponentBishopsAndQueens = isWhite ? _board.getBitboard(PieceType::B_BISHOP) | _board.getBitboard(PieceType::B_QUEEN) 
+                                                     : _board.getBitboard(PieceType::W_BISHOP) | _board.getBitboard(PieceType::W_QUEEN);
+
+        if ((pawnAttackingMoves & _board.getBitboard(isWhite ? PieceType::B_PAWN : PieceType::W_PAWN)) != 0) {
+            return true;
+        }
+
+        if ((knightMoves & _board.getBitboard(isWhite ? PieceType::B_KNIGHT : PieceType::W_KNIGHT)) != 0) {
+            return true;
+        }
+
+        if (checkStraightRay(straightRays.north, true, opponentRooksAndQueens)) {
+            return true;
+        }
+
+        if (checkStraightRay(straightRays.east, false, opponentRooksAndQueens)) {
+            return true;
+        }
+
+        if (checkStraightRay(straightRays.south, false, opponentRooksAndQueens)) {
+            return true;
+        }
+
+        if (checkStraightRay(straightRays.west, true, opponentRooksAndQueens)) {
+            return true;
+        }
+
+        if (checkDiagonalRay(diagonalRays.northEast, true, opponentBishopsAndQueens)) {
+            return true;
+        }
+
+        if (checkDiagonalRay(diagonalRays.southEast, false, opponentBishopsAndQueens)) {
+            return true;
+        }
+
+        if (checkDiagonalRay(diagonalRays.southWest, false, opponentBishopsAndQueens)) {
+            return true;
+        }
+
+        if (checkDiagonalRay(diagonalRays.northWest, true, opponentBishopsAndQueens)) {
+            return true;
+        }
+
+        return false;
+    }
 }

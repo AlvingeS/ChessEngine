@@ -4,6 +4,9 @@
 #include "ChessEngine/bits/BitBasics.h"
 #include <string>
 #include <functional>
+#include "Move.h"
+#include <memory>
+#include <vector>
 
 namespace game {
     class ChessBoard {
@@ -12,12 +15,19 @@ namespace game {
             // Public member functions
             ChessBoard();
 
+            void makeMove(Move move, bool isWhite);
+            void unmakeMove(Move move, bool wasWhite);
+
             bits::U64 getBitboard(PieceType pieceType) {
                 return _bitboards[pieceType];
             }
 
-            std::unordered_map<PieceType, bits::U64> getBitboards() {
+            std::unordered_map<PieceType, bits::U64>& getBitboards() {
                 return _bitboards;
+            }
+
+            std::vector<PieceType>& getSquaresLookup() {
+                return _squaresLookup;
             }
 
             bits::U64 getEnPessantTarget() {
@@ -34,36 +44,40 @@ namespace game {
                 return isWhite ? _whiteHasCastled : _blackHasCastled;
             }
 
-            void setHasCastled(bool isWhite) {
+            void setHasCastled(bool isWhite, bool hasCastled) {
                 if (isWhite) {
-                    _whiteHasCastled = true;
+                    _whiteHasCastled = hasCastled;
                 } else {
-                    _blackHasCastled = true;
+                    _blackHasCastled = hasCastled;
                 }
             }
 
-            void setKingMoved(bool isWhite) {
+            void setKingMoved(bool isWhite, bool hasMoved) {
                 if (isWhite) {
-                    _whiteKingMoved = true;
+                    _whiteKingMoved = hasMoved;
                 } else {
-                    _blackKingMoved = true;
+                    _blackKingMoved = hasMoved;
                 }
             }
 
-            void setRookAMoved(bool isWhite) {
+            void setRookAMoved(bool isWhite, bool hasMoved) {
                 if (isWhite) {
-                    _whiteRookAMoved = true;
+                    _whiteRookAMoved = hasMoved;
                 } else {
-                    _blackRookAMoved = true;
+                    _blackRookAMoved = hasMoved;
                 }
             }
 
-            void setRookHMoved(bool isWhite) {
+            void setRookHMoved(bool isWhite, bool hasMoved) {
                 if (isWhite) {
-                    _whiteRookHMoved = true;
+                    _whiteRookHMoved = hasMoved;
                 } else {
-                    _blackRookHMoved = true;
+                    _blackRookHMoved = hasMoved;
                 }
+            }
+
+            PieceType getPieceTypeAtIndex(int index) {
+                return _squaresLookup[index];
             }
             
             bool kingSideCastlersHasMoved(bool isWhite);
@@ -75,6 +89,7 @@ namespace game {
         private:
             // Private member variables
             std::unordered_map<PieceType, bits::U64> _bitboards;
+            std::vector<PieceType> _squaresLookup;
             bits::U64 _enPessantTarget;
 
             bool _whiteHasCastled;
@@ -85,8 +100,16 @@ namespace game {
             bool _whiteRookHMoved;
             bool _blackRookAMoved;
             bool _blackRookHMoved;
+            PieceType _lastCapturedPiece;
 
             // Private member functions
             void initPieceBitboards();
+            bits::U64 getBitboardFromIndex(int index);
+            void fillSquaresLookup();
+            PieceType getPromotionPieceType(int promotionFlag, bool isWhite);
+            void makeCastleMove(bool isWhite, bool isKingSide);
+            void unmakeCastleMove(bool wasWhite, bool wasKingSide);
+            void setCastlingFlags(PieceType pieceType, int from);
+            void unsetCastlingFlags(PieceType pieceType, int from);
     };
 }

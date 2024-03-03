@@ -9,11 +9,11 @@ namespace search {
         public:
             Searcher();
             void genMoves(bool isWhite);
-            void makeMove(game::Move move);
+            void makeMove(game::Move move, bool isWhite);
             void undoMove();
             
         private:
-            game::ChessBoard _chessBoard;
+            game::ChessBoard _board;
             game::MoveGenerator _moveGenerator;
             evaluation::Evaluator _evaluator;
 

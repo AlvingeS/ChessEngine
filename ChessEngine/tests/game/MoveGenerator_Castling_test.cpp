@@ -8,12 +8,14 @@ namespace game {
             std::string fenOne;
             std::string fenTwo;
             std::string fenThree;
+            std::string bugFen;
 
             void SetUp() override {
                 BaseMoveGeneratorTest::SetUp();
                 fenOne = "r3k2r/8/8/8/8/8/8/R3K2R";
                 fenTwo = "r1n1k1Nr/8/8/8/8/8/8/R2pK1PR";
                 fenThree = "4k2r/r7/8/8/8/8/7R/R3K3";
+                bugFen = "6n1/8/7N/1p2b3/P2B4/8/4q1r1/4Q1R1";
             }
     };
 
@@ -62,7 +64,7 @@ namespace game {
 
     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenThreeWhite_ShouldReturn1Moves) {
         moveGenerator.setBoardFromFen(fenThree);
-        moveGenerator.getBoard().setRookHMoved(true);
+        moveGenerator.getBoard().setRookHMoved(true, true);
         moveGenerator.genCastlingMoves(true);
 
         std::vector<Move> moves = moveGenerator.getMoves();
@@ -81,7 +83,7 @@ namespace game {
 
     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenThreeBlack_ShouldReturn1Moves) {
         moveGenerator.setBoardFromFen(fenThree);
-        moveGenerator.getBoard().setRookAMoved(false);
+        moveGenerator.getBoard().setRookAMoved(false, true);
         moveGenerator.genCastlingMoves(false);
 
         std::vector<Move> moves = moveGenerator.getMoves();
@@ -108,7 +110,7 @@ namespace game {
 
     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteKingMoved_ShouldReturn0Moves) {
         moveGenerator.setBoardFromFen(fenOne);
-        moveGenerator.getBoard().setKingMoved(true);
+        moveGenerator.getBoard().setKingMoved(true, true);
         moveGenerator.genCastlingMoves(true);
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
@@ -116,7 +118,7 @@ namespace game {
 
     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackKingMoved_ShouldReturn0Moves) {
         moveGenerator.setBoardFromFen(fenOne);
-        moveGenerator.getBoard().setKingMoved(false);
+        moveGenerator.getBoard().setKingMoved(false, true);
         moveGenerator.genCastlingMoves(false);
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
@@ -124,7 +126,7 @@ namespace game {
 
     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteRookAMoved_ShouldReturn1Moves) {
         moveGenerator.setBoardFromFen(fenOne);
-        moveGenerator.getBoard().setRookAMoved(true);
+        moveGenerator.getBoard().setRookAMoved(true, true);
         moveGenerator.genCastlingMoves(true);
 
         std::vector<Move> moves = moveGenerator.getMoves();
@@ -143,7 +145,7 @@ namespace game {
 
     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackRookAMoved_ShouldReturn1Moves) {
         moveGenerator.setBoardFromFen(fenOne);
-        moveGenerator.getBoard().setRookAMoved(false);
+        moveGenerator.getBoard().setRookAMoved(false, true);
         moveGenerator.genCastlingMoves(false);
 
         std::vector<Move> moves = moveGenerator.getMoves();
@@ -162,7 +164,7 @@ namespace game {
 
     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteRookHMoved_ShouldReturn1Moves) {
         moveGenerator.setBoardFromFen(fenOne);
-        moveGenerator.getBoard().setRookHMoved(true);
+        moveGenerator.getBoard().setRookHMoved(true, true);
         moveGenerator.genCastlingMoves(true);
 
         std::vector<Move> moves = moveGenerator.getMoves();
@@ -181,7 +183,7 @@ namespace game {
 
     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackRookHMoved_ShouldReturn1Moves) {
         moveGenerator.setBoardFromFen(fenOne);
-        moveGenerator.getBoard().setRookHMoved(false);
+        moveGenerator.getBoard().setRookHMoved(false, true);
         moveGenerator.genCastlingMoves(false);
 
         std::vector<Move> moves = moveGenerator.getMoves();
@@ -196,5 +198,12 @@ namespace game {
         }
 
         ASSERT_TRUE(expectedMoves.empty());
+    }
+
+    TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_bugFenWhite_ShouldReturn0Moves) {
+        moveGenerator.setBoardFromFen(bugFen);
+        moveGenerator.genCastlingMoves(true);
+
+        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }
 }

@@ -106,7 +106,7 @@ namespace game {
     }
 
     void MoveGenerator::resetMoves() {
-        _moves.clear();
+        _moves = std::vector<Move>(MAX_LEGAL_MOVES);
         _moveIndex = 0;
     }
 
@@ -368,14 +368,18 @@ namespace game {
             // King side castling
             if (!_board.kingSideCastlersHasMoved(true)) {
                 if ((_whiteKingSideCastleBitmask & _occupiedBitmask) == 0) {
-                    addMove(0, 0, Move::KING_CASTLE_FLAG);
+                    if ((1ULL & getBoard().getBitboard(PieceType::W_ROOK)) != 0) {
+                        addMove(0, 0, Move::KING_CASTLE_FLAG);
+                    }
                 }
             }
 
             // Queen side castling
             if (!_board.queenSideCastlersHasMoved(true)) {
                 if ((_whiteQueenSideCastleBitmask & _occupiedBitmask) == 0) {
-                    addMove(0, 0, Move::QUEEN_CASTLE_FLAG);
+                    if ((1ULL << 7 & getBoard().getBitboard(PieceType::W_ROOK)) != 0) {
+                        addMove(0, 0, Move::QUEEN_CASTLE_FLAG);
+                    }
                 }
             }
 
@@ -383,14 +387,18 @@ namespace game {
             // King side castling
             if (!_board.kingSideCastlersHasMoved(false)) {
                 if ((_blackKingSideCastleBitmask & _occupiedBitmask) == 0) {
-                    addMove(0, 0, Move::KING_CASTLE_FLAG);
+                    if ((1ULL << 56 & getBoard().getBitboard(PieceType::B_ROOK)) != 0) {
+                        addMove(0, 0, Move::KING_CASTLE_FLAG);
+                    }
                 }
             }
 
             // Queen side castling
             if (!_board.queenSideCastlersHasMoved(false)) {
                 if ((_blackQueenSideCastleBitmask & _occupiedBitmask) == 0) {
-                    addMove(0, 0, Move::QUEEN_CASTLE_FLAG);
+                    if ((1ULL << 63 & getBoard().getBitboard(PieceType::B_ROOK)) != 0) {
+                        addMove(0, 0, Move::QUEEN_CASTLE_FLAG);
+                    }
                 }
             }
         }

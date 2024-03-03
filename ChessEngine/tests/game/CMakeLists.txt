@@ -9,6 +9,7 @@ add_executable(game_tests
     MoveGenerator_MoveCounts_test.cpp
     MoveGenerator_Castling_test.cpp
     MoveGenerator_CheckDetection_test.cpp
+    MakeUnmakeMove_test.cpp
 )
 
 target_link_libraries(game_tests PRIVATE game bits GTest::gtest_main)

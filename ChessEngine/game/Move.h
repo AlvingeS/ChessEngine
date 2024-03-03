@@ -21,7 +21,7 @@ namespace game {
             static const int QUEEN_PROMO_CAPTURE_FLAG = 13;
             static const int TBD_ONE_FLAG = 14;
             static const int TBD_TWO_FLAG = 15;
-
+            
             Move() {
                 _move = 0;
             }
@@ -56,11 +56,11 @@ namespace game {
                 return (_move & 0xffff) != (move._move & 0xffff);
             }
 
-            int getBitIndexTo() const {
+            int getBitIndexFrom() const {
                 return _move & 0x3f;
             }
             
-            int getBitIndexFrom() const {
+            int getBitIndexTo() const {
                 return (_move >> 6) & 0x3f;
             }
             
@@ -80,7 +80,7 @@ namespace game {
                 return ((_move >> 12) & 0xf) == QUEEN_CASTLE_FLAG;
             }
 
-            bool isCapture() const {
+            bool isNormalCapture() const {
                 return ((_move >> 12) & 0xf) == CAPTURE_FLAG;
             }
 
@@ -118,6 +118,23 @@ namespace game {
 
             bool isQueenPromoCapture() const {
                 return ((_move >> 12) & 0xf) == QUEEN_PROMO_CAPTURE_FLAG;
+            }
+
+            bool isAnyCapture() const {
+                return isNormalCapture() || isEpCapture() || isKnightPromoCapture() || isBishopPromoCapture() || isRookPromoCapture() || isQueenPromoCapture();
+            }
+
+
+            bool isAnyPromo() const {
+                return isKnightPromo() || isBishopPromo() || isRookPromo() || isQueenPromo() || isKnightPromoCapture() || isBishopPromoCapture() || isRookPromoCapture() || isQueenPromoCapture();
+            }
+
+            bool isAnyPromoCapture() const {
+                return isKnightPromoCapture() || isBishopPromoCapture() || isRookPromoCapture() || isQueenPromoCapture();
+            }
+
+            bool isAnyCastle() const {
+                return isKingCastle() || isQueenCastle();
             }
 
         private:

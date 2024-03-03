@@ -16,6 +16,7 @@ namespace game {
         B_ROOK,
         B_QUEEN,
         B_KING,
+        EMPTY,
         ERROR
     };
 

@@ -227,6 +227,12 @@ namespace game {
         movedPieceBitboard &= ~(1ULL << from);
         _squaresLookup[from] = PieceType::EMPTY;
 
+        if (!move.isAnyCapture() && (movedPieceType != PieceType::W_PAWN && movedPieceType != PieceType::B_PAWN)) {
+            _noCaptureOrPawnMoveCount++;
+        } else {
+            _noCaptureOrPawnMoveCount = 0;
+        }
+
         // If the move is a capture, update the last captured piece and its bitboard
         if (move.isAnyCapture()) {
             int captureIndex = move.isEpCapture() ? (isWhite ? to - 8 : to + 8) : to;

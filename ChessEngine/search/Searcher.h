@@ -5,19 +5,36 @@
 #include "ChessEngine/game/Move.h"
 
 namespace search {
+
+    struct MoveScore {
+        game::Move move;
+        float score;
+    };
+
+    struct MoveList {
+        std::vector<game::Move> moves;
+        size_t numMoves;
+    };
+
     class Searcher {
         public:
-            Searcher();
-            void genMoves(bool isWhite);
+            Searcher(int maxDepth);
+            MoveScore minimax(int current_depth, bool isMaximizer);
+            MoveList genMoves(bool isWhite);
             void makeMove(game::Move move, bool isWhite);
+            void unmakeMove(game::Move move, bool isWhite);
             void undoMove();
+            int _numMoveGenCalls;
+            int _totalNodes;
+            std::vector<int> _nodeCount;
             
         private:
             game::ChessBoard _board;
             game::MoveGenerator _moveGenerator;
             evaluation::Evaluator _evaluator;
+            int _maxDepth;
 
-            game::Move _lastMove;
-            std::vector<game::Move> _moveList;
+            int _pseudoLegalMovesCount;
+            std::vector<std::vector<game::Move>> _moveStack;
     };
 }

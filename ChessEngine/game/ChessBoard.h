@@ -18,6 +18,14 @@ namespace game {
             void makeMove(Move move, bool isWhite);
             void unmakeMove(Move move, bool wasWhite);
 
+            PieceType setLastCapturedPiece(PieceType pieceType) {
+                _lastCapturedPiece = pieceType;
+            }
+
+            PieceType getLastCapturedPiece() {
+                return _lastCapturedPiece;
+            }
+
             bits::U64 getBitboard(PieceType pieceType) {
                 return _bitboards[pieceType];
             }
@@ -32,6 +40,10 @@ namespace game {
 
             bits::U64 getEnPessantTarget() {
                 return _enPessantTarget;
+            }
+
+            int getNoCaptureOrPawnMoveCount() {
+                return _noCaptureOrPawnMoveCount;
             }
 
             void setEnPessantTargetAtIndex(int index) {
@@ -101,6 +113,7 @@ namespace game {
             bool _blackRookAMoved;
             bool _blackRookHMoved;
             PieceType _lastCapturedPiece;
+            int _noCaptureOrPawnMoveCount;
 
             // Private member functions
             void initPieceBitboards();

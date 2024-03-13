@@ -9,6 +9,7 @@ namespace game {
             std::string fenEnPessantForWhiteTest;
             std::string fenEnPessantForBlackTest;
             std::string fenPromotionTest;
+            std::string fenBuggedPawnTest;
 
             void SetUp() override {
                 BaseMoveGeneratorTest::SetUp();
@@ -16,6 +17,7 @@ namespace game {
                 fenEnPessantForWhiteTest = "rnbqkb1r/pppp1ppp/5n2/3Pp3/8/8/8/RNBQKBNR";
                 fenEnPessantForBlackTest = "rnbqkbnr/8/8/8/Pp6/8/1PPPPPPP/RNBQKBNR";
                 fenPromotionTest = "3q4/2P3P1/8/8/8/8/1p5p/2N5";
+                fenBuggedPawnTest = "rnbqkb1r/pppppppp/7n/8/8/2N4N/PPPPPPPP/R1BQKB1R";
             }
     };
 
@@ -179,5 +181,14 @@ namespace game {
         ASSERT_TRUE(expectedMoves.empty());
     }
 
+    TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenBuggedPawnTestWhite_ShouldNotReturnh6) {
+        moveGenerator.setBoardFromFen(fenBuggedPawnTest);
+        moveGenerator.genPawnMoves(false);
 
+        std::vector<Move> moves = moveGenerator.getMoves();
+
+        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+            ASSERT_NE(moves[i], Move(46, 38, Move::QUITE_FLAG));
+        }
+    }
 }

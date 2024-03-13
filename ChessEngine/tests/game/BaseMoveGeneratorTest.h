@@ -17,7 +17,6 @@ namespace game {
 
             virtual void SetUp() override {
                 board = ChessBoard();
-                moveGenerator = MoveGenerator(board);
                 startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
             }
 

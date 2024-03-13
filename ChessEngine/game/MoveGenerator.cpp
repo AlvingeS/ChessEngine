@@ -110,6 +110,10 @@ namespace game {
         _moveIndex = 0;
     }
 
+    void MoveGenerator::resetMoveIndex() {
+        _moveIndex = 0;
+    }    
+
     void MoveGenerator::addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom) {
         bits::getBitIndices(_freeRayIndices, freeRay);
 
@@ -510,6 +514,28 @@ namespace game {
 
         if (checkDiagonalRay(diagonalRays.northWest, true, opponentBishopsAndQueens)) {
             return true;
+        }
+
+        return false;
+    }
+
+    // TODO: Test this method
+    bool MoveGenerator::isDeadPosition() {
+        // It is assumed in this method that the kings may never dissapear
+        int popCount = bits::popCount(_occupiedBitmask);
+
+        if (popCount == 2) {
+            return true;
+        }
+
+        if (popCount == 3) {
+            if (_board.getBitboard(PieceType::W_BISHOP) != 0 || _board.getBitboard(PieceType::B_BISHOP) != 0) {
+                return true;
+            }
+
+            if (_board.getBitboard(PieceType::W_KNIGHT) != 0 || _board.getBitboard(PieceType::B_KNIGHT) != 0) {
+                return true;
+            }
         }
 
         return false;

@@ -5,8 +5,8 @@ namespace evaluation {
     class Evaluator {
         public:
             Evaluator(game::ChessBoard& board);
-            int evaluate();
+            float evaluate();
         private:
-            game::ChessBoard _board;
+            game::ChessBoard& _board;
     };
 }

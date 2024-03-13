@@ -15,8 +15,10 @@ namespace game {
             // Public member functions
             MoveGenerator(ChessBoard& board);
             bool isInCheck(bool isWhite);
+            bool isDeadPosition();
             std::vector<Move>& genMoves(bool isWhite);
             void resetMoves();
+            void resetMoveIndex();
             int getNumLegalMoves();
             void setBoardFromFen(std::string fen);
             void genRookMoves(bool isWhite);
@@ -26,6 +28,7 @@ namespace game {
             void genKingMoves(bool isWhite);
             void genPawnMoves(bool isWhite);
             void genCastlingMoves(bool isWhite);
+            void updateGameStateBitmasks();
 
             std::vector<Move>& getMoves() {
                 return _moves;
@@ -43,7 +46,7 @@ namespace game {
             // Private member variables
             std::vector<Move> _moves;
 
-            ChessBoard _board;
+            ChessBoard& _board;
             size_t _moveIndex = 0;
 
             std::vector<bits::StraightRays> _straightRayBitmasks;
@@ -77,7 +80,6 @@ namespace game {
             std::vector<int> _capturableMovesIndices;
 
             // Member functions
-            void updateGameStateBitmasks();
             void addMove(int bitIndexFrom, int bitIndexTo, int flag);
             void addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom);
             void addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom);

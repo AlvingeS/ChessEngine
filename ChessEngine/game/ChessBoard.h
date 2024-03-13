@@ -18,7 +18,7 @@ namespace game {
             void makeMove(Move move, bool isWhite);
             void unmakeMove(Move move, bool wasWhite);
 
-            PieceType setLastCapturedPiece(PieceType pieceType) {
+            void setLastCapturedPiece(PieceType pieceType) {
                 _lastCapturedPiece = pieceType;
             }
 
@@ -27,10 +27,10 @@ namespace game {
             }
 
             bits::U64 getBitboard(PieceType pieceType) {
-                return _bitboards[pieceType];
+                return _bitboards[pieceTypeToInt(pieceType)];
             }
 
-            std::unordered_map<PieceType, bits::U64>& getBitboards() {
+            std::vector<bits::U64>& getBitboards() {
                 return _bitboards;
             }
 
@@ -100,7 +100,7 @@ namespace game {
 
         private:
             // Private member variables
-            std::unordered_map<PieceType, bits::U64> _bitboards;
+            std::vector<bits::U64> _bitboards;
             std::vector<PieceType> _squaresLookup;
             bits::U64 _enPessantTarget;
 

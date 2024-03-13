@@ -29,7 +29,7 @@ namespace game {
                 enPessant = "8/4p3/8/3P4/7p/8/6P1/8";
             }
 
-            std::unordered_map<PieceType, bits::U64> getBitboards() {
+            std::vector<bits::U64> getBitboards() {
                 return moveGenerator.getBoard().getBitboards();
             }
 
@@ -42,7 +42,7 @@ namespace game {
         moveGenerator.genMoves(true);
 
         // Makes copies of the bitboards and squaresLookup
-        std::unordered_map<PieceType, bits::U64> bitboardsCopy = getBitboards();
+        std::vector<bits::U64> bitboardsCopy = getBitboards();
         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         std::vector<Move> moves = moveGenerator.getMoves();
 
@@ -58,7 +58,7 @@ namespace game {
         moveGenerator.genMoves(false);
 
         // Makes copies of the bitboards and squaresLookup
-        std::unordered_map<PieceType, bits::U64> bitboardsCopy = getBitboards();
+        std::vector<bits::U64> bitboardsCopy = getBitboards();
         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         std::vector<Move> moves = moveGenerator.getMoves();
 
@@ -76,7 +76,7 @@ namespace game {
         moveGenerator.genMoves(true);
 
         // Makes copies of the bitboards and squaresLookup
-        std::unordered_map<PieceType, bits::U64> bitboardsCopy = getBitboards();
+        std::vector<bits::U64> bitboardsCopy = getBitboards();
         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         std::vector<Move> moves = moveGenerator.getMoves();
 
@@ -93,7 +93,7 @@ namespace game {
         moveGenerator.genMoves(false);
 
         // Makes copies of the bitboards and squaresLookup
-        std::unordered_map<PieceType, bits::U64> bitboardsCopy = getBitboards();
+        std::vector<bits::U64> bitboardsCopy = getBitboards();
         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         std::vector<Move> moves = moveGenerator.getMoves();
 
@@ -110,7 +110,7 @@ namespace game {
         moveGenerator.genMoves(true);
 
         // Makes copies of the bitboards and squaresLookup
-        std::unordered_map<PieceType, bits::U64> bitboardsCopy = getBitboards();
+        std::vector<bits::U64> bitboardsCopy = getBitboards();
         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         std::vector<Move> moves = moveGenerator.getMoves();
 
@@ -127,7 +127,7 @@ namespace game {
         moveGenerator.genMoves(false);
 
         // Makes copies of the bitboards and squaresLookup
-        std::unordered_map<PieceType, bits::U64> bitboardsCopy = getBitboards();
+        std::vector<bits::U64> bitboardsCopy = getBitboards();
         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         std::vector<Move> moves = moveGenerator.getMoves();
 
@@ -144,7 +144,7 @@ namespace game {
         moveGenerator.genMoves(true);
 
         // Makes copies of the bitboards and squaresLookup
-        std::unordered_map<PieceType, bits::U64> bitboardsCopy = getBitboards();
+        std::vector<bits::U64> bitboardsCopy = getBitboards();
         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         std::vector<Move> moves = moveGenerator.getMoves();
 
@@ -161,7 +161,7 @@ namespace game {
         moveGenerator.genMoves(false);
 
         // Makes copies of the bitboards and squaresLookup
-        std::unordered_map<PieceType, bits::U64> bitboardsCopy = getBitboards();
+        std::vector<bits::U64> bitboardsCopy = getBitboards();
         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         std::vector<Move> moves = moveGenerator.getMoves();
 
@@ -178,7 +178,7 @@ namespace game {
         moveGenerator.genMoves(true);
 
         // Makes copies of the bitboards and squaresLookup
-        std::unordered_map<PieceType, bits::U64> bitboardsCopy = getBitboards();
+        std::vector<bits::U64> bitboardsCopy = getBitboards();
         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         std::vector<Move> moves = moveGenerator.getMoves();
 
@@ -195,7 +195,7 @@ namespace game {
         moveGenerator.genMoves(false);
 
         // Makes copies of the bitboards and squaresLookup
-        std::unordered_map<PieceType, bits::U64> bitboardsCopy = getBitboards();
+        std::vector<bits::U64> bitboardsCopy = getBitboards();
         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         std::vector<Move> moves = moveGenerator.getMoves();
 
@@ -214,7 +214,7 @@ namespace game {
         moveGenerator.getBoard().makeMove(Move(51, 35, Move::DOUBLE_PAWN_PUSH_FLAG), false);
 
         // Makes copies of the bitboards and squaresLookup
-        std::unordered_map<PieceType, bits::U64> bitboardsCopy = getBitboards();
+        std::vector<bits::U64> bitboardsCopy = getBitboards();
         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         
         moveGenerator.genMoves(true);
@@ -235,7 +235,7 @@ namespace game {
         moveGenerator.getBoard().makeMove(Move(9, 17, Move::DOUBLE_PAWN_PUSH_FLAG), true);
 
         // Makes copies of the bitboards and squaresLookup
-        std::unordered_map<PieceType, bits::U64> bitboardsCopy = getBitboards();
+        std::vector<bits::U64> bitboardsCopy = getBitboards();
         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         
         moveGenerator.genMoves(false);

@@ -27,6 +27,14 @@ namespace search {
             int _numMoveGenCalls;
             int _totalNodes;
             std::vector<int> _nodeCount;
+
+            game::ChessBoard& getBoard() {
+                return _board;
+            }
+
+            game::MoveGenerator& getMoveGenerator() {
+                return _moveGenerator;
+            }
             
         private:
             game::ChessBoard _board;

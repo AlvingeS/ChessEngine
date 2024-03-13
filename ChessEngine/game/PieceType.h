@@ -3,7 +3,7 @@
 
 namespace game {
 
-    enum class PieceType : uint8_t {
+    enum class PieceType : int {
         W_PAWN,
         W_KNIGHT,
         W_BISHOP,
@@ -20,7 +20,7 @@ namespace game {
         ERROR
     };
 
-    inline PieceType char_to_piece_type(char c) {
+    inline PieceType CharToPieceType(char c) {
         switch (c) {
             case 'P': return PieceType::W_PAWN;
             case 'N': return PieceType::W_KNIGHT;
@@ -38,7 +38,7 @@ namespace game {
         }
     }
 
-    inline char piece_type_to_char(PieceType piece_type) {
+    inline char pieceTypeToChar(PieceType piece_type) {
         switch(piece_type) {
             case PieceType::W_PAWN: return 'P';
             case PieceType::W_KNIGHT: return 'N';
@@ -54,5 +54,13 @@ namespace game {
             case PieceType::B_KING: return 'k';
             default : return 'e';
         }
+    }
+
+    inline int pieceTypeToInt(PieceType piece_type) {
+        return static_cast<int>(piece_type);
+    }
+
+    inline PieceType intToPieceType(int i) {
+        return static_cast<PieceType>(i);
     }
 }

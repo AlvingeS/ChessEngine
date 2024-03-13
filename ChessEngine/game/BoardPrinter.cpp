@@ -2,7 +2,7 @@
 #include <iostream>
 
 namespace game {
-    BoardPrinter::BoardPrinter(std::unordered_map<PieceType, bits::U64> bitboards) {
+    BoardPrinter::BoardPrinter(std::vector<bits::U64> bitboards) {
         fillBoard(bitboards);
     }
 
@@ -26,22 +26,19 @@ namespace game {
         }
     }
 
-    void BoardPrinter::fillBoard(std::unordered_map<PieceType, bits::U64> bitboards) {
+    void BoardPrinter::fillBoard(std::vector<bits::U64>  bitboards) {
         _board = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
         
-        for (auto& kvp : bitboards) {
-            if (!isValidPiece(kvp.first)) {
-                continue;
-            }
-
-            char piece_char = piece_type_to_char(kvp.first);
-            bits::U64 bitboard = kvp.second;
+        for (int i = 0; i < 12; i++) {
+            PieceType pieceType = intToPieceType(i);
+            bits::U64 bitboard = bitboards[i];
+            char pieceChar = pieceTypeToChar(pieceType);
 
             for (int i = 0; i < 64; i++) {
                 if (bits::getBit(bitboard, i)) {
                     int row = i / 8;
                     int col = i % 8;
-                    _board[row][col] = piece_char;
+                    _board[row][col] = pieceChar;
                 }
             }
         }

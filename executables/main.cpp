@@ -7,7 +7,7 @@
 
 int main() {
 
-    int const MAX_DEPTH = 5;
+    int const MAX_DEPTH = 4;
     search::Searcher searcher = search::Searcher(MAX_DEPTH);
     searcher.minimax(0, true);
     
@@ -15,14 +15,14 @@ int main() {
         std::cout << "Depth " << i << ": " << searcher._nodeCount[i] << std::endl;
     }
 
-
-    // fenOne = "3q4/2P3P1/8/8/8/8/1p5p/2N5";
+    std::string fenOne = "rnb1kbnr/ppp3pp/8/3pppq1/3P4/2N1PN1P/PPP2PP1/R1BQKB1R";
     // fenTwo = "r1n1k1Nr/8/8/8/8/8/8/R2pK1PR";
     // fenThree = "4k2r/r7/8/8/8/8/7R/R3K3";
 
-    // moveGenerator.setBoardFromFen(fenOne);
-    // game::BoardPrinter boardPrinterOne = game::BoardPrinter(moveGenerator.getBoard().getBitboards());
-    // boardPrinterOne.printBoard();
+
+    searcher.getMoveGenerator().setBoardFromFen(fenOne);
+    game::BoardPrinter boardPrinterOne = game::BoardPrinter(searcher.getBoard().getBitboards());
+    boardPrinterOne.printBoard();
 
     // moveGenerator.setBoardFromFen(fenTwo);
     // game::BoardPrinter boardPrinterTwo = game::BoardPrinter(moveGenerator.getBoard().getBitboards());

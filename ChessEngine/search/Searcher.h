@@ -19,7 +19,7 @@ namespace search {
     class Searcher {
         public:
             Searcher(int maxDepth);
-            MoveScore minimax(int current_depth, bool isMaximizer);
+            MoveScore minimax(int current_depth, bool isMaximizer, bool verbose = false);
             MoveList genMoves(bool isWhite);
             void makeMove(game::Move move, bool isWhite);
             void unmakeMove(game::Move move, bool isWhite);
@@ -27,6 +27,17 @@ namespace search {
             int _numMoveGenCalls;
             int _totalNodes;
             std::vector<int> _nodeCount;
+            std::vector<int> _captureCount;
+            std::vector<int> _epCaptureCount;
+            std::vector<int> _castlingCount;
+            std::vector<int> _promotionCount;
+            std::vector<int> _checkCount;
+            std::vector<int> _checkmateCount;
+            void debugPrint(bool verbose, int currentDepth, int debugDepth);
+
+            void setMaxDepth(int maxDepth) {
+                _maxDepth = maxDepth;
+            }
 
             game::ChessBoard& getBoard() {
                 return _board;
@@ -34,6 +45,11 @@ namespace search {
 
             game::MoveGenerator& getMoveGenerator() {
                 return _moveGenerator;
+            }
+
+            void setBoardFromFen(std::string fen) {
+                _board.setBoardFromFen(fen);
+                _moveGenerator.updateGameStateBitmasks();
             }
             
         private:

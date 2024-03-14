@@ -1,5 +1,5 @@
 add_executable(search_tests
-    dummy_test.cpp
+    perft.cpp
 )
 
 target_link_libraries(search_tests PRIVATE search GTest::gtest_main)

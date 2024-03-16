@@ -16,7 +16,7 @@ namespace search {
     };
 
     TEST_F(perft, perft_starting_pos) {
-        // searcher.minimax(0, true);
+        searcher.minimax(0, true);
 
         std::unordered_map<int, int> expectedNodes = {
             {0, 1},
@@ -27,15 +27,75 @@ namespace search {
             {5, 4865609}
         };
 
+        std::unordered_map<int, int> exepectedCaptures = {
+            {0, 0},
+            {1, 0},
+            {2, 0},
+            {3, 34},
+            {4, 1576},
+            {5, 82719}
+        };
+
+        std::unordered_map<int, int> expectedEpCaptures = {
+            {0, 0},
+            {1, 0},
+            {2, 0},
+            {3, 0},
+            {4, 0},
+            {5, 258}
+        };
+
+        std::unordered_map<int, int> expectedCastling = {
+            {0, 0},
+            {1, 0},
+            {2, 0},
+            {3, 0},
+            {4, 0},
+            {5, 0}
+        };
+
+        std::unordered_map<int, int> expectedPromotions = {
+            {0, 0},
+            {1, 0},
+            {2, 0},
+            {3, 0},
+            {4, 0},
+            {5, 0}
+        };
+
+        std::unordered_map<int, int> expectedChecks = {
+            {0, 0},
+            {1, 0},
+            {2, 0},
+            {3, 12},
+            {4, 469},
+            {5, 27351}
+        };
+
+        std::unordered_map<int, int> expectedCheckmates = {
+            {0, 0},
+            {1, 0},
+            {2, 0},
+            {3, 0},
+            {4, 8},
+            {5, 347}
+        };
+
         for (int i = 0; i <= MAX_DEPTH; i++) {
             ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
+            ASSERT_EQ(searcher._captureCount[i], exepectedCaptures[i]);
+            ASSERT_EQ(searcher._epCaptureCount[i], expectedEpCaptures[i]);
+            ASSERT_EQ(searcher._castlingCount[i], expectedCastling[i]);
+            ASSERT_EQ(searcher._promotionCount[i], expectedPromotions[i]);
+            ASSERT_EQ(searcher._checkCount[i], expectedChecks[i]);
+            ASSERT_EQ(searcher._checkmateCount[i], expectedCheckmates[i]);
         }
     }
 
     TEST_F(perft, perft_pos2) {
         searcher.setBoardFromFen(pos2);
         searcher.setMaxDepth(4);
-        // searcher.minimax(0, true);
+        searcher.minimax(0, true);
 
         std::unordered_map<int, int> expectedNodes = {
             {0, 1},
@@ -52,7 +112,6 @@ namespace search {
 
     TEST_F(perft, perft_pos3) {
         searcher.setBoardFromFen(pos3);
-        searcher.setMaxDepth(3);
         searcher.minimax(0, true, true);
 
         std::unordered_map<int, int> expectedNodes = {

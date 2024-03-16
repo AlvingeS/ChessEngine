@@ -33,7 +33,7 @@ namespace search {
             std::vector<int> _promotionCount;
             std::vector<int> _checkCount;
             std::vector<int> _checkmateCount;
-            void debugPrint(bool verbose, int currentDepth, int debugDepth);
+            void debugPrint(bool verbose, bool condition);
 
             void setMaxDepth(int maxDepth) {
                 _maxDepth = maxDepth;

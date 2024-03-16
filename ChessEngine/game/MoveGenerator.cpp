@@ -367,12 +367,38 @@ namespace game {
         }
     }
 
+    bool MoveGenerator::kingAndRookOnCastlingSquares(bool isWhite, bool isKingSide) {
+        if (isWhite) {
+            bool kingBitEnabled = (getBoard().getBitboard(PieceType::W_KING) & (1ULL << 3)) != 0;
+            
+            if (isKingSide) {
+                bool rookBitEnabled = (getBoard().getBitboard(PieceType::W_ROOK) & (1ULL << 0)) != 0;
+                return kingBitEnabled && rookBitEnabled;
+            } else {
+                bool rookBitEnabled = (getBoard().getBitboard(PieceType::W_ROOK) & (1ULL << 7)) != 0;
+                return kingBitEnabled && rookBitEnabled;
+            }
+        } else {
+            bool kingBitEnabled = (getBoard().getBitboard(PieceType::B_KING) & (1ULL << 59)) != 0;
+            
+            if (isKingSide) {
+                bool rookBitEnabled = (getBoard().getBitboard(PieceType::B_ROOK) & (1ULL << 56)) != 0;
+                return kingBitEnabled && rookBitEnabled;
+            } else {
+                bool rookBitEnabled = (getBoard().getBitboard(PieceType::B_ROOK) & (1ULL << 63)) != 0;
+                return kingBitEnabled && rookBitEnabled;
+            }
+        }
+
+        return false;
+    }
+
     void MoveGenerator::genCastlingMoves(bool isWhite) {
         if (isWhite && !_board.getHasCastled(true)) {
             // King side castling
             if (!_board.kingSideCastlersHasMoved(true)) {
                 if ((_whiteKingSideCastleBitmask & _occupiedBitmask) == 0) {
-                    if ((1ULL & getBoard().getBitboard(PieceType::W_ROOK)) != 0) {
+                    if (kingAndRookOnCastlingSquares(true, true)) {
                         addMove(0, 0, Move::KING_CASTLE_FLAG);
                     }
                 }
@@ -381,7 +407,7 @@ namespace game {
             // Queen side castling
             if (!_board.queenSideCastlersHasMoved(true)) {
                 if ((_whiteQueenSideCastleBitmask & _occupiedBitmask) == 0) {
-                    if ((1ULL << 7 & getBoard().getBitboard(PieceType::W_ROOK)) != 0) {
+                    if (kingAndRookOnCastlingSquares(true, false)) {
                         addMove(0, 0, Move::QUEEN_CASTLE_FLAG);
                     }
                 }
@@ -391,7 +417,7 @@ namespace game {
             // King side castling
             if (!_board.kingSideCastlersHasMoved(false)) {
                 if ((_blackKingSideCastleBitmask & _occupiedBitmask) == 0) {
-                    if ((1ULL << 56 & getBoard().getBitboard(PieceType::B_ROOK)) != 0) {
+                    if (kingAndRookOnCastlingSquares(false, true)) {
                         addMove(0, 0, Move::KING_CASTLE_FLAG);
                     }
                 }
@@ -400,7 +426,7 @@ namespace game {
             // Queen side castling
             if (!_board.queenSideCastlersHasMoved(false)) {
                 if ((_blackQueenSideCastleBitmask & _occupiedBitmask) == 0) {
-                    if ((1ULL << 63 & getBoard().getBitboard(PieceType::B_ROOK)) != 0) {
+                    if (kingAndRookOnCastlingSquares(false, false)) {
                         addMove(0, 0, Move::QUEEN_CASTLE_FLAG);
                     }
                 }

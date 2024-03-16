@@ -50,15 +50,23 @@ namespace search {
     void Searcher::makeMove(game::Move move, bool isWhite) {
         _board.makeMove(move, isWhite);
         _moveGenerator.updateGameStateBitmasks();
+
+        // if (_board.getPieceTypeAtIndex(32) == _board.getPieceTypeAtIndex(38) && _board.getPieceTypeAtIndex(32) != game::PieceType::EMPTY) {
+        //     std::cout << "Illegal move: " << std::endl;
+        // }
     }
 
     void Searcher::unmakeMove(game::Move move, bool isWhite) {
         _board.unmakeMove(move, isWhite);
         _moveGenerator.updateGameStateBitmasks();
+
+        // if (_board.getPieceTypeAtIndex(32) == _board.getPieceTypeAtIndex(38) && _board.getPieceTypeAtIndex(32) != game::PieceType::EMPTY) {
+        //     std::cout << "Illegal move: " << std::endl;
+        // }
     }
 
-    void Searcher::debugPrint(bool verbose, int currentDepth, int debugDepth) {
-        if (verbose && currentDepth == debugDepth) {
+    void Searcher::debugPrint(bool verbose, bool condition) {
+        if (verbose && condition) {
             game::BoardPrinter boardPrinter = game::BoardPrinter(_board.getBitboards());
             boardPrinter.printBoard();
         }
@@ -81,16 +89,25 @@ namespace search {
         for (size_t i = 0; i < moveList.numMoves; i++) {
             game::Move currentMove = moveList.moves[i];
 
+            // bool condition = currentMove.getBitIndexFrom() == 32 && currentMove.getBitIndexTo() == 38;
+            // bool condition = currentDepth == 0 && i == 1;
+            // bool condition = _board.getSquaresLookup()[59] == game::PieceType::B_KING;
+            // bool condition = currentMove.getMove() == 12288 && not isMaximizer;
+            bool condition = currentMove.getMove() == 6560 && not isMaximizer && i == 3;
+
             // Make the move and check if we are in any way left in check
-            debugPrint(verbose, currentDepth, 0);
+            debugPrint(verbose, condition);
             makeMove(currentMove, isMaximizer);
-            debugPrint(verbose, currentDepth, 0);
+            debugPrint(verbose, condition);
 
             game::PieceType lastCapturedPiece = _board.getLastCapturedPiece();
 
             if (_moveGenerator.isInCheck(isMaximizer)) {
                 unmakeMove(currentMove, isMaximizer);
-                numIllegalMoves++;
+                debugPrint(verbose, condition);
+                if (condition) {
+                    std::cout << "Illegal move: " << std::endl;
+                }
 
                 if (numIllegalMoves == moveList.numMoves) {
                     bool wasInCheckBeforeMove = _moveGenerator.isInCheck(true);
@@ -133,7 +150,7 @@ namespace search {
                 return {currentMove, 0.0f};
             }
 
-            MoveScore eval = minimax(currentDepth + 1, !isMaximizer);
+            MoveScore eval = minimax(currentDepth + 1, !isMaximizer, verbose);
             
             if (isMaximizer) {
                 if (eval.score > bestEval.score) {
@@ -147,7 +164,7 @@ namespace search {
 
             _board.setLastCapturedPiece(lastCapturedPiece);
             unmakeMove(currentMove, isMaximizer);
-            debugPrint(verbose, currentDepth, 0);
+            debugPrint(verbose, condition);
         }
 
         return bestEval;

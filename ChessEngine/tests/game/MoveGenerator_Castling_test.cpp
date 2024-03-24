@@ -227,7 +227,7 @@ namespace game {
         moveGenerator.genCastlingMoves(false);
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
-    }
+        }
 
     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingThroughAttacksWhiteFenWhite_ShouldReturn0Moves) {
         moveGenerator.setBoardFromFen(castlingThroughAttacksWhiteFen);

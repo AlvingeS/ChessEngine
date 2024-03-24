@@ -95,7 +95,7 @@ namespace search {
     TEST_F(perft, perft_pos2) {
         searcher.setBoardFromFen(pos2);
         searcher.setMaxDepth(4);
-        searcher.minimax(0, true);
+        searcher.minimax(0, true, true);
 
         std::unordered_map<int, int> expectedNodes = {
             {0, 1},

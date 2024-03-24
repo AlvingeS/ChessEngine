@@ -72,6 +72,39 @@ namespace search {
         }
     }
 
+    // Helper function to check if there are any castling moves in the movelist
+    bool hasTwoCastlingMove(MoveList& moveList) {
+        int count = 0;
+
+        for (size_t i = 0; i < moveList.numMoves; i++) {
+            if (moveList.moves[i].isAnyCastle()) {
+                count++;
+            }
+        }
+
+        return count == 2;
+    }
+
+    bool noKingSideCastling(MoveList& moveList) {
+        for (size_t i = 0; i < moveList.numMoves; i++) {
+            if (moveList.moves[i].getFlag() == 3) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool noQueenSideCastling(MoveList& moveList) {
+        for (size_t i = 0; i < moveList.numMoves; i++) {
+            if (moveList.moves[i].getFlag() == 2) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     // TODO: Implement draw by repetition after implementing zobrist hashing
     MoveScore Searcher::minimax(int currentDepth, bool isMaximizer, bool verbose) {
         int multiplier = isMaximizer ? 1 : -1;
@@ -93,7 +126,8 @@ namespace search {
             // bool condition = currentDepth == 0 && i == 1;
             // bool condition = _board.getSquaresLookup()[59] == game::PieceType::B_KING;
             // bool condition = currentMove.getMove() == 12288 && not isMaximizer;
-            bool condition = currentMove.getMove() == 6560 && not isMaximizer && i == 3;
+            // bool condition = verbose && !hasTwoCastlingMove(moveList) && currentDepth == 1;
+            bool condition = verbose && currentMove.getMove() == 391 && currentDepth == 0;
 
             // Make the move and check if we are in any way left in check
             debugPrint(verbose, condition);
@@ -108,7 +142,7 @@ namespace search {
                 debugPrint(verbose, condition);
 
                 if (numIllegalMoves == moveList.numMoves) {
-                    bool wasInCheckBeforeMove = _moveGenerator.isInCheck(true);
+                    bool wasInCheckBeforeMove = _moveGenerator.isInCheck(isMaximizer);
 
                     if (wasInCheckBeforeMove) {
                         _checkmateCount[currentDepth]++;
@@ -163,6 +197,7 @@ namespace search {
             _board.setLastCapturedPiece(lastCapturedPiece);
             unmakeMove(currentMove, isMaximizer);
             debugPrint(verbose, condition);
+            int x = 4;
         }
 
         return bestEval;

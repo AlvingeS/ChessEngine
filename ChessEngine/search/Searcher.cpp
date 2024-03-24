@@ -107,13 +107,13 @@ namespace search {
 
     // TODO: Implement draw by repetition after implementing zobrist hashing
     MoveScore Searcher::minimax(int currentDepth, bool isMaximizer, bool verbose) {
-        int multiplier = isMaximizer ? 1 : -1;
+        // int multiplier = isMaximizer ? 1 : -1;
         
         if (currentDepth == _maxDepth) {
-            return MoveScore{game::Move(), multiplier * _evaluator.evaluate()};
+            return MoveScore{game::Move(), 0};
         }
 
-        MoveScore bestEval = {game::Move(), -multiplier * 1000000.0f};
+        MoveScore bestEval = {game::Move(), 0};
         MoveList moveList = genMoves(isMaximizer);
         _numMoveGenCalls++;
         
@@ -127,26 +127,26 @@ namespace search {
             // bool condition = _board.getSquaresLookup()[59] == game::PieceType::B_KING;
             // bool condition = currentMove.getMove() == 12288 && not isMaximizer;
             // bool condition = verbose && !hasTwoCastlingMove(moveList) && currentDepth == 1;
-            bool condition = verbose && currentMove.getMove() == 391 && currentDepth == 0;
+            // bool condition = verbose && currentMove.getMove() == 391 && currentDepth == 0;
 
             // Make the move and check if we are in any way left in check
-            debugPrint(verbose, condition);
+            // debugPrint(verbose, condition);
             makeMove(currentMove, isMaximizer);
-            debugPrint(verbose, condition);
+            // debugPrint(verbose, condition);
 
             game::PieceType lastCapturedPiece = _board.getLastCapturedPiece();
 
             if (_moveGenerator.isInCheck(isMaximizer)) {
                 numIllegalMoves++;
                 unmakeMove(currentMove, isMaximizer);
-                debugPrint(verbose, condition);
+                // debugPrint(verbose, condition);
 
                 if (numIllegalMoves == moveList.numMoves) {
                     bool wasInCheckBeforeMove = _moveGenerator.isInCheck(isMaximizer);
 
                     if (wasInCheckBeforeMove) {
                         _checkmateCount[currentDepth]++;
-                        return {currentMove, multiplier * 1000000.0f};
+                        return {currentMove, 0};
                     } else {
                         return {currentMove, 0.0f};
                     }
@@ -196,7 +196,7 @@ namespace search {
 
             _board.setLastCapturedPiece(lastCapturedPiece);
             unmakeMove(currentMove, isMaximizer);
-            debugPrint(verbose, condition);
+            // debugPrint(verbose, condition);
         }
 
         return bestEval;

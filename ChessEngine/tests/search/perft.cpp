@@ -7,13 +7,16 @@
 namespace search {
     class perft : public ::testing::Test {
         protected:
+            Searcher searcher;
             bool longRun = false;
             std::string pos2 = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R";
             std::string pos3 = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8";
+
+        perft() : searcher(5) {}
     };
 
     TEST_F(perft, perft_starting_pos) {
-        Searcher searcher = Searcher(longRun ? 6 : 5);
+        searcher.setMaxDepth(longRun ? 6 : 5);
         searcher.minimax(0, true);
 
         std::unordered_map<int, int> expectedNodes = {
@@ -86,7 +89,7 @@ namespace search {
             {6, 0} // Cant check for checkmate at max depth
         };
 
-        for (int i = 0; i <= searcher.getMaxDepth(); i++) {
+        for (int i = 1; i <= searcher.getMaxDepth(); i++) {
             ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
             ASSERT_EQ(searcher._captureCount[i], exepectedCaptures[i]);
             ASSERT_EQ(searcher._epCaptureCount[i], expectedEpCaptures[i]);
@@ -101,7 +104,7 @@ namespace search {
     }
 
     TEST_F(perft, perft_pos2) {
-        Searcher searcher = Searcher(longRun ? 5 : 4);
+        searcher.setMaxDepth(longRun ? 5 : 4);
         searcher.setBoardFromFen(pos2);
         searcher.minimax(0, true, true);
 
@@ -182,7 +185,7 @@ namespace search {
     }
 
     TEST_F(perft, perft_pos3) {
-        Searcher searcher = Searcher(longRun ? 6 : 5);
+        searcher.setMaxDepth(longRun ? 6 : 5);
         searcher.setBoardFromFen(pos3);
         searcher.minimax(0, true, true);
 

@@ -271,6 +271,30 @@ namespace game {
         }
     }
 
+    void ChessBoard::makeTemporaryKingMove(bool isWhite, bool isKingSide) {
+        int pieceTypeInt = isWhite ? pieceTypeToInt(PieceType::W_KING) : pieceTypeToInt(PieceType::B_KING);
+        bits::U64 kingBitboard = _bitboards[pieceTypeInt];
+        int from = isWhite ? 3 : 59;
+        int to = isKingSide ? (isWhite ? 2 : 58) : (isWhite ? 4 : 60);
+
+        kingBitboard &= ~(1ULL << from);
+        kingBitboard |= (1ULL << to);
+
+        _bitboards[pieceTypeInt] = kingBitboard;
+    }
+
+    void ChessBoard::unmakeTemporaryKingMove(bool isWhite, bool isKingSide) {
+        int pieceTypeInt = isWhite ? pieceTypeToInt(PieceType::W_KING) : pieceTypeToInt(PieceType::B_KING);
+        bits::U64 kingBitboard = _bitboards[pieceTypeInt];
+        int from = isKingSide ? (isWhite ? 2 : 58) : (isWhite ? 4 : 60);
+        int to = isWhite ? 3 : 59;
+
+        kingBitboard &= ~(1ULL << from);
+        kingBitboard |= (1ULL << to);
+
+        _bitboards[pieceTypeInt] = kingBitboard;
+    }
+
     void ChessBoard::unmakeMove(Move move, bool wasWhite) {
         // If the move is a castle, update the bitboards and return
         if (move.isAnyCastle()) {

@@ -9,6 +9,10 @@ namespace game {
             std::string fenTwo;
             std::string fenThree;
             std::string bugFen;
+            std::string castlingWhileInCheckWhiteFen;
+            std::string castlingWhileInCheckBlackFen;
+            std::string castlingThroughAttacksWhiteFen;
+            std::string castlingThroughAttacksBlackFen;
 
             void SetUp() override {
                 BaseMoveGeneratorTest::SetUp();
@@ -16,6 +20,10 @@ namespace game {
                 fenTwo = "r1n1k1Nr/8/8/8/8/8/8/R2pK1PR";
                 fenThree = "4k2r/r7/8/8/8/8/7R/R3K3";
                 bugFen = "6n1/8/7N/1p2b3/P2B4/8/4q1r1/4Q1R1";
+                castlingWhileInCheckWhiteFen = "r3k2r/4q3/8/8/8/8/8/R3K2R";
+                castlingWhileInCheckBlackFen = "r3k2r/8/8/8/8/8/4Q3/R3K2R";
+                castlingThroughAttacksWhiteFen = "r3k2r/3r1r2/8/8/8/8/8/R3K2R";
+                castlingThroughAttacksBlackFen = "r3k2r/8/8/8/8/8/3R1R2/R3K2R";
             }
     };
 
@@ -203,6 +211,34 @@ namespace game {
     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_bugFenWhite_ShouldReturn0Moves) {
         moveGenerator.setBoardFromFen(bugFen);
         moveGenerator.genCastlingMoves(true);
+
+        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+    }
+
+    TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingWhileInCheckWhiteFen_ShouldReturn0Moves) {
+        moveGenerator.setBoardFromFen(castlingWhileInCheckWhiteFen);
+        moveGenerator.genCastlingMoves(true);
+
+        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+    }
+
+    TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingWhileInCheckBlackFen_ShouldReturn0Moves) {
+        moveGenerator.setBoardFromFen(castlingWhileInCheckBlackFen);
+        moveGenerator.genCastlingMoves(false);
+
+        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+    }
+
+    TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingThroughAttacksWhiteFenWhite_ShouldReturn0Moves) {
+        moveGenerator.setBoardFromFen(castlingThroughAttacksWhiteFen);
+        moveGenerator.genCastlingMoves(true);
+
+        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+    }
+
+    TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingThroughAttacksBlackFenBlack_ShouldReturn0Moves) {
+        moveGenerator.setBoardFromFen(castlingThroughAttacksBlackFen);
+        moveGenerator.genCastlingMoves(false);
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }

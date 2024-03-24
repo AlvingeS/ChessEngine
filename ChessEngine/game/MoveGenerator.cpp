@@ -393,45 +393,63 @@ namespace game {
         return false;
     }
 
-    void MoveGenerator::genCastlingMoves(bool isWhite) {
-        if (isWhite && !_board.getHasCastled(true)) {
-            // King side castling
-            if (!_board.kingSideCastlersHasMoved(true)) {
-                if ((_whiteKingSideCastleBitmask & _occupiedBitmask) == 0) {
-                    if (kingAndRookOnCastlingSquares(true, true)) {
-                        addMove(0, 0, Move::KING_CASTLE_FLAG);
-                    }
-                }
-            }
+    void MoveGenerator::makeTemporaryKingMove(bool isWhite, bool isKingSide) {
+        _board.makeTemporaryKingMove(isWhite, isKingSide);
+    }
 
-            // Queen side castling
-            if (!_board.queenSideCastlersHasMoved(true)) {
-                if ((_whiteQueenSideCastleBitmask & _occupiedBitmask) == 0) {
-                    if (kingAndRookOnCastlingSquares(true, false)) {
-                        addMove(0, 0, Move::QUEEN_CASTLE_FLAG);
-                    }
-                }
-            }
+    void MoveGenerator::unmakeTemporaryKingMove(bool isWhite, bool isKingSide) {
+        _board.unmakeTemporaryKingMove(isWhite, isKingSide);
+    }
 
-        } else if (!isWhite && !_board.getHasCastled(false)) {
-            // King side castling
-            if (!_board.kingSideCastlersHasMoved(false)) {
-                if ((_blackKingSideCastleBitmask & _occupiedBitmask) == 0) {
-                    if (kingAndRookOnCastlingSquares(false, true)) {
-                        addMove(0, 0, Move::KING_CASTLE_FLAG);
-                    }
-                }
-            }
-
-            // Queen side castling
-            if (!_board.queenSideCastlersHasMoved(false)) {
-                if ((_blackQueenSideCastleBitmask & _occupiedBitmask) == 0) {
-                    if (kingAndRookOnCastlingSquares(false, false)) {
-                        addMove(0, 0, Move::QUEEN_CASTLE_FLAG);
-                    }
-                }
-            }
+    void MoveGenerator::genSingleCastleMove(bool isWhite, bool isKingSide) {
+        // Check that the player has not castled
+        if (_board.getHasCastled(isWhite)) {
+            return;
         }
+
+        // Check that the king or queen side castlers has not moved
+        bool kingOrQueenSideCastlersHasMoved = isWhite ? (isKingSide ? _board.kingSideCastlersHasMoved(true) : _board.queenSideCastlersHasMoved(true))
+                                                       : (isKingSide ? _board.kingSideCastlersHasMoved(false) : _board.queenSideCastlersHasMoved(false));
+                                                       
+        if (kingOrQueenSideCastlersHasMoved) {
+            return;
+        }
+
+        // Check that there are no pieces between the king and rook
+        bits::U64 spaceBetweenCastlersBitmask = isWhite ? (isKingSide ? _whiteKingSideCastleBitmask : _whiteQueenSideCastleBitmask)
+                                                        : (isKingSide ? _blackKingSideCastleBitmask : _blackQueenSideCastleBitmask);
+        
+        if ((spaceBetweenCastlersBitmask & _occupiedBitmask) != 0) {
+            return;
+        }
+
+        // Check that the king and rook are on the correct squares
+        if (!kingAndRookOnCastlingSquares(isWhite, isKingSide)) {
+            return;
+        }
+
+        // Check that we are not currently in check
+        if (isInCheck(isWhite)) {
+            return;
+        }
+
+        // Move king one square towards the rook, check that the king is not in check
+        makeTemporaryKingMove(isWhite, isKingSide);
+        
+        if (isInCheck(isWhite)) {
+            unmakeTemporaryKingMove(isWhite, isKingSide);
+            return;
+        }
+        
+        unmakeTemporaryKingMove(isWhite, isKingSide);
+
+        int moveFlag = isKingSide ? Move::KING_CASTLE_FLAG : Move::QUEEN_CASTLE_FLAG;        
+        addMove(0, 0, moveFlag);
+    }
+
+    void MoveGenerator::genCastlingMoves(bool isWhite) {
+        genSingleCastleMove(isWhite, true);
+        genSingleCastleMove(isWhite, false);
     }
 
     bool MoveGenerator::checkStraightRay(bits::U64& straightRay, bool firstBlockerOnLSB, bits::U64& opponentRooksAndQueens) {

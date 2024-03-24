@@ -78,7 +78,7 @@ namespace search {
             {2, 0},
             {3, 0},
             {4, 8},
-            {5, 347}
+            {5, 0} // Cant check for checkmate at max depth
         };
 
         for (int i = 0; i <= MAX_DEPTH; i++) {
@@ -105,8 +105,62 @@ namespace search {
             {4, 4085603}
         };
 
+        std::unordered_map<int, int> expectedCaptures = {
+            {0, 0},
+            {1, 8},
+            {2, 351},
+            {3, 17102},
+            {4, 757163}
+        };
+
+        std::unordered_map<int, int> expectedEpCaptures = {
+            {0, 0},
+            {1, 0},
+            {2, 1},
+            {3, 45},
+            {4, 1929}
+        };
+
+        std::unordered_map<int, int> expectedCastling = {
+            {0, 0},
+            {1, 2},
+            {2, 91},
+            {3, 3162},
+            {4, 128013}
+        };
+
+        std::unordered_map<int, int> expectedPromotions = {
+            {0, 0},
+            {1, 0},
+            {2, 0},
+            {3, 0},
+            {4, 15172}
+        };
+
+        std::unordered_map<int, int> expectedChecks = {
+            {0, 0},
+            {1, 0},
+            {2, 3},
+            {3, 993},
+            {4, 25523}
+        };
+
+        std::unordered_map<int, int> expectedCheckmates = {
+            {0, 0},
+            {1, 0},
+            {2, 0},
+            {3, 1},
+            {4, 0} // Cant check for checkmate at max depth
+        };
+
         for (int i = 1; i <= MAX_DEPTH - 1; i++) {
             ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
+            ASSERT_EQ(searcher._captureCount[i], expectedCaptures[i]);
+            ASSERT_EQ(searcher._epCaptureCount[i], expectedEpCaptures[i]);
+            ASSERT_EQ(searcher._castlingCount[i], expectedCastling[i]);
+            ASSERT_EQ(searcher._promotionCount[i], expectedPromotions[i]);
+            ASSERT_EQ(searcher._checkCount[i], expectedChecks[i]);
+            ASSERT_EQ(searcher._checkmateCount[i], expectedCheckmates[i]);
         }
     }
 

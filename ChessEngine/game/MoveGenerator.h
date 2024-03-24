@@ -88,6 +88,9 @@ namespace game {
             void getMovesFromStraightRay(bits::U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile);
             void getMovesFromDiagonalRay(bits::U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, int pieceRank, int pieceFile);
             bool kingAndRookOnCastlingSquares(bool isWhite, bool isKingSide);
+            void genSingleCastleMove(bool isWhite, bool isKingSide);
+            void makeTemporaryKingMove(bool isWhite, bool isKingSide);
+            void unmakeTemporaryKingMove(bool isWhite, bool isKingSide);
 
             // Check detection
             bool checkStraightRay(bits::U64& straightRay, bool firstBlockerOnLSB, bits::U64& opponentRooksAndQueens);

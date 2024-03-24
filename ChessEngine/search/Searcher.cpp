@@ -103,17 +103,15 @@ namespace search {
             game::PieceType lastCapturedPiece = _board.getLastCapturedPiece();
 
             if (_moveGenerator.isInCheck(isMaximizer)) {
+                numIllegalMoves++;
                 unmakeMove(currentMove, isMaximizer);
                 debugPrint(verbose, condition);
-                if (condition) {
-                    std::cout << "Illegal move: " << std::endl;
-                }
 
                 if (numIllegalMoves == moveList.numMoves) {
                     bool wasInCheckBeforeMove = _moveGenerator.isInCheck(true);
 
                     if (wasInCheckBeforeMove) {
-                        _checkmateCount[currentDepth + 1]++;
+                        _checkmateCount[currentDepth]++;
                         return {currentMove, multiplier * 1000000.0f};
                     } else {
                         return {currentMove, 0.0f};

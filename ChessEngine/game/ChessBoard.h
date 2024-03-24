@@ -17,6 +17,8 @@ namespace game {
 
             void makeMove(Move move, bool isWhite);
             void unmakeMove(Move move, bool wasWhite);
+            void makeTemporaryKingMove(bool isWhite, bool isKingSide);
+            void unmakeTemporaryKingMove(bool wasWhite, bool wasKingSide);
 
             void setLastCapturedPiece(PieceType pieceType) {
                 _lastCapturedPiece = pieceType;

@@ -12,16 +12,24 @@ namespace search {
         _numMoveGenCalls = 0;
         _totalNodes = 0;
         
-        _nodeCount.resize(maxDepth + 1);
-        _captureCount.resize(maxDepth + 1);
-        _epCaptureCount.resize(maxDepth + 1);
-        _castlingCount.resize(maxDepth + 1);
-        _promotionCount.resize(maxDepth + 1);
-        _checkCount.resize(maxDepth + 1);
-        _checkmateCount.resize(maxDepth + 1);
-        _moveStack.resize(maxDepth);
+        _nodeCountPerFirstMove.resize(218);
+        _firstMoves.resize(218);
 
-        for (int i = 0; i < maxDepth; i++) {
+        for (int i = 0; i < 218; i++) {
+            _nodeCountPerFirstMove[i] = 0;
+            _firstMoves[i] = game::Move();
+        }
+
+        _nodeCount.resize(20);
+        _captureCount.resize(20);
+        _epCaptureCount.resize(20);
+        _castlingCount.resize(20);
+        _promotionCount.resize(20);
+        _checkCount.resize(20);
+        _checkmateCount.resize(20);
+        _moveStack.resize(20);
+
+        for (int i = 0; i < 20; i++) {
             _nodeCount[i + 1] = 0;
             _captureCount[i + 1] = 0;
             _epCaptureCount[i + 1] = 0;
@@ -106,7 +114,7 @@ namespace search {
     }
 
     // TODO: Implement draw by repetition after implementing zobrist hashing
-    MoveScore Searcher::minimax(int currentDepth, bool isMaximizer, bool verbose) {
+    MoveScore Searcher::minimax(int currentDepth, bool isMaximizer, int firstMoveIndex, bool verbose) {
         // int multiplier = isMaximizer ? 1 : -1;
         
         if (currentDepth == _maxDepth) {
@@ -159,6 +167,13 @@ namespace search {
                 _checkCount[currentDepth + 1]++;
             }
 
+            if (currentDepth == 0) {
+                firstMoveIndex = i;
+                _firstMoves[i] = currentMove;
+            } else {
+                _nodeCountPerFirstMove[firstMoveIndex]++;
+            }
+
             _nodeCount[currentDepth + 1]++;
 
             if (currentMove.isAnyCapture()) {
@@ -182,7 +197,7 @@ namespace search {
                 return {currentMove, 0.0f};
             }
 
-            MoveScore eval = minimax(currentDepth + 1, !isMaximizer, verbose);
+            MoveScore eval = minimax(currentDepth + 1, !isMaximizer, firstMoveIndex, verbose);
             
             if (isMaximizer) {
                 if (eval.score > bestEval.score) {

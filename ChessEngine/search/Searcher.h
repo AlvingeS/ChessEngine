@@ -19,13 +19,15 @@ namespace search {
     class Searcher {
         public:
             Searcher(int maxDepth);
-            MoveScore minimax(int current_depth, bool isMaximizer, bool verbose = false);
+            MoveScore minimax(int current_depth, bool isMaximizer, int firstMoveIndex, bool verbose = false);
             MoveList genMoves(bool isWhite);
             void makeMove(game::Move move, bool isWhite);
             void unmakeMove(game::Move move, bool isWhite);
             void undoMove();
             int _numMoveGenCalls;
             int _totalNodes;
+            std::vector<int> _nodeCountPerFirstMove;
+            std::vector<game::Move> _firstMoves;
             std::vector<int> _nodeCount;
             std::vector<int> _captureCount;
             std::vector<int> _epCaptureCount;

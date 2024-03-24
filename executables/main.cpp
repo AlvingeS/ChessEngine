@@ -9,7 +9,7 @@ int main() {
 
     int const MAX_DEPTH = 5;
     search::Searcher searcher = search::Searcher(MAX_DEPTH);
-    searcher.minimax(0, true);
+    searcher.minimax(0, true, 0);
     
     for (int i = 0; i < MAX_DEPTH; i++) {
         std::cout << "Depth " << i << ": " << searcher._nodeCount[i] << std::endl;

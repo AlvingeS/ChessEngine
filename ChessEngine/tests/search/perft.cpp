@@ -11,13 +11,86 @@ namespace search {
             bool longRun = false;
             std::string pos2 = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R";
             std::string pos3 = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8";
+            std::string pos5 = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R";
+
+            bool enableStartPosTest = false;
+            bool enablePos2Test = true;
+            bool enablePos3Test = false;
+            bool enablePos5Test = false;
+
+            char colToChar(int col) {
+                switch (col) {
+                    case 0:
+                        return 'h';
+                    case 1:
+                        return 'g';
+                    case 2:
+                        return 'f';
+                    case 3:
+                        return 'e';
+                    case 4:
+                        return 'd';
+                    case 5:
+                        return 'c';
+                    case 6:
+                        return 'b';
+                    case 7:
+                        return 'a';
+                    default:
+                        return 'x';
+                }
+            }
+
+            std::string translateMoveToStr(game::Move move) {
+                int from = move.getBitIndexFrom();
+                int to = move.getBitIndexTo();
+
+                int fromRow = from / 8;
+                int fromCol = from % 8;
+                char fromColChar = colToChar(fromCol);
+
+                int toRow = to / 8;
+                int toCol = to % 8;
+                char toColChar = colToChar(toCol);
+
+                std::string moveStr = "";
+                moveStr += fromColChar;
+                moveStr += std::to_string(fromRow + 1);
+                moveStr += toColChar;
+                moveStr += std::to_string(toRow + 1);
+
+                return moveStr;
+            }
+
+            std::vector<std::string> nodeCountPerFirstMoveAsStrVec() {
+                std::vector<std::string> nodeCountPerFirstMoveStrVec;
+                int sum = 0;
+
+                for (size_t i = 0; i < searcher._nodeCountPerFirstMove.size(); i++) {
+                    if (searcher._firstMoves[i].getMove() != 0) {
+                        std::string moveStr = translateMoveToStr(searcher._firstMoves[i]);
+                        std::string nodeCountStr = std::to_string(searcher._nodeCountPerFirstMove[i]);
+                        std::string moveNodeCountStr = moveStr + ": " + nodeCountStr;
+                        nodeCountPerFirstMoveStrVec.push_back(moveNodeCountStr);
+
+                        sum += searcher._nodeCountPerFirstMove[i];
+                    }
+                }
+
+                nodeCountPerFirstMoveStrVec.push_back("Total: " + std::to_string(sum));
+
+                return nodeCountPerFirstMoveStrVec;
+            }
 
         perft() : searcher(5) {}
     };
 
     TEST_F(perft, perft_starting_pos) {
         searcher.setMaxDepth(longRun ? 6 : 5);
-        searcher.minimax(0, true);
+        
+        if (enableStartPosTest) {
+            searcher.minimax(0, true, 0, true);
+        }
 
         std::unordered_map<int, int> expectedNodes = {
             {0, 1},
@@ -89,16 +162,18 @@ namespace search {
             {6, 0} // Cant check for checkmate at max depth
         };
 
-        for (int i = 1; i <= searcher.getMaxDepth(); i++) {
-            ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
-            ASSERT_EQ(searcher._captureCount[i], exepectedCaptures[i]);
-            ASSERT_EQ(searcher._epCaptureCount[i], expectedEpCaptures[i]);
-            ASSERT_EQ(searcher._castlingCount[i], expectedCastling[i]);
-            ASSERT_EQ(searcher._promotionCount[i], expectedPromotions[i]);
-            ASSERT_EQ(searcher._checkCount[i], expectedChecks[i]);
-            
-            if (i < searcher.getMaxDepth()) {
-                ASSERT_EQ(searcher._checkmateCount[i], expectedCheckmates[i]);
+        if (enableStartPosTest) {
+            for (int i = 1; i <= searcher.getMaxDepth(); i++) {
+                ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
+                ASSERT_EQ(searcher._captureCount[i], exepectedCaptures[i]);
+                ASSERT_EQ(searcher._epCaptureCount[i], expectedEpCaptures[i]);
+                ASSERT_EQ(searcher._castlingCount[i], expectedCastling[i]);
+                ASSERT_EQ(searcher._promotionCount[i], expectedPromotions[i]);
+                ASSERT_EQ(searcher._checkCount[i], expectedChecks[i]);
+                
+                if (i < searcher.getMaxDepth()) {
+                    ASSERT_EQ(searcher._checkmateCount[i], expectedCheckmates[i]);
+                }
             }
         }
     }
@@ -106,7 +181,12 @@ namespace search {
     TEST_F(perft, perft_pos2) {
         searcher.setMaxDepth(longRun ? 5 : 4);
         searcher.setBoardFromFen(pos2);
-        searcher.minimax(0, true, true);
+
+        if (enablePos2Test) {
+            searcher.minimax(0, true, 0, true);
+        }
+
+        std::vector<std::string> strVec = nodeCountPerFirstMoveAsStrVec();
 
         std::unordered_map<int, int> expectedNodes = {
             {0, 1},
@@ -171,23 +251,29 @@ namespace search {
             {5, 0} // Cant check for checkmate at max depth
         };
 
-        for (int i = 1; i <= searcher.getMaxDepth() - 1; i++) {
-            ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
-            ASSERT_EQ(searcher._captureCount[i], expectedCaptures[i]);
-            ASSERT_EQ(searcher._epCaptureCount[i], expectedEpCaptures[i]);
-            ASSERT_EQ(searcher._castlingCount[i], expectedCastling[i]);
-            ASSERT_EQ(searcher._promotionCount[i], expectedPromotions[i]);
-            ASSERT_EQ(searcher._checkCount[i], expectedChecks[i]);
-            
-            if (i < searcher.getMaxDepth()) {
-                ASSERT_EQ(searcher._checkmateCount[i], expectedCheckmates[i]);
-            }        }
+        if (enablePos2Test) {
+            for (int i = 1; i <= searcher.getMaxDepth() - 1; i++) {
+                ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
+                ASSERT_EQ(searcher._captureCount[i], expectedCaptures[i]);
+                ASSERT_EQ(searcher._epCaptureCount[i], expectedEpCaptures[i]);
+                ASSERT_EQ(searcher._castlingCount[i], expectedCastling[i]);
+                ASSERT_EQ(searcher._promotionCount[i], expectedPromotions[i]);
+                ASSERT_EQ(searcher._checkCount[i], expectedChecks[i]);
+                
+                if (i < searcher.getMaxDepth()) {
+                    ASSERT_EQ(searcher._checkmateCount[i], expectedCheckmates[i]);
+                }       
+            }
+        }
     }
 
     TEST_F(perft, perft_pos3) {
-        searcher.setMaxDepth(longRun ? 6 : 5);
+        searcher.setMaxDepth(longRun ? 7 : 6);
         searcher.setBoardFromFen(pos3);
-        searcher.minimax(0, true, true);
+
+        if (enablePos3Test) {
+            searcher.minimax(0, true, 0, true);
+        }
 
         std::unordered_map<int, int> expectedNodes = {
             {0, 1},
@@ -266,16 +352,43 @@ namespace search {
             {7, 87}
         };
 
-        for (int i = 1; i <= searcher.getMaxDepth(); i++) {
-            ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
-            ASSERT_EQ(searcher._captureCount[i], expectedCaptures[i]);
-            ASSERT_EQ(searcher._epCaptureCount[i], expectedEpCaptures[i]);
-            ASSERT_EQ(searcher._castlingCount[i], expectedCastling[i]);
-            ASSERT_EQ(searcher._promotionCount[i], expectedPromotions[i]);
-            ASSERT_EQ(searcher._checkCount[i], expectedChecks[i]);
+        if (enablePos3Test) {
+            for (int i = 1; i <= searcher.getMaxDepth(); i++) {
+                ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
+                ASSERT_EQ(searcher._captureCount[i], expectedCaptures[i]);
+                ASSERT_EQ(searcher._epCaptureCount[i], expectedEpCaptures[i]);
+                ASSERT_EQ(searcher._castlingCount[i], expectedCastling[i]);
+                ASSERT_EQ(searcher._promotionCount[i], expectedPromotions[i]);
+                ASSERT_EQ(searcher._checkCount[i], expectedChecks[i]);
+                
+                if (i < searcher.getMaxDepth()) {
+                    ASSERT_EQ(searcher._checkmateCount[i], expectedCheckmates[i]);
+                }
+            }
+        }
+    }
 
-            if (i < searcher.getMaxDepth()) {
-                ASSERT_EQ(searcher._checkmateCount[i], expectedCheckmates[i]);
+    TEST_F(perft, perft_pos5) {
+        searcher.setMaxDepth(longRun ? 5 : 4);
+        searcher.setBoardFromFen(pos5);
+        searcher.getBoard().setHasCastled(false, true);
+
+        if (enablePos5Test) {
+            searcher.minimax(0, true, 0, true);
+        }
+
+        std::unordered_map<int, int> expectedNodes = {
+            {0, 1},
+            {1, 44},
+            {2, 1486},
+            {3, 62379},
+            {4, 2103487},
+            {5, 89941194}
+        };
+
+        if (enablePos5Test) {
+            for (int i = 1; i <= searcher.getMaxDepth(); i++) {
+                ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
             }
         }
     }

@@ -39,6 +39,10 @@ namespace search {
                 _maxDepth = maxDepth;
             }
 
+            int getMaxDepth() {
+                return _maxDepth;
+            }
+
             game::ChessBoard& getBoard() {
                 return _board;
             }

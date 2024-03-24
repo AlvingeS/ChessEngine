@@ -197,7 +197,6 @@ namespace search {
             _board.setLastCapturedPiece(lastCapturedPiece);
             unmakeMove(currentMove, isMaximizer);
             debugPrint(verbose, condition);
-            int x = 4;
         }
 
         return bestEval;

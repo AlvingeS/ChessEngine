@@ -15,17 +15,17 @@ namespace game {
 
     TEST_F(MoveGeneratorCountsTest, genAllMoves_startPosWhite_ShouldReturn20Moves) {
         moveGenerator.setBoardFromFen(startingPos);
-        moveGenerator.genMoves(true);
+        moveGenerator.genMoves(true, moveList);
 
-        std::vector<Move> moves = moveGenerator.getMoves();
+        std::vector<Move> moves = getMoves();
         ASSERT_EQ(moveGenerator.getMoveIndex(), 20);
     }
 
     TEST_F(MoveGeneratorCountsTest, genAllMoves_startPosBlack_ShouldReturn20Moves) {
         moveGenerator.setBoardFromFen(startingPos);
-        moveGenerator.genMoves(false);
+        moveGenerator.genMoves(false, moveList);
 
-        std::vector<Move> moves = moveGenerator.getMoves();
+        std::vector<Move> moves = getMoves();
         ASSERT_EQ(moveGenerator.getMoveIndex(), 20);
     }
 }

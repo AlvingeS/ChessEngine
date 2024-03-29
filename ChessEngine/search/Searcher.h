@@ -18,9 +18,12 @@ namespace search {
 
     class Searcher {
         public:
+
+            static constexpr int MAX_LEGAL_MOVES = 218;
+
             Searcher(int maxDepth);
-            MoveScore minimax(int current_depth, bool isMaximizer, int firstMoveIndex, bool verbose = false);
-            MoveList genMoves(bool isWhite);
+            void minimax(int current_depth, bool isMaximizer, int firstMoveIndex, game::Move lastMove = game::Move(), bool verbose = true);
+            void genMoves(bool isWhite, std::vector<game::Move>& moveList);
             void makeMove(game::Move move, bool isWhite);
             void unmakeMove(game::Move move, bool isWhite);
             void undoMove();
@@ -65,6 +68,8 @@ namespace search {
             int _maxDepth;
 
             int _pseudoLegalMovesCount;
-            std::vector<std::vector<game::Move>> _moveStack;
+            std::vector<std::vector<game::Move>> _moveLists;
+            std::vector<game::PieceType> _lastCapturedPieces;
+            std::vector<int> _noCapturedOrPawnMoveCounts; 
     };
 }

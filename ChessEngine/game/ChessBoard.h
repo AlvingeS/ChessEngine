@@ -99,18 +99,18 @@ namespace game {
             
             bits::U64 getWhitePiecesBitmask();
             bits::U64 getBlackPiecesBitmask();
+            bool _whiteRookAMoved;
+            std::vector<PieceType> _squaresLookup;
 
         private:
             // Private member variables
             std::vector<bits::U64> _bitboards;
-            std::vector<PieceType> _squaresLookup;
             bits::U64 _enPessantTarget;
 
             bool _whiteHasCastled;
             bool _blackHasCastled;
             bool _whiteKingMoved;
             bool _blackKingMoved;
-            bool _whiteRookAMoved;
             bool _whiteRookHMoved;
             bool _blackRookAMoved;
             bool _blackRookHMoved;

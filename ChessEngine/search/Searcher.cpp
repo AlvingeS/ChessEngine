@@ -12,12 +12,22 @@ namespace search {
         _numMoveGenCalls = 0;
         _totalNodes = 0;
         
-        _nodeCountPerFirstMove.resize(218);
-        _firstMoves.resize(218);
+        _nodeCountPerFirstMove.resize(MAX_LEGAL_MOVES);
+        _firstMoves.resize(MAX_LEGAL_MOVES);
 
-        for (int i = 0; i < 218; i++) {
+        for (int i = 0; i < MAX_LEGAL_MOVES; i++) {
             _nodeCountPerFirstMove[i] = 0;
             _firstMoves[i] = game::Move();
+        }
+
+        _lastCapturedPieces.resize(_maxDepth);
+        _moveLists.resize(_maxDepth);
+        _noCapturedOrPawnMoveCounts.resize(_maxDepth);
+
+        for (int i = 0; i < _maxDepth; i++) {
+            _lastCapturedPieces[i] = game::PieceType::EMPTY;
+            _moveLists[i] = std::vector<game::Move>(MAX_LEGAL_MOVES);
+            _noCapturedOrPawnMoveCounts[i] = 0;
         }
 
         _nodeCount.resize(20);
@@ -27,7 +37,6 @@ namespace search {
         _promotionCount.resize(20);
         _checkCount.resize(20);
         _checkmateCount.resize(20);
-        _moveStack.resize(20);
 
         for (int i = 0; i < 20; i++) {
             _nodeCount[i + 1] = 0;
@@ -37,7 +46,6 @@ namespace search {
             _promotionCount[i + 1] = 0;
             _checkCount[i + 1] = 0;
             _checkmateCount[i + 1] = 0;
-            _moveStack[i].resize(game::MoveGenerator::MAX_LEGAL_MOVES);
         }
 
         _nodeCount[0] = 1;
@@ -49,10 +57,9 @@ namespace search {
         _checkmateCount[0] = 0;
     }
 
-    MoveList Searcher::genMoves(bool isWhite) {
+    void Searcher::genMoves(bool isWhite, std::vector<game::Move>& moveList) {
         _moveGenerator.resetMoveIndex();
-        _moveGenerator.genMoves(isWhite);
-        return MoveList{_moveGenerator.getMoves(), _moveGenerator.getMoveIndex()};
+        _moveGenerator.genMoves(isWhite, moveList);
     }
 
     void Searcher::makeMove(game::Move move, bool isWhite) {
@@ -114,50 +121,47 @@ namespace search {
     }
 
     // TODO: Implement draw by repetition after implementing zobrist hashing
-    MoveScore Searcher::minimax(int currentDepth, bool isMaximizer, int firstMoveIndex, bool verbose) {
-        // int multiplier = isMaximizer ? 1 : -1;
-        
+    void Searcher::minimax(int currentDepth, bool isMaximizer, int firstMoveIndex, game::Move lastMove, bool verbose) {        
         if (currentDepth == _maxDepth) {
-            return MoveScore{game::Move(), 0};
+            return;
         }
 
-        MoveScore bestEval = {game::Move(), 0};
-        MoveList moveList = genMoves(isMaximizer);
+        genMoves(isMaximizer, _moveLists[currentDepth]);
         _numMoveGenCalls++;
         
         size_t numIllegalMoves = 0;
 
-        for (size_t i = 0; i < moveList.numMoves; i++) {
-            game::Move currentMove = moveList.moves[i];
+        for (size_t i = 0; i < MAX_LEGAL_MOVES; i++) {
+            game::Move currentMove = _moveLists[currentDepth][i];
 
-            // bool condition = currentMove.getBitIndexFrom() == 32 && currentMove.getBitIndexTo() == 38;
-            // bool condition = currentDepth == 0 && i == 1;
-            // bool condition = _board.getSquaresLookup()[59] == game::PieceType::B_KING;
-            // bool condition = currentMove.getMove() == 12288 && not isMaximizer;
-            // bool condition = verbose && !hasTwoCastlingMove(moveList) && currentDepth == 1;
-            // bool condition = verbose && currentMove.getMove() == 391 && currentDepth == 0;
+            if (currentMove.getMove() == 0) {
+                break;
+            }
+
+            bool condition = verbose && currentDepth == 0;
+            // bool condition = false;
 
             // Make the move and check if we are in any way left in check
-            // debugPrint(verbose, condition);
+            debugPrint(verbose, condition);
             makeMove(currentMove, isMaximizer);
-            // debugPrint(verbose, condition);
+            debugPrint(verbose, condition);
 
             game::PieceType lastCapturedPiece = _board.getLastCapturedPiece();
 
             if (_moveGenerator.isInCheck(isMaximizer)) {
                 numIllegalMoves++;
-                unmakeMove(currentMove, isMaximizer);
-                // debugPrint(verbose, condition);
 
-                if (numIllegalMoves == moveList.numMoves) {
+                unmakeMove(currentMove, isMaximizer);
+                debugPrint(verbose, condition);
+
+                if (numIllegalMoves == i + 1 && _moveLists[currentDepth][i + 1].getMove() == 0) {
                     bool wasInCheckBeforeMove = _moveGenerator.isInCheck(isMaximizer);
 
                     if (wasInCheckBeforeMove) {
                         _checkmateCount[currentDepth]++;
-                        return {currentMove, 0};
-                    } else {
-                        return {currentMove, 0.0f};
                     }
+
+                    return;
                 }
 
                 continue;
@@ -170,7 +174,7 @@ namespace search {
             if (currentDepth == 0) {
                 firstMoveIndex = i;
                 _firstMoves[i] = currentMove;
-            } else {
+            } else if (currentDepth == _maxDepth - 1) {
                 _nodeCountPerFirstMove[firstMoveIndex]++;
             }
 
@@ -194,26 +198,17 @@ namespace search {
 
             if (_moveGenerator.isDeadPosition() || _board.getNoCaptureOrPawnMoveCount() >= 50) {
                 unmakeMove(currentMove, isMaximizer);
-                return {currentMove, 0.0f};
+                return;
             }
 
-            MoveScore eval = minimax(currentDepth + 1, !isMaximizer, firstMoveIndex, verbose);
-            
-            if (isMaximizer) {
-                if (eval.score > bestEval.score) {
-                    bestEval = eval;
-                }
-            } else {
-                if (eval.score < bestEval.score) {
-                    bestEval = eval;
-                }
-            }
+            minimax(currentDepth + 1, !isMaximizer, firstMoveIndex, currentMove, verbose);
 
             _board.setLastCapturedPiece(lastCapturedPiece);
             unmakeMove(currentMove, isMaximizer);
-            // debugPrint(verbose, condition);
+            debugPrint(verbose, condition);
+            int x = 4;
         }
 
-        return bestEval;
+        return;
     }
 }

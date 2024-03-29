@@ -228,8 +228,9 @@ namespace game {
         movedPieceBitboard &= ~(1ULL << from);
         _squaresLookup[from] = PieceType::EMPTY;
 
+        // FIXME: THIS IS TEMPORARY
         if (!move.isAnyCapture() && (movedPieceType != PieceType::W_PAWN && movedPieceType != PieceType::B_PAWN)) {
-            _noCaptureOrPawnMoveCount++;
+            _noCaptureOrPawnMoveCount += 0;
         } else {
             _noCaptureOrPawnMoveCount = 0;
         }

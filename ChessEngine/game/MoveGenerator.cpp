@@ -31,7 +31,6 @@ attempt to find moves that could block the check, move the king or eliminate the
 
 namespace game {
     MoveGenerator::MoveGenerator(ChessBoard& board) : _board(board) {
-        _moves = std::vector<Move>(MAX_LEGAL_MOVES);
         _freeRayIndices.reserve(8);
         _freeMovesIndices.reserve(8);
         _capturableMovesIndices.reserve(8);
@@ -75,38 +74,24 @@ namespace game {
         updateGameStateBitmasks();
     }
 
-    void MoveGenerator::addMove(int bitIndexFrom, int bitIndexTo, int flag) {
-        _moves[_moveIndex] = Move(bitIndexFrom, bitIndexTo, flag);
+    void MoveGenerator::addMove(int bitIndexFrom, int bitIndexTo, int flag, std::vector<Move>& moveList) {
+        moveList[_moveIndex] = Move(bitIndexFrom, bitIndexTo, flag);
         _moveIndex++;
     }
 
-    // count the number of elements in a vector that are not null
-    int MoveGenerator::getNumLegalMoves() {
-        int numLegalMoves = 0;
-
-        for (Move move : _moves) {
-            if (move.getMove() != 0) {
-                numLegalMoves++;
-            }
-        }
-
-        return numLegalMoves;
+    void MoveGenerator::genMoves(bool isWhite, std::vector<Move>& moveList) {
+        genRookMoves(isWhite, moveList);
+        genKnightMoves(isWhite, moveList);
+        genBishopMoves(isWhite, moveList);
+        genQueenMoves(isWhite, moveList);
+        genKingMoves(isWhite, moveList);
+        genPawnMoves(isWhite, moveList);
+        genCastlingMoves(isWhite, moveList);
+        moveList[_moveIndex] = Move(); // Add a null move to the end of the move list
     }
 
-    std::vector<Move>& MoveGenerator::genMoves(bool isWhite) {
-        genRookMoves(isWhite);
-        genKnightMoves(isWhite);
-        genBishopMoves(isWhite);
-        genQueenMoves(isWhite);
-        genKingMoves(isWhite);
-        genPawnMoves(isWhite);
-        genCastlingMoves(isWhite);
-
-        return _moves;
-    }
-
-    void MoveGenerator::resetMoves() {
-        _moves = std::vector<Move>(MAX_LEGAL_MOVES);
+    void MoveGenerator::resetMoves(std::vector<Move>& moveList) {
+        moveList = std::vector<Move>(MAX_LEGAL_MOVES);
         _moveIndex = 0;
     }
 
@@ -114,26 +99,27 @@ namespace game {
         _moveIndex = 0;
     }    
 
-    void MoveGenerator::addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom) {
+    void MoveGenerator::addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, std::vector<Move>& moveList) {
         bits::getBitIndices(_freeRayIndices, freeRay);
 
         for (int bitIndex : _freeRayIndices) {
-            addMove(bitIndexFrom, bitIndex, Move::QUITE_FLAG);
+            addMove(bitIndexFrom, bitIndex, Move::QUITE_FLAG, moveList);
         }
     }
 
-    void MoveGenerator::addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom) {
+    void MoveGenerator::addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, std::vector<Move>& moveList) {
         bool blockerIsWhite = bits::getBit(_whitePiecesBitmask, blockerIndex);
 
         if (blockerIsWhite != isWhite) {
-            addMove(bitIndexFrom, blockerIndex, Move::CAPTURE_FLAG);
+            addMove(bitIndexFrom, blockerIndex, Move::CAPTURE_FLAG, moveList);
         }
     }
 
-    void MoveGenerator::addMovesBetweenBlockerAndPieceOnStraightRay(int blockerIndex, bool alongFile, 
+    void MoveGenerator::addMovesBetweenBlockerAndPieceOnStraightRay(int blockerIndex,bool alongFile, 
                                                     bool startFromBlocker, int rookRank, 
                                                     int rookFile, 
-                                                    int bitIndexFrom) {
+                                                    int bitIndexFrom,
+                                                    std::vector<Move>& moveList) {
         int start = startFromBlocker 
                     ? (alongFile ? bits::fileFromBitIndex(blockerIndex) 
                                 : bits::rankFromBitIndex(blockerIndex)) 
@@ -148,13 +134,14 @@ namespace game {
 
         for (int i = start - 1; i > stop; --i) {
             int rankOrFileIndex = alongFile ? rookRank * 8 + i : i * 8 + rookFile;
-            addMove(bitIndexFrom, rankOrFileIndex, Move::QUITE_FLAG);
+            addMove(bitIndexFrom, rankOrFileIndex, Move::QUITE_FLAG, moveList);
         }
     }
 
     void MoveGenerator::addMovesBetweenBlockerAndPieceOnDiagonalRay(int blockerIndex, bool startFromBlocker, 
                                                     int bishopRank, int bishopFile, 
-                                                    int bitIndexFrom) {
+                                                    int bitIndexFrom,
+                                                    std::vector<Move>& moveList) {
         
         int startRank = startFromBlocker ? bits::rankFromBitIndex(blockerIndex) : bishopRank;
         int startFile = startFromBlocker ? bits::fileFromBitIndex(blockerIndex) : bishopFile;
@@ -170,35 +157,35 @@ namespace game {
 
         for (int i = startRank + rankIncrement, j = startFile + fileIncrement; i != stopRank; i += rankIncrement, j += fileIncrement) {
             int rankOrFileIndex = i * 8 + j;
-            addMove(bitIndexFrom, rankOrFileIndex, Move::QUITE_FLAG);
+            addMove(bitIndexFrom, rankOrFileIndex, Move::QUITE_FLAG, moveList);
         }
     }
 
-    void MoveGenerator::getMovesFromStraightRay(bits::U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile) {
+    void MoveGenerator::getMovesFromStraightRay(bits::U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<Move>& moveList) {
             bits::U64 blockerBitMask = ray & _occupiedBitmask;          
 
             if (blockerBitMask != 0) {
                 int blockerIndex = blockerOnLSB ? bits::indexOfLSB(blockerBitMask) : bits::indexOfMSB(blockerBitMask);
-                addMoveIfBlockerIsEnemy(blockerIndex, isWhite, pieceIndex);
-                addMovesBetweenBlockerAndPieceOnStraightRay(blockerIndex, alongFile, blockerOnLSB, pieceRank, pieceFile, pieceIndex);
+                addMoveIfBlockerIsEnemy(blockerIndex, isWhite, pieceIndex, moveList);
+                addMovesBetweenBlockerAndPieceOnStraightRay(blockerIndex, alongFile, blockerOnLSB, pieceRank, pieceFile, pieceIndex, moveList);
             } else {
-                addMovesFromFreeRay(ray, pieceIndex);
+                addMovesFromFreeRay(ray, pieceIndex, moveList);
             }
     }
 
-    void MoveGenerator::getMovesFromDiagonalRay(bits::U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, int pieceRank, int pieceFile) {
+    void MoveGenerator::getMovesFromDiagonalRay(bits::U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<Move>& moveList) {
         bits::U64 blockerBitMask = ray & _occupiedBitmask;
 
         if (blockerBitMask != 0) {
             int blockerIndex = blockerOnLSB ? bits::indexOfLSB(blockerBitMask) : bits::indexOfMSB(blockerBitMask);
-            addMoveIfBlockerIsEnemy(blockerIndex, isWhite, pieceIndex);
-            addMovesBetweenBlockerAndPieceOnDiagonalRay(blockerIndex, blockerOnLSB, pieceRank, pieceFile, pieceIndex);
+            addMoveIfBlockerIsEnemy(blockerIndex, isWhite, pieceIndex, moveList);
+            addMovesBetweenBlockerAndPieceOnDiagonalRay(blockerIndex, blockerOnLSB, pieceRank, pieceFile, pieceIndex, moveList);
         } else {
-            addMovesFromFreeRay(ray, pieceIndex);
+            addMovesFromFreeRay(ray, pieceIndex, moveList);
         }
     }
 
-    void MoveGenerator::genRookMoves(bool isWhite) {
+    void MoveGenerator::genRookMoves(bool isWhite, std::vector<Move>& moveList) {
         bits::StraightRays rays;
 
         PieceType currentPieceType = isWhite ? PieceType::W_ROOK : PieceType::B_ROOK;
@@ -210,14 +197,14 @@ namespace game {
             int rookRank = bits::rankFromBitIndex(currentRookIndex);
             int rookFile = bits::fileFromBitIndex(currentRookIndex);
 
-            getMovesFromStraightRay(rays.north, true, false, isWhite, currentRookIndex, rookRank, rookFile);
-            getMovesFromStraightRay(rays.east, false, true, isWhite, currentRookIndex, rookRank, rookFile);
-            getMovesFromStraightRay(rays.south, false, false, isWhite, currentRookIndex, rookRank, rookFile);
-            getMovesFromStraightRay(rays.west, true, true, isWhite, currentRookIndex, rookRank, rookFile);
+            getMovesFromStraightRay(rays.north, true, false, isWhite, currentRookIndex, rookRank, rookFile, moveList);
+            getMovesFromStraightRay(rays.east, false, true, isWhite, currentRookIndex, rookRank, rookFile, moveList);
+            getMovesFromStraightRay(rays.south, false, false, isWhite, currentRookIndex, rookRank, rookFile, moveList);;
+            getMovesFromStraightRay(rays.west, true, true, isWhite, currentRookIndex, rookRank, rookFile, moveList);
         }
     }
 
-    void MoveGenerator::genBishopMoves(bool isWhite) {
+    void MoveGenerator::genBishopMoves(bool isWhite, std::vector<Move>& moveList) {
         PieceType currentPieceType = isWhite ? PieceType::W_BISHOP : PieceType::B_BISHOP;
         bits::getBitIndices(_bishopIndices, _board.getBitboard(currentPieceType));
 
@@ -226,14 +213,14 @@ namespace game {
             int bishopRank = bits::rankFromBitIndex(currentBishopIndex);
             int bishopFile = bits::fileFromBitIndex(currentBishopIndex);
 
-            getMovesFromDiagonalRay(rays.northEast, true, isWhite, currentBishopIndex, bishopRank, bishopFile);
-            getMovesFromDiagonalRay(rays.southEast, false, isWhite, currentBishopIndex, bishopRank, bishopFile);
-            getMovesFromDiagonalRay(rays.southWest, false, isWhite, currentBishopIndex, bishopRank, bishopFile);
-            getMovesFromDiagonalRay(rays.northWest, true, isWhite, currentBishopIndex, bishopRank, bishopFile);
+            getMovesFromDiagonalRay(rays.northEast, true, isWhite, currentBishopIndex, bishopRank, bishopFile, moveList);
+            getMovesFromDiagonalRay(rays.southEast, false, isWhite, currentBishopIndex, bishopRank, bishopFile, moveList);;
+            getMovesFromDiagonalRay(rays.southWest, false, isWhite, currentBishopIndex, bishopRank, bishopFile, moveList);;
+            getMovesFromDiagonalRay(rays.northWest, true, isWhite, currentBishopIndex, bishopRank, bishopFile, moveList);
         }
     }
 
-    void MoveGenerator::genKnightMoves(bool isWhite) {
+    void MoveGenerator::genKnightMoves(bool isWhite, std::vector<Move>& moveList) {
         PieceType currentPieceType = isWhite ? PieceType::W_KNIGHT : PieceType::B_KNIGHT;
         bits::getBitIndices(_knightIndices, _board.getBitboard(currentPieceType));
 
@@ -248,16 +235,16 @@ namespace game {
             bits::getBitIndices(_capturableMovesIndices, capturableKnightMoves);
 
             for (int freeKnightMoveIndex : _freeMovesIndices) {
-                addMove(currentKnightIndex, freeKnightMoveIndex, Move::QUITE_FLAG);
+                addMove(currentKnightIndex, freeKnightMoveIndex, Move::QUITE_FLAG, moveList);
             }
 
             for (int capturableKnightMoveIndex : _capturableMovesIndices) {
-                addMove(currentKnightIndex, capturableKnightMoveIndex, Move::CAPTURE_FLAG);
+                addMove(currentKnightIndex, capturableKnightMoveIndex, Move::CAPTURE_FLAG, moveList);
             }
         }
     }
 
-    void MoveGenerator::genQueenMoves(bool isWhite) {
+    void MoveGenerator::genQueenMoves(bool isWhite, std::vector<Move>& moveList) {
         PieceType currentPieceType = isWhite ? PieceType::W_QUEEN : PieceType::B_QUEEN;
         bits::getBitIndices(_queenIndices, _board.getBitboard(currentPieceType));
 
@@ -267,19 +254,19 @@ namespace game {
             int queenRank = bits::rankFromBitIndex(currentQueenIndex);
             int queenFile = bits::fileFromBitIndex(currentQueenIndex);
 
-            getMovesFromStraightRay(straightRays.north, true, false, isWhite, currentQueenIndex, queenRank, queenFile);
-            getMovesFromStraightRay(straightRays.east, false, true, isWhite, currentQueenIndex, queenRank, queenFile);
-            getMovesFromStraightRay(straightRays.south, false, false, isWhite, currentQueenIndex, queenRank, queenFile);
-            getMovesFromStraightRay(straightRays.west, true, true, isWhite, currentQueenIndex, queenRank, queenFile);
+            getMovesFromStraightRay(straightRays.north, true, false, isWhite, currentQueenIndex, queenRank, queenFile, moveList);
+            getMovesFromStraightRay(straightRays.east, false, true, isWhite, currentQueenIndex, queenRank, queenFile, moveList);
+            getMovesFromStraightRay(straightRays.south, false, false, isWhite, currentQueenIndex, queenRank, queenFile, moveList);
+            getMovesFromStraightRay(straightRays.west, true, true, isWhite, currentQueenIndex, queenRank, queenFile, moveList);
 
-            getMovesFromDiagonalRay(diagonalRays.northEast, true, isWhite, currentQueenIndex, queenRank, queenFile);
-            getMovesFromDiagonalRay(diagonalRays.southEast, false, isWhite, currentQueenIndex, queenRank, queenFile);
-            getMovesFromDiagonalRay(diagonalRays.southWest, false, isWhite, currentQueenIndex, queenRank, queenFile);
-            getMovesFromDiagonalRay(diagonalRays.northWest, true, isWhite, currentQueenIndex, queenRank, queenFile);
+            getMovesFromDiagonalRay(diagonalRays.northEast, true, isWhite, currentQueenIndex, queenRank, queenFile, moveList);
+            getMovesFromDiagonalRay(diagonalRays.southEast, false, isWhite, currentQueenIndex, queenRank, queenFile, moveList);
+            getMovesFromDiagonalRay(diagonalRays.southWest, false, isWhite, currentQueenIndex, queenRank, queenFile, moveList);
+            getMovesFromDiagonalRay(diagonalRays.northWest, true, isWhite, currentQueenIndex, queenRank, queenFile, moveList);
         }
     }
 
-    void MoveGenerator::genKingMoves(bool isWhite) {
+    void MoveGenerator::genKingMoves(bool isWhite, std::vector<Move>& moveList) {
         PieceType currentPieceType = isWhite ? PieceType::W_KING : PieceType::B_KING;
         bits::getBitIndices(_kingIndices, _board.getBitboard(currentPieceType));
 
@@ -294,16 +281,16 @@ namespace game {
             bits::getBitIndices(_capturableMovesIndices, capturableKingMoves);
 
             for (int freeKingMoveIndex : _freeMovesIndices) {
-                addMove(currentKingIndex, freeKingMoveIndex, Move::QUITE_FLAG);
+                addMove(currentKingIndex, freeKingMoveIndex, Move::QUITE_FLAG, moveList);
             }
 
             for (int capturableKingMoveIndex : _capturableMovesIndices) {
-                addMove(currentKingIndex, capturableKingMoveIndex, Move::CAPTURE_FLAG);
+                addMove(currentKingIndex, capturableKingMoveIndex, Move::CAPTURE_FLAG, moveList);
             }
         }
     }
 
-    void MoveGenerator::genPawnMoves(bool isWhite) {
+    void MoveGenerator::genPawnMoves(bool isWhite, std::vector<Move>& moveList) {
         std::vector<bits::U64> straightPawnMoveBitmasks;
         std::vector<bits::U64> capturePawnMoveBitmasks;
 
@@ -336,33 +323,33 @@ namespace game {
                 int singleStepIndex = (isWhite ? 0 : 1);
                 int doubleStepIndex = (isWhite ? 1 : 0);
 
-                addMove(currentPawnIndex, _freeMovesIndices[singleStepIndex], (Move::QUITE_FLAG));
-                addMove(currentPawnIndex, _freeMovesIndices[doubleStepIndex], (Move::DOUBLE_PAWN_PUSH_FLAG));
+                addMove(currentPawnIndex, _freeMovesIndices[singleStepIndex], (Move::QUITE_FLAG), moveList);
+                addMove(currentPawnIndex, _freeMovesIndices[doubleStepIndex], (Move::DOUBLE_PAWN_PUSH_FLAG), moveList);
             } else if (_freeMovesIndices.size() == 1 && _freeMovesIndices[0] == currentPawnIndex + offset) {
                 // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces
                 if (canPromote) {
-                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::KNIGHT_PROMO_FLAG);
-                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::BISHOP_PROMO_FLAG);
-                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::ROOK_PROMO_FLAG);
-                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::QUEEN_PROMO_FLAG);
+                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::KNIGHT_PROMO_FLAG, moveList);
+                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::BISHOP_PROMO_FLAG, moveList);
+                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::ROOK_PROMO_FLAG, moveList);
+                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::QUEEN_PROMO_FLAG, moveList);
                 } else {
-                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::QUITE_FLAG);
+                    addMove(currentPawnIndex, _freeMovesIndices[0], Move::QUITE_FLAG, moveList);
                 }
             }
 
             for (int capturablePawnMoveIndex : _capturableMovesIndices) {
                 if (canPromote) {
-                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::KNIGHT_PROMO_CAPTURE_FLAG);
-                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::BISHOP_PROMO_CAPTURE_FLAG);
-                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::ROOK_PROMO_CAPTURE_FLAG);
-                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::QUEEN_PROMO_CAPTURE_FLAG);
+                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::KNIGHT_PROMO_CAPTURE_FLAG, moveList);
+                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::BISHOP_PROMO_CAPTURE_FLAG, moveList);
+                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::ROOK_PROMO_CAPTURE_FLAG, moveList);
+                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::QUEEN_PROMO_CAPTURE_FLAG, moveList);
                 } else {
-                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::CAPTURE_FLAG);
+                    addMove(currentPawnIndex, capturablePawnMoveIndex, Move::CAPTURE_FLAG, moveList);
                 }
             }
 
             if ((capturePawnMoveBitmask & enPessantTarget) != 0) {
-                addMove(currentPawnIndex, bits::indexOfLSB(capturePawnMoveBitmask & enPessantTarget), Move::EP_CAPTURE_FLAG);
+                addMove(currentPawnIndex, bits::indexOfLSB(capturePawnMoveBitmask & enPessantTarget), Move::EP_CAPTURE_FLAG, moveList);
             }
         }
     }
@@ -401,7 +388,7 @@ namespace game {
         _board.unmakeTemporaryKingMove(isWhite, isKingSide);
     }
 
-    void MoveGenerator::genSingleCastleMove(bool isWhite, bool isKingSide) {
+    void MoveGenerator::genSingleCastleMove(bool isWhite, bool isKingSide, std::vector<Move>& moveList) {
         // Check that the player has not castled
         if (_board.getHasCastled(isWhite)) {
             return;
@@ -444,12 +431,12 @@ namespace game {
         unmakeTemporaryKingMove(isWhite, isKingSide);
 
         int moveFlag = isKingSide ? Move::KING_CASTLE_FLAG : Move::QUEEN_CASTLE_FLAG;        
-        addMove(0, 0, moveFlag);
+        addMove(0, 0, moveFlag, moveList);
     }
 
-    void MoveGenerator::genCastlingMoves(bool isWhite) {
-        genSingleCastleMove(isWhite, true);
-        genSingleCastleMove(isWhite, false);
+    void MoveGenerator::genCastlingMoves(bool isWhite, std::vector<Move>& moveList) {
+        genSingleCastleMove(isWhite, true, moveList);
+        genSingleCastleMove(isWhite, false, moveList);
     }
 
     bool MoveGenerator::checkStraightRay(bits::U64& straightRay, bool firstBlockerOnLSB, bits::U64& opponentRooksAndQueens) {

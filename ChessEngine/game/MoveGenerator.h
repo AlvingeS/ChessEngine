@@ -16,23 +16,18 @@ namespace game {
             MoveGenerator(ChessBoard& board);
             bool isInCheck(bool isWhite);
             bool isDeadPosition();
-            std::vector<Move>& genMoves(bool isWhite);
-            void resetMoves();
+            void resetMoves(std::vector<Move>& moveList);
             void resetMoveIndex();
-            int getNumLegalMoves();
             void setBoardFromFen(std::string fen);
-            void genRookMoves(bool isWhite);
-            void genBishopMoves(bool isWhite);
-            void genKnightMoves(bool isWite);
-            void genQueenMoves(bool isWhite);
-            void genKingMoves(bool isWhite);
-            void genPawnMoves(bool isWhite);
-            void genCastlingMoves(bool isWhite);
+            void genMoves(bool isWhite, std::vector<Move>& moveList);
+            void genRookMoves(bool isWhite, std::vector<Move>& moveList);
+            void genBishopMoves(bool isWhite, std::vector<Move>& moveList);
+            void genKnightMoves(bool isWite, std::vector<Move>& moveList);
+            void genQueenMoves(bool isWhite, std::vector<Move>& moveList);
+            void genKingMoves(bool isWhite, std::vector<Move>& moveList);
+            void genPawnMoves(bool isWhite, std::vector<Move>& moveList);
+            void genCastlingMoves(bool isWhite, std::vector<Move>& moveList);
             void updateGameStateBitmasks();
-
-            std::vector<Move>& getMoves() {
-                return _moves;
-            }
 
             size_t getMoveIndex() {
                 return _moveIndex;
@@ -44,8 +39,6 @@ namespace game {
 
         private:
             // Private member variables
-            std::vector<Move> _moves;
-
             ChessBoard& _board;
             size_t _moveIndex = 0;
 
@@ -80,15 +73,15 @@ namespace game {
             std::vector<int> _capturableMovesIndices;
 
             // Member functions
-            void addMove(int bitIndexFrom, int bitIndexTo, int flag);
-            void addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom);
-            void addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom);
-            void addMovesBetweenBlockerAndPieceOnStraightRay(int blockerIndex, bool alongFile, bool startFromBlocker, int rookRank, int rookFile, int bitIndexFrom);
-            void addMovesBetweenBlockerAndPieceOnDiagonalRay(int blockerIndex, bool startFromBlocker, int bishopRank, int bishopFile, int bitIndexFrom);
-            void getMovesFromStraightRay(bits::U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile);
-            void getMovesFromDiagonalRay(bits::U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, int pieceRank, int pieceFile);
+            void addMove(int bitIndexFrom, int bitIndexTo, int flag, std::vector<Move>& moveList);
+            void addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, std::vector<Move>& moveList);
+            void addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, std::vector<Move>& moveList);
+            void addMovesBetweenBlockerAndPieceOnStraightRay(int blockerIndex, bool alongFile, bool startFromBlocker, int rookRank, int rookFile, int bitIndexFrom, std::vector<Move>& moveList);
+            void addMovesBetweenBlockerAndPieceOnDiagonalRay(int blockerIndex, bool startFromBlocker, int bishopRank, int bishopFile, int bitIndexFrom, std::vector<Move>& moveList);
+            void getMovesFromStraightRay(bits::U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<Move>& moveList);
+            void getMovesFromDiagonalRay(bits::U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<Move>& moveList);
             bool kingAndRookOnCastlingSquares(bool isWhite, bool isKingSide);
-            void genSingleCastleMove(bool isWhite, bool isKingSide);
+            void genSingleCastleMove(bool isWhite, bool isKingSide, std::vector<Move>& moveList);
             void makeTemporaryKingMove(bool isWhite, bool isKingSide);
             void unmakeTemporaryKingMove(bool isWhite, bool isKingSide);
 

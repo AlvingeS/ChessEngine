@@ -15,9 +15,9 @@ namespace game {
 
     TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneWhite_ShouldReturn18Moves) {
         moveGenerator.setBoardFromFen(fenOne);
-        moveGenerator.genBishopMoves(true);
+        moveGenerator.genBishopMoves(true, moveList);
 
-        std::vector<Move> moves = moveGenerator.getMoves();
+        std::vector<Move> moves = getMoves();
         std::unordered_set<Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 34, {41, 48, 25, 16, 27, 20, 13, 6, 43, 52, 61}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
         insertExpectedMoves(expectedMoves, 37, {44, 51, 28, 19, 10, 1, 30}, {0, 1, 0, 0, 0, 0, 1});
@@ -33,9 +33,9 @@ namespace game {
 
     TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneBlack_ShouldReturn18Moves) {
         moveGenerator.setBoardFromFen(fenOne);
-        moveGenerator.genBishopMoves(false);
+        moveGenerator.genBishopMoves(false, moveList);
 
-        std::vector<Move> moves = moveGenerator.getMoves();
+        std::vector<Move> moves = getMoves();
         std::unordered_set<Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 51, {58, 42, 33, 24, 44, 37, 60}, {1, 0, 0, 0, 0, 1, 0});
         insertExpectedMoves(expectedMoves, 26, {33, 40, 17, 8, 19, 12, 5, 35, 44, 53, 62}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
@@ -51,14 +51,14 @@ namespace game {
 
     TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosWhite_ShouldReturn0Moves) {
         moveGenerator.setBoardFromFen(startingPos);
-        moveGenerator.genBishopMoves(true);
+        moveGenerator.genBishopMoves(true, moveList);
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }
 
     TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosBlack_ShouldReturn0Moves) {
         moveGenerator.setBoardFromFen(startingPos);
-        moveGenerator.genBishopMoves(false);
+        moveGenerator.genBishopMoves(false, moveList);;
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }

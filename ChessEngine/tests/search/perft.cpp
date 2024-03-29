@@ -9,7 +9,13 @@ namespace search {
         protected:
             Searcher searcher;
             bool longRun = false;
-            std::string pos2 = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R";
+            // std::string pos2 = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R";
+            // std::string pos2 = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P2p/2N2Q2/PPPBBPPP/R3K2R";
+            // std::string pos2 = "r3k2r/p1ppqpb1/bn2pnp1/1p1PN3/4P3/2N2Q1p/PPPBBPPP/R3K2R";
+            // std::string pos2 = "r3k2r/p1pp1p2/6p1/8/3P4/4P3/PPP2PPP/R3K2R";
+            std::string pos2 = "r3k2r/8/8/8/8/8/8/R3K2R";
+            
+            
             std::string pos3 = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8";
             std::string pos5 = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R";
 
@@ -82,14 +88,14 @@ namespace search {
                 return nodeCountPerFirstMoveStrVec;
             }
 
-        perft() : searcher(5) {}
+        perft() : searcher(20) {}
     };
 
     TEST_F(perft, perft_starting_pos) {
         searcher.setMaxDepth(longRun ? 6 : 5);
         
         if (enableStartPosTest) {
-            searcher.minimax(0, true, 0, true);
+            searcher.minimax(0, true, 0);
         }
 
         std::unordered_map<int, int> expectedNodes = {
@@ -179,11 +185,11 @@ namespace search {
     }
 
     TEST_F(perft, perft_pos2) {
-        searcher.setMaxDepth(longRun ? 5 : 4);
+        searcher.setMaxDepth(longRun ? 5 : 5);
         searcher.setBoardFromFen(pos2);
 
         if (enablePos2Test) {
-            searcher.minimax(0, true, 0, true);
+            searcher.minimax(0, true, 0);
         }
 
         std::vector<std::string> strVec = nodeCountPerFirstMoveAsStrVec();
@@ -272,8 +278,10 @@ namespace search {
         searcher.setBoardFromFen(pos3);
 
         if (enablePos3Test) {
-            searcher.minimax(0, true, 0, true);
+            searcher.minimax(0, true, 0);
         }
+
+        std::vector<std::string> strVec = nodeCountPerFirstMoveAsStrVec();
 
         std::unordered_map<int, int> expectedNodes = {
             {0, 1},
@@ -369,12 +377,12 @@ namespace search {
     }
 
     TEST_F(perft, perft_pos5) {
-        searcher.setMaxDepth(longRun ? 5 : 4);
+        searcher.setMaxDepth(longRun ? 6 : 5);
         searcher.setBoardFromFen(pos5);
         searcher.getBoard().setHasCastled(false, true);
 
         if (enablePos5Test) {
-            searcher.minimax(0, true, 0, true);
+            searcher.minimax(0, true, 0);
         }
 
         std::unordered_map<int, int> expectedNodes = {

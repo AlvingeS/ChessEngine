@@ -21,21 +21,40 @@ namespace search {
 
     TEST_F(perftPosFive, perft_pos5) {
         if (enablePos5Test) {
-            int depth = longRuns ? posFiveMaxDepth + 1 : posFiveMaxDepth;
-            std::unordered_map<std::string, int> stockfishResults = getStockFishPerftResults(posFive, depth);
-
-            searcher.setMaxDepth(depth);
             searcher.setBoardFromFen(posFive);
             searcher.getBoard().setKingMoved(false, true);
-            bool whiteToStart = true;
 
+            // Make dubug move
+            game::Move move = moveFromStrAndFlag("d7c8", game::Move::QUEEN_PROMO_CAPTURE_FLAG);
+            searcher.makeMove(move, true);
+            move = moveFromStrAndFlag("f8e8", 0);
+            searcher.makeMove(move, false);
+            int nDebugMoves = 2;
+
+            int depth = longRuns ? posFiveMaxDepth + 1 : posFiveMaxDepth;
+            depth -= nDebugMoves;
+            bool whiteToStart = nDebugMoves % 2 == 0;
+
+            std::string debugFen;
+            if (nDebugMoves > 0) {
+                // debugFen = searcher.getBoard().getFenFromBoard() + " w KQ - 1 8";
+                debugFen = searcher.getBoard().getFenFromBoard();
+                debugFen += whiteToStart ? " w" : " b";
+                debugFen += " KQ - 1 8";
+            }
+
+            std::unordered_map<std::string, int> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posFive, depth);
+
+            searcher.setMaxDepth(depth);
             searcher.minimax(0, whiteToStart, 0);
 
             std::unordered_map<std::string, int> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
             compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
 
-            for (int i = 1; i <= searcher.getMaxDepth(); i++) {
-                ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
+            if (nDebugMoves == 0) {
+                for (int i = 1; i <= searcher.getMaxDepth(); i++) {
+                    ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
+                }
             }
         }
     }

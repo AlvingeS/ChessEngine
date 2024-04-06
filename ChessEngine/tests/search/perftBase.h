@@ -7,20 +7,26 @@
 #include <iostream>
 
 namespace search {
-    class perftBase : public ::testing::Test {        
+    class perftBase : public ::testing::Test {
+
+        struct fromToBitIndices {
+            int from;
+            int to;
+        };
+
         protected:
             bool longRuns = false;
 
             // Long run should be depth 6
-            bool enableStartPosTest = true;
+            bool enableStartPosTest = false;
             int startPosMaxDepth = 5;
 
             // Long run should be depth 5
-            bool enablePos2Test = true;
+            bool enablePos2Test = false;
             int posTwoMaxDepth = 4;
 
             // Long run should be depth 7
-            bool enablePos3Test = true;
+            bool enablePos3Test = false;
             int posThreeMaxDepth = 6;
 
             // Long run should be depth 5
@@ -121,6 +127,25 @@ namespace search {
                 }
 
                 return moveStr;
+            }
+
+            fromToBitIndices translateStrToFromTo(std::string moveStr) {
+                fromToBitIndices fromTo;
+
+                int fromRow = moveStr[1] - '1';
+                int fromCol = 8 - (moveStr[0] - 'a') - 1;
+                int toRow = moveStr[3] - '1';
+                int toCol = 8 - (moveStr[2] - 'a') - 1;
+
+                fromTo.from = fromRow * 8 + fromCol;
+                fromTo.to = toRow * 8 + toCol;
+
+                return fromTo;
+            }
+
+            game::Move moveFromStrAndFlag(std::string moveStr, int flag) {
+                fromToBitIndices fromTo = translateStrToFromTo(moveStr);
+                return game::Move(fromTo.from, fromTo.to, flag);
             }
 
             std::unordered_map<std::string, int> nodeCountPerFirstMoveAsMap(bool whiteStarted) {

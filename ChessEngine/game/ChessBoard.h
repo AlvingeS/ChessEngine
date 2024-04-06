@@ -53,6 +53,7 @@ namespace game {
             }
 
             void setBoardFromFen(const std::string& fen);
+            std::string getFenFromBoard();
 
             bool getHasCastled(bool isWhite) {
                 return isWhite ? _whiteHasCastled : _blackHasCastled;

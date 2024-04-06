@@ -130,7 +130,7 @@ namespace search {
                 break;
             }
 
-            bool condition = verbose && currentDepth == 99;
+            bool condition = verbose && currentDepth == 1 && currentMove.isAnyCastle();
 
             // Make the move and check if we are in any way left in check
             debugPrint(verbose, condition);

@@ -432,4 +432,32 @@ namespace game {
 
         fillSquaresLookup();
     }
+
+    std::string ChessBoard::getFenFromBoard() {
+        std::string fen = "";
+        int emptyCount = 0;
+
+        for (int i = 63; i >= 0; i--) {
+            if ((i + 1) % 8 == 0 && i != 63) {
+                if (emptyCount != 0) {
+                    fen += std::to_string(emptyCount);
+                    emptyCount = 0;
+                }
+                fen += "/";
+            }
+
+            PieceType type = _squaresLookup[i];
+            if (type == PieceType::EMPTY) {
+                emptyCount++;
+            } else {
+                if (emptyCount != 0) {
+                    fen += std::to_string(emptyCount);
+                    emptyCount = 0;
+                }
+                fen += pieceTypeToChar(type);
+            }
+        }
+
+        return fen;
+    }
 }

@@ -1,15 +1,31 @@
 #pragma once
 #include "ChessEngine/search/Searcher.h"
 #include <gtest/gtest.h>
+#include <unordered_map>
+#include <sstream>
+#include <regex>
+#include <iostream>
 
 namespace search {
-    class perftBase : public ::testing::Test {
+    class perftBase : public ::testing::Test {        
         protected:
             bool longRuns = false;
-            bool enableStartPosTest = false;
+
+            // Long run should be depth 6
+            bool enableStartPosTest = true;
+            int startPosMaxDepth = 5;
+
+            // Long run should be depth 5
             bool enablePos2Test = true;
-            bool enablePos3Test = false;
-            bool enablePos5Test = false;
+            int posTwoMaxDepth = 4;
+
+            // Long run should be depth 7
+            bool enablePos3Test = true;
+            int posThreeMaxDepth = 6;
+
+            // Long run should be depth 5
+            bool enablePos5Test = true;
+            int posFiveMaxDepth = 4;
 
             std::string startPos;
             std::string posTwo;
@@ -20,10 +36,10 @@ namespace search {
             perftBase() : searcher(20) {}
 
             virtual void SetUp() override {
-                startPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-                posTwo = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R";
-                posThree = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8";
-                posFive = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R";
+                startPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+                posTwo = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -";
+                posThree = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - -";
+                posFive = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
             }
 
             char colToChar(int col) {
@@ -73,11 +89,42 @@ namespace search {
                 moveStr += toColChar;
                 moveStr += std::to_string(toRow + 1);
 
+                if (move.isAnyPromo()) {
+                    switch (move.getFlag()) {
+                        case game::Move::KNIGHT_PROMO_FLAG:
+                            moveStr += (whiteStarted) ? "n" : "N";
+                            break;
+                        case game::Move::BISHOP_PROMO_FLAG:
+                            moveStr += (whiteStarted) ? "b" : "B";
+                            break;
+                        case game::Move::ROOK_PROMO_FLAG:
+                            moveStr += (whiteStarted) ? "r" : "R";
+                            break;
+                        case game::Move::QUEEN_PROMO_FLAG:
+                            moveStr += (whiteStarted) ? "q" : "Q";
+                            break;
+                        default:
+                            break;
+                        case game::Move::KNIGHT_PROMO_CAPTURE_FLAG:
+                            moveStr += (whiteStarted) ? "n" : "N";
+                            break;
+                        case game::Move::BISHOP_PROMO_CAPTURE_FLAG:
+                            moveStr += (whiteStarted) ? "b" : "B";
+                            break;
+                        case game::Move::ROOK_PROMO_CAPTURE_FLAG:
+                            moveStr += (whiteStarted) ? "r" : "R";
+                            break;
+                        case game::Move::QUEEN_PROMO_CAPTURE_FLAG:
+                            moveStr += (whiteStarted) ? "q" : "Q";
+                            break;
+                    }
+                }
+
                 return moveStr;
             }
 
-            std::vector<std::string> nodeCountPerFirstMoveAsStrVec(bool whiteStarted) {
-                std::vector<std::string> nodeCountPerFirstMoveStrVec;
+            std::unordered_map<std::string, int> nodeCountPerFirstMoveAsMap(bool whiteStarted) {
+                std::unordered_map<std::string, int> nodeCountPerFirstMoveMap;
                 int sum = 0;
 
                 for (size_t i = 0; i < searcher._nodeCountPerFirstMove.size(); i++) {
@@ -85,15 +132,80 @@ namespace search {
                         std::string moveStr = translateMoveToStr(searcher._firstMoves[i], whiteStarted);
                         std::string nodeCountStr = std::to_string(searcher._nodeCountPerFirstMove[i]);
                         std::string moveNodeCountStr = moveStr + ": " + nodeCountStr;
-                        nodeCountPerFirstMoveStrVec.push_back(moveNodeCountStr);
+                        nodeCountPerFirstMoveMap[moveStr] = searcher._nodeCountPerFirstMove[i];
 
                         sum += searcher._nodeCountPerFirstMove[i];
                     }
                 }
 
-                nodeCountPerFirstMoveStrVec.push_back("Total: " + std::to_string(sum));
+                nodeCountPerFirstMoveMap["searched"] = sum;
 
-                return nodeCountPerFirstMoveStrVec;
+                return nodeCountPerFirstMoveMap;
+            }
+
+            void compareFirstMoveCountsToStockfish(const std::unordered_map<std::string, int>& firstMoveCounts, const std::unordered_map<std::string, int>& stockfishResults) {
+                std::ostringstream errors;
+                bool hasErrors = false;
+
+                for (const auto& moveCountPair : firstMoveCounts) {
+                    const std::string& move = moveCountPair.first;
+                    int count = moveCountPair.second;
+
+                    auto foundIt = stockfishResults.find(move);
+                    if (foundIt == stockfishResults.end()) {
+                        errors << "Move: " << move << " not found in stockfish results.\n";
+                        hasErrors = true;
+                    } else {
+                        int stockfishCount = foundIt->second;
+                        if (count != stockfishCount) {
+                            errors << "Move: " << move << " failed. Expected: " << count << ", Got: " << stockfishCount << ".\n";
+                            hasErrors = true;
+                        }
+                    }
+                }
+
+                // If there were any errors, print them and fail the test
+                if (hasErrors) {
+                    std::cerr << errors.str();
+                    ASSERT_TRUE(false);
+                }
+            }
+
+            std::unordered_map<std::string, int> getStockFishPerftResults(std::string FEN, int depth) {
+                std::unordered_map<std::string, int> results;
+                std::ostringstream oss;
+
+                oss << "echo \"position fen " << FEN << "\\ngo perft " << depth << "\\nquit\" | stockfish";
+                std::string oss_str = oss.str();
+
+                FILE* pipe = popen(oss_str.c_str(), "r");
+
+                if (!pipe) {
+                    std::cerr << "Couldn't open pipe to stockfish" << std::endl;
+                    return results;
+                }
+
+                char buffer[256];
+                std::string output = "";
+
+                while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
+                    output += buffer;
+                }
+
+                pclose(pipe);
+
+                std::regex pattern(R"((\w+): (\d+))");
+                std::smatch matches;
+                while (std::regex_search(output, matches, pattern)) {
+                    if (matches.size() == 3) { // Full match + 2 subgroups
+                        std::string move = matches[1].str();
+                        int count = std::stoi(matches[2].str());
+                        results[move] = count;
+                    }
+                    output = matches.suffix().str();
+                }
+            
+                return results;
             }
     };
 }

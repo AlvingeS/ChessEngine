@@ -23,7 +23,8 @@ namespace search {
 
             Searcher(int maxDepth);
             void minimax(int current_depth, bool isMaximizer, int firstMoveIndex, game::Move lastMove = game::Move(), bool verbose = true);
-            void genMoves(bool isWhite, std::vector<game::Move>& moveList);
+            void recordPerftStats(bool isMaximizer, int currentDepth, int &firstMoveIndex, size_t i, game::Move &currentMove, bool &retFlag);
+            void genMoves(bool isWhite, std::vector<game::Move> &moveList);
             void makeMove(game::Move move, bool isWhite);
             void unmakeMove(game::Move move, bool isWhite);
             void undoMove();

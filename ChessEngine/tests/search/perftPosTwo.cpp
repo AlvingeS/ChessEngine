@@ -9,29 +9,31 @@ namespace search {
 
         // Nodes, captures, epCaptures, castling, promotion, check, checkmate
         std::unordered_map<int, std::vector<int>> expectedResults {
-            {0, {1,         0,          0,          0,      0,          0}},
-            {1, {48,        8,          2,          0,      0,          0}},
-            {2, {2039,      351,        91,         0,      3,          0}},
-            {3, {97862,     17102,      3162,       0,      993,        1}},
-            {4, {4085603,   757163,     128013,     15172,  25523,      43}},
-            {5, {193690690, 35043416,   4993637,    8392,   3309887,    0}},
-            {6, {0,         0,          0,          0,      0,          0}}
+            {0, {1,         0,          0,          0,          0,          0,          0}},
+            {1, {48,        8,          0,          2,          0,          0,          0}},
+            {2, {2039,      351,        1,          91,         0,          3,          0}},
+            {3, {97862,     17102,      45,         3162,       0,          993,        1}},
+            {4, {4085603,   757163,     1929,       128013,     15172,      25523,      43}},
+            {5, {193690690, 35043416,   73365,      4993637,    8392,       3309887,    30171}},
+            {6, {0,         0,          0,          0,          0,          0,          0}}
         };
     };
 
     TEST_F(perftPosTwo, perft_pos2) {
-        searcher.setMaxDepth(longRuns ? 5 : 4);
-        searcher.setBoardFromFen(posTwo);
-        bool whiteToStart = false;
-
         if (enablePos2Test) {
+            int depth = longRuns ? posTwoMaxDepth + 1 : posTwoMaxDepth;
+            std::unordered_map<std::string, int> stockfishResults = getStockFishPerftResults(posTwo, depth);
+
+            searcher.setMaxDepth(depth);
+            searcher.setBoardFromFen(posTwo);
+            bool whiteToStart = true;
+
             searcher.minimax(0, whiteToStart, 0);
-        }
-
-        std::vector<std::string> strVec = nodeCountPerFirstMoveAsStrVec(whiteToStart);
-
-        if (enablePos2Test) {
-            for (int i = 1; i <= searcher.getMaxDepth() - 1; i++) {
+            
+            std::unordered_map<std::string, int> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
+            compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
+            
+            for (int i = 1; i <= searcher.getMaxDepth(); i++) {
                 ASSERT_EQ(searcher._nodeCount[i], expectedResults[i][0]);
                 ASSERT_EQ(searcher._captureCount[i], expectedResults[i][1]);
                 ASSERT_EQ(searcher._epCaptureCount[i], expectedResults[i][2]);

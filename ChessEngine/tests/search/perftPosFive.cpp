@@ -20,15 +20,20 @@ namespace search {
     };
 
     TEST_F(perftPosFive, perft_pos5) {
-        searcher.setMaxDepth(longRuns ? 5 : 4);
-        searcher.setBoardFromFen(posFive);
-        searcher.getBoard().setHasCastled(false, true);
-
         if (enablePos5Test) {
-            searcher.minimax(0, true, 0);
-        }
+            int depth = longRuns ? posFiveMaxDepth + 1 : posFiveMaxDepth;
+            std::unordered_map<std::string, int> stockfishResults = getStockFishPerftResults(posFive, depth);
 
-        if (enablePos5Test) {
+            searcher.setMaxDepth(depth);
+            searcher.setBoardFromFen(posFive);
+            searcher.getBoard().setKingMoved(false, true);
+            bool whiteToStart = true;
+
+            searcher.minimax(0, whiteToStart, 0);
+
+            std::unordered_map<std::string, int> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
+            compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
+
             for (int i = 1; i <= searcher.getMaxDepth(); i++) {
                 ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
             }

@@ -39,22 +39,14 @@ namespace search {
         _checkmateCount.resize(20);
 
         for (int i = 0; i < 20; i++) {
-            _nodeCount[i + 1] = 0;
-            _captureCount[i + 1] = 0;
-            _epCaptureCount[i + 1] = 0;
-            _castlingCount[i + 1] = 0;
-            _promotionCount[i + 1] = 0;
-            _checkCount[i + 1] = 0;
-            _checkmateCount[i + 1] = 0;
+            _nodeCount[i] = 0;
+            _captureCount[i] = 0;
+            _epCaptureCount[i] = 0;
+            _castlingCount[i] = 0;
+            _promotionCount[i] = 0;
+            _checkCount[i] = 0;
+            _checkmateCount[i] = 0;
         }
-
-        _nodeCount[0] = 1;
-        _captureCount[0] = 0;
-        _epCaptureCount[0] = 0;
-        _castlingCount[0] = 0;
-        _promotionCount[0] = 0;
-        _checkCount[0] = 0;
-        _checkmateCount[0] = 0;
     }
 
     void Searcher::genMoves(bool isWhite, std::vector<game::Move>& moveList) {
@@ -138,8 +130,7 @@ namespace search {
                 break;
             }
 
-            bool condition = verbose && currentDepth == 0;
-            // bool condition = false;
+            bool condition = verbose && currentDepth == 99;
 
             // Make the move and check if we are in any way left in check
             debugPrint(verbose, condition);
@@ -150,9 +141,7 @@ namespace search {
 
             if (_moveGenerator.isInCheck(isMaximizer)) {
                 numIllegalMoves++;
-
                 unmakeMove(currentMove, isMaximizer);
-                debugPrint(verbose, condition);
 
                 if (numIllegalMoves == i + 1 && _moveLists[currentDepth][i + 1].getMove() == 0) {
                     bool wasInCheckBeforeMove = _moveGenerator.isInCheck(isMaximizer);
@@ -167,39 +156,10 @@ namespace search {
                 continue;
             }
 
-            if (_moveGenerator.isInCheck(!isMaximizer)) {
-                _checkCount[currentDepth + 1]++;
-            }
-
-            if (currentDepth == 0) {
-                firstMoveIndex = i;
-                _firstMoves[i] = currentMove;
-            } else if (currentDepth == _maxDepth - 1) {
-                _nodeCountPerFirstMove[firstMoveIndex]++;
-            }
-
-            _nodeCount[currentDepth + 1]++;
-
-            if (currentMove.isAnyCapture()) {
-                _captureCount[currentDepth + 1]++;
-            }
-
-            if (currentMove.isAnyPromo()) {
-                _promotionCount[currentDepth + 1]++;
-            }
-
-            if (currentMove.isAnyCastle()) {
-                _castlingCount[currentDepth + 1]++;
-            }
-
-            if (currentMove.isEpCapture()) {
-                _epCaptureCount[currentDepth + 1]++;
-            }
-
-            if (_moveGenerator.isDeadPosition() || _board.getNoCaptureOrPawnMoveCount() >= 50) {
-                unmakeMove(currentMove, isMaximizer);
+            bool retFlag;
+            recordPerftStats(isMaximizer, currentDepth, firstMoveIndex, i, currentMove, retFlag);
+            if (retFlag)
                 return;
-            }
 
             minimax(currentDepth + 1, !isMaximizer, firstMoveIndex, currentMove, verbose);
 
@@ -210,5 +170,52 @@ namespace search {
         }
 
         return;
+    }
+
+    void Searcher::recordPerftStats(bool isMaximizer, int currentDepth, int &firstMoveIndex, size_t i, game::Move &currentMove, bool &retFlag) {
+        retFlag = true;
+        if (_moveGenerator.isInCheck(!isMaximizer))
+        {
+            _checkCount[currentDepth + 1]++;
+        }
+
+        if (currentDepth == 0)
+        {
+            firstMoveIndex = i;
+            _firstMoves[i] = currentMove;
+        }
+        else if (currentDepth == _maxDepth - 1)
+        {
+            _nodeCountPerFirstMove[firstMoveIndex]++;
+        }
+
+        _nodeCount[currentDepth + 1]++;
+
+        if (currentMove.isAnyCapture())
+        {
+            _captureCount[currentDepth + 1]++;
+        }
+
+        if (currentMove.isAnyPromo())
+        {
+            _promotionCount[currentDepth + 1]++;
+        }
+
+        if (currentMove.isAnyCastle())
+        {
+            _castlingCount[currentDepth + 1]++;
+        }
+
+        if (currentMove.isEpCapture())
+        {
+            _epCaptureCount[currentDepth + 1]++;
+        }
+
+        if (_moveGenerator.isDeadPosition() || _board.getNoCaptureOrPawnMoveCount() >= 50)
+        {
+            unmakeMove(currentMove, isMaximizer);
+            return;
+        }
+        retFlag = false;
     }
 }

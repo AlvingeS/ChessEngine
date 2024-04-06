@@ -1,5 +1,8 @@
 add_executable(search_tests
-    perft.cpp
+    perftStartPos.cpp
+    perftPosTwo.cpp
+    perftPosThree.cpp
+    perftPosFive.cpp
 )
 
 target_link_libraries(search_tests PRIVATE search GTest::gtest_main)

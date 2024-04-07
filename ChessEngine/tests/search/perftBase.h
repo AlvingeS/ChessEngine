@@ -15,14 +15,14 @@ namespace search {
         };
 
         protected:
-            bool longRuns = false;
+            bool longRuns = true;
 
             // Long run should be depth 6
             bool enableStartPosTest = false;
             int startPosMaxDepth = 5;
 
             // Long run should be depth 5
-            bool enablePos2Test = false;
+            bool enablePos2Test = true;
             int posTwoMaxDepth = 4;
 
             // Long run should be depth 7
@@ -30,7 +30,7 @@ namespace search {
             int posThreeMaxDepth = 6;
 
             // Long run should be depth 5
-            bool enablePos5Test = true;
+            bool enablePos5Test = false;
             int posFiveMaxDepth = 4;
 
             std::string startPos;
@@ -183,7 +183,7 @@ namespace search {
                     } else {
                         int stockfishCount = foundIt->second;
                         if (count != stockfishCount) {
-                            errors << "Move: " << move << " failed. Expected: " << count << ", Got: " << stockfishCount << ".\n";
+                            errors << "Move: " << move << " failed. Expected: " << stockfishCount << ", Got: " << count << ".\n";
                             hasErrors = true;
                         }
                     }

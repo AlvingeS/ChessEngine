@@ -25,11 +25,9 @@ namespace search {
             searcher.getBoard().setKingMoved(false, true);
 
             // Make dubug move
-            game::Move move = moveFromStrAndFlag("d7c8", game::Move::QUEEN_PROMO_CAPTURE_FLAG);
+            game::Move move = moveFromStrAndFlag("a2a3", 0);
             searcher.makeMove(move, true);
-            move = moveFromStrAndFlag("f8e8", 0);
-            searcher.makeMove(move, false);
-            int nDebugMoves = 2;
+            int nDebugMoves = 1;
 
             int depth = longRuns ? posFiveMaxDepth + 1 : posFiveMaxDepth;
             depth -= nDebugMoves;
@@ -37,7 +35,6 @@ namespace search {
 
             std::string debugFen;
             if (nDebugMoves > 0) {
-                // debugFen = searcher.getBoard().getFenFromBoard() + " w KQ - 1 8";
                 debugFen = searcher.getBoard().getFenFromBoard();
                 debugFen += whiteToStart ? " w" : " b";
                 debugFen += " KQ - 1 8";

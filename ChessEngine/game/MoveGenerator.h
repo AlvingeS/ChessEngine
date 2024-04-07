@@ -19,14 +19,14 @@ namespace game {
             void resetMoves(std::vector<Move>& moveList);
             void resetMoveIndex();
             void setBoardFromFen(std::string fen);
-            void genMoves(bool isWhite, std::vector<Move>& moveList);
+            void genMoves(bool isWhite, std::vector<Move>& moveList, unsigned char castlingRights);
             void genRookMoves(bool isWhite, std::vector<Move>& moveList);
             void genBishopMoves(bool isWhite, std::vector<Move>& moveList);
             void genKnightMoves(bool isWite, std::vector<Move>& moveList);
             void genQueenMoves(bool isWhite, std::vector<Move>& moveList);
             void genKingMoves(bool isWhite, std::vector<Move>& moveList);
             void genPawnMoves(bool isWhite, std::vector<Move>& moveList);
-            void genCastlingMoves(bool isWhite, std::vector<Move>& moveList);
+            void genCastlingMoves(bool isWhite, std::vector<Move>& moveList, unsigned char castlingRights);
             void updateGameStateBitmasks();
 
             size_t getMoveIndex() {

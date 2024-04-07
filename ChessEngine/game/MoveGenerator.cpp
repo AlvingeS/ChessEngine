@@ -79,14 +79,14 @@ namespace game {
         _moveIndex++;
     }
 
-    void MoveGenerator::genMoves(bool isWhite, std::vector<Move>& moveList) {
+    void MoveGenerator::genMoves(bool isWhite, std::vector<Move>& moveList, unsigned char castlingRights) {
         genRookMoves(isWhite, moveList);
         genKnightMoves(isWhite, moveList);
         genBishopMoves(isWhite, moveList);
         genQueenMoves(isWhite, moveList);
         genKingMoves(isWhite, moveList);
         genPawnMoves(isWhite, moveList);
-        genCastlingMoves(isWhite, moveList);
+        genCastlingMoves(isWhite, moveList, castlingRights);
         moveList[_moveIndex] = Move(); // Add a null move to the end of the move list
     }
 
@@ -388,20 +388,7 @@ namespace game {
         _board.unmakeTemporaryKingMove(isWhite, isKingSide);
     }
 
-    void MoveGenerator::genSingleCastleMove(bool isWhite, bool isKingSide, std::vector<Move>& moveList) {
-        // Check that the player has not castled
-        if (_board.getHasCastled(isWhite)) {
-            return;
-        }
-
-        // Check that the king or queen side castlers has not moved
-        bool kingOrQueenSideCastlersHasMoved = isWhite ? (isKingSide ? _board.kingSideCastlersHasMoved(true) : _board.queenSideCastlersHasMoved(true))
-                                                       : (isKingSide ? _board.kingSideCastlersHasMoved(false) : _board.queenSideCastlersHasMoved(false));
-                                                       
-        if (kingOrQueenSideCastlersHasMoved) {
-            return;
-        }
-
+    void MoveGenerator::genSingleCastleMove(bool isWhite, bool isKingSide, std::vector<Move>& moveList) {                                                  
         // Check that there are no pieces between the king and rook
         bits::U64 spaceBetweenCastlersBitmask = isWhite ? (isKingSide ? _whiteKingSideCastleBitmask : _whiteQueenSideCastleBitmask)
                                                         : (isKingSide ? _blackKingSideCastleBitmask : _blackQueenSideCastleBitmask);
@@ -434,9 +421,24 @@ namespace game {
         addMove(0, 0, moveFlag, moveList);
     }
 
-    void MoveGenerator::genCastlingMoves(bool isWhite, std::vector<Move>& moveList) {
-        genSingleCastleMove(isWhite, true, moveList);
-        genSingleCastleMove(isWhite, false, moveList);
+    void MoveGenerator::genCastlingMoves(bool isWhite, std::vector<Move>& moveList, unsigned char castlingRights) {
+        if (castlingRights == 0) {
+            return;
+        }
+        
+        if (isWhite) {
+            if (castlingRights & 0b0001)
+                genSingleCastleMove(isWhite, true, moveList);
+
+            if (castlingRights & 0b0010)
+                genSingleCastleMove(isWhite, false, moveList);
+        } else {
+            if (castlingRights & 0b0100)
+                genSingleCastleMove(isWhite, true, moveList);
+
+            if (castlingRights & 0b1000)
+                genSingleCastleMove(isWhite, false, moveList);
+        }
     }
 
     bool MoveGenerator::checkStraightRay(bits::U64& straightRay, bool firstBlockerOnLSB, bits::U64& opponentRooksAndQueens) {

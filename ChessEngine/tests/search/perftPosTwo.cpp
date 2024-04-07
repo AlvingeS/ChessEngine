@@ -21,13 +21,28 @@ namespace search {
 
     TEST_F(perftPosTwo, perft_pos2) {
         if (enablePos2Test) {
+            searcher.setBoardFromFen(posTwo);
+
+            // Make dubug move
+            // game::Move move = moveFromStrAndFlag("a2a3", 0);
+            // searcher.makeMove(game::Move(0, 0, game::Move::QUEEN_CASTLE_FLAG), true);
+            // searcher.overrideCastlingRights(0b1100);
+            int nDebugMoves = 0;
+
             int depth = longRuns ? posTwoMaxDepth + 1 : posTwoMaxDepth;
-            std::unordered_map<std::string, int> stockfishResults = getStockFishPerftResults(posTwo, depth);
+            depth -= nDebugMoves;
+            bool whiteToStart = nDebugMoves % 2 == 0;
+
+            std::string debugFen;
+            if (nDebugMoves > 0) {
+                debugFen = searcher.getBoard().getFenFromBoard();
+                debugFen += whiteToStart ? " w" : " b";
+                debugFen += " kq -";
+            }
+
+            std::unordered_map<std::string, int> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posTwo, depth);
 
             searcher.setMaxDepth(depth);
-            searcher.setBoardFromFen(posTwo);
-            bool whiteToStart = true;
-
             searcher.minimax(0, whiteToStart, 0);
             
             std::unordered_map<std::string, int> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);

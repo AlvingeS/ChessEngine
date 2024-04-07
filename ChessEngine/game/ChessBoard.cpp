@@ -23,14 +23,6 @@ namespace game {
         _bitboards[pieceTypeToInt(PieceType::B_KING)] = 0x0800000000000000ULL;
         
         _enPessantTarget = 0ULL;
-        _whiteRookAMoved = false;
-        _whiteRookHMoved = false;
-        _blackRookAMoved = false;
-        _blackRookHMoved = false;
-        _whiteKingMoved = false;
-        _blackKingMoved = false;
-        _whiteHasCastled = false;
-        _blackHasCastled = false;
 
         // Sets piecetype lookup to zero vector 64 squares
         _squaresLookup = std::vector<PieceType>(64, PieceType::EMPTY);
@@ -128,22 +120,28 @@ namespace game {
     void ChessBoard::setCastlingFlags(PieceType pieceType, int from) {
         switch (pieceType) {
             case PieceType::W_KING:
+                _whiteKingHadMovedInPreviousState = _whiteKingMoved;
                 setKingMoved(true, true);
                 break;
             case PieceType::W_ROOK:
                 if (from == 0) {
+                    _whiteRookAHadMovedInPreviousState = _whiteRookAMoved;
                     setRookHMoved(true, true);
                 } else if (from == 7) {
+                    _whiteRookHHadMovedInPreviousState = _whiteRookHMoved;
                     setRookAMoved(true, true);
                 }
                 break;
             case PieceType::B_KING:
+                _blackKingHadMovedInPreviousState = _blackKingMoved;
                 setKingMoved(false, true);
                 break;
             case PieceType::B_ROOK:
                 if (from == 56) {
+                    _blackRookAHadMovedInPreviousState = _blackRookAMoved;
                     setRookHMoved(false, true);
                 } else if (from == 63) {
+                    _blackRookHHadMovedInPreviousState = _blackRookHMoved;
                     setRookAMoved(false, true);
                 }
                 break;
@@ -155,22 +153,24 @@ namespace game {
     void ChessBoard::unsetCastlingFlags(PieceType pieceType, int from) {
         switch (pieceType) {
             case PieceType::W_KING:
-                setKingMoved(true, false);
+                if (not _whiteKingHadMovedInPreviousState)
+                    setKingMoved(true, false);
                 break;
             case PieceType::W_ROOK:
-                if (from == 0) {
+                if (from == 0 && not _whiteRookAHadMovedInPreviousState) {
                     setRookHMoved(true, false);
-                } else if (from == 7) {
+                } else if (from == 7 && not _whiteRookHHadMovedInPreviousState) {
                     setRookAMoved(true, false);
                 }
                 break;
             case PieceType::B_KING:
-                setKingMoved(false, false);
+                if (not _blackKingHadMovedInPreviousState)
+                    setKingMoved(false, false);
                 break;
             case PieceType::B_ROOK:
-                if (from == 56) {
+                if (from == 56 && not _blackRookAHadMovedInPreviousState) {
                     setRookHMoved(false, false);
-                } else if (from == 63) {
+                } else if (from == 63 && not _blackRookHHadMovedInPreviousState) {
                     setRookAMoved(false, false);
                 }
                 break;
@@ -208,6 +208,28 @@ namespace game {
         }
 
         return PieceType::EMPTY;
+    }
+
+    bool ChessBoard::castlingRightsNeedsUpdating(bool isWhite, Move move, PieceType movedPieceType) {
+        if (move.isAnyCastle())
+            return true;
+
+        if (isWhite) {
+            if (movedPieceType == PieceType::W_KING)
+                return true;
+            
+            if (movedPieceType == PieceType::W_ROOK && (move.getBitIndexFrom() == 0 || move.getBitIndexFrom() == 7))
+                return true;
+
+        } else {
+            if (movedPieceType == PieceType::B_KING)
+                return true;
+            
+            if (movedPieceType == PieceType::B_ROOK && (move.getBitIndexFrom() == 56 || move.getBitIndexFrom() == 63))
+                return true;
+        }
+
+        return false;
     }
 
     void ChessBoard::makeMove(Move move, bool isWhite) {
@@ -261,9 +283,8 @@ namespace game {
         _bitboards[pieceTypeToInt(movedPieceType)] = movedPieceBitboard;
 
         // If the player has not castled, update castling flags
-        if (not getHasCastled(isWhite)) {
+        if (castlingRightsNeedsUpdating(isWhite, move, movedPieceType))
             setCastlingFlags(movedPieceType, from);
-        }
 
         if (move.isDoublePawnPush()) {
             _enPessantTarget = isWhite ? (1ULL << (to - 8)) : (1ULL << (to + 8));

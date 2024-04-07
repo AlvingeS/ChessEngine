@@ -68,11 +68,16 @@ namespace game {
             }
 
             void setKingMoved(bool isWhite, bool hasMoved) {
+                bool tempBool = hasMoved; // FIXME: WTF, why is this needed
                 if (isWhite) {
-                    _whiteKingMoved = hasMoved;
+                    _whiteKingMoved = tempBool;
                 } else {
-                    _blackKingMoved = hasMoved;
+                    _blackKingMoved = tempBool;
                 }
+            }
+
+            bool getKingMoved(bool isWhite) {
+                return isWhite ? _whiteKingMoved : _blackKingMoved;
             }
 
             void setRookAMoved(bool isWhite, bool hasMoved) {
@@ -100,7 +105,6 @@ namespace game {
             
             bits::U64 getWhitePiecesBitmask();
             bits::U64 getBlackPiecesBitmask();
-            bool _whiteRookAMoved;
             std::vector<PieceType> _squaresLookup;
 
         private:
@@ -108,13 +112,26 @@ namespace game {
             std::vector<bits::U64> _bitboards;
             bits::U64 _enPessantTarget;
 
-            bool _whiteHasCastled;
-            bool _blackHasCastled;
-            bool _whiteKingMoved;
-            bool _blackKingMoved;
-            bool _whiteRookHMoved;
-            bool _blackRookAMoved;
-            bool _blackRookHMoved;
+            bool _whiteHasCastled = false;
+            bool _whiteHadCastledInPreviousState = false;
+            bool _blackHasCastled = false;
+            bool _blackHadCastledInPreviousState = false;
+
+            bool _whiteKingMoved = false;
+            bool _blackKingMoved = false;
+            bool _whiteKingHadMovedInPreviousState = false;
+            bool _blackKingHadMovedInPreviousState = false;
+
+            bool _whiteRookHMoved = false;
+            bool _blackRookHMoved = false;
+            bool _whiteRookHHadMovedInPreviousState = false;
+            bool _blackRookHHadMovedInPreviousState = false;
+
+            bool _whiteRookAMoved = false;
+            bool _blackRookAMoved = false;
+            bool _whiteRookAHadMovedInPreviousState = false;
+            bool _blackRookAHadMovedInPreviousState = false;
+
             PieceType _lastCapturedPiece;
             int _noCaptureOrPawnMoveCount;
 
@@ -123,6 +140,7 @@ namespace game {
             bits::U64 getBitboardFromIndex(int index);
             void fillSquaresLookup();
             PieceType getPromotionPieceType(int promotionFlag, bool isWhite);
+            bool castlingRightsNeedsUpdating(bool isWhite, Move move, PieceType movedPieceType);
             void makeCastleMove(bool isWhite, bool isKingSide);
             void unmakeCastleMove(bool wasWhite, bool wasKingSide);
             void setCastlingFlags(PieceType pieceType, int from);

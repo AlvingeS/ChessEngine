@@ -18,7 +18,7 @@ namespace search {
             bool longRuns = true;
 
             // Long run should be depth 6
-            bool enableStartPosTest = false;
+            bool enableStartPosTest = true;
             int startPosMaxDepth = 5;
 
             // Long run should be depth 5
@@ -26,11 +26,11 @@ namespace search {
             int posTwoMaxDepth = 4;
 
             // Long run should be depth 7
-            bool enablePos3Test = false;
+            bool enablePos3Test = true;
             int posThreeMaxDepth = 6;
 
             // Long run should be depth 5
-            bool enablePos5Test = false;
+            bool enablePos5Test = true;
             int posFiveMaxDepth = 4;
 
             std::string startPos;

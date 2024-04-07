@@ -176,7 +176,7 @@ namespace search {
 
     bool Searcher::checkCondition(int currentDepth, bool isMaximizer, int firstMoveIndex, game::Move currentMove, game::Move lastMove, bool verbose, size_t i) {
         // return not _board.getKingMoved(false);
-        return currentDepth == 18 && currentMove.getFlag() == game::Move::QUEEN_CASTLE_FLAG;
+        return currentDepth == 23 && lastMove.getBitIndexFrom() == 44 && lastMove.getBitIndexTo() == 36 && i == 9;
     }
 
     // TODO: Implement draw by repetition after implementing zobrist hashing
@@ -216,10 +216,10 @@ namespace search {
                 numIllegalMoves++;
                 unmakeMove(currentMove, isMaximizer);
 
-                if (checkCondition(currentDepth, isMaximizer, firstMoveIndex, currentMove, lastMove, verbose, i)) {
-                    debugPrint(verbose);
-                    int x = 4;
-                }
+                // if (checkCondition(currentDepth, isMaximizer, firstMoveIndex, currentMove, lastMove, verbose, i)) {
+                //     debugPrint(verbose);
+                //     int x = 4;
+                // }
 
                 if (numIllegalMoves == i + 1 && _moveLists[currentDepth][i + 1].getMove() == 0) {
                     bool wasInCheckBeforeMove = _moveGenerator.isInCheck(isMaximizer);
@@ -235,7 +235,7 @@ namespace search {
             }
 
             // Move was legal, update castling rights
-            setCastlingRights(currentDepth, currentMove, isMaximizer, _board.getPieceTypeAtIndex(currentMove.getBitIndexFrom()));
+            setCastlingRights(currentDepth, currentMove, isMaximizer, _board.getPieceTypeAtIndex(currentMove.getBitIndexTo()));
 
             bool retFlag;
             recordPerftStats(isMaximizer, currentDepth, firstMoveIndex, i, currentMove, retFlag);

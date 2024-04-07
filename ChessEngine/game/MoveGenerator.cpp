@@ -498,6 +498,26 @@ namespace game {
         int kingIndex = bits::indexOfLSB(isWhite ? _board.getBitboard(PieceType::W_KING)
                                                  : _board.getBitboard(PieceType::B_KING));
 
+        int opponentKingIndex = bits::indexOfLSB(isWhite ? _board.getBitboard(PieceType::B_KING)
+                                                         : _board.getBitboard(PieceType::W_KING));
+
+        int kingRankDiff = bits::rankFromBitIndex(kingIndex) - bits::rankFromBitIndex(opponentKingIndex);
+        int kingFileDiff = bits::fileFromBitIndex(kingIndex) - bits::fileFromBitIndex(opponentKingIndex);
+
+        kingRankDiff = kingRankDiff < 0 ? -kingRankDiff : kingRankDiff;
+        kingFileDiff = kingFileDiff < 0 ? -kingFileDiff : kingFileDiff;
+        int manhattanDistance = kingRankDiff + kingFileDiff;
+
+        if (manhattanDistance <= 2) {
+            if (kingRankDiff == 0 || kingFileDiff == 0) {
+                if (manhattanDistance == 1) {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+
         bits::StraightRays straightRays = _straightRayBitmasks[kingIndex];
         bits::DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
         bits::U64 knightMoves = _knightBitmasks[kingIndex];

@@ -60,4 +60,14 @@ namespace bits {
     inline U64 getBlackSquaresBitmask() {
         return 0x55AA55AA55AA55AAULL;
     }
+
+    inline int abs(int n) {
+        return (n < 0) ? -n : n;
+    }
+
+    inline int manhattanDistance(int i, int j) {
+        int rankDiff = rankFromBitIndex(i) - rankFromBitIndex(j);
+        int fileDiff = fileFromBitIndex(i) - fileFromBitIndex(j);
+        return abs(rankDiff) + abs(fileDiff);
+    }
 }

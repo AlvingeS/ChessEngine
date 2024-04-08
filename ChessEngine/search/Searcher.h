@@ -29,7 +29,7 @@ namespace search {
             static constexpr int MAX_LEGAL_MOVES = 218;
 
             Searcher(int maxDepth);
-            void minimax(int current_depth, bool isMaximizer, int firstMoveIndex, game::Move lastMove = game::Move(), bool verbose = true);
+            void minimax(int current_depth, bool isMaximizer, int firstMoveIndex, bool recPerftStats = true, game::Move lastMove = game::Move(), bool verbose = true);
             void recordPerftStats(bool isMaximizer, int currentDepth, int &firstMoveIndex, size_t i, game::Move &currentMove, bool &retFlag);
             void genMoves(bool isWhite, std::vector<game::Move> &moveList, unsigned char castlingRights);
             void makeMove(game::Move move, bool isWhite);
@@ -37,6 +37,8 @@ namespace search {
             void undoMove();
             int _numMoveGenCalls;
             int _totalNodes;
+
+            int sumNodesToDepth(int depth);
             std::vector<int> _nodeCountPerFirstMove;
             std::vector<game::Move> _firstMoves;
             std::vector<int> _nodeCount;

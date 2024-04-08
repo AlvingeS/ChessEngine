@@ -7,39 +7,52 @@
 
 int main() {
 
-    int const MAX_DEPTH = 5;
-    search::Searcher searcher = search::Searcher(MAX_DEPTH);
-    searcher.minimax(0, true, 0);
+    /*
+    Total number of nodes for depth 4: 6605806
+
+    Changelog:
+        - 2024-04-08: 
+            First unoptimized runs: 
+            3.803s ~ 1.736M nodes/s ~ 0.7% SF
+
+            Added option to disable perft stats recording, will not use from now on
+            2.937s ~ 2,249M nodes/s ~ 0.9% SF
     
-    for (int i = 0; i < MAX_DEPTH; i++) {
-        std::cout << "Depth " << i << ": " << searcher._nodeCount[i] << std::endl;
+    */
+
+    int const MAX_DEPTH = 4;
+
+    std::string startPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    std::string posTwo = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -";
+    std::string posThree = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - -";
+    std::string posFive = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
+    
+    bool recPerftStats = false;
+
+    search::Searcher searcherStartPos = search::Searcher(MAX_DEPTH);
+    searcherStartPos.setBoardFromFen(startPos);
+    searcherStartPos.minimax(0, true, 0, recPerftStats);
+
+    search::Searcher searcherPosTwo = search::Searcher(MAX_DEPTH);
+    searcherPosTwo.setBoardFromFen(posTwo);
+    searcherPosTwo.minimax(0, true, 0, recPerftStats);
+
+    search::Searcher searcherPosThree = search::Searcher(MAX_DEPTH);
+    searcherPosThree.setBoardFromFen(posThree);
+    searcherPosThree.minimax(0, true, 0, recPerftStats);
+
+    search::Searcher searcherPosFive = search::Searcher(MAX_DEPTH);
+    searcherPosFive.setBoardFromFen(posFive);
+    searcherPosFive.minimax(0, true, 0, recPerftStats);
+
+    if (recPerftStats) {
+        int sum = 0;
+        sum += searcherStartPos.sumNodesToDepth(MAX_DEPTH);
+        sum += searcherPosTwo.sumNodesToDepth(MAX_DEPTH);
+        sum += searcherPosThree.sumNodesToDepth(MAX_DEPTH);
+        sum += searcherPosFive.sumNodesToDepth(MAX_DEPTH);
+        std::cout << "Total nodes: " << sum << std::endl;
     }
 
-    // std::string fenOne = "rnb1kbnr/ppp3pp/8/3pppq1/3P4/2N1PN1P/PPP2PP1/R1BQKB1R";
-    // fenTwo = "r1n1k1Nr/8/8/8/8/8/8/R2pK1PR";
-    // fenThree = "4k2r/r7/8/8/8/8/7R/R3K3";
-
-
-    // searcher.getMoveGenerator().setBoardFromFen(fenOne);
-    // game::BoardPrinter boardPrinterOne = game::BoardPrinter(searcher.getBoard().getBitboards());
-    // boardPrinterOne.printBoard();
-
-    // moveGenerator.setBoardFromFen(fenTwo);
-    // game::BoardPrinter boardPrinterTwo = game::BoardPrinter(moveGenerator.getBoard().getBitboards());
-    // boardPrinterTwo.printBoard();
-
-    // moveGenerator.setBoardFromFen(fenThree);
-    // game::BoardPrinter boardPrinterThree = game::BoardPrinter(moveGenerator.getBoard().getBitboards());
-    // boardPrinterThree.printBoard();
-
-    // for (int i = 0; i < 100000 - 1; i++) {
-    //     moveGenerator.genMoves(true);
-    //     moveGenerator.resetMoves();
-    // }
-
-    // moveGenerator.genMoves(true);
-
-    // std::cout << "Number of legal moves: " << moveGenerator.getMoveIndex() << std::endl;
-    
     return 0;
 }

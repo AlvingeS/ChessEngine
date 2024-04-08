@@ -51,6 +51,16 @@ namespace search {
         }
     }
 
+    int Searcher::sumNodesToDepth(int depth) {
+        int sum = 0;
+
+        for (int i = 1; i <= depth; i++) {
+            sum += _nodeCount[i];
+        }
+
+        return sum;
+    }
+
     void Searcher::genMoves(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights) {
         _moveGenerator.resetMoveIndex();
         _moveGenerator.genMoves(isWhite, moveList, castlingRights);
@@ -59,19 +69,11 @@ namespace search {
     void Searcher::makeMove(game::Move move, bool isWhite) {
         _board.makeMove(move, isWhite);
         _moveGenerator.updateGameStateBitmasks();
-
-        // if (_board.getPieceTypeAtIndex(32) == _board.getPieceTypeAtIndex(38) && _board.getPieceTypeAtIndex(32) != game::PieceType::EMPTY) {
-        //     std::cout << "Illegal move: " << std::endl;
-        // }
     }
 
     void Searcher::unmakeMove(game::Move move, bool isWhite) {
         _board.unmakeMove(move, isWhite);
         _moveGenerator.updateGameStateBitmasks();
-
-        // if (_board.getPieceTypeAtIndex(32) == _board.getPieceTypeAtIndex(38) && _board.getPieceTypeAtIndex(32) != game::PieceType::EMPTY) {
-        //     std::cout << "Illegal move: " << std::endl;
-        // }
     }
 
     void Searcher::removeCastlingRightsForRemainingDepths(int currentDepth, unsigned char rightsToRemove) {
@@ -180,7 +182,7 @@ namespace search {
     }
 
     // TODO: Implement draw by repetition after implementing zobrist hashing
-    void Searcher::minimax(int currentDepth, bool isMaximizer, int firstMoveIndex, game::Move lastMove, bool verbose) {        
+    void Searcher::minimax(int currentDepth, bool isMaximizer, int firstMoveIndex, bool recPerftStats, game::Move lastMove, bool verbose) {        
         if (currentDepth == _maxDepth) {
             return;
         }
@@ -237,12 +239,15 @@ namespace search {
             // Move was legal, update castling rights
             setCastlingRights(currentDepth, currentMove, isMaximizer, _board.getPieceTypeAtIndex(currentMove.getBitIndexTo()));
 
-            bool retFlag;
-            recordPerftStats(isMaximizer, currentDepth, firstMoveIndex, i, currentMove, retFlag);
-            if (retFlag)
-                return;
 
-            minimax(currentDepth + 1, !isMaximizer, firstMoveIndex, currentMove, verbose);
+            if (recPerftStats) {
+                bool retFlag;
+                recordPerftStats(isMaximizer, currentDepth, firstMoveIndex, i, currentMove, retFlag);
+                if (retFlag)
+                    return;
+            }
+
+            minimax(currentDepth + 1, !isMaximizer, firstMoveIndex, recPerftStats, currentMove, verbose);
 
             _board.setLastCapturedPiece(lastCapturedPiece);
             unmakeMove(currentMove, isMaximizer);

@@ -4,6 +4,7 @@ namespace game {
 
     ChessBoard::ChessBoard() {
         _bitboards = std::vector<bits::U64>(12, 0ULL);
+        _noCaptureOrPawnMoveCount = 0;
         initPieceBitboards();
     }
 

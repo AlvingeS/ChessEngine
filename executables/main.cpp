@@ -4,6 +4,7 @@
 #include "ChessEngine/game/MoveGenerator.h"
 #include <iostream>
 #include "ChessEngine/search/Searcher.h"
+#include <chrono>
 
 int main() {
 
@@ -17,8 +18,14 @@ int main() {
 
             Added option to disable perft stats recording, will not use from now on
             2.937s ~ 2,249M nodes/s ~ 0.9% SF
+
+            Removed unnecessary copying of bitboard in make/unmake move
+            2.881s ~ 2,345M nodes/s ~ 0.9% SF
     
     */
+
+    // Start clock
+    auto start = std::chrono::high_resolution_clock::now();
 
     int const MAX_DEPTH = 4;
 
@@ -53,6 +60,16 @@ int main() {
         sum += searcherPosFive.sumNodesToDepth(MAX_DEPTH);
         std::cout << "Total nodes: " << sum << std::endl;
     }
+
+    // End clock
+    auto end = std::chrono::high_resolution_clock::now();
+
+    // Calculate duration
+    std::chrono::duration<double> elapsed_seconds = end - start;
+    std::cout << "Elapsed time: " << elapsed_seconds.count() << "s" << std::endl;
+    float nodesPerSecond = 6605806 / elapsed_seconds.count();
+    std::cout << "Nodes per second: " << nodesPerSecond << std::endl;
+    std::cout << "SF%: " << nodesPerSecond / 250000000 << std::endl;
 
     return 0;
 }

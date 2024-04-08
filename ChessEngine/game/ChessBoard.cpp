@@ -6,6 +6,8 @@ namespace game {
         _bitboards = std::vector<bits::U64>(12, 0ULL);
         _noCaptureOrPawnMoveCount = 0;
         initPieceBitboards();
+        fillWhitePiecesBitmask();
+        fillBlackPiecesBitmask();
     }
 
     void ChessBoard::initPieceBitboards() {
@@ -238,6 +240,34 @@ namespace game {
         if (move.isAnyCastle()) {
             makeCastleMove(isWhite, move.isKingCastle());
             setHasCastled(isWhite, true);
+
+            // Update white or black bitmasks
+            if (isWhite) {
+                if (move.isKingCastle()) {
+                    _whitePiecesBitmask |= (1ULL << 1);
+                    _whitePiecesBitmask |= (1ULL << 2);
+                    _whitePiecesBitmask &= ~(1ULL << 3);
+                    _whitePiecesBitmask &= ~(1ULL << 0);
+                } else {
+                    _whitePiecesBitmask |= (1ULL << 5);
+                    _whitePiecesBitmask |= (1ULL << 4);
+                    _whitePiecesBitmask &= ~(1ULL << 3);
+                    _whitePiecesBitmask &= ~(1ULL << 7);
+                }
+            } else {
+                if (move.isKingCastle()) {
+                    _blackPiecesBitmask |= (1ULL << 57);
+                    _blackPiecesBitmask |= (1ULL << 58);
+                    _blackPiecesBitmask &= ~(1ULL << 59);
+                    _blackPiecesBitmask &= ~(1ULL << 56);
+                } else {
+                    _blackPiecesBitmask |= (1ULL << 61);
+                    _blackPiecesBitmask |= (1ULL << 60);
+                    _blackPiecesBitmask &= ~(1ULL << 59);
+                    _blackPiecesBitmask &= ~(1ULL << 63);
+                }
+            }
+
             return;
         }
 
@@ -247,8 +277,14 @@ namespace game {
         
         // Piece type of piece being moved
         PieceType movedPieceType = _squaresLookup[from];
-        bits::U64 movedPieceBitboard = _bitboards[pieceTypeToInt(movedPieceType)];
-        movedPieceBitboard &= ~(1ULL << from);
+        _bitboards[pieceTypeToInt(movedPieceType)] &= ~(1ULL << from);
+        
+        if (isWhite) {
+            _whitePiecesBitmask &= ~(1ULL << from);
+        } else {
+            _blackPiecesBitmask &= ~(1ULL << from);
+        }
+
         _squaresLookup[from] = PieceType::EMPTY;
 
         // FIXME: THIS IS TEMPORARY
@@ -266,6 +302,12 @@ namespace game {
 
             _bitboards[pieceTypeToInt(capturedPieceType)] &= ~(1ULL << captureIndex);
 
+            if (isWhite) {
+                _blackPiecesBitmask &= ~(1ULL << captureIndex);
+            } else {
+                _whitePiecesBitmask &= ~(1ULL << captureIndex);
+            }
+
             if (move.isEpCapture()) {
                 _squaresLookup[captureIndex] = PieceType::EMPTY;
             }
@@ -276,12 +318,15 @@ namespace game {
             _bitboards[pieceTypeToInt(promotionPieceType)] |= (1ULL << to);
             _squaresLookup[to] = promotionPieceType;
         } else {
-            movedPieceBitboard |= (1ULL << to);
+            _bitboards[pieceTypeToInt(movedPieceType)] |= (1ULL << to);
             _squaresLookup[to] = movedPieceType;
         }
 
-        // Update the moved piece bitboard
-        _bitboards[pieceTypeToInt(movedPieceType)] = movedPieceBitboard;
+        if (isWhite) {
+            _whitePiecesBitmask |= (1ULL << to);
+        } else {
+            _blackPiecesBitmask |= (1ULL << to);
+        }
 
         // If the player has not castled, update castling flags
         if (castlingRightsNeedsUpdating(isWhite, move, movedPieceType))
@@ -323,6 +368,33 @@ namespace game {
         if (move.isAnyCastle()) {
             unmakeCastleMove(wasWhite, move.isKingCastle());
             setHasCastled(wasWhite, false);
+
+            // Update white or black bitmasks
+            if (wasWhite) {
+                if (move.isKingCastle()) {
+                    _whitePiecesBitmask &= ~(1ULL << 1);
+                    _whitePiecesBitmask &= ~(1ULL << 2);
+                    _whitePiecesBitmask |= (1ULL << 3);
+                    _whitePiecesBitmask |= (1ULL << 0);
+                } else {
+                    _whitePiecesBitmask &= ~(1ULL << 5);
+                    _whitePiecesBitmask &= ~(1ULL << 4);
+                    _whitePiecesBitmask |= (1ULL << 3);
+                    _whitePiecesBitmask |= (1ULL << 7);
+                }
+            } else {
+                if (move.isKingCastle()) {
+                    _blackPiecesBitmask &= ~(1ULL << 57);
+                    _blackPiecesBitmask &= ~(1ULL << 58);
+                    _blackPiecesBitmask |= (1ULL << 59);
+                    _blackPiecesBitmask |= (1ULL << 56);
+                } else {
+                    _blackPiecesBitmask &= ~(1ULL << 61);
+                    _blackPiecesBitmask &= ~(1ULL << 60);
+                    _blackPiecesBitmask |= (1ULL << 59);
+                    _blackPiecesBitmask |= (1ULL << 63);
+                }
+            }
             return;
         }
 
@@ -342,21 +414,29 @@ namespace game {
         }
 
         // Place back the moved piece
-        bits::U64 movedPieceBitboard = _bitboards[pieceTypeToInt(movedPieceType)];
-        movedPieceBitboard |= (1ULL << from);
+        _bitboards[pieceTypeToInt(movedPieceType)] |= (1ULL << from);
         _squaresLookup[from] = movedPieceType;
+
+        if (wasWhite) {
+            _whitePiecesBitmask |= (1ULL << from);
+        } else {
+            _blackPiecesBitmask |= (1ULL << from);
+        }
 
         // If the move was not a promotion, remove the piece in the bitboard
         // Else, remove the bit for the promoted piece
         if (not move.isAnyPromo()) {
-            movedPieceBitboard &= ~(1ULL << to);
+            _bitboards[pieceTypeToInt(movedPieceType)] &= ~(1ULL << to);
         } else {
             PieceType promotionPieceType = getPromotionPieceType(move.getFlag(), wasWhite);
             _bitboards[pieceTypeToInt(promotionPieceType)] &= ~(1ULL << to);
         }
 
-        // Update the moved piece bitboard
-        _bitboards[pieceTypeToInt(movedPieceType)] = movedPieceBitboard;
+        if (wasWhite) {
+            _whitePiecesBitmask &= ~(1ULL << to);
+        } else {
+            _blackPiecesBitmask &= ~(1ULL << to);
+        }
 
         // If the move was a capture, place back the captured piece
         // else set the square to empty
@@ -368,6 +448,13 @@ namespace game {
             if (move.isEpCapture()) {
                 _squaresLookup[to] = PieceType::EMPTY;
             }
+
+            if (wasWhite) {
+                _blackPiecesBitmask |= (1ULL << captureIndex);
+            } else {
+                _whitePiecesBitmask |= (1ULL << captureIndex);
+            }
+
         } else {
             _squaresLookup[to] = PieceType::EMPTY;
         }
@@ -409,24 +496,22 @@ namespace game {
         }
     }
 
-    // TODO: MIGHT BE WRONG
-    bits::U64 ChessBoard::getWhitePiecesBitmask() {
+    void ChessBoard::fillWhitePiecesBitmask() {
         bits::U64 w_all = 0;
         for (int i = 0; i < 6; i++) {
             w_all |= _bitboards[i];
         }
 
-        return w_all;
+        _whitePiecesBitmask = w_all;
     }
 
-    // TODO: MIGHT BE WRONG
-    bits::U64 ChessBoard::getBlackPiecesBitmask() {
+    void ChessBoard::fillBlackPiecesBitmask() {
         bits::U64 b_all = 0;
         for (int i = 6; i < 12; i++) {
             b_all |= _bitboards[i];
         }
 
-        return b_all;
+        _blackPiecesBitmask = b_all;
     }
 
     void ChessBoard::setBoardFromFen(const std::string& fen) {
@@ -453,6 +538,8 @@ namespace game {
         }
 
         fillSquaresLookup();
+        fillBlackPiecesBitmask();
+        fillWhitePiecesBitmask();
     }
 
     std::string ChessBoard::getFenFromBoard() {

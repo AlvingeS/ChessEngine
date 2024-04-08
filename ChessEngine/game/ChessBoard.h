@@ -99,18 +99,29 @@ namespace game {
             PieceType getPieceTypeAtIndex(int index) {
                 return _squaresLookup[index];
             }
+
+            bits::U64 getWhitePiecesBitmask() {
+                return _whitePiecesBitmask;
+            }
+
+            bits::U64 getBlackPiecesBitmask() {
+                return _blackPiecesBitmask;
+            }
             
             bool kingSideCastlersHasMoved(bool isWhite);
             bool queenSideCastlersHasMoved(bool isWhite);
             
-            bits::U64 getWhitePiecesBitmask();
-            bits::U64 getBlackPiecesBitmask();
+            void fillWhitePiecesBitmask();
+            void fillBlackPiecesBitmask();
             std::vector<PieceType> _squaresLookup;
 
         private:
             // Private member variables
             std::vector<bits::U64> _bitboards;
             bits::U64 _enPessantTarget;
+
+            bits::U64 _whitePiecesBitmask;
+            bits::U64 _blackPiecesBitmask;
 
             bool _whiteHasCastled = false;
             bool _whiteHadCastledInPreviousState = false;

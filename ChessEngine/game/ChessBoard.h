@@ -28,7 +28,7 @@ namespace game {
                 return _lastCapturedPiece;
             }
 
-            bits::U64 getBitboard(PieceType pieceType) {
+            inline bits::U64 getBitboard(PieceType pieceType) {
                 return _bitboards[pieceTypeToInt(pieceType)];
             }
 

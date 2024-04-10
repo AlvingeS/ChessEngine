@@ -291,23 +291,16 @@ namespace game {
     }
 
     void MoveGenerator::genPawnMoves(bool isWhite, std::vector<Move>& moveList) {
-        std::vector<bits::U64> straightPawnMoveBitmasks;
-        std::vector<bits::U64> capturePawnMoveBitmasks;
-
-        if (isWhite) {
-            straightPawnMoveBitmasks = _whitePawnStraightMoveBitmasks;
-            capturePawnMoveBitmasks = _whitePawnCaptureMoveBitmasks;
-        } else {
-            straightPawnMoveBitmasks = _blackPawnStraightMoveBitmasks;
-            capturePawnMoveBitmasks = _blackPawnCaptureMoveBitmasks;
-        }
-
         PieceType currentPieceType = isWhite ? PieceType::W_PAWN : PieceType::B_PAWN;
         bits::getBitIndices(_pawnIndices, _board.getBitboard(currentPieceType));
 
         for (int currentPawnIndex : _pawnIndices) {
-            bits::U64 straightPawnMoveBitmask = straightPawnMoveBitmasks[currentPawnIndex];
-            bits::U64 capturePawnMoveBitmask = capturePawnMoveBitmasks[currentPawnIndex];
+            bits::U64 straightPawnMoveBitmask = isWhite ? _whitePawnStraightMoveBitmasks[currentPawnIndex]
+                                                        : _blackPawnStraightMoveBitmasks[currentPawnIndex];
+
+            bits::U64 capturePawnMoveBitmask = isWhite ? _whitePawnCaptureMoveBitmasks[currentPawnIndex]
+                                                       : _blackPawnCaptureMoveBitmasks[currentPawnIndex];
+
 
             bits::U64 freePawnMoves = straightPawnMoveBitmask & _emptySquaresBitmask;
             bits::U64 enemyPieces = isWhite ? _blackPiecesBitmask : _whitePiecesBitmask;

@@ -21,7 +21,21 @@ int main() {
 
             Removed unnecessary copying of bitboard in make/unmake move
             2.881s ~ 2,345M nodes/s ~ 0.9% SF
+
+            Now handle white/black bitmasks directly in make/unmake move
+            2.603s ~ 2,567M nodes/s ~ 1.0% SF
+        - 2024-04-10:
+            Removed unnecessary vector copying in pawn-move generation
+            2.469s ~ 2,678M nodes/s ~ 1.1% SF
+
+            Changed the ordering of the move flags to check for captures,
+            promotions, or castles in groups
+            2.139s ~ 3,118M nodes/s ~ 1.2% SF
+
+            Made getBitBoard inline
+            2.122s ~ 3,121M nodes/s ~ 1.2% SF
     
+
     */
 
     // Start clock

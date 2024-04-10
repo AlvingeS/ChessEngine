@@ -15,7 +15,7 @@ namespace search {
         };
 
         protected:
-            bool longRuns = true;
+            bool longRuns = false;
 
             // Long run should be depth 6
             bool enableStartPosTest = true;

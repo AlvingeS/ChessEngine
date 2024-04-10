@@ -7,18 +7,18 @@ namespace game {
         public:
             static const int QUITE_FLAG = 0;
             static const int CAPTURE_FLAG = 1;
-            static const int DOUBLE_PAWN_PUSH_FLAG = 2;
-            static const int KING_CASTLE_FLAG = 3;
-            static const int QUEEN_CASTLE_FLAG = 4;
-            static const int EP_CAPTURE_FLAG = 5;
-            static const int KNIGHT_PROMO_FLAG = 6;
-            static const int BISHOP_PROMO_FLAG = 7;
-            static const int ROOK_PROMO_FLAG = 8;
-            static const int QUEEN_PROMO_FLAG = 9;
-            static const int KNIGHT_PROMO_CAPTURE_FLAG = 10;
-            static const int BISHOP_PROMO_CAPTURE_FLAG = 11;
-            static const int ROOK_PROMO_CAPTURE_FLAG = 12;
-            static const int QUEEN_PROMO_CAPTURE_FLAG = 13;
+            static const int EP_CAPTURE_FLAG = 2;
+            static const int KNIGHT_PROMO_CAPTURE_FLAG = 3;
+            static const int BISHOP_PROMO_CAPTURE_FLAG = 4;
+            static const int ROOK_PROMO_CAPTURE_FLAG = 5;
+            static const int QUEEN_PROMO_CAPTURE_FLAG = 6;
+            static const int KNIGHT_PROMO_FLAG = 7;
+            static const int BISHOP_PROMO_FLAG = 8;
+            static const int ROOK_PROMO_FLAG = 9;
+            static const int QUEEN_PROMO_FLAG = 10;
+            static const int KING_CASTLE_FLAG = 11;
+            static const int QUEEN_CASTLE_FLAG = 12;
+            static const int DOUBLE_PAWN_PUSH_FLAG = 13;
             static const int TBD_ONE_FLAG = 14;
             static const int TBD_TWO_FLAG = 15;
             
@@ -56,19 +56,19 @@ namespace game {
                 return (_move & 0xffff) != (move._move & 0xffff);
             }
 
-            int getBitIndexFrom() const {
+            inline int getBitIndexFrom() const {
                 return _move & 0x3f;
             }
             
-            int getBitIndexTo() const {
+            inline int getBitIndexTo() const {
                 return (_move >> 6) & 0x3f;
             }
             
-            bool isQuite() const {
+            inline bool isQuite() const {
                 return ((_move >> 12) & 0xf) == QUITE_FLAG;
             }
 
-            bool isDoublePawnPush() const {
+            inline bool isDoublePawnPush() const {
                 return ((_move >> 12) & 0xf) == DOUBLE_PAWN_PUSH_FLAG;
             }
 
@@ -120,17 +120,17 @@ namespace game {
                 return ((_move >> 12) & 0xf) == QUEEN_PROMO_CAPTURE_FLAG;
             }
 
+            // Checks if the flag is any number between 1 and 6
             bool isAnyCapture() const {
-                return isNormalCapture() || isEpCapture() || isKnightPromoCapture() || isBishopPromoCapture() || isRookPromoCapture() || isQueenPromoCapture();
+                return getFlag() >= 1 && getFlag()  <= 6;
             }
 
-
             bool isAnyPromo() const {
-                return isKnightPromo() || isBishopPromo() || isRookPromo() || isQueenPromo() || isKnightPromoCapture() || isBishopPromoCapture() || isRookPromoCapture() || isQueenPromoCapture();
+                return getFlag() >= 3 && getFlag() <= 10;
             }
 
             bool isAnyPromoCapture() const {
-                return isKnightPromoCapture() || isBishopPromoCapture() || isRookPromoCapture() || isQueenPromoCapture();
+                return getFlag() >= 3 && getFlag() <= 6;
             }
 
             bool isAnyCastle() const {

@@ -27,14 +27,14 @@ namespace game {
 
         std::vector<Move> moves = getMoves();
         std::unordered_set<Move> expectedMoves;
-        insertExpectedMoves(expectedMoves, 8, {16, 24}, {0, 2});
-        insertExpectedMoves(expectedMoves, 9, {17, 25}, {0, 2});
-        insertExpectedMoves(expectedMoves, 10, {18, 26}, {0, 2});
-        insertExpectedMoves(expectedMoves, 11, {19, 27}, {0, 2});
-        insertExpectedMoves(expectedMoves, 12, {20, 28}, {0, 2});
-        insertExpectedMoves(expectedMoves, 13, {21, 29}, {0, 2});
-        insertExpectedMoves(expectedMoves, 14, {22, 30}, {0, 2});
-        insertExpectedMoves(expectedMoves, 15, {23, 31}, {0, 2});
+        insertExpectedMoves(expectedMoves, 8, {16, 24}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 9, {17, 25}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 10, {18, 26}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 11, {19, 27}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 12, {20, 28}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 13, {21, 29}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 14, {22, 30}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 15, {23, 31}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
 
         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
             auto found = expectedMoves.find(moves[i]);
@@ -51,14 +51,14 @@ namespace game {
 
         std::vector<Move> moves = getMoves();
         std::unordered_set<Move> expectedMoves;
-        insertExpectedMoves(expectedMoves, 48, {40, 32}, {0, 2});
-        insertExpectedMoves(expectedMoves, 49, {41, 33}, {0, 2});
-        insertExpectedMoves(expectedMoves, 50, {42, 34}, {0, 2});
-        insertExpectedMoves(expectedMoves, 51, {43, 35}, {0, 2});
-        insertExpectedMoves(expectedMoves, 52, {44, 36}, {0, 2});
-        insertExpectedMoves(expectedMoves, 53, {45, 37}, {0, 2});
-        insertExpectedMoves(expectedMoves, 54, {46, 38}, {0, 2});
-        insertExpectedMoves(expectedMoves, 55, {47, 39}, {0, 2});
+        insertExpectedMoves(expectedMoves, 48, {40, 32}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 49, {41, 33}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 50, {42, 34}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 51, {43, 35}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 52, {44, 36}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 53, {45, 37}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 54, {46, 38}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 55, {47, 39}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
 
         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
             auto found = expectedMoves.find(moves[i]);
@@ -76,8 +76,8 @@ namespace game {
         std::vector<Move> moves = getMoves();
         std::unordered_set<Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 28, {37, 36}, {1, 0});
-        insertExpectedMoves(expectedMoves, 10, {18, 26}, {0, 2});
-        insertExpectedMoves(expectedMoves, 8, {16, 24}, {0, 2});
+        insertExpectedMoves(expectedMoves, 10, {18, 26}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
+        insertExpectedMoves(expectedMoves, 8, {16, 24}, {0, Move::DOUBLE_PAWN_PUSH_FLAG});
 
         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
             auto found = expectedMoves.find(moves[i]);

@@ -394,7 +394,7 @@ namespace game {
                     _blackPiecesBitmask |= (1ULL << 59);
                     _blackPiecesBitmask |= (1ULL << 63);
                 }
-            }
+                }
             return;
         }
 

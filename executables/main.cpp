@@ -34,6 +34,8 @@ int main() {
 
             Made getBitBoard inline
             2.122s ~ 3,121M nodes/s ~ 1.2% SF
+
+            
     
 
     */

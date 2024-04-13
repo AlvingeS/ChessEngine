@@ -25,9 +25,9 @@ namespace search {
             searcher.getBoard().setKingMoved(false, true);
 
             // Make dubug move
-            game::Move move = moveFromStrAndFlag("a2a3", 0);
-            searcher.makeMove(move, true);
-            int nDebugMoves = 1;
+            // game::Move move = moveFromStrAndFlag("a2a3", 0);
+            // searcher.makeMove(move, true);
+            int nDebugMoves = 0;
 
             int depth = longRuns ? posFiveMaxDepth + 1 : posFiveMaxDepth;
             depth -= nDebugMoves;

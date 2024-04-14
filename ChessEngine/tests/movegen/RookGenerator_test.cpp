@@ -3,13 +3,13 @@
 
 namespace game {
 
-    class MoveGeneratorRookTest : public BaseMoveGeneratorTest {
+    class MoveGeneratorRookTest : public BaseGenerator {
         protected:
             std::string fenOne;
             std::string fenTwo;
 
             void SetUp() override {
-                BaseMoveGeneratorTest::SetUp();
+                BaseGenerator::SetUp();
                 fenOne = "8/2P5/8/8/8/b1R5/4q3/8";
                 fenTwo = "7r/8/8/1P6/8/1R1p3R/8/8";
             }

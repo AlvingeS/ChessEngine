@@ -153,6 +153,27 @@ namespace game {
         }
     }
 
+    bool ChessBoard::isDeadPosition() {
+        // It is assumed in this method that the kings may never dissapear
+        int popCount = bits::popCount(_occupiedPiecesBitmask);
+
+        if (popCount == 2) {
+            return true;
+        }
+
+        if (popCount == 3) {
+            if (getBitboard(PieceType::W_BISHOP) != 0 || getBitboard(PieceType::B_BISHOP) != 0) {
+                return true;
+            }
+
+            if (getBitboard(PieceType::W_KNIGHT) != 0 || getBitboard(PieceType::B_KNIGHT) != 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void ChessBoard::unsetCastlingFlags(PieceType pieceType, int from) {
         switch (pieceType) {
             case PieceType::W_KING:
@@ -337,6 +358,9 @@ namespace game {
         } else {
             _enPessantTarget = 0ULL;
         }
+
+        fillOccupiedPiecesBitmask();
+        fillEmptySquaresBitmask();
     }
 
     void ChessBoard::makeTemporaryKingMove(bool isWhite, bool isKingSide) {
@@ -466,6 +490,9 @@ namespace game {
         if (move.isDoublePawnPush()) {
             _enPessantTarget = 0ULL;
         }
+
+        fillOccupiedPiecesBitmask();
+        fillEmptySquaresBitmask();
     }
 
     void ChessBoard::fillSquaresLookup() {
@@ -513,7 +540,7 @@ namespace game {
 
         _blackPiecesBitmask = b_all;
     }
-
+    
     void ChessBoard::setBoardFromFen(const std::string& fen) {
         for (int i = 0; i < 12; i++) {
             _bitboards[i] = 0ULL;
@@ -540,6 +567,8 @@ namespace game {
         fillSquaresLookup();
         fillBlackPiecesBitmask();
         fillWhitePiecesBitmask();
+        fillOccupiedPiecesBitmask();
+        fillEmptySquaresBitmask();
     }
 
     std::string ChessBoard::getFenFromBoard() {

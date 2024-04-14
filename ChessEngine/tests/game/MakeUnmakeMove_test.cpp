@@ -1,4 +1,4 @@
-// #include "ChessEngine/game/MoveGenerator.h"
+// #include "ChessEngine/movegen/MoveGenerator.h"
 // #include "ChessEngine/game/Move.h"
 // #include <gtest/gtest.h>
 // #include <unordered_set>
@@ -28,7 +28,7 @@
 //                 capturePromotion = "p1b5/1P6/8/8/8/8/6p1/5N1Q";
 //                 startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 //                 enPessant = "8/4p3/8/3P4/7p/8/6P1/8";
-//                 moveList = std::vector<Move>(game::MoveGenerator::MAX_LEGAL_MOVES);
+//                 moveList = std::vector<Move>(movegen::MoveGenerator::MAX_LEGAL_MOVES);
 //             }
 
 //             std::vector<Move> getMoves() {

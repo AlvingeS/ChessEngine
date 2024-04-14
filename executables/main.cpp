@@ -1,7 +1,7 @@
 #include "ChessEngine/game/ChessBoard.h"
 #include "ChessEngine/game/BoardPrinter.h"
 #include "ChessEngine/bits/ChessUtils.h"
-#include "ChessEngine/game/MoveGenerator.h"
+#include "ChessEngine/movegen/MoveGenerator.h"
 #include <iostream>
 #include "ChessEngine/search/Searcher.h"
 #include <chrono>

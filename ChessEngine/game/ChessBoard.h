@@ -19,6 +19,7 @@ namespace game {
             void unmakeMove(Move move, bool wasWhite);
             void makeTemporaryKingMove(bool isWhite, bool isKingSide);
             void unmakeTemporaryKingMove(bool wasWhite, bool wasKingSide);
+            bool isDeadPosition();
 
             void setLastCapturedPiece(PieceType pieceType) {
                 _lastCapturedPiece = pieceType;
@@ -107,12 +108,27 @@ namespace game {
             bits::U64 getBlackPiecesBitmask() {
                 return _blackPiecesBitmask;
             }
+
+            bits::U64 getOccupiedPiecesBitmask() {
+                return _occupiedPiecesBitmask;
+            }
+
+            bits::U64 getEmptySquaresBitmask() {
+                return _emptySquaresBitmask;
+            }
             
             bool kingSideCastlersHasMoved(bool isWhite);
             bool queenSideCastlersHasMoved(bool isWhite);
             
             void fillWhitePiecesBitmask();
             void fillBlackPiecesBitmask();
+            
+            inline void fillOccupiedPiecesBitmask() {
+                _occupiedPiecesBitmask = _whitePiecesBitmask | _blackPiecesBitmask;
+            }
+            inline void fillEmptySquaresBitmask() {
+                _emptySquaresBitmask = ~_occupiedPiecesBitmask;
+            }
             std::vector<PieceType> _squaresLookup;
 
         private:
@@ -122,6 +138,8 @@ namespace game {
 
             bits::U64 _whitePiecesBitmask;
             bits::U64 _blackPiecesBitmask;
+            bits::U64 _occupiedPiecesBitmask;
+            bits::U64 _emptySquaresBitmask;
 
             bool _whiteHasCastled = false;
             bool _whiteHadCastledInPreviousState = false;
@@ -156,5 +174,6 @@ namespace game {
             void unmakeCastleMove(bool wasWhite, bool wasKingSide);
             void setCastlingFlags(PieceType pieceType, int from);
             void unsetCastlingFlags(PieceType pieceType, int from);
+
     };
 }

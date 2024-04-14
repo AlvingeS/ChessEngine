@@ -1,5 +1,5 @@
 #pragma once
-#include "ChessEngine/game/MoveGenerator.h"
+#include "ChessEngine/movegen/MoveGenerator.h"
 #include "ChessEngine/evaluation/Evaluator.h"
 #include "ChessEngine/game/ChessBoard.h"
 #include "ChessEngine/game/Move.h"
@@ -63,19 +63,18 @@ namespace search {
                 return _board;
             }
 
-            game::MoveGenerator& getMoveGenerator() {
+            movegen::MoveGenerator& getMoveGenerator() {
                 return _moveGenerator;
             }
 
             void setBoardFromFen(std::string fen) {
                 _board.setBoardFromFen(fen);
-                _moveGenerator.updateGameStateBitmasks();
             }
             
             void overrideCastlingRights(unsigned char rights);
         private:
             game::ChessBoard _board;
-            game::MoveGenerator _moveGenerator;
+            movegen::MoveGenerator _moveGenerator;
             evaluation::Evaluator _evaluator;
             int _maxDepth;
 

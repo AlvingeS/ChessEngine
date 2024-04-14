@@ -5,7 +5,7 @@
 
 namespace search {
     Searcher::Searcher(int maxDepth) : _board(game::ChessBoard()),
-                                       _moveGenerator(game::MoveGenerator(_board)),
+                                       _moveGenerator(movegen::MoveGenerator(_board)),
                                        _evaluator(evaluation::Evaluator(_board)),
                                        _maxDepth(maxDepth) {
         
@@ -68,12 +68,10 @@ namespace search {
 
     void Searcher::makeMove(game::Move move, bool isWhite) {
         _board.makeMove(move, isWhite);
-        _moveGenerator.updateGameStateBitmasks();
     }
 
     void Searcher::unmakeMove(game::Move move, bool isWhite) {
         _board.unmakeMove(move, isWhite);
-        _moveGenerator.updateGameStateBitmasks();
     }
 
     void Searcher::removeCastlingRightsForRemainingDepths(int currentDepth, unsigned char rightsToRemove) {
@@ -301,7 +299,7 @@ namespace search {
             _epCaptureCount[currentDepth + 1]++;
         }
 
-        if (_moveGenerator.isDeadPosition() || _board.getNoCaptureOrPawnMoveCount() >= 50)
+        if (_board.isDeadPosition() || _board.getNoCaptureOrPawnMoveCount() >= 50)
         {
             unmakeMove(currentMove, isMaximizer);
             return;

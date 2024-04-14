@@ -23,7 +23,7 @@ namespace search {
         _lastCapturedPieces.resize(_maxDepth);
         _moveLists.resize(_maxDepth);
         _noCapturedOrPawnMoveCounts.resize(_maxDepth);
-        _castlingRights.resize(_maxDepth);
+        _castlingRights.resize(_maxDepth + 1);
 
         for (int i = 0; i < _maxDepth; i++) {
             _lastCapturedPieces[i] = game::PieceType::EMPTY;
@@ -31,6 +31,8 @@ namespace search {
             _noCapturedOrPawnMoveCounts[i] = 0;
             _castlingRights[i] = 0b1111;
         }
+
+        _castlingRights[_maxDepth] = 0b1111;
 
         _nodeCount.resize(20);
         _captureCount.resize(20);

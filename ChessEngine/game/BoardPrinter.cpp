@@ -2,7 +2,7 @@
 #include <iostream>
 
 namespace game {
-    BoardPrinter::BoardPrinter(std::vector<bits::U64> bitboards) {
+    BoardPrinter::BoardPrinter(std::vector<bits::U64*> bitboards) {
         fillBoard(bitboards);
     }
 
@@ -26,12 +26,12 @@ namespace game {
         }
     }
 
-    void BoardPrinter::fillBoard(std::vector<bits::U64>  bitboards) {
+    void BoardPrinter::fillBoard(std::vector<bits::U64*> bitboards) {
         _board = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
         
         for (int i = 0; i < 12; i++) {
             PieceType pieceType = intToPieceType(i);
-            bits::U64 bitboard = bitboards[i];
+            bits::U64 bitboard = *(bitboards[i]);
             char pieceChar = pieceTypeToChar(pieceType);
 
             for (int i = 0; i < 64; i++) {

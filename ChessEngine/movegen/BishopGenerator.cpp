@@ -11,8 +11,8 @@ namespace movegen {
     }
 
     void BishopGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
-        game::PieceType currentPieceType = isWhite ? game::PieceType::W_BISHOP : game::PieceType::B_BISHOP;
-        bits::getBitIndices(_bishopIndices, _board.getBitboard(currentPieceType));
+        bits::getBitIndices(_bishopIndices, isWhite ? _board.getWhiteBishopsBitboard()
+                                                    : _board.getBlackBishopsBitboard());
 
         for (int currentBishopIndex : _bishopIndices) {
             bits::DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];

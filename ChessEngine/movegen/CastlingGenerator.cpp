@@ -36,23 +36,23 @@ namespace movegen {
 
     bool CastlingGenerator::kingAndRookOnCastlingSquares(bool isWhite, bool isKingSide) {
         if (isWhite) {
-            bool kingBitEnabled = (_board.getBitboard(game::PieceType::W_KING) & (1ULL << 3)) != 0;
+            bool kingBitEnabled = (_board.getWhiteKingBitboard() & (1ULL << 3)) != 0;
             
             if (isKingSide) {
-                bool rookBitEnabled = (_board.getBitboard(game::PieceType::W_ROOK) & (1ULL << 0)) != 0;
+                bool rookBitEnabled = (_board.getWhiteRooksBitboard() & (1ULL << 0)) != 0;
                 return kingBitEnabled && rookBitEnabled;
             } else {
-                bool rookBitEnabled = (_board.getBitboard(game::PieceType::W_ROOK) & (1ULL << 7)) != 0;
+                bool rookBitEnabled = (_board.getWhiteRooksBitboard() & (1ULL << 7)) != 0;
                 return kingBitEnabled && rookBitEnabled;
             }
         } else {
-            bool kingBitEnabled = (_board.getBitboard(game::PieceType::B_KING) & (1ULL << 59)) != 0;
+            bool kingBitEnabled = (_board.getBlackKingBitboard() & (1ULL << 59)) != 0;
             
             if (isKingSide) {
-                bool rookBitEnabled = (_board.getBitboard(game::PieceType::B_ROOK) & (1ULL << 56)) != 0;
+                bool rookBitEnabled = (_board.getBlackRooksBitboard() & (1ULL << 56)) != 0;
                 return kingBitEnabled && rookBitEnabled;
             } else {
-                bool rookBitEnabled = (_board.getBitboard(game::PieceType::B_ROOK) & (1ULL << 63)) != 0;
+                bool rookBitEnabled = (_board.getBlackRooksBitboard() & (1ULL << 63)) != 0;
                 return kingBitEnabled && rookBitEnabled;
             }
         }

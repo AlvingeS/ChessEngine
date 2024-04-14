@@ -14,11 +14,11 @@ namespace movegen {
     }
 
     bool CheckDetection::isInCheck(bool isWhite) {
-        int kingIndex = bits::indexOfLSB(isWhite ? _board.getBitboard(game::PieceType::W_KING)
-                                                 : _board.getBitboard(game::PieceType::B_KING));
+        int kingIndex = bits::indexOfLSB(isWhite ? _board.getWhiteKingBitboard()
+                                                 : _board.getBlackKingBitboard());
 
-        int opponentKingIndex = bits::indexOfLSB(isWhite ? _board.getBitboard(game::PieceType::B_KING)
-                                                         : _board.getBitboard(game::PieceType::W_KING));
+        int opponentKingIndex = bits::indexOfLSB(isWhite ? _board.getBlackKingBitboard()
+                                                         : _board.getWhiteKingBitboard());
 
         int kingRankDiff = bits::rankFromBitIndex(kingIndex) - bits::rankFromBitIndex(opponentKingIndex);
         int kingFileDiff = bits::fileFromBitIndex(kingIndex) - bits::fileFromBitIndex(opponentKingIndex);
@@ -42,17 +42,19 @@ namespace movegen {
         bits::U64 knightMoves = _knightBitmasks[kingIndex];
         bits::U64 pawnAttackingMoves = isWhite ? _whitePawnCaptureMoveBitmasks[kingIndex] 
                                                : _blackPawnCaptureMoveBitmasks[kingIndex];
-        bits::U64 opponentRooksAndQueens = isWhite ? _board.getBitboard(game::PieceType::B_ROOK) | _board.getBitboard(game::PieceType::B_QUEEN) 
-                                                   : _board.getBitboard(game::PieceType::W_ROOK) | _board.getBitboard(game::PieceType::W_QUEEN);
+        bits::U64 opponentRooksAndQueens = isWhite ? _board.getBlackRooksBitboard() | _board.getBlackQueensBitboard()
+                                                   : _board.getWhiteRooksBitboard() | _board.getWhiteQueensBitboard();
 
-        bits::U64 opponentBishopsAndQueens = isWhite ? _board.getBitboard(game::PieceType::B_BISHOP) | _board.getBitboard(game::PieceType::B_QUEEN) 
-                                                     : _board.getBitboard(game::PieceType::W_BISHOP) | _board.getBitboard(game::PieceType::W_QUEEN);
+        bits::U64 opponentBishopsAndQueens = isWhite ? _board.getBlackBishopsBitboard() | _board.getBlackQueensBitboard() 
+                                                     : _board.getWhiteBishopsBitboard() | _board.getWhiteQueensBitboard();
 
-        if ((pawnAttackingMoves & _board.getBitboard(isWhite ? game::PieceType::B_PAWN : game::PieceType::W_PAWN)) != 0) {
+        bits::U64 opponentPawns = isWhite ? _board.getBlackPawnsBitboard() : _board.getWhitePawnsBitboard();
+        if ((pawnAttackingMoves & opponentPawns) != 0) {
             return true;
         }
 
-        if ((knightMoves & _board.getBitboard(isWhite ? game::PieceType::B_KNIGHT : game::PieceType::W_KNIGHT)) != 0) {
+        bits::U64 opponentKnights = isWhite ? _board.getBlackKnightsBitboard() : _board.getWhiteKnightsBitboard();
+        if ((knightMoves & opponentKnights) != 0) {
             return true;
         }
 

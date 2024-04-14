@@ -14,8 +14,7 @@ namespace movegen {
     }
 
     void KingGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
-        game::PieceType currentPieceType = isWhite ? game::PieceType::W_KING : game::PieceType::B_KING;
-        bits::getBitIndices(_kingIndices, _board.getBitboard(currentPieceType));
+        bits::getBitIndices(_kingIndices, isWhite ? _board.getWhiteKingBitboard() : _board.getBlackKingBitboard());
 
         for (int currentKingIndex : _kingIndices) {
             bits::U64 kingBitMask = _kingBitmasks[currentKingIndex];

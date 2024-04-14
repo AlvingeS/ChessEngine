@@ -12,8 +12,8 @@ namespace movegen {
     }
 
     void QueenGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
-        game::PieceType currentPieceType = isWhite ? game::PieceType::W_QUEEN : game::PieceType::B_QUEEN;
-        bits::getBitIndices(_queenIndices, _board.getBitboard(currentPieceType));
+        bits::getBitIndices(_queenIndices, isWhite ? _board.getWhiteQueensBitboard()
+                                                   : _board.getBlackQueensBitboard());
 
         for (int currentQueenIndex : _queenIndices) {
             bits::StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];

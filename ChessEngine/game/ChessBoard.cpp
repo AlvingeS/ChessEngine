@@ -3,7 +3,7 @@
 namespace game {
 
     ChessBoard::ChessBoard() {
-        _bitboards = std::vector<bits::U64>(12, 0ULL);
+        _bitboards.reserve(12);
         _noCaptureOrPawnMoveCount = 0;
         initPieceBitboards();
         fillWhitePiecesBitmask();
@@ -12,21 +12,35 @@ namespace game {
         fillEmptySquaresBitmask();
     }
 
-    void ChessBoard::initPieceBitboards() {
-        _bitboards[pieceTypeToInt(PieceType::W_PAWN)] = 0x000000000000FF00ULL;
-        _bitboards[pieceTypeToInt(PieceType::W_KNIGHT)] = 0x0000000000000042ULL;
-        _bitboards[pieceTypeToInt(PieceType::W_BISHOP)] = 0x0000000000000024ULL;
-        _bitboards[pieceTypeToInt(PieceType::W_ROOK)] = 0x0000000000000081ULL;
-        _bitboards[pieceTypeToInt(PieceType::W_QUEEN)] = 0x0000000000000010ULL;
-        _bitboards[pieceTypeToInt(PieceType::W_KING)] = 0x0000000000000008ULL;
+    void ChessBoard::initPieceBitboards() {        
+        _whitePawnsBitboard = 0x000000000000FF00ULL;
+        _whiteKnightsBitboard = 0x0000000000000042ULL;
+        _whiteBishopsBitboard = 0x0000000000000024ULL;
+        _whiteRooksBitboard = 0x0000000000000081ULL;
+        _whiteQueensBitboard = 0x0000000000000010ULL;
+        _whiteKingBitboard = 0x0000000000000008ULL;
 
-        _bitboards[pieceTypeToInt(PieceType::B_PAWN)] = 0x00FF000000000000ULL;
-        _bitboards[pieceTypeToInt(PieceType::B_KNIGHT)] = 0x4200000000000000ULL;
-        _bitboards[pieceTypeToInt(PieceType::B_BISHOP)] = 0x2400000000000000ULL;
-        _bitboards[pieceTypeToInt(PieceType::B_ROOK)] = 0x8100000000000000ULL;
-        _bitboards[pieceTypeToInt(PieceType::B_QUEEN)] = 0x1000000000000000ULL;
-        _bitboards[pieceTypeToInt(PieceType::B_KING)] = 0x0800000000000000ULL;
-        
+        _blackPawnsBitboard = 0x00FF000000000000ULL;
+        _blackKnightsBitboard = 0x4200000000000000ULL;
+        _blackBishopsBitboard = 0x2400000000000000ULL;
+        _blackRooksBitboard = 0x8100000000000000ULL;
+        _blackQueensBitboard = 0x1000000000000000ULL;
+        _blackKingBitboard = 0x0800000000000000ULL;
+
+        _bitboards.push_back(&_whitePawnsBitboard);
+        _bitboards.push_back(&_whiteKnightsBitboard);
+        _bitboards.push_back(&_whiteBishopsBitboard);
+        _bitboards.push_back(&_whiteRooksBitboard);
+        _bitboards.push_back(&_whiteQueensBitboard);
+        _bitboards.push_back(&_whiteKingBitboard);
+
+        _bitboards.push_back(&_blackPawnsBitboard);
+        _bitboards.push_back(&_blackKnightsBitboard);
+        _bitboards.push_back(&_blackBishopsBitboard);
+        _bitboards.push_back(&_blackRooksBitboard);
+        _bitboards.push_back(&_blackQueensBitboard);
+        _bitboards.push_back(&_blackKingBitboard);
+
         _enPessantTarget = 0ULL;
 
         // Sets piecetype lookup to zero vector 64 squares
@@ -37,19 +51,19 @@ namespace game {
     void ChessBoard::makeCastleMove(bool isWhite, bool isKingSide) {
         if (isWhite) {
             if (isKingSide) {
-                _bitboards[pieceTypeToInt(PieceType::W_KING)] &= ~(1ULL << 3);
-                _bitboards[pieceTypeToInt(PieceType::W_KING)] |= (1ULL << 1);
-                _bitboards[pieceTypeToInt(PieceType::W_ROOK)] &= ~(1ULL);
-                _bitboards[pieceTypeToInt(PieceType::W_ROOK)] |= (1ULL << 2);
+                _whiteKingBitboard &= ~(1ULL << 3);
+                _whiteKingBitboard |= (1ULL << 1);
+                _whiteRooksBitboard &= ~(1ULL);
+                _whiteRooksBitboard |= (1ULL << 2);
                 _squaresLookup[3] = PieceType::EMPTY;
                 _squaresLookup[1] = PieceType::W_KING;
                 _squaresLookup[0] = PieceType::EMPTY;
                 _squaresLookup[2] = PieceType::W_ROOK;
             } else {
-                _bitboards[pieceTypeToInt(PieceType::W_KING)] &= ~(1ULL << 3);
-                _bitboards[pieceTypeToInt(PieceType::W_KING)] |= (1ULL << 5);
-                _bitboards[pieceTypeToInt(PieceType::W_ROOK)] &= ~(1ULL << 7);
-                _bitboards[pieceTypeToInt(PieceType::W_ROOK)] |= (1ULL << 4);
+                _whiteKingBitboard &= ~(1ULL << 3);
+                _whiteKingBitboard |= (1ULL << 5);
+                _whiteRooksBitboard &= ~(1ULL << 7);
+                _whiteRooksBitboard |= (1ULL << 4);
                 _squaresLookup[3] = PieceType::EMPTY;
                 _squaresLookup[5] = PieceType::W_KING;
                 _squaresLookup[7] = PieceType::EMPTY;
@@ -57,19 +71,19 @@ namespace game {
             }
         } else {
             if (isKingSide) {
-                _bitboards[pieceTypeToInt(PieceType::B_KING)] &= ~(1ULL << 59);
-                _bitboards[pieceTypeToInt(PieceType::B_KING)] |= (1ULL << 57);
-                _bitboards[pieceTypeToInt(PieceType::B_ROOK)] &= ~(1ULL << 56);
-                _bitboards[pieceTypeToInt(PieceType::B_ROOK)] |= (1ULL << 58);
+                _blackKingBitboard &= ~(1ULL << 59);
+                _blackKingBitboard |= (1ULL << 57);
+                _blackRooksBitboard &= ~(1ULL << 56);
+                _blackRooksBitboard |= (1ULL << 58);
                 _squaresLookup[59] = PieceType::EMPTY;
                 _squaresLookup[57] = PieceType::B_KING;
                 _squaresLookup[56] = PieceType::EMPTY;
                 _squaresLookup[58] = PieceType::B_ROOK;
             } else {
-                _bitboards[pieceTypeToInt(PieceType::B_KING)] &= ~(1ULL << 59);
-                _bitboards[pieceTypeToInt(PieceType::B_KING)] |= (1ULL << 61);
-                _bitboards[pieceTypeToInt(PieceType::B_ROOK)] &= ~(1ULL << 63);
-                _bitboards[pieceTypeToInt(PieceType::B_ROOK)] |= (1ULL << 60);
+                _blackKingBitboard &= ~(1ULL << 59);
+                _blackKingBitboard |= (1ULL << 61);
+                _blackRooksBitboard &= ~(1ULL << 63);
+                _blackRooksBitboard |= (1ULL << 60);
                 _squaresLookup[59] = PieceType::EMPTY;
                 _squaresLookup[61] = PieceType::B_KING;
                 _squaresLookup[63] = PieceType::EMPTY;
@@ -81,19 +95,19 @@ namespace game {
     void ChessBoard::unmakeCastleMove(bool wasWhite, bool wasKingSide) {
         if (wasWhite) {
             if (wasKingSide) {
-                _bitboards[pieceTypeToInt(PieceType::W_KING)] &= ~(1ULL << 1);
-                _bitboards[pieceTypeToInt(PieceType::W_KING)] |= (1ULL << 3);
-                _bitboards[pieceTypeToInt(PieceType::W_ROOK)] &= ~(1ULL << 2);
-                _bitboards[pieceTypeToInt(PieceType::W_ROOK)] |= (1ULL);
+                _whiteKingBitboard &= ~(1ULL << 1);
+                _whiteKingBitboard |= (1ULL << 3);
+                _whiteRooksBitboard &= ~(1ULL << 2);
+                _whiteRooksBitboard |= (1ULL);
                 _squaresLookup[1] = PieceType::EMPTY;
                 _squaresLookup[3] = PieceType::W_KING;
                 _squaresLookup[2] = PieceType::EMPTY;
                 _squaresLookup[0] = PieceType::W_ROOK;
             } else {
-                _bitboards[pieceTypeToInt(PieceType::W_KING)] &= ~(1ULL << 5);
-                _bitboards[pieceTypeToInt(PieceType::W_KING)] |= (1ULL << 3);
-                _bitboards[pieceTypeToInt(PieceType::W_ROOK)] &= ~(1ULL << 4);
-                _bitboards[pieceTypeToInt(PieceType::W_ROOK)] |= (1ULL << 7);
+                _whiteKingBitboard &= ~(1ULL << 5);
+                _whiteKingBitboard |= (1ULL << 3);
+                _whiteRooksBitboard &= ~(1ULL << 4);
+                _whiteRooksBitboard |= (1ULL << 7);
                 _squaresLookup[5] = PieceType::EMPTY;
                 _squaresLookup[3] = PieceType::W_KING;
                 _squaresLookup[4] = PieceType::EMPTY;
@@ -101,19 +115,19 @@ namespace game {
             }
         } else {
             if (wasKingSide) {
-                _bitboards[pieceTypeToInt(PieceType::B_KING)] &= ~(1ULL << 57);
-                _bitboards[pieceTypeToInt(PieceType::B_KING)] |= (1ULL << 59);
-                _bitboards[pieceTypeToInt(PieceType::B_ROOK)] &= ~(1ULL << 58);
-                _bitboards[pieceTypeToInt(PieceType::B_ROOK)] |= (1ULL << 56);
+                _blackKingBitboard &= ~(1ULL << 57);
+                _blackKingBitboard |= (1ULL << 59);
+                _blackRooksBitboard &= ~(1ULL << 58);
+                _blackRooksBitboard |= (1ULL << 56);
                 _squaresLookup[57] = PieceType::EMPTY;
                 _squaresLookup[59] = PieceType::B_KING;
                 _squaresLookup[58] = PieceType::EMPTY;
                 _squaresLookup[56] = PieceType::B_ROOK;
             } else {
-                _bitboards[pieceTypeToInt(PieceType::B_KING)] &= ~(1ULL << 61);
-                _bitboards[pieceTypeToInt(PieceType::B_KING)] |= (1ULL << 59);
-                _bitboards[pieceTypeToInt(PieceType::B_ROOK)] &= ~(1ULL << 60);
-                _bitboards[pieceTypeToInt(PieceType::B_ROOK)] |= (1ULL << 63);
+                _blackKingBitboard &= ~(1ULL << 61);
+                _blackKingBitboard |= (1ULL << 59);
+                _blackRooksBitboard &= ~(1ULL << 60);
+                _blackRooksBitboard |= (1ULL << 63);
                 _squaresLookup[61] = PieceType::EMPTY;
                 _squaresLookup[59] = PieceType::B_KING;
                 _squaresLookup[60] = PieceType::EMPTY;
@@ -164,11 +178,11 @@ namespace game {
         }
 
         if (popCount == 3) {
-            if (getBitboard(PieceType::W_BISHOP) != 0 || getBitboard(PieceType::B_BISHOP) != 0) {
+            if (_whiteBishopsBitboard != 0 || _blackBishopsBitboard != 0) {
                 return true;
             }
 
-            if (getBitboard(PieceType::W_KNIGHT) != 0 || getBitboard(PieceType::B_KNIGHT) != 0) {
+            if (_whiteKnightsBitboard != 0 || _blackKnightsBitboard != 0) {
                 return true;
             }
         }
@@ -303,7 +317,7 @@ namespace game {
         
         // Piece type of piece being moved
         PieceType movedPieceType = _squaresLookup[from];
-        _bitboards[pieceTypeToInt(movedPieceType)] &= ~(1ULL << from);
+        *(_bitboards[pieceTypeToInt(movedPieceType)]) &= ~(1ULL << from);
         
         if (isWhite) {
             _whitePiecesBitmask &= ~(1ULL << from);
@@ -326,7 +340,7 @@ namespace game {
             PieceType capturedPieceType = _squaresLookup[captureIndex];
             _lastCapturedPiece = capturedPieceType;
 
-            _bitboards[pieceTypeToInt(capturedPieceType)] &= ~(1ULL << captureIndex);
+            *(_bitboards[pieceTypeToInt(capturedPieceType)]) &= ~(1ULL << captureIndex);
 
             if (isWhite) {
                 _blackPiecesBitmask &= ~(1ULL << captureIndex);
@@ -341,10 +355,10 @@ namespace game {
 
         if (move.isAnyPromo()) {
             PieceType promotionPieceType = getPromotionPieceType(move.getFlag(), isWhite);
-            _bitboards[pieceTypeToInt(promotionPieceType)] |= (1ULL << to);
+            *(_bitboards[pieceTypeToInt(promotionPieceType)]) |= (1ULL << to);
             _squaresLookup[to] = promotionPieceType;
         } else {
-            _bitboards[pieceTypeToInt(movedPieceType)] |= (1ULL << to);
+            *(_bitboards[pieceTypeToInt(movedPieceType)]) |= (1ULL << to);
             _squaresLookup[to] = movedPieceType;
         }
 
@@ -369,27 +383,33 @@ namespace game {
     }
 
     void ChessBoard::makeTemporaryKingMove(bool isWhite, bool isKingSide) {
-        int pieceTypeInt = isWhite ? pieceTypeToInt(PieceType::W_KING) : pieceTypeToInt(PieceType::B_KING);
-        bits::U64 kingBitboard = _bitboards[pieceTypeInt];
+        bits::U64 kingBitboard = isWhite ? _whiteKingBitboard : _blackKingBitboard;
         int from = isWhite ? 3 : 59;
         int to = isKingSide ? (isWhite ? 2 : 58) : (isWhite ? 4 : 60);
 
         kingBitboard &= ~(1ULL << from);
         kingBitboard |= (1ULL << to);
 
-        _bitboards[pieceTypeInt] = kingBitboard;
+        if (isWhite) {
+            _whiteKingBitboard = kingBitboard;
+        } else {
+            _blackKingBitboard = kingBitboard;
+        }
     }
 
     void ChessBoard::unmakeTemporaryKingMove(bool isWhite, bool isKingSide) {
-        int pieceTypeInt = isWhite ? pieceTypeToInt(PieceType::W_KING) : pieceTypeToInt(PieceType::B_KING);
-        bits::U64 kingBitboard = _bitboards[pieceTypeInt];
+        bits::U64 kingBitboard = isWhite ? _whiteKingBitboard : _blackKingBitboard;
         int from = isKingSide ? (isWhite ? 2 : 58) : (isWhite ? 4 : 60);
         int to = isWhite ? 3 : 59;
 
         kingBitboard &= ~(1ULL << from);
         kingBitboard |= (1ULL << to);
 
-        _bitboards[pieceTypeInt] = kingBitboard;
+        if (isWhite) {
+            _whiteKingBitboard = kingBitboard;
+        } else {
+            _blackKingBitboard = kingBitboard;
+        }
     }
 
     void ChessBoard::unmakeMove(Move move, bool wasWhite) {
@@ -447,7 +467,7 @@ namespace game {
         }
 
         // Place back the moved piece
-        _bitboards[pieceTypeToInt(movedPieceType)] |= (1ULL << from);
+        *(_bitboards[pieceTypeToInt(movedPieceType)]) |= (1ULL << from);
         _squaresLookup[from] = movedPieceType;
 
         if (wasWhite) {
@@ -459,10 +479,10 @@ namespace game {
         // If the move was not a promotion, remove the piece in the bitboard
         // Else, remove the bit for the promoted piece
         if (not move.isAnyPromo()) {
-            _bitboards[pieceTypeToInt(movedPieceType)] &= ~(1ULL << to);
+            *(_bitboards[pieceTypeToInt(movedPieceType)]) &= ~(1ULL << to);
         } else {
             PieceType promotionPieceType = getPromotionPieceType(move.getFlag(), wasWhite);
-            _bitboards[pieceTypeToInt(promotionPieceType)] &= ~(1ULL << to);
+            *(_bitboards[pieceTypeToInt(promotionPieceType)]) &= ~(1ULL << to);
         }
 
         if (wasWhite) {
@@ -475,7 +495,7 @@ namespace game {
         // else set the square to empty
         if (move.isAnyCapture()) {
             int captureIndex = move.isEpCapture() ? (wasWhite ? to - 8 : to + 8) : to;
-            _bitboards[pieceTypeToInt(_lastCapturedPiece)] |= (1ULL << captureIndex);
+            *(_bitboards[pieceTypeToInt(_lastCapturedPiece)]) |= (1ULL << captureIndex);
             _squaresLookup[captureIndex] = _lastCapturedPiece;
 
             if (move.isEpCapture()) {
@@ -509,7 +529,7 @@ namespace game {
 
         for (int i = 0; i < 64; i++) {
             for (int j = 0; j < 12; j++) {
-                if (_bitboards[j] & (1ULL << i)) {
+                if (*(_bitboards[j]) & (1ULL << i)) {
                     _squaresLookup[i] = intToPieceType(j);
                 }
             }
@@ -535,7 +555,7 @@ namespace game {
     void ChessBoard::fillWhitePiecesBitmask() {
         bits::U64 w_all = 0;
         for (int i = 0; i < 6; i++) {
-            w_all |= _bitboards[i];
+            w_all |= *(_bitboards[i]);
         }
 
         _whitePiecesBitmask = w_all;
@@ -544,7 +564,7 @@ namespace game {
     void ChessBoard::fillBlackPiecesBitmask() {
         bits::U64 b_all = 0;
         for (int i = 6; i < 12; i++) {
-            b_all |= _bitboards[i];
+            b_all |= *(_bitboards[i]);
         }
 
         _blackPiecesBitmask = b_all;
@@ -552,7 +572,7 @@ namespace game {
     
     void ChessBoard::setBoardFromFen(const std::string& fen) {
         for (int i = 0; i < 12; i++) {
-            _bitboards[i] = 0ULL;
+            *(_bitboards[i]) = 0ULL;
         }
 
         int rank = 7;
@@ -568,7 +588,7 @@ namespace game {
             } else {
                 PieceType type = CharToPieceType(c);
                 uint64_t bit = 1ULL << (rank * 8 + (7 - file));
-                _bitboards[pieceTypeToInt(type)] |= bit;
+                *(_bitboards[pieceTypeToInt(type)]) |= bit;
                 file++;
             }
         }

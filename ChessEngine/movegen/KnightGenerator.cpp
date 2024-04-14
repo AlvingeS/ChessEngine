@@ -14,8 +14,7 @@ namespace movegen {
     }
 
     void KnightGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
-        game::PieceType currentPieceType = isWhite ? game::PieceType::W_KNIGHT : game::PieceType::B_KNIGHT;
-        bits::getBitIndices(_knightIndices, _board.getBitboard(currentPieceType));
+        bits::getBitIndices(_knightIndices, isWhite ? _board.getWhiteKnightsBitboard() : _board.getBlackKnightsBitboard());
 
         for (int currentKnightIndex : _knightIndices) {
             bits::U64 knightBitMask = _knightBitmasks[currentKnightIndex];

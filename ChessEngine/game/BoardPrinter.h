@@ -8,8 +8,8 @@ namespace game {
     class BoardPrinter {
         public:
             // Public member functions
-            BoardPrinter(std::vector<bits::U64> bitboards);
-            void fillBoard(std::vector<bits::U64>  bitboards);
+            BoardPrinter(std::vector<bits::U64*> bitboards);
+            void fillBoard(std::vector<bits::U64*> bitboards);
             void printBoard();
 
         private:

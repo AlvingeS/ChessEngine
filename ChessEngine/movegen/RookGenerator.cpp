@@ -13,8 +13,8 @@ namespace movegen {
     void RookGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
         bits::StraightRays rays;
 
-        game::PieceType currentPieceType = isWhite ? game::PieceType::W_ROOK : game::PieceType::B_ROOK;
-        bits::getBitIndices(_rookIndices, _board.getBitboard(currentPieceType));
+        bits::getBitIndices(_rookIndices, isWhite ? _board.getWhiteRooksBitboard()
+                                                  : _board.getBlackRooksBitboard());
 
         // Loop through all rooks and isolate them
         for (int currentRookIndex : _rookIndices) {

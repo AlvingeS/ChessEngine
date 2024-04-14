@@ -17,8 +17,8 @@ namespace movegen {
     }
 
     void PawnGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
-        game::PieceType currentPieceType = isWhite ? game::PieceType::W_PAWN : game::PieceType::B_PAWN;
-        bits::getBitIndices(_pawnIndices, _board.getBitboard(currentPieceType));
+        bits::getBitIndices(_pawnIndices, isWhite ? _board.getWhitePawnsBitboard()
+                                                  : _board.getBlackPawnsBitboard());
 
         for (int currentPawnIndex : _pawnIndices) {
             bits::U64 straightPawnMoveBitmask = isWhite ? _whitePawnStraightMoveBitmasks[currentPawnIndex]

@@ -35,6 +35,9 @@ int main() {
             Made getBitBoard inline
             2.122s ~ 3,121M nodes/s ~ 1.2% SF
 
+        - 2024-04-14
+            Completed refactoring of movegeneration, don't know what caused slight speedup
+            2.063s ~ 3.300M nodes/s ~ 1.3% SF
             
     
 

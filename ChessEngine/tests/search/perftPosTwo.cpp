@@ -25,12 +25,9 @@ namespace search {
 
             // Make dubug move
             // game::Move move = moveFromStrAndFlag("a2a3", 0);
-            // searcher.makeMove(game::Move(0, 0, game::Move::QUEEN_CASTLE_FLAG), true);
-            // searcher.overrideCastlingRights(0b1100);
-            
-            // game::Move move = moveFromStrAndFlag("a1b1", 0);
             // searcher.makeMove(move, true);
-            // searcher.overrideCastlingRights(0b1101);
+            // move = moveFromStrAndFlag("c7c6", 0);
+            // searcher.makeMove(game::Move(0, 0, game::Move::QUEEN_CASTLE_FLAG), false);
 
             int nDebugMoves = 0;
 
@@ -42,7 +39,7 @@ namespace search {
             if (nDebugMoves > 0) {
                 debugFen = searcher.getBoard().getFenFromBoard();
                 debugFen += whiteToStart ? " w" : " b";
-                debugFen += " w - -";
+                debugFen += " KQkq -";
             }
 
             std::unordered_map<std::string, int> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posTwo, depth);

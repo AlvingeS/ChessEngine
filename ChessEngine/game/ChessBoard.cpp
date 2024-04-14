@@ -8,6 +8,8 @@ namespace game {
         initPieceBitboards();
         fillWhitePiecesBitmask();
         fillBlackPiecesBitmask();
+        fillOccupiedPiecesBitmask();
+        fillEmptySquaresBitmask();
     }
 
     void ChessBoard::initPieceBitboards() {
@@ -289,6 +291,9 @@ namespace game {
                 }
             }
 
+            fillOccupiedPiecesBitmask();
+            fillEmptySquaresBitmask();
+
             return;
         }
 
@@ -418,7 +423,11 @@ namespace game {
                     _blackPiecesBitmask |= (1ULL << 59);
                     _blackPiecesBitmask |= (1ULL << 63);
                 }
-                }
+            }
+
+            fillOccupiedPiecesBitmask();
+            fillEmptySquaresBitmask();
+
             return;
         }
 

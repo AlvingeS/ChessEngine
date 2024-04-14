@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
-#include "BaseMoveGeneratorTest.h"
+#include "BaseGenerator_test.h"
 
-namespace game {
+namespace movegen {
 
-    class MoveGeneratorCheckDetectionTest : public BaseMoveGeneratorTest {
+    class MoveGeneratorCheckDetectionTest : public BaseGenerator {
         protected:
             std::string fenPawnChecks;
             std::string fenKnightChecks;
@@ -15,7 +15,7 @@ namespace game {
             std::string fenQueenChecksFalse;
 
             void SetUp() override {
-                BaseMoveGeneratorTest::SetUp();
+                BaseGenerator::SetUp();
                 fenPawnChecks = "8/8/5k2/6P1/8/2p5/3K4/8";
                 fenKnightChecks = "8/8/5k2/3N4/8/3n4/1K6/8";
                 fenBishopChecksTrue = "8/4B3/5k2/4b3/8/8/1K6/8";

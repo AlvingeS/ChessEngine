@@ -174,10 +174,10 @@ namespace search {
         return true;
     }
 
-    // bool Searcher::checkCondition(int currentDepth, bool isMaximizer, int firstMoveIndex, game::Move currentMove, game::Move lastMove, bool verbose, size_t i) {
-    //     // return not _board.getKingMoved(false);
-    //     return currentDepth == 23 && lastMove.getBitIndexFrom() == 44 && lastMove.getBitIndexTo() == 36 && i == 9;
-    // }
+    bool Searcher::checkCondition(int currentDepth, bool isMaximizer, int firstMoveIndex, game::Move currentMove, game::Move lastMove, bool verbose, size_t i) {
+        // return not _board.getKingMoved(false);
+        return currentDepth == 2 && currentMove.getFlag() == 12;
+    }
 
     // TODO: Implement draw by repetition after implementing zobrist hashing
     void Searcher::minimax(int currentDepth, bool isMaximizer, int firstMoveIndex, bool recPerftStats, game::Move lastMove, bool verbose) {        

@@ -1,14 +1,14 @@
 #include <gtest/gtest.h>
-#include "BaseMoveGeneratorTest.h"
+#include "BaseGenerator_test.h"
 
-namespace game {
+namespace movegen {
 
-    class MoveGeneratorQueenTest : public BaseMoveGeneratorTest {
+    class MoveGeneratorQueenTest : public BaseGenerator {
         protected:
             std::string fenOne;
 
             void SetUp() override {
-                BaseMoveGeneratorTest::SetUp();
+                BaseGenerator::SetUp();
                 fenOne = "5k2/2P5/5q2/b4N2/1q6/2Q2Q2/8/8";
             }
     };
@@ -17,8 +17,8 @@ namespace game {
         moveGenerator.setBoardFromFen(fenOne);
         moveGenerator.genQueenMoves(false, moveList);
 
-        std::vector<Move> moves = getMoves();
-        std::unordered_set<Move> expectedMoves;
+        std::vector<game::Move> moves = getMoves();
+        std::unordered_set<game::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 42, {50, 49, 56, 41, 40, 33, 24, 34, 35, 28, 21, 43, 44, 45, 46, 47, 51, 60, 50}, {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0});
         insertExpectedMoves(expectedMoves, 30, {38, 46, 54, 62, 37, 44, 51, 29, 28, 27, 26, 25, 24, 21, 22, 14, 6, 23, 31}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0});
 
@@ -35,8 +35,8 @@ namespace game {
         moveGenerator.setBoardFromFen(fenOne);
         moveGenerator.genQueenMoves(true, moveList);
 
-        std::vector<Move> moves = getMoves();
-        std::unordered_set<Move> expectedMoves;
+        std::vector<game::Move> moves = getMoves();
+        std::unordered_set<game::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 21, {29, 37, 45, 28, 35, 42, 20, 19, 12, 3, 13, 5, 14, 7, 22, 23, 30}, {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1});
         insertExpectedMoves(expectedMoves, 18, {26, 25, 32, 17, 16, 9, 0, 10, 2, 11, 4, 19, 20, 27, 36, 45, 54, 63}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
 

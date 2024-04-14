@@ -1,4 +1,4 @@
-add_library(movegen 
+add_library(movegen
     MoveGenerator.cpp
     RookGenerator.cpp
     BishopGenerator.cpp

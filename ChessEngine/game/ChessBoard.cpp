@@ -48,6 +48,8 @@ namespace game {
         fillSquaresLookup();
     }
 
+    
+
     void ChessBoard::makeCastleMove(bool isWhite, bool isKingSide) {
         if (isWhite) {
             if (isKingSide) {

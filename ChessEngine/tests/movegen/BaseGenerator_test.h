@@ -16,9 +16,14 @@ namespace movegen {
             BaseGenerator() : board(game::ChessBoard()), moveGenerator(MoveGenerator(board)) {}
 
             virtual void SetUp() override {
-                board = game::ChessBoard();
+                // board = game::ChessBoard();
+                // moveGenerator = MoveGenerator(board);
                 startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
                 moveList = std::vector<game::Move>(movegen::MoveGenerator::MAX_LEGAL_MOVES);
+            }
+
+            virtual void TearDown() override {
+                board.resetBitboards();
             }
 
         void insertExpectedMoves(std::unordered_set<game::Move>& moves, int fromBitIndex, const std::vector<int>& toBitIndices, const std::vector<int>& flags) {

@@ -21,6 +21,11 @@ namespace game {
             void unmakeTemporaryKingMove(bool wasWhite, bool wasKingSide);
             bool isDeadPosition();
 
+            // Tears down bitboards to ensure safe state when ChessBoard is destroyed
+            void resetBitboards() {
+                _bitboards.clear();
+            }
+
             void setLastCapturedPiece(PieceType pieceType) {
                 _lastCapturedPiece = pieceType;
             }

@@ -61,47 +61,6 @@ namespace game {
             void setBoardFromFen(const std::string& fen);
             std::string getFenFromBoard();
 
-            bool getHasCastled(bool isWhite) {
-                return isWhite ? _whiteHasCastled : _blackHasCastled;
-            }
-
-            void setHasCastled(bool isWhite, bool hasCastled) {
-                if (isWhite) {
-                    _whiteHasCastled = hasCastled;
-                } else {
-                    _blackHasCastled = hasCastled;
-                }
-            }
-
-            void setKingMoved(bool isWhite, bool hasMoved) {
-                bool tempBool = hasMoved; // FIXME: WTF, why is this needed
-                if (isWhite) {
-                    _whiteKingMoved = tempBool;
-                } else {
-                    _blackKingMoved = tempBool;
-                }
-            }
-
-            bool getKingMoved(bool isWhite) {
-                return isWhite ? _whiteKingMoved : _blackKingMoved;
-            }
-
-            void setRookAMoved(bool isWhite, bool hasMoved) {
-                if (isWhite) {
-                    _whiteRookAMoved = hasMoved;
-                } else {
-                    _blackRookAMoved = hasMoved;
-                }
-            }
-
-            void setRookHMoved(bool isWhite, bool hasMoved) {
-                if (isWhite) {
-                    _whiteRookHMoved = hasMoved;
-                } else {
-                    _blackRookHMoved = hasMoved;
-                }
-            }
-
             PieceType getPieceTypeAtIndex(int index) {
                 return _squaresLookup[index];
             }
@@ -211,26 +170,6 @@ namespace game {
             bits::U64 _occupiedPiecesBitmask;
             bits::U64 _emptySquaresBitmask;
 
-            bool _whiteHasCastled = false;
-            bool _whiteHadCastledInPreviousState = false;
-            bool _blackHasCastled = false;
-            bool _blackHadCastledInPreviousState = false;
-
-            bool _whiteKingMoved = false;
-            bool _blackKingMoved = false;
-            bool _whiteKingHadMovedInPreviousState = false;
-            bool _blackKingHadMovedInPreviousState = false;
-
-            bool _whiteRookHMoved = false;
-            bool _blackRookHMoved = false;
-            bool _whiteRookHHadMovedInPreviousState = false;
-            bool _blackRookHHadMovedInPreviousState = false;
-
-            bool _whiteRookAMoved = false;
-            bool _blackRookAMoved = false;
-            bool _whiteRookAHadMovedInPreviousState = false;
-            bool _blackRookAHadMovedInPreviousState = false;
-
             PieceType _lastCapturedPiece;
             int _noCaptureOrPawnMoveCount;
 
@@ -242,8 +181,6 @@ namespace game {
             bool castlingRightsNeedsUpdating(bool isWhite, Move move, PieceType movedPieceType);
             void makeCastleMove(bool isWhite, bool isKingSide);
             void unmakeCastleMove(bool wasWhite, bool wasKingSide);
-            void setCastlingFlags(PieceType pieceType, int from);
-            void unsetCastlingFlags(PieceType pieceType, int from);
 
     };
 }

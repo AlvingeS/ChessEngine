@@ -1,15 +1,24 @@
 cmake_minimum_required(VERSION 3.16..3.24)
-project(ChessEngine VERSION 0.1.0
-                 DESCRIPTION "Template project"
-                 LANGUAGES CXX)
+project(ChessEngine VERSION 0.1.0 DESCRIPTION "Chess Engine" LANGUAGES CXX)
 
+# Set default build type if not specified
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "" FORCE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
 endif()
+
 message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
 add_library(cxx_setup INTERFACE)
 target_compile_options(cxx_setup INTERFACE -Wall -Wextra -Wpedantic)
+
+# Conditional compilation options based on the build type
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message(STATUS "Configuring for debug...")
+    target_compile_options(cxx_setup INTERFACE -g) # Debug symbols
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    message(STATUS "Configuring for release...")
+    target_compile_options(cxx_setup INTERFACE -O3) # Enable optimizations
+endif()
 
 target_compile_definitions(cxx_setup INTERFACE cxx_std_17)
 target_include_directories(cxx_setup INTERFACE ${PROJECT_SOURCE_DIR})

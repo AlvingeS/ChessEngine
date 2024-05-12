@@ -5,7 +5,8 @@
 
 namespace search {
     Searcher::Searcher(int maxDepth) : _board(game::ChessBoard()),
-                                       _moveGenerator(movegen::MoveGenerator(_board)),
+                                       _moveMaker(_board),
+                                       _moveGenerator(movegen::MoveGenerator(_board, _moveMaker)),
                                        _evaluator(evaluation::Evaluator(_board)),
                                        _maxDepth(maxDepth) {
         
@@ -69,11 +70,11 @@ namespace search {
     }
 
     void Searcher::makeMove(game::Move move, bool isWhite) {
-        _board.makeMove(move, isWhite);
+        _moveMaker.makeMove(move, isWhite);
     }
 
     void Searcher::unmakeMove(game::Move move, bool isWhite) {
-        _board.unmakeMove(move, isWhite);
+        _moveMaker.unmakeMove(move, isWhite);
     }
 
     void Searcher::removeCastlingRightsForRemainingDepths(int currentDepth, unsigned char rightsToRemove) {

@@ -9,11 +9,14 @@ namespace movegen {
     class BaseGenerator : public ::testing::Test {
         protected:
             game::ChessBoard board;
+            game::MoveMaker moveMaker;
             MoveGenerator moveGenerator;
             std::string startingPos;
             std::vector<game::Move> moveList;
 
-            BaseGenerator() : board(game::ChessBoard()), moveGenerator(MoveGenerator(board)) {}
+            BaseGenerator() : board(game::ChessBoard()),
+                              moveMaker(board),
+                              moveGenerator(MoveGenerator(board, moveMaker)) {}
 
             virtual void SetUp() override {
                 // board = game::ChessBoard();

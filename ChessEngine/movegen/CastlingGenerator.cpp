@@ -1,10 +1,13 @@
 #include "CastlingGenerator.h"
 #include "ChessEngine/bits/ChessUtils.h"
 #include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/game/ChessBoard.h"
+#include "ChessEngine/game/MoveMaker.h"
 
 namespace movegen {
-    CastlingGenerator::CastlingGenerator(game::ChessBoard& board, int& moveIndex, CommonLogic* commonLogic, CheckDetection* checkDetection) 
+    CastlingGenerator::CastlingGenerator(game::ChessBoard& board, game::MoveMaker& moveMaker, int& moveIndex, CommonLogic* commonLogic, CheckDetection* checkDetection) 
         : _board(board),
+          _moveMaker(moveMaker),
           _moveIndex(moveIndex),
           _commonLogic(commonLogic),
           _checkDetection(checkDetection) {
@@ -61,11 +64,11 @@ namespace movegen {
     }
 
     void CastlingGenerator::makeTemporaryKingMove(bool isWhite, bool isKingSide) {
-        _board.makeTemporaryKingMove(isWhite, isKingSide);
+        _moveMaker.makeTemporaryKingMove(isWhite, isKingSide);
     }
 
     void CastlingGenerator::unmakeTemporaryKingMove(bool isWhite, bool isKingSide) {
-        _board.unmakeTemporaryKingMove(isWhite, isKingSide);
+        _moveMaker.unmakeTemporaryKingMove(isWhite, isKingSide);
     }
 
     void CastlingGenerator::genSingleCastleMove(bool isWhite, bool isKingSide, std::vector<game::Move>& moveList) {                                                  

@@ -24,7 +24,7 @@ namespace movegen {
             static constexpr int MAX_LEGAL_MOVES = 218;
 
             // Public member functions
-            MoveGenerator(game::ChessBoard& board);
+            MoveGenerator(game::ChessBoard& board, game::MoveMaker& moveMaker);
             void resetMoves(std::vector<game::Move>& moveList);
             void resetMoveIndex();
             void setBoardFromFen(std::string fen);

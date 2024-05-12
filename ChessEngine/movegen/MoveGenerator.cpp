@@ -9,7 +9,7 @@
 
 
 namespace movegen {
-    MoveGenerator::MoveGenerator(game::ChessBoard& board)
+    MoveGenerator::MoveGenerator(game::ChessBoard& board, game::MoveMaker& moveMaker)
         : _board(board),
           _commonLogic(),
           _rayLogic(_board, _moveIndex, &_commonLogic),
@@ -20,7 +20,7 @@ namespace movegen {
           _queenGenerator(_board, &_rayLogic),
           _kingGenerator(_board, _moveIndex, &_commonLogic),
           _pawnGenerator(_board, _moveIndex, &_commonLogic),
-          _castlingGenerator(_board, _moveIndex, &_commonLogic, &_checkDetection) {
+          _castlingGenerator(_board, moveMaker, _moveIndex, &_commonLogic, &_checkDetection) {
     }
 
     void MoveGenerator::setBoardFromFen(std::string fen) {

@@ -2,6 +2,7 @@
 #include "ChessEngine/movegen/MoveGenerator.h"
 #include "ChessEngine/evaluation/Evaluator.h"
 #include "ChessEngine/game/ChessBoard.h"
+#include "ChessEngine/game/MoveMaker.h"
 #include "ChessEngine/game/Move.h"
 
 namespace search {
@@ -74,6 +75,7 @@ namespace search {
             void overrideCastlingRights(unsigned char rights);
         private:
             game::ChessBoard _board;
+            game::MoveMaker _moveMaker;
             movegen::MoveGenerator _moveGenerator;
             evaluation::Evaluator _evaluator;
             int _maxDepth;

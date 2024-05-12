@@ -15,10 +15,11 @@ namespace game {
             // Public member functions
             ChessBoard();
 
-            void makeMove(Move move, bool isWhite);
-            void unmakeMove(Move move, bool wasWhite);
-            void makeTemporaryKingMove(bool isWhite, bool isKingSide);
-            void unmakeTemporaryKingMove(bool wasWhite, bool wasKingSide);
+            // FEN methods
+            void setBoardFromFen(const std::string& fen);
+            std::string getFenFromBoard();
+            
+            // FIXME: This doesn't do anything right now
             bool isDeadPosition();
 
             // Tears down bitboards to ensure safe state when ChessBoard is destroyed
@@ -26,6 +27,7 @@ namespace game {
                 _bitboards.clear();
             }
 
+            // TODO: Irreversible move information should be stored in a separate class
             void setLastCapturedPiece(PieceType pieceType) {
                 _lastCapturedPiece = pieceType;
             }
@@ -34,8 +36,37 @@ namespace game {
                 return _lastCapturedPiece;
             }
 
+            bits::U64 getEnPessantTarget() {
+                return _enPessantTarget;
+            }
+
+            void setEnPessantTarget(bits::U64 enPessantTarget) {
+                _enPessantTarget = enPessantTarget;
+            }
+
+            int& getNoCaptureOrPawnMoveCount() {
+                return _noCaptureOrPawnMoveCount;
+            }
+
+            void setEnPessantTargetAtIndex(int index) {
+                _enPessantTarget = (1ULL << index);
+            }
+
+            PieceType getPieceTypeAtIndex(int index) {
+                return _squaresLookup[index];
+            }
+
+            void setPieceTypeAtIndex(int index, PieceType pieceType) {
+                _squaresLookup[index] = pieceType;
+            }
+
+            // Getters for game state
             inline bits::U64 getBitboard(PieceType pieceType) {
                 return *(_bitboards[pieceTypeToInt(pieceType)]);
+            }
+
+            inline bits::U64& getBitboardFromIndex(int index) {
+                return *(_bitboards[index]);
             }
 
             std::vector<bits::U64*>& getBitboards() {
@@ -46,106 +77,88 @@ namespace game {
                 return _squaresLookup;
             }
 
-            bits::U64 getEnPessantTarget() {
-                return _enPessantTarget;
-            }
-
-            int getNoCaptureOrPawnMoveCount() {
-                return _noCaptureOrPawnMoveCount;
-            }
-
-            void setEnPessantTargetAtIndex(int index) {
-                _enPessantTarget = (1ULL << index);
-            }
-
-            void setBoardFromFen(const std::string& fen);
-            std::string getFenFromBoard();
-
-            PieceType getPieceTypeAtIndex(int index) {
-                return _squaresLookup[index];
-            }
-
-            inline bits::U64 getWhitePiecesBitmask() {
+            // Getters for masks
+            inline bits::U64& getWhitePiecesBitmask() {
                 return _whitePiecesBitmask;
             }
 
-            inline bits::U64 getBlackPiecesBitmask() {
+            inline bits::U64& getBlackPiecesBitmask() {
                 return _blackPiecesBitmask;
             }
 
-            inline bits::U64 getOccupiedPiecesBitmask() {
+            inline bits::U64& getOccupiedPiecesBitmask() {
                 return _occupiedPiecesBitmask;
             }
 
-            inline bits::U64 getEmptySquaresBitmask() {
+            inline bits::U64& getEmptySquaresBitmask() {
                 return _emptySquaresBitmask;
             }
 
-            inline bits::U64 getWhitePawnsBitboard() {
+            // Getters for bitboards
+            inline bits::U64& getWhitePawnsBitboard() {
                 return _whitePawnsBitboard;
             }
 
-            inline bits::U64 getWhiteKnightsBitboard() {
+            inline bits::U64& getWhiteKnightsBitboard() {
                 return _whiteKnightsBitboard;
             }
 
-            inline bits::U64 getWhiteBishopsBitboard() {
+            inline bits::U64& getWhiteBishopsBitboard() {
                 return _whiteBishopsBitboard;
             }
 
-            inline bits::U64 getWhiteRooksBitboard() {
+            inline bits::U64& getWhiteRooksBitboard() {
                 return _whiteRooksBitboard;
             }
 
-            inline bits::U64 getWhiteQueensBitboard() {
+            inline bits::U64& getWhiteQueensBitboard() {
                 return _whiteQueensBitboard;
             }
 
-            inline bits::U64 getWhiteKingBitboard() {
+            inline bits::U64& getWhiteKingBitboard() {
                 return _whiteKingBitboard;
             }
 
-            inline bits::U64 getBlackPawnsBitboard() {
+            inline bits::U64& getBlackPawnsBitboard() {
                 return _blackPawnsBitboard;
             }
 
-            inline bits::U64 getBlackKnightsBitboard() {
+            inline bits::U64& getBlackKnightsBitboard() {
                 return _blackKnightsBitboard;
             }
 
-            inline bits::U64 getBlackBishopsBitboard() {
+            inline bits::U64& getBlackBishopsBitboard() {
                 return _blackBishopsBitboard;
             }
 
-            inline bits::U64 getBlackRooksBitboard() {
+            inline bits::U64& getBlackRooksBitboard() {
                 return _blackRooksBitboard;
             }
 
-            inline bits::U64 getBlackQueensBitboard() {
+            inline bits::U64& getBlackQueensBitboard() {
                 return _blackQueensBitboard;
             }
 
-            inline bits::U64 getBlackKingBitboard() {
+            inline bits::U64& getBlackKingBitboard() {
                 return _blackKingBitboard;
             }
             
-            bool kingSideCastlersHasMoved(bool isWhite);
-            bool queenSideCastlersHasMoved(bool isWhite);
-            
+            // Fill masks methods
             void fillWhitePiecesBitmask();
             void fillBlackPiecesBitmask();
             
             inline void fillOccupiedPiecesBitmask() {
                 _occupiedPiecesBitmask = _whitePiecesBitmask | _blackPiecesBitmask;
             }
+
             inline void fillEmptySquaresBitmask() {
                 _emptySquaresBitmask = ~_occupiedPiecesBitmask;
             }
-            std::vector<PieceType> _squaresLookup;
 
         private:
             // Private member variables
             std::vector<bits::U64*> _bitboards;
+            std::vector<PieceType> _squaresLookup;
 
             // White bitboards
             bits::U64 _whitePawnsBitboard;
@@ -165,6 +178,7 @@ namespace game {
 
             bits::U64 _enPessantTarget;
 
+            // Masks
             bits::U64 _whitePiecesBitmask;
             bits::U64 _blackPiecesBitmask;
             bits::U64 _occupiedPiecesBitmask;
@@ -175,12 +189,6 @@ namespace game {
 
             // Private member functions
             void initPieceBitboards();
-            bits::U64 getBitboardFromIndex(int index);
             void fillSquaresLookup();
-            PieceType getPromotionPieceType(int promotionFlag, bool isWhite);
-            bool castlingRightsNeedsUpdating(bool isWhite, Move move, PieceType movedPieceType);
-            void makeCastleMove(bool isWhite, bool isKingSide);
-            void unmakeCastleMove(bool wasWhite, bool wasKingSide);
-
     };
 }

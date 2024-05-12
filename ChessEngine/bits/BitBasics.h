@@ -8,18 +8,10 @@ namespace bits {
     }
 
     inline int indexOfLSB(U64 a) {
-        if (a == 0) {
-            return -1;
-        }
-
         return __builtin_ctzll(a);
     }   
 
     inline int indexOfMSB(U64 a) {
-        if (a == 0) {
-            return -1;
-        }
-
         return 63 - __builtin_clzll(a);
     }
 

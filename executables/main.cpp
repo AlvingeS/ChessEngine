@@ -45,6 +45,19 @@ int main() {
 
             Removed castling logic that I had forgotten about, it is all handled by the searcher
             1.783s ~ 3.686M nodes/s ~ 1.5% SF
+
+        - 2024-05-12
+            !!! SWITCHED TO RELEASE MODE FOR PERFORMANCE TESTING !!!
+            Previous commit had the following stats in release mode
+            0.341s ~ 19.291M nodes/s ~ 7.8% SF
+
+            Refactored Chessboard into an additional movemaker class, however
+            performance has dropped so this will be worked on in the future
+            0.421s ~ 16.102M nodes/s ~ 6.4% SF
+
+            Moved castling flags to last so I only have to check if flag is
+            greater than 14 to see if it is a castle
+            0.346s ~ 19.145M nodes/s ~ 7.8% SF
     */
 
     // Start clock

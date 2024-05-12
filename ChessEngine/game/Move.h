@@ -16,11 +16,11 @@ namespace game {
             static const int BISHOP_PROMO_FLAG = 8;
             static const int ROOK_PROMO_FLAG = 9;
             static const int QUEEN_PROMO_FLAG = 10;
-            static const int KING_CASTLE_FLAG = 11;
-            static const int QUEEN_CASTLE_FLAG = 12;
+            static const int TBD_ONE_FLAG = 11;
+            static const int TBD_TWO_FLAG = 12;
             static const int DOUBLE_PAWN_PUSH_FLAG = 13;
-            static const int TBD_ONE_FLAG = 14;
-            static const int TBD_TWO_FLAG = 15;
+            static const int KING_CASTLE_FLAG = 14;
+            static const int QUEEN_CASTLE_FLAG = 15;
             
             Move() {
                 _move = 0;
@@ -134,7 +134,7 @@ namespace game {
             }
 
             bool isAnyCastle() const {
-                return isKingCastle() || isQueenCastle();
+                return getFlag() >= 14;
             }
 
         private:

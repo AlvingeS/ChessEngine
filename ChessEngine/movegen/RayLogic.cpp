@@ -100,7 +100,7 @@ namespace movegen {
         bits::U64 rooksAndQueensBlockerBitMask = straightRay & opponentRooksAndQueens;
         
         // There must be a rook or a queen on the file or rank to be in check
-        if ((rooksAndQueensBlockerBitMask) != 0) {
+        if (rooksAndQueensBlockerBitMask != 0ULL) {
             bits::U64 occupiedBlockerBitMask = straightRay & _board.getOccupiedPiecesBitmask();
 
             // If there is only one blocker out of all pieces, then it must be a rook or a queen thus the king is in check

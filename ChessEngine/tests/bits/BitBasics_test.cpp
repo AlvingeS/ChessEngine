@@ -43,12 +43,6 @@ namespace bits {
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBasics, indexOfLSB_0_ShouldReturnNeg1) {
-        int expected = -1;
-        int actual = indexOfLSB(0ULL);
-        ASSERT_EQ(expected, actual);
-    }
-
     // indexOfMSB tests
     TEST_F(BitBasics, indexOfMSB_A_ShouldReturn15) {
         int expected = 15;

@@ -14,10 +14,10 @@ target_compile_options(cxx_setup INTERFACE -Wall -Wextra -Wpedantic)
 # Conditional compilation options based on the build type
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Configuring for debug...")
-    target_compile_options(cxx_setup INTERFACE -g) # Debug symbols
+    target_compile_options(cxx_setup INTERFACE -g -O0) # Debug symbols
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     message(STATUS "Configuring for release...")
-    target_compile_options(cxx_setup INTERFACE -O3) # Enable optimizations
+    target_compile_options(cxx_setup INTERFACE -g -O2) # Enable optimizations
 endif()
 
 target_compile_definitions(cxx_setup INTERFACE cxx_std_17)

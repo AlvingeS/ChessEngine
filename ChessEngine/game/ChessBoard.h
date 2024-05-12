@@ -36,7 +36,7 @@ namespace game {
                 return _lastCapturedPiece;
             }
 
-            bits::U64 getEnPessantTarget() {
+            bits::U64& getEnPessantTarget() {
                 return _enPessantTarget;
             }
 
@@ -61,11 +61,11 @@ namespace game {
             }
 
             // Getters for game state
-            inline bits::U64 getBitboard(PieceType pieceType) {
+            bits::U64 getBitboard(PieceType pieceType) {
                 return *(_bitboards[pieceTypeToInt(pieceType)]);
             }
 
-            inline bits::U64& getBitboardFromIndex(int index) {
+            bits::U64& getBitboardFromIndex(int index) {
                 return *(_bitboards[index]);
             }
 
@@ -78,68 +78,68 @@ namespace game {
             }
 
             // Getters for masks
-            inline bits::U64& getWhitePiecesBitmask() {
+            bits::U64& getWhitePiecesBitmask() {
                 return _whitePiecesBitmask;
             }
 
-            inline bits::U64& getBlackPiecesBitmask() {
+            bits::U64& getBlackPiecesBitmask() {
                 return _blackPiecesBitmask;
             }
 
-            inline bits::U64& getOccupiedPiecesBitmask() {
+            bits::U64& getOccupiedPiecesBitmask() {
                 return _occupiedPiecesBitmask;
             }
 
-            inline bits::U64& getEmptySquaresBitmask() {
+            bits::U64& getEmptySquaresBitmask() {
                 return _emptySquaresBitmask;
             }
 
             // Getters for bitboards
-            inline bits::U64& getWhitePawnsBitboard() {
+            bits::U64& getWhitePawnsBitboard() {
                 return _whitePawnsBitboard;
             }
 
-            inline bits::U64& getWhiteKnightsBitboard() {
+            bits::U64& getWhiteKnightsBitboard() {
                 return _whiteKnightsBitboard;
             }
 
-            inline bits::U64& getWhiteBishopsBitboard() {
+            bits::U64& getWhiteBishopsBitboard() {
                 return _whiteBishopsBitboard;
             }
 
-            inline bits::U64& getWhiteRooksBitboard() {
+            bits::U64& getWhiteRooksBitboard() {
                 return _whiteRooksBitboard;
             }
 
-            inline bits::U64& getWhiteQueensBitboard() {
+            bits::U64& getWhiteQueensBitboard() {
                 return _whiteQueensBitboard;
             }
 
-            inline bits::U64& getWhiteKingBitboard() {
+            bits::U64& getWhiteKingBitboard() {
                 return _whiteKingBitboard;
             }
 
-            inline bits::U64& getBlackPawnsBitboard() {
+            bits::U64& getBlackPawnsBitboard() {
                 return _blackPawnsBitboard;
             }
 
-            inline bits::U64& getBlackKnightsBitboard() {
+            bits::U64& getBlackKnightsBitboard() {
                 return _blackKnightsBitboard;
             }
 
-            inline bits::U64& getBlackBishopsBitboard() {
+            bits::U64& getBlackBishopsBitboard() {
                 return _blackBishopsBitboard;
             }
 
-            inline bits::U64& getBlackRooksBitboard() {
+            bits::U64& getBlackRooksBitboard() {
                 return _blackRooksBitboard;
             }
 
-            inline bits::U64& getBlackQueensBitboard() {
+            bits::U64& getBlackQueensBitboard() {
                 return _blackQueensBitboard;
             }
 
-            inline bits::U64& getBlackKingBitboard() {
+            bits::U64& getBlackKingBitboard() {
                 return _blackKingBitboard;
             }
             
@@ -147,11 +147,11 @@ namespace game {
             void fillWhitePiecesBitmask();
             void fillBlackPiecesBitmask();
             
-            inline void fillOccupiedPiecesBitmask() {
+            void fillOccupiedPiecesBitmask() {
                 _occupiedPiecesBitmask = _whitePiecesBitmask | _blackPiecesBitmask;
             }
 
-            inline void fillEmptySquaresBitmask() {
+            void fillEmptySquaresBitmask() {
                 _emptySquaresBitmask = ~_occupiedPiecesBitmask;
             }
 

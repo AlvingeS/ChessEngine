@@ -220,10 +220,14 @@ namespace game {
 
         if (move.isDoublePawnPush()) {
             _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, isWhite ? (1ULL << (to - 8)) : (1ULL << (to + 8)));
-            // _board.setEnPessantTarget(isWhite ? (1ULL << (to - 8)) : (1ULL << (to + 8)));
         } else {
             _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
-            // _board.setEnPessantTarget(0ULL);
+        }
+
+        if (not move.isAnyCapture() && (movedPieceType != PieceType::W_PAWN && movedPieceType != PieceType::B_PAWN)) {
+            _searchMemory.incrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
+        } else {
+            _searchMemory.resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
         }
 
         _board.fillOccupiedPiecesBitmask();
@@ -307,7 +311,9 @@ namespace game {
 
         // If the move was a promotion, set the moved piece to a pawn of the same color
         // Else, set the moved piece to the piece occupying the to square
-        if (move.isAnyPromo()) {
+        bool moveIsAnyPromo = move.isAnyPromo();
+        
+        if (moveIsAnyPromo) {
             movedPieceType = wasWhite ? PieceType::W_PAWN : PieceType::B_PAWN;
         } else {
             movedPieceType = _board.getPieceTypeAtIndex(to);
@@ -325,7 +331,7 @@ namespace game {
 
         // If the move was not a promotion, remove the piece in the bitboard
         // Else, remove the bit for the promoted piece
-        if (not move.isAnyPromo()) {
+        if (not moveIsAnyPromo) {
             _board.getBitboardFromIndex(pieceTypeToInt(movedPieceType)) &= ~(1ULL << to);
         } else {
             PieceType promotionPieceType = getPromotionPieceType(move.getFlag(), wasWhite);
@@ -362,7 +368,10 @@ namespace game {
 
         if (move.isDoublePawnPush()) {
             _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
-            // _board.setEnPessantTarget(0ULL);
+        }
+
+        if (not move.isAnyCapture() && (movedPieceType != PieceType::W_PAWN && movedPieceType != PieceType::B_PAWN)) {
+            _searchMemory.decrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
         }
 
         _board.fillOccupiedPiecesBitmask();

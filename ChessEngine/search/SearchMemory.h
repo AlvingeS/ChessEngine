@@ -39,11 +39,28 @@ namespace search {
                 _enPessantTargets[depth] = target;
             }
 
+            int getNoCapturedOrPawnMoveCountAtDepth(int depth) {
+                return _noCapturedOrPawnMoveCounts[depth];
+            }
+
+            void incrementNoCapturedOrPawnMoveCountAtDepth(int depth) {
+                _noCapturedOrPawnMoveCounts[depth]++;
+            }
+
+            void decrementNoCapturedOrPawnMoveCountAtDepth(int depth) {
+                _noCapturedOrPawnMoveCounts[depth]--;
+            }
+
+            void resetNoCapturedOrPawnMoveCountAtDepth(int depth) {
+                _noCapturedOrPawnMoveCounts[depth] = 0;
+            }
+
         private:
             int _maxDepth;
             std::vector<unsigned char> _castlingRights;
             std::vector<game::PieceType> _lastCapturedPieces;
             std::vector<bits::U64> _enPessantTargets;
+            std::vector<int> _noCapturedOrPawnMoveCounts;
 
             void removeCastlingRightsForRemainingDepths(int currentDepth, unsigned char rightsToRemove);
             void restoreCastlingRightsForRemainingDepths(int currentDepth);

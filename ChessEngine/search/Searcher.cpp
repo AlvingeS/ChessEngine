@@ -175,7 +175,6 @@ namespace search {
             // Move was legal, update castling rights
             _searchMemory.setCastlingRights(currentDepth, currentMove, isMaximizer, _board.getPieceTypeAtIndex(currentMove.getBitIndexTo()));
 
-
             if (recPerftStats) {
                 bool retFlag;
                 recordPerftStats(isMaximizer, currentDepth, firstMoveIndex, i, currentMove, retFlag);

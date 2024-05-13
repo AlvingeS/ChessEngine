@@ -6,11 +6,13 @@ namespace search {
         _castlingRights.resize(_maxDepth + 1);
         _lastCapturedPieces.resize(_maxDepth + 1);
         _enPessantTargets.resize(_maxDepth + 1);
+        _noCapturedOrPawnMoveCounts.resize(_maxDepth + 1);
 
         for (int i = 0; i <= _maxDepth; i++) {
             _castlingRights[i] = 0b1111;
             _lastCapturedPieces[i] = game::PieceType::EMPTY;
             _enPessantTargets[i] = 0ULL;
+            _noCapturedOrPawnMoveCounts[i] = 0;
         }
     }
 

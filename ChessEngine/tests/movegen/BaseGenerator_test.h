@@ -1,6 +1,7 @@
 #pragma once
 #include "ChessEngine/movegen/MoveGenerator.h"
 #include "ChessEngine/game/Move.h"
+#include "ChessEngine/search/SearchMemory.h"
 #include <gtest/gtest.h>
 #include <unordered_set>
 #include <vector>
@@ -9,13 +10,15 @@ namespace movegen {
     class BaseGenerator : public ::testing::Test {
         protected:
             game::ChessBoard board;
+            search::SearchMemory searchMemory;
             game::MoveMaker moveMaker;
             MoveGenerator moveGenerator;
             std::string startingPos;
             std::vector<game::Move> moveList;
 
             BaseGenerator() : board(game::ChessBoard()),
-                              moveMaker(board),
+                              searchMemory(search::SearchMemory(0)),
+                              moveMaker(board, searchMemory),
                               moveGenerator(MoveGenerator(board, moveMaker)) {}
 
             virtual void SetUp() override {

@@ -20,7 +20,7 @@
 namespace movegen {
     class MoveGenerator {
         public:
-            // Public member variables
+            // Public  er variables
             static constexpr int MAX_LEGAL_MOVES = 218;
 
             // Public member functions
@@ -28,13 +28,13 @@ namespace movegen {
             void resetMoves(std::vector<game::Move>& moveList);
             void resetMoveIndex();
             void setBoardFromFen(std::string fen);
-            void genMoves(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights);
+            void genMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, unsigned char castlingRights);
             void genRookMoves(bool isWhite, std::vector<game::Move>& moveList);
             void genBishopMoves(bool isWhite, std::vector<game::Move>& moveList);
             void genKnightMoves(bool isWite, std::vector<game::Move>& moveList);
             void genQueenMoves(bool isWhite, std::vector<game::Move>& moveList);
             void genKingMoves(bool isWhite, std::vector<game::Move>& moveList);
-            void genPawnMoves(bool isWhite, std::vector<game::Move>& moveList);
+            void genPawnMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, search::SearchMemory& searchMemory);
             void genCastlingMoves(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights);
             bool isInCheck(bool isWhite);
 
@@ -49,6 +49,8 @@ namespace movegen {
         private:
             // Private member variables
             game::ChessBoard& _board;
+            game::MoveMaker& _moveMaker;
+            search::SearchMemory& _searchMemory;
             CommonLogic _commonLogic;
             RayLogic _rayLogic;
             CheckDetection _checkDetection;

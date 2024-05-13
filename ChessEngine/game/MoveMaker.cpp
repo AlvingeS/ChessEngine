@@ -2,7 +2,7 @@
 
 namespace game {
 
-    MoveMaker::MoveMaker(ChessBoard& board) : _board(board) {}
+    MoveMaker::MoveMaker(ChessBoard& board, search::SearchMemory& searchMemory) : _board(board), _searchMemory(searchMemory) {}
 
     void MoveMaker::makeCastleMove(bool isWhite, bool isKingSide) {
         if (isWhite) {
@@ -123,7 +123,7 @@ namespace game {
         return PieceType::EMPTY;
     }
 
-    void MoveMaker::makeMove(Move move, bool isWhite) {
+    void MoveMaker::makeMove(Move move, bool isWhite, int currentDepth) {
         // If the move is a castle, update the bitboards and return
         if (move.isAnyCastle()) {
             makeCastleMove(isWhite, move.isKingCastle());
@@ -188,7 +188,7 @@ namespace game {
         if (move.isAnyCapture()) {
             int captureIndex = move.isEpCapture() ? (isWhite ? to - 8 : to + 8) : to;
             PieceType capturedPieceType = _board.getPieceTypeAtIndex(captureIndex);
-            _board.setLastCapturedPiece(capturedPieceType);
+            _searchMemory.setLastCapturedPieceAtDepth(currentDepth, capturedPieceType);
 
             _board.getBitboardFromIndex(pieceTypeToInt(capturedPieceType)) &= ~(1ULL << captureIndex);
 
@@ -219,9 +219,11 @@ namespace game {
         }
 
         if (move.isDoublePawnPush()) {
-            _board.setEnPessantTarget(isWhite ? (1ULL << (to - 8)) : (1ULL << (to + 8)));
+            _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, isWhite ? (1ULL << (to - 8)) : (1ULL << (to + 8)));
+            // _board.setEnPessantTarget(isWhite ? (1ULL << (to - 8)) : (1ULL << (to + 8)));
         } else {
-            _board.setEnPessantTarget(0ULL);
+            _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
+            // _board.setEnPessantTarget(0ULL);
         }
 
         _board.fillOccupiedPiecesBitmask();
@@ -258,7 +260,7 @@ namespace game {
         }
     }
 
-    void MoveMaker::unmakeMove(Move move, bool wasWhite) {
+    void MoveMaker::unmakeMove(Move move, bool wasWhite, int currentDepth) {
         // If the move is a castle, update the bitboards and return
         if (move.isAnyCastle()) {
             unmakeCastleMove(wasWhite, move.isKingCastle());
@@ -340,8 +342,9 @@ namespace game {
         // else set the square to empty
         if (move.isAnyCapture()) {
             int captureIndex = move.isEpCapture() ? (wasWhite ? to - 8 : to + 8) : to;
-            _board.getBitboardFromIndex(pieceTypeToInt(_board.getLastCapturedPiece())) |= (1ULL << captureIndex);
-            _board.setPieceTypeAtIndex(captureIndex, _board.getLastCapturedPiece());
+            game::PieceType capturedPieceType = _searchMemory.getLastCapturedPieceAtDepth(currentDepth);
+            _board.getBitboardFromIndex(pieceTypeToInt(capturedPieceType)) |= (1ULL << captureIndex);
+            _board.setPieceTypeAtIndex(captureIndex, capturedPieceType);
 
             if (move.isEpCapture()) {
                 _board.setPieceTypeAtIndex(to, PieceType::EMPTY);
@@ -358,7 +361,8 @@ namespace game {
         }
 
         if (move.isDoublePawnPush()) {
-            _board.setEnPessantTarget(0ULL);
+            _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
+            // _board.setEnPessantTarget(0ULL);
         }
 
         _board.fillOccupiedPiecesBitmask();

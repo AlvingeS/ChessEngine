@@ -1,6 +1,6 @@
 if (BUILD_TESTING)
     include(GoogleTest)
-    #add_subdirectory(game)
+    # add_subdirectory(game)
     add_subdirectory(search)
     add_subdirectory(evaluation)
     add_subdirectory(bits)

@@ -11,6 +11,8 @@
 namespace movegen {
     MoveGenerator::MoveGenerator(game::ChessBoard& board, game::MoveMaker& moveMaker)
         : _board(board),
+          _moveMaker(moveMaker),
+          _searchMemory(moveMaker.getSearchMemory()),
           _commonLogic(),
           _rayLogic(_board, _moveIndex, &_commonLogic),
           _checkDetection(_board, &_rayLogic),
@@ -20,7 +22,7 @@ namespace movegen {
           _queenGenerator(_board, &_rayLogic),
           _kingGenerator(_board, _moveIndex, &_commonLogic),
           _pawnGenerator(_board, _moveIndex, &_commonLogic),
-          _castlingGenerator(_board, moveMaker, _moveIndex, &_commonLogic, &_checkDetection) {
+           _castlingGenerator(_board, moveMaker, _moveIndex, &_commonLogic, &_checkDetection) {
     }
 
     void MoveGenerator::setBoardFromFen(std::string fen) {
@@ -31,13 +33,13 @@ namespace movegen {
         _board.fillEmptySquaresBitmask();
     }
 
-    void MoveGenerator::genMoves(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights) {
+    void MoveGenerator::genMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, unsigned char castlingRights) {
         genRookMoves(isWhite, moveList);
         genKnightMoves(isWhite, moveList);
         genBishopMoves(isWhite, moveList);
         genQueenMoves(isWhite, moveList);
         genKingMoves(isWhite, moveList);
-        genPawnMoves(isWhite, moveList);
+        genPawnMoves(isWhite, moveList, currentDepth, _searchMemory);
         genCastlingMoves(isWhite, moveList, castlingRights);
         moveList[_moveIndex] = game::Move(); // Add a null move to the end of the move list
     }
@@ -71,8 +73,8 @@ namespace movegen {
         _kingGenerator.generate(isWhite, moveList);
     }
 
-    void MoveGenerator::genPawnMoves(bool isWhite, std::vector<game::Move>& moveList) {
-        _pawnGenerator.generate(isWhite, moveList);
+    void MoveGenerator::genPawnMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, search::SearchMemory& searchMemory) {
+        _pawnGenerator.generate(isWhite, moveList, currentDepth, searchMemory);
     }
 
     void MoveGenerator::genCastlingMoves(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights) {

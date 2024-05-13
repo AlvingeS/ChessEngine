@@ -58,6 +58,10 @@ int main() {
             Moved castling flags to last so I only have to check if flag is
             greater than 14 to see if it is a castle
             0.346s ~ 19.145M nodes/s ~ 7.8% SF
+
+            Refactored searcher so that castling rights and last captured pieces info
+            is now in its on class, will add everything else as well
+            0.337s ~ 20.009M nodes/s ~ 8.0% SF
     */
 
     // Start clock

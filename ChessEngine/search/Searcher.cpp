@@ -5,7 +5,8 @@
 
 namespace search {
     Searcher::Searcher(int maxDepth) : _board(game::ChessBoard()),
-                                       _moveMaker(_board),
+                                       _searchMemory(SearchMemory(maxDepth)),
+                                       _moveMaker(_board, _searchMemory),
                                        _moveGenerator(movegen::MoveGenerator(_board, _moveMaker)),
                                        _evaluator(evaluation::Evaluator(_board)),
                                        _maxDepth(maxDepth) {
@@ -24,16 +25,12 @@ namespace search {
         _lastCapturedPieces.resize(_maxDepth);
         _moveLists.resize(_maxDepth);
         _noCapturedOrPawnMoveCounts.resize(_maxDepth);
-        _castlingRights.resize(_maxDepth + 1);
 
         for (int i = 0; i < _maxDepth; i++) {
             _lastCapturedPieces[i] = game::PieceType::EMPTY;
             _moveLists[i] = std::vector<game::Move>(MAX_LEGAL_MOVES);
             _noCapturedOrPawnMoveCounts[i] = 0;
-            _castlingRights[i] = 0b1111;
         }
-
-        _castlingRights[_maxDepth] = 0b1111;
 
         _nodeCount.resize(20);
         _captureCount.resize(20);
@@ -64,77 +61,17 @@ namespace search {
         return sum;
     }
 
-    void Searcher::genMoves(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights) {
+    void Searcher::genMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, unsigned char castlingRights) {
         _moveGenerator.resetMoveIndex();
-        _moveGenerator.genMoves(isWhite, moveList, castlingRights);
+        _moveGenerator.genMoves(isWhite, moveList, currentDepth, castlingRights);
     }
 
-    void Searcher::makeMove(game::Move move, bool isWhite) {
-        _moveMaker.makeMove(move, isWhite);
+    void Searcher::makeMove(game::Move move, bool isWhite, int currentdepth) {
+        _moveMaker.makeMove(move, isWhite, currentdepth);
     }
 
-    void Searcher::unmakeMove(game::Move move, bool isWhite) {
-        _moveMaker.unmakeMove(move, isWhite);
-    }
-
-    void Searcher::removeCastlingRightsForRemainingDepths(int currentDepth, unsigned char rightsToRemove) {
-        for (int i = currentDepth + 1; i < _maxDepth; i++) {
-            _castlingRights[i] &= ~rightsToRemove;
-        }
-    }
-
-    void Searcher::restoreCastlingRightsForRemainingDepths(int currentDepth) {
-        for (int i = currentDepth + 1; i < _maxDepth; i++) {
-            _castlingRights[i] = _castlingRights[currentDepth];
-        }
-    }
-
-    void Searcher::setCastlingRights(int currentDepth, game::Move move, bool isWhite, game::PieceType movedPieceType) {
-        if (move.isAnyCastle()) {
-            removeCastlingRightsForRemainingDepths(currentDepth, isWhite ? whiteBoth : blackBoth);
-        }
-
-        if (movedPieceType == game::PieceType::W_KING || movedPieceType == game::PieceType::B_KING) {
-            if (isWhite) {
-                if (_castlingRights[currentDepth] & whiteBoth)
-                    removeCastlingRightsForRemainingDepths(currentDepth, whiteBoth);
-            } else {
-                if (_castlingRights[currentDepth] & blackBoth)
-                    removeCastlingRightsForRemainingDepths(currentDepth, blackBoth);
-            }
-        }
-
-        if (movedPieceType == game::PieceType::W_ROOK || movedPieceType == game::PieceType::B_ROOK) {
-            if (isWhite) {
-                if (move.getBitIndexFrom() == 0) {
-                    if (_castlingRights[currentDepth] & whiteKingSide)
-                        removeCastlingRightsForRemainingDepths(currentDepth, whiteKingSide);
-                } else if (move.getBitIndexFrom() == 7) {
-                    if (_castlingRights[currentDepth] & whiteQueenSide)
-                        removeCastlingRightsForRemainingDepths(currentDepth, whiteQueenSide);
-                }
-            } else {
-                if (move.getBitIndexFrom() == 56) {
-                    if (_castlingRights[currentDepth] & blackKingSide)
-                        removeCastlingRightsForRemainingDepths(currentDepth, blackKingSide);
-                } else if (move.getBitIndexFrom() == 63) {
-                    if (_castlingRights[currentDepth] & blackQueenSide)
-                        removeCastlingRightsForRemainingDepths(currentDepth, blackQueenSide);
-                }
-            }
-        }
-    }
-
-    void Searcher::unsetCastlingRights(int currentDepth) {
-        if (_castlingRights[currentDepth] != _castlingRights[currentDepth + 1]) {
-            restoreCastlingRightsForRemainingDepths(currentDepth);
-        }
-    }
-
-    void Searcher::overrideCastlingRights(unsigned char rights) {
-        for (int i = 0; i < _maxDepth; i++) {
-            _castlingRights[i] = rights;
-        }
+    void Searcher::unmakeMove(game::Move move, bool isWhite, int currentDepth) {
+        _moveMaker.unmakeMove(move, isWhite, currentDepth);
     }
 
     void Searcher::debugPrint(bool verbose) {
@@ -145,37 +82,37 @@ namespace search {
     }
 
     // Helper function to check if there are any castling moves in the movelist
-    bool hasTwoCastlingMove(MoveList& moveList) {
-        int count = 0;
+    // bool hasTwoCastlingMove(MoveList& moveList) {
+    //     int count = 0;
 
-        for (size_t i = 0; i < moveList.numMoves; i++) {
-            if (moveList.moves[i].isAnyCastle()) {
-                count++;
-            }
-        }
+    //     for (size_t i = 0; i < moveList.numMoves; i++) {
+    //         if (moveList.moves[i].isAnyCastle()) {
+    //             count++;
+    //         }
+    //     }
 
-        return count == 2;
-    }
+    //     return count == 2;
+    // }
 
-    bool noKingSideCastling(MoveList& moveList) {
-        for (size_t i = 0; i < moveList.numMoves; i++) {
-            if (moveList.moves[i].getFlag() == 3) {
-                return false;
-            }
-        }
+    // bool noKingSideCastling(MoveList& moveList) {
+    //     for (size_t i = 0; i < moveList.numMoves; i++) {
+    //         if (moveList.moves[i].getFlag() == 3) {
+    //             return false;
+    //         }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
-    bool noQueenSideCastling(MoveList& moveList) {
-        for (size_t i = 0; i < moveList.numMoves; i++) {
-            if (moveList.moves[i].getFlag() == 2) {
-                return false;
-            }
-        }
+    // bool noQueenSideCastling(MoveList& moveList) {
+    //     for (size_t i = 0; i < moveList.numMoves; i++) {
+    //         if (moveList.moves[i].getFlag() == 2) {
+    //             return false;
+    //         }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     bool Searcher::checkCondition(int currentDepth, bool isMaximizer, int firstMoveIndex, game::Move currentMove, game::Move lastMove, bool verbose, size_t i) {
         // return not _board.getKingMoved(false);
@@ -188,7 +125,7 @@ namespace search {
             return;
         }
 
-        genMoves(isMaximizer, _moveLists[currentDepth], _castlingRights[currentDepth]);
+        genMoves(isMaximizer, _moveLists[currentDepth], currentDepth, _searchMemory.getCastlingRightsAtDepth(currentDepth));
         _numMoveGenCalls++;
         
         size_t numIllegalMoves = 0;
@@ -206,9 +143,7 @@ namespace search {
             // }
 
             // Make the move and check if we are in any way left in check
-            makeMove(currentMove, isMaximizer);
-
-            game::PieceType lastCapturedPiece = _board.getLastCapturedPiece();
+            makeMove(currentMove, isMaximizer, currentDepth);
 
             // if (checkCondition(currentDepth, isMaximizer, firstMoveIndex, currentMove, lastMove, verbose, i)) {
             //     debugPrint(verbose);
@@ -217,7 +152,7 @@ namespace search {
 
             if (_moveGenerator.isInCheck(isMaximizer)) {
                 numIllegalMoves++;
-                unmakeMove(currentMove, isMaximizer);
+                unmakeMove(currentMove, isMaximizer, currentDepth);
 
                 // if (checkCondition(currentDepth, isMaximizer, firstMoveIndex, currentMove, lastMove, verbose, i)) {
                 //     debugPrint(verbose);
@@ -238,7 +173,7 @@ namespace search {
             }
 
             // Move was legal, update castling rights
-            setCastlingRights(currentDepth, currentMove, isMaximizer, _board.getPieceTypeAtIndex(currentMove.getBitIndexTo()));
+            _searchMemory.setCastlingRights(currentDepth, currentMove, isMaximizer, _board.getPieceTypeAtIndex(currentMove.getBitIndexTo()));
 
 
             if (recPerftStats) {
@@ -250,9 +185,8 @@ namespace search {
 
             minimax(currentDepth + 1, !isMaximizer, firstMoveIndex, recPerftStats, currentMove, verbose);
 
-            _board.setLastCapturedPiece(lastCapturedPiece);
-            unmakeMove(currentMove, isMaximizer);
-            unsetCastlingRights(currentDepth);
+            unmakeMove(currentMove, isMaximizer, currentDepth);
+            _searchMemory.unsetCastlingRights(currentDepth);
             
             // if (checkCondition(currentDepth, isMaximizer, firstMoveIndex, currentMove, lastMove, verbose, i)) {
             //     debugPrint(verbose);
@@ -304,7 +238,7 @@ namespace search {
 
         if (_board.isDeadPosition() || _board.getNoCaptureOrPawnMoveCount() >= 50)
         {
-            unmakeMove(currentMove, isMaximizer);
+            unmakeMove(currentMove, isMaximizer, currentDepth);
             return;
         }
         retFlag = false;

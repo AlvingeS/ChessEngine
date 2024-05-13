@@ -4,15 +4,9 @@
 #include "ChessEngine/game/ChessBoard.h"
 #include "ChessEngine/game/MoveMaker.h"
 #include "ChessEngine/game/Move.h"
+#include "SearchMemory.h"
 
 namespace search {
-
-    constexpr unsigned char whiteKingSide = 0b0001;
-    constexpr unsigned char whiteQueenSide = 0b0010;
-    constexpr unsigned char whiteBoth = 0b0011;
-    constexpr unsigned char blackKingSide = 0b0100;
-    constexpr unsigned char blackQueenSide = 0b1000;
-    constexpr unsigned char blackBoth = 0b1100;
 
     struct MoveScore {
         game::Move move;
@@ -32,9 +26,9 @@ namespace search {
             Searcher(int maxDepth);
             void minimax(int current_depth, bool isMaximizer, int firstMoveIndex, bool recPerftStats = true, game::Move lastMove = game::Move(), bool verbose = true);
             void recordPerftStats(bool isMaximizer, int currentDepth, int &firstMoveIndex, size_t i, game::Move &currentMove, bool &retFlag);
-            void genMoves(bool isWhite, std::vector<game::Move> &moveList, unsigned char castlingRights);
-            void makeMove(game::Move move, bool isWhite);
-            void unmakeMove(game::Move move, bool isWhite);
+            void genMoves(bool isWhite, std::vector<game::Move> &moveList, int currentDepth, unsigned char castlingRights);
+            void makeMove(game::Move move, bool isWhite, int currentDepth);
+            void unmakeMove(game::Move move, bool isWhite, int currentDepth);
             void undoMove();
             int _numMoveGenCalls;
             int _totalNodes;
@@ -72,9 +66,9 @@ namespace search {
                 _board.setBoardFromFen(fen);
             }
             
-            void overrideCastlingRights(unsigned char rights);
         private:
             game::ChessBoard _board;
+            SearchMemory _searchMemory;
             game::MoveMaker _moveMaker;
             movegen::MoveGenerator _moveGenerator;
             evaluation::Evaluator _evaluator;
@@ -84,11 +78,5 @@ namespace search {
             std::vector<std::vector<game::Move>> _moveLists;
             std::vector<game::PieceType> _lastCapturedPieces;
             std::vector<int> _noCapturedOrPawnMoveCounts; 
-            std::vector<unsigned char> _castlingRights;
-
-            void removeCastlingRightsForRemainingDepths(int currentDepth, unsigned char rightsToRemove);
-            void restoreCastlingRightsForRemainingDepths(int currentDepth);
-            void setCastlingRights(int currentDepth, game::Move move, bool isWhite, game::PieceType movedPieceType);
-            void unsetCastlingRights(int currentDepth);
     };
 }

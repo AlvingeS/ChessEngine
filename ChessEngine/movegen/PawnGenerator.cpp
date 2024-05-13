@@ -16,7 +16,7 @@ namespace movegen {
         _blackPawnCaptureMoveBitmasks = bits::getAllCapturePawnMoveBitmasks(false);
     }
 
-    void PawnGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
+    void PawnGenerator::generate(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, search::SearchMemory& searchMemory) {
         bits::getBitIndices(_pawnIndices, isWhite ? _board.getWhitePawnsBitboard()
                                                   : _board.getBlackPawnsBitboard());
 
@@ -30,7 +30,7 @@ namespace movegen {
 
             bits::U64 freePawnMoves = straightPawnMoveBitmask & _board.getEmptySquaresBitmask();
             bits::U64 enemyPieces = isWhite ? _board.getBlackPiecesBitmask() : _board.getWhitePiecesBitmask();
-            bits::U64 enPessantTarget = _board.getEnPessantTarget();
+            bits::U64 enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
             bits::U64 capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
 
             bits::getBitIndices(_freeMovesIndices, freePawnMoves);

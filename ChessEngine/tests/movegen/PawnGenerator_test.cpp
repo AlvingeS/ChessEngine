@@ -10,6 +10,7 @@ namespace movegen {
             std::string fenEnPessantForBlackTest;
             std::string fenPromotionTest;
             std::string fenBuggedPawnTest;
+            // search::SearchMemory searchMemory;
 
             void SetUp() override {
                 BaseGenerator::SetUp();
@@ -18,12 +19,13 @@ namespace movegen {
                 fenEnPessantForBlackTest = "rnbqkbnr/8/8/8/Pp6/8/1PPPPPPP/RNBQKBNR";
                 fenPromotionTest = "3q4/2P3P1/8/8/8/8/1p5p/2N5";
                 fenBuggedPawnTest = "rnbqkb1r/pppppppp/7n/8/8/2N4N/PPPPPPPP/R1BQKB1R";
+                // searchMemory = search::SearchMemory(0);
             }
     };
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosWhite_ShouldReturn16Moves) {
         moveGenerator.setBoardFromFen(startingPos);
-        moveGenerator.genPawnMoves(true, moveList);
+        moveGenerator.genPawnMoves(true, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
         std::unordered_set<game::Move> expectedMoves;
@@ -47,7 +49,7 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosBlack_ShouldReturn16Moves) {
         moveGenerator.setBoardFromFen(startingPos);
-        moveGenerator.genPawnMoves(false, moveList);
+        moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
         std::unordered_set<game::Move> expectedMoves;
@@ -71,7 +73,7 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneWhite_ShouldReturn6Moves) {
         moveGenerator.setBoardFromFen(fenOne);
-        moveGenerator.genPawnMoves(true, moveList);
+        moveGenerator.genPawnMoves(true, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
         std::unordered_set<game::Move> expectedMoves;
@@ -90,7 +92,7 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneBlack_ShouldReturnXMoves) {
         moveGenerator.setBoardFromFen(fenOne);
-        moveGenerator.genPawnMoves(false, moveList);
+        moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
         std::unordered_set<game::Move> expectedMoves;
@@ -110,7 +112,7 @@ namespace movegen {
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Moves) {
         moveGenerator.setBoardFromFen(fenEnPessantForWhiteTest);
         moveGenerator.getBoard().setEnPessantTargetAtIndex(43);
-        moveGenerator.genPawnMoves(true, moveList);
+        moveGenerator.genPawnMoves(true, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
         std::unordered_set<game::Move> expectedMoves;
@@ -128,7 +130,7 @@ namespace movegen {
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForBlack_ShouldReturn2Moves) {
         moveGenerator.setBoardFromFen(fenEnPessantForBlackTest);
         moveGenerator.getBoard().setEnPessantTargetAtIndex(23);
-        moveGenerator.genPawnMoves(false, moveList);
+        moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
         std::unordered_set<game::Move> expectedMoves;
@@ -145,7 +147,7 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12Moves) {
         moveGenerator.setBoardFromFen(fenPromotionTest);
-        moveGenerator.genPawnMoves(true, moveList);
+        moveGenerator.genPawnMoves(true, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
         std::unordered_set<game::Move> expectedMoves;
@@ -164,7 +166,7 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12Moves) {
         moveGenerator.setBoardFromFen(fenPromotionTest);
-        moveGenerator.genPawnMoves(false, moveList);
+        moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
         std::unordered_set<game::Move> expectedMoves;
@@ -183,7 +185,7 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenBuggedPawnTestWhite_ShouldNotReturnh6) {
         moveGenerator.setBoardFromFen(fenBuggedPawnTest);
-        moveGenerator.genPawnMoves(false, moveList);
+        moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
 

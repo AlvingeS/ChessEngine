@@ -27,23 +27,6 @@ namespace game {
                 _bitboards.clear();
             }
 
-            // TODO: Irreversible move information should be stored in a separate class
-            void setLastCapturedPiece(PieceType pieceType) {
-                _lastCapturedPiece = pieceType;
-            }
-
-            PieceType getLastCapturedPiece() {
-                return _lastCapturedPiece;
-            }
-
-            bits::U64& getEnPessantTarget() {
-                return _enPessantTarget;
-            }
-
-            void setEnPessantTarget(bits::U64 enPessantTarget) {
-                _enPessantTarget = enPessantTarget;
-            }
-
             int& getNoCaptureOrPawnMoveCount() {
                 return _noCaptureOrPawnMoveCount;
             }
@@ -184,7 +167,6 @@ namespace game {
             bits::U64 _occupiedPiecesBitmask;
             bits::U64 _emptySquaresBitmask;
 
-            PieceType _lastCapturedPiece;
             int _noCaptureOrPawnMoveCount;
 
             // Private member functions

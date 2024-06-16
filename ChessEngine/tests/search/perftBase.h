@@ -16,8 +16,9 @@ namespace search {
 
         protected:
             bool longRuns = true;
+            bool megaRuns = false;
 
-            // Long run should be depth 6
+            // Long run should be depth 6, mega run should be depth 7
             bool enableStartPosTest = true;
             int startPosMaxDepth = 5;
 
@@ -148,8 +149,8 @@ namespace search {
                 return game::Move(fromTo.from, fromTo.to, flag);
             }
 
-            std::unordered_map<std::string, int> nodeCountPerFirstMoveAsMap(bool whiteStarted) {
-                std::unordered_map<std::string, int> nodeCountPerFirstMoveMap;
+            std::unordered_map<std::string, long> nodeCountPerFirstMoveAsMap(bool whiteStarted) {
+                std::unordered_map<std::string, long> nodeCountPerFirstMoveMap;
                 int sum = 0;
 
                 for (size_t i = 0; i < searcher._nodeCountPerFirstMove.size(); i++) {
@@ -168,20 +169,20 @@ namespace search {
                 return nodeCountPerFirstMoveMap;
             }
 
-            void compareFirstMoveCountsToStockfish(const std::unordered_map<std::string, int>& firstMoveCounts, const std::unordered_map<std::string, int>& stockfishResults) {
+            void compareFirstMoveCountsToStockfish(const std::unordered_map<std::string, long>& firstMoveCounts, const std::unordered_map<std::string, long>& stockfishResults) {
                 std::ostringstream errors;
                 bool hasErrors = false;
 
                 for (const auto& moveCountPair : firstMoveCounts) {
                     const std::string& move = moveCountPair.first;
-                    int count = moveCountPair.second;
+                    long count = moveCountPair.second;
 
                     auto foundIt = stockfishResults.find(move);
                     if (foundIt == stockfishResults.end()) {
                         errors << "Move: " << move << " not found in stockfish results.\n";
                         hasErrors = true;
                     } else {
-                        int stockfishCount = foundIt->second;
+                        long stockfishCount = foundIt->second;
                         if (count != stockfishCount) {
                             errors << "Move: " << move << " failed. Expected: " << stockfishCount << ", Got: " << count << ".\n";
                             hasErrors = true;
@@ -196,8 +197,8 @@ namespace search {
                 }
             }
 
-            std::unordered_map<std::string, int> getStockFishPerftResults(std::string FEN, int depth) {
-                std::unordered_map<std::string, int> results;
+            std::unordered_map<std::string, long> getStockFishPerftResults(std::string FEN, int depth) {
+                std::unordered_map<std::string, long> results;
                 std::ostringstream oss;
 
                 oss << "echo \"position fen " << FEN << "\\ngo perft " << depth << "\\nquit\" | stockfish";
@@ -224,7 +225,7 @@ namespace search {
                 while (std::regex_search(output, matches, pattern)) {
                     if (matches.size() == 3) { // Full match + 2 subgroups
                         std::string move = matches[1].str();
-                        int count = std::stoi(matches[2].str());
+                        long count = std::stol(matches[2].str());
                         results[move] = count;
                     }
                     output = matches.suffix().str();

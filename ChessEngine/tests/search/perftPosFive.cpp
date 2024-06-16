@@ -39,16 +39,16 @@ namespace search {
                 debugFen += " KQ - 1 8";
             }
 
-            std::unordered_map<std::string, int> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posFive, depth);
+            std::unordered_map<std::string, long> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posFive, depth);
 
             searcher.setMaxDepth(depth);
             searcher.minimax(0, whiteToStart, 0);
 
-            std::unordered_map<std::string, int> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
+            std::unordered_map<std::string, long> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
             compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
 
             if (nDebugMoves == 0) {
-                for (int i = 1; i <= searcher.getMaxDepth(); i++) {
+                for (long i = 1; i <= searcher.getMaxDepth(); i++) {
                     ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
                 }
             }

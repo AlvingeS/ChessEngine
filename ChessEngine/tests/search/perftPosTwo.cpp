@@ -8,7 +8,7 @@ namespace search {
             }
 
         // Nodes, captures, epCaptures, castling, promotion, check, checkmate
-        std::unordered_map<int, std::vector<int>> expectedResults {
+        std::unordered_map<int, std::vector<long>> expectedResults {
             {0, {1,         0,          0,          0,          0,          0,          0}},
             {1, {48,        8,          0,          2,          0,          0,          0}},
             {2, {2039,      351,        1,          91,         0,          3,          0}},
@@ -42,16 +42,16 @@ namespace search {
                 debugFen += " KQkq -";
             }
 
-            std::unordered_map<std::string, int> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posTwo, depth);
+            std::unordered_map<std::string, long> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posTwo, depth);
 
             searcher.setMaxDepth(depth);
             searcher.minimax(0, whiteToStart, 0);
             
-            std::unordered_map<std::string, int> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
+            std::unordered_map<std::string, long> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
             compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
             
             if (nDebugMoves == 0) {
-                for (int i = 1; i <= searcher.getMaxDepth(); i++) {
+                for (long i = 1; i <= searcher.getMaxDepth(); i++) {
                     ASSERT_EQ(searcher._nodeCount[i], expectedResults[i][0]);
                     ASSERT_EQ(searcher._captureCount[i], expectedResults[i][1]);
                     ASSERT_EQ(searcher._epCaptureCount[i], expectedResults[i][2]);

@@ -51,10 +51,10 @@ namespace search {
         }
     }
 
-    int Searcher::sumNodesToDepth(int depth) {
-        int sum = 0;
+    long Searcher::sumNodesToDepth(int depth) {
+        long sum = 0;
 
-        for (int i = 1; i <= depth; i++) {
+        for (long i = 1; i <= depth; i++) {
             sum += _nodeCount[i];
         }
 

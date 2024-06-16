@@ -33,16 +33,16 @@ namespace search {
             int _numMoveGenCalls;
             int _totalNodes;
 
-            int sumNodesToDepth(int depth);
-            std::vector<int> _nodeCountPerFirstMove;
+            long sumNodesToDepth(int depth);
+            std::vector<long> _nodeCountPerFirstMove;
             std::vector<game::Move> _firstMoves;
-            std::vector<int> _nodeCount;
-            std::vector<int> _captureCount;
-            std::vector<int> _epCaptureCount;
-            std::vector<int> _castlingCount;
-            std::vector<int> _promotionCount;
-            std::vector<int> _checkCount;
-            std::vector<int> _checkmateCount;
+            std::vector<long> _nodeCount;
+            std::vector<long> _captureCount;
+            std::vector<long> _epCaptureCount;
+            std::vector<long> _castlingCount;
+            std::vector<long> _promotionCount;
+            std::vector<long> _checkCount;
+            std::vector<long> _checkmateCount;
             void debugPrint(bool verbose);
             bool checkCondition(int currentDepth, bool isMaximizer, int firstMoveIndex, game::Move currentMove, game::Move lastMove, bool verbose, size_t i);
 

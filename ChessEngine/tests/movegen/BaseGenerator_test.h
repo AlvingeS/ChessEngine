@@ -2,6 +2,7 @@
 #include "ChessEngine/movegen/MoveGenerator.h"
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/search/SearchMemory.h"
+#include "ChessEngine/game/ZHasher.h"
 #include <gtest/gtest.h>
 #include <unordered_set>
 #include <vector>
@@ -11,6 +12,7 @@ namespace movegen {
         protected:
             game::ChessBoard board;
             search::SearchMemory searchMemory;
+            game::ZHasher zHasher;
             game::MoveMaker moveMaker;
             MoveGenerator moveGenerator;
             std::string startingPos;
@@ -18,7 +20,8 @@ namespace movegen {
 
             BaseGenerator() : board(game::ChessBoard()),
                               searchMemory(search::SearchMemory(0)),
-                              moveMaker(board, searchMemory),
+                              zHasher(game::ZHasher()),
+                              moveMaker(board, searchMemory, zHasher),
                               moveGenerator(MoveGenerator(board, moveMaker)) {}
 
             virtual void SetUp() override {

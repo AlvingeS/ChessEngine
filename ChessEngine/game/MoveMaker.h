@@ -3,14 +3,15 @@
 #include "Move.h"
 #include "PieceType.h"
 #include "ChessBoard.h"
+#include "ZHasher.h"
 #include "ChessEngine/search/SearchMemory.h"
 
 namespace game {
     class MoveMaker {
         public:
             // Constructor
-            MoveMaker(ChessBoard& board, search::SearchMemory& searchMemory);
-
+            MoveMaker(ChessBoard& board, search::SearchMemory& searchMemory, ZHasher& zHasher);
+            
             // Public member functions
             void makeMove(Move move, bool isWhite, int currentDepth);
             void unmakeMove(Move move, bool wasWhite, int currentDepth);
@@ -28,5 +29,6 @@ namespace game {
 
             ChessBoard& _board;
             search::SearchMemory& _searchMemory;
+            ZHasher& _zHasher;
     };
 }

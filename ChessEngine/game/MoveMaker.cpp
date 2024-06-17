@@ -2,7 +2,7 @@
 
 namespace game {
 
-    MoveMaker::MoveMaker(ChessBoard& board, search::SearchMemory& searchMemory) : _board(board), _searchMemory(searchMemory) {}
+    MoveMaker::MoveMaker(ChessBoard& board, search::SearchMemory& searchMemory, ZHasher& zHasher) : _board(board), _searchMemory(searchMemory), _zHasher(zHasher) {}
 
     void MoveMaker::makeCastleMove(bool isWhite, bool isKingSide) {
         if (isWhite) {

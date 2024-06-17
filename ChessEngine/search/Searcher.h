@@ -4,6 +4,7 @@
 #include "ChessEngine/game/ChessBoard.h"
 #include "ChessEngine/game/MoveMaker.h"
 #include "ChessEngine/game/Move.h"
+#include "ChessEngine/game/ZHasher.h"
 #include "SearchMemory.h"
 
 namespace search {
@@ -69,6 +70,7 @@ namespace search {
         private:
             game::ChessBoard _board;
             SearchMemory _searchMemory;
+            game::ZHasher _zHasher;
             game::MoveMaker _moveMaker;
             movegen::MoveGenerator _moveGenerator;
             evaluation::Evaluator _evaluator;

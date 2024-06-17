@@ -6,7 +6,8 @@
 namespace search {
     Searcher::Searcher(int maxDepth) : _board(game::ChessBoard()),
                                        _searchMemory(SearchMemory(maxDepth)),
-                                       _moveMaker(_board, _searchMemory),
+                                       _zHasher(game::ZHasher()),
+                                       _moveMaker(_board, _searchMemory, _zHasher),
                                        _moveGenerator(movegen::MoveGenerator(_board, _moveMaker)),
                                        _evaluator(evaluation::Evaluator(_board)),
                                        _maxDepth(maxDepth) {

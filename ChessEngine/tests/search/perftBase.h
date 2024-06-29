@@ -16,7 +16,7 @@ namespace search {
         };
 
         protected:
-            bool longRuns = true;
+            bool longRuns = false;
             bool megaRuns = false;
 
             // Long run should be depth 6, mega run should be depth 7

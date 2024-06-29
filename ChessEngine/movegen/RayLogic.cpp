@@ -1,6 +1,6 @@
 #include "RayLogic.h"
 
-#include "ChessEngine/bits/ChessUtils.h"
+#include "ChessEngine/utils/ChessUtils.h"
 
 namespace movegen {
 

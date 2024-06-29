@@ -2,7 +2,7 @@
 
 #include "ChessEngine/common.h"
 
-#include "PieceType.h"
+#include "ChessEngine/game/PieceType.h"
 
 namespace game {
     class BoardPrinter {

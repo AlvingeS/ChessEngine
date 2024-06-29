@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "ChessEngine/bits/BitBasics.h"
+#include "ChessEngine/utils/BitBasics.h"
 
 namespace game {
     BoardPrinter::BoardPrinter(std::vector<U64*> bitboards) {

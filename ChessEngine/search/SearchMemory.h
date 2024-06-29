@@ -4,7 +4,7 @@
 
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/game/PieceType.h"
-#include "ChessEngine/bits/BitBasics.h"
+#include "ChessEngine/utils/BitBasics.h"
 
 namespace search {
     constexpr unsigned char whiteKingSide = 0b0001;

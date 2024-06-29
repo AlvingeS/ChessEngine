@@ -3,8 +3,6 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "ChessEngine/game/BoardPrinter.h"
-
 namespace search {
     Searcher::Searcher(int maxDepth) : _board(game::ChessBoard()),
                                        _searchMemory(SearchMemory(maxDepth)),
@@ -77,12 +75,12 @@ namespace search {
         _moveMaker.unmakeMove(move, isWhite, currentDepth);
     }
 
-    void Searcher::debugPrint(bool verbose) {
-        if (verbose) {
-            game::BoardPrinter boardPrinter = game::BoardPrinter(_board.getBitboards());
-            boardPrinter.printBoard();
-        }
-    }
+    // void Searcher::debugPrint(bool verbose) {
+    //     if (verbose) {
+    //         game::BoardPrinter boardPrinter = game::BoardPrinter(_board.getBitboards());
+    //         boardPrinter.printBoard();
+    //     }
+    // }
 
     // Helper function to check if there are any castling moves in the movelist
     // bool hasTwoCastlingMove(MoveList& moveList) {

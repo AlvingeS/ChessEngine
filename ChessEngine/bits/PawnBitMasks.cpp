@@ -1,6 +1,6 @@
 #include "PawnBitMasks.h"
 
-#include "ChessUtils.h"
+#include "ChessEngine/utils/ChessUtils.h"
 
 namespace bits {
     U64 applyCapturePawnMoves(int ind, bool isWhite) {

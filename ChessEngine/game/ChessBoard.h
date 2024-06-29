@@ -4,7 +4,7 @@
 
 #include <functional>
 
-#include "ChessEngine/bits/BitBasics.h"
+#include "ChessEngine/utils/BitBasics.h"
 
 #include "PieceType.h"
 #include "Move.h"

@@ -2,7 +2,7 @@
 
 #include "ChessEngine/common.h"
 
-#include "ChessEngine/bits/BitBasics.h"
+#include "ChessEngine/utils/BitBasics.h"
 #include "ChessEngine/game/ChessBoard.h"
 #include "ChessEngine/game/Move.h"
 

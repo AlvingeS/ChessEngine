@@ -1,6 +1,6 @@
 #include "KingBitMasks.h"
 
-#include "ChessUtils.h"
+#include "ChessEngine/utils/ChessUtils.h"
 
 namespace bits {
 

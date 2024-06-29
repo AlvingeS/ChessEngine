@@ -5,13 +5,17 @@
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/game/ChessBoard.h"
 #include "ChessEngine/game/MoveMaker.h"
-#include "ChessEngine/masks/Castling.h"
 
 #include "RayLogic.h"
 #include "CommonLogic.h"
 #include "CheckDetection.h"
 
 namespace movegen {
+    constexpr U64 whiteKingSideCastleMask = 0x000000000000006ULL;
+    constexpr U64 whiteQueenSideCastleMask = 0x0000000000000070ULL;
+    constexpr U64 blackKingSideCastleMask = 0x0600000000000000ULL;
+    constexpr U64 blackQueenSideCastleMask = 0x7000000000000000ULL;
+
     class CastlingGenerator {
         public:
             // Constructor

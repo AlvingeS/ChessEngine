@@ -4,10 +4,9 @@
 
 #include "ChessEngine/game/PieceType.h"
 
-namespace utils {
-    void printU64InBits(U64 n);
-    void getBitIndices(std::vector<int>& indices, U64 bitboard);
+#include "maths.h"
 
+namespace utils {
     constexpr U64 FILE_MASK[8] = {
         0x0101010101010101ULL,
         0x0202020202020202ULL,
@@ -60,10 +59,6 @@ namespace utils {
 
     inline U64 getBlackSquaresBitmask() {
         return 0x55AA55AA55AA55AAULL;
-    }
-
-    inline int abs(int n) {
-        return (n < 0) ? -n : n;
     }
 
     inline int manhattanDistance(int i, int j) {

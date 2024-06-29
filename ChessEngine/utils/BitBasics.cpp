@@ -1,13 +1,11 @@
-#include "ChessUtils.h"
+#include "BitBasics.h"
 
 #include <iostream>
 #include <bitset>
 
-namespace utils {
-    void printU64InBits(U64 n) {
-        std::cout << std::bitset<64>(n) << std::endl;
-    }
+#include "ChessEngine/common.h"
 
+namespace utils {
     void getBitIndices(std::vector<int>& indices, U64 bitboard) {
         indices.clear();
 
@@ -18,5 +16,9 @@ namespace utils {
 
             bitboard &= (bitboard - 1);
         }
+    }
+
+    void printU64InBits(U64 n) {
+        std::cout << std::bitset<64>(n) << std::endl;
     }
 }

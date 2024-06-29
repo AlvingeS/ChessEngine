@@ -82,7 +82,7 @@ namespace game {
     }
 
     void ChessBoard::fillWhitePiecesBitmask() {
-        bits::U64 w_all = 0;
+        U64 w_all = 0;
         for (int i = 0; i < 6; i++) {
             w_all |= *(_bitboards[i]);
         }
@@ -91,7 +91,7 @@ namespace game {
     }
 
     void ChessBoard::fillBlackPiecesBitmask() {
-        bits::U64 b_all = 0;
+        U64 b_all = 0;
         for (int i = 6; i < 12; i++) {
             b_all |= *(_bitboards[i]);
         }

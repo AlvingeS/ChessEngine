@@ -1,8 +1,7 @@
 #include "CastlingGenerator.h"
+
 #include "ChessEngine/bits/ChessUtils.h"
 #include "ChessEngine/game/PieceType.h"
-#include "ChessEngine/game/ChessBoard.h"
-#include "ChessEngine/game/MoveMaker.h"
 
 namespace movegen {
     CastlingGenerator::CastlingGenerator(game::ChessBoard& board, game::MoveMaker& moveMaker, int& moveIndex, CommonLogic* commonLogic, CheckDetection* checkDetection) 
@@ -73,7 +72,7 @@ namespace movegen {
 
     void CastlingGenerator::genSingleCastleMove(bool isWhite, bool isKingSide, std::vector<game::Move>& moveList) {                                                  
         // Check that there are no pieces between the king and rook
-        bits::U64 spaceBetweenCastlersBitmask = isWhite ? (isKingSide ? _whiteKingSideCastleBitmask : _whiteQueenSideCastleBitmask)
+        U64 spaceBetweenCastlersBitmask = isWhite ? (isKingSide ? _whiteKingSideCastleBitmask : _whiteQueenSideCastleBitmask)
                                                         : (isKingSide ? _blackKingSideCastleBitmask : _blackQueenSideCastleBitmask);
         
         if ((spaceBetweenCastlersBitmask & _board.getOccupiedPiecesBitmask()) != 0) {

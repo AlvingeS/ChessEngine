@@ -1,12 +1,13 @@
 #include "MoveGenerator.h"
+
+#include <iostream>
+
 #include "ChessEngine/bits/RayBitMasks.h"
 #include "ChessEngine/bits/ChessUtils.h"
 #include "ChessEngine/bits/KnightBitMasks.h"
 #include "ChessEngine/bits/KingBitMasks.h"
 #include "ChessEngine/bits/PawnBitMasks.h"
 #include "ChessEngine/bits/BitBasics.h"
-#include <iostream>
-
 
 namespace movegen {
     MoveGenerator::MoveGenerator(game::ChessBoard& board, game::MoveMaker& moveMaker)

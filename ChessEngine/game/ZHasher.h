@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ChessEngine/common.h"
+
 #include "PieceType.h"
 
 namespace game {
@@ -8,10 +10,10 @@ namespace game {
             ZHasher();
 
         private:
-            unsigned long long _randBoardPieceTypeNums[64][12];
-            unsigned long long _randCastleRightsNums[4];
-            unsigned long long _randEnPassantFileNums[8];
-            unsigned long long _randIsWhiteNum;
-            unsigned long long _hash;
+            U64 _randBoardPieceTypeNums[64][12];
+            U64 _randCastleRightsNums[4];
+            U64 _randEnPassantFileNums[8];
+            U64 _randIsWhiteNum;
+            U64 _hash;
     };
 }

@@ -1,8 +1,10 @@
 #include "ChessEngine/search/Searcher.h"
+
 #include <gtest/gtest.h>
 #include <unordered_set>
 #include <vector>
 #include <unordered_map>
+
 #include "perftBase.h"
 
 namespace search {

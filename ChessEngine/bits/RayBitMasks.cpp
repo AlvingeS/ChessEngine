@@ -1,4 +1,5 @@
 #include "RayBitMasks.h"
+
 #include "ChessUtils.h"
 
 namespace bits {

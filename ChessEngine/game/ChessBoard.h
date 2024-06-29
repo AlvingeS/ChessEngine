@@ -1,12 +1,13 @@
 #pragma once
-#include <unordered_map>
-#include "PieceType.h"
-#include "ChessEngine/bits/BitBasics.h"
-#include <string>
+
+#include "ChessEngine/common.h"
+
 #include <functional>
+
+#include "ChessEngine/bits/BitBasics.h"
+
+#include "PieceType.h"
 #include "Move.h"
-#include <memory>
-#include <vector>
 
 namespace game {
     class ChessBoard {
@@ -44,15 +45,15 @@ namespace game {
             }
 
             // Getters for game state
-            bits::U64 getBitboard(PieceType pieceType) {
+            U64 getBitboard(PieceType pieceType) {
                 return *(_bitboards[pieceTypeToInt(pieceType)]);
             }
 
-            bits::U64& getBitboardFromIndex(int index) {
+            U64& getBitboardFromIndex(int index) {
                 return *(_bitboards[index]);
             }
 
-            std::vector<bits::U64*>& getBitboards() {
+            std::vector<U64*>& getBitboards() {
                 return _bitboards;
             }
 
@@ -61,68 +62,68 @@ namespace game {
             }
 
             // Getters for masks
-            bits::U64& getWhitePiecesBitmask() {
+            U64& getWhitePiecesBitmask() {
                 return _whitePiecesBitmask;
             }
 
-            bits::U64& getBlackPiecesBitmask() {
+            U64& getBlackPiecesBitmask() {
                 return _blackPiecesBitmask;
             }
 
-            bits::U64& getOccupiedPiecesBitmask() {
+            U64& getOccupiedPiecesBitmask() {
                 return _occupiedPiecesBitmask;
             }
 
-            bits::U64& getEmptySquaresBitmask() {
+            U64& getEmptySquaresBitmask() {
                 return _emptySquaresBitmask;
             }
 
             // Getters for bitboards
-            bits::U64& getWhitePawnsBitboard() {
+            U64& getWhitePawnsBitboard() {
                 return _whitePawnsBitboard;
             }
 
-            bits::U64& getWhiteKnightsBitboard() {
+            U64& getWhiteKnightsBitboard() {
                 return _whiteKnightsBitboard;
             }
 
-            bits::U64& getWhiteBishopsBitboard() {
+            U64& getWhiteBishopsBitboard() {
                 return _whiteBishopsBitboard;
             }
 
-            bits::U64& getWhiteRooksBitboard() {
+            U64& getWhiteRooksBitboard() {
                 return _whiteRooksBitboard;
             }
 
-            bits::U64& getWhiteQueensBitboard() {
+            U64& getWhiteQueensBitboard() {
                 return _whiteQueensBitboard;
             }
 
-            bits::U64& getWhiteKingBitboard() {
+            U64& getWhiteKingBitboard() {
                 return _whiteKingBitboard;
             }
 
-            bits::U64& getBlackPawnsBitboard() {
+            U64& getBlackPawnsBitboard() {
                 return _blackPawnsBitboard;
             }
 
-            bits::U64& getBlackKnightsBitboard() {
+            U64& getBlackKnightsBitboard() {
                 return _blackKnightsBitboard;
             }
 
-            bits::U64& getBlackBishopsBitboard() {
+            U64& getBlackBishopsBitboard() {
                 return _blackBishopsBitboard;
             }
 
-            bits::U64& getBlackRooksBitboard() {
+            U64& getBlackRooksBitboard() {
                 return _blackRooksBitboard;
             }
 
-            bits::U64& getBlackQueensBitboard() {
+            U64& getBlackQueensBitboard() {
                 return _blackQueensBitboard;
             }
 
-            bits::U64& getBlackKingBitboard() {
+            U64& getBlackKingBitboard() {
                 return _blackKingBitboard;
             }
             
@@ -140,32 +141,32 @@ namespace game {
 
         private:
             // Private member variables
-            std::vector<bits::U64*> _bitboards;
+            std::vector<U64*> _bitboards;
             std::vector<PieceType> _squaresLookup;
 
             // White bitboards
-            bits::U64 _whitePawnsBitboard;
-            bits::U64 _whiteKnightsBitboard;
-            bits::U64 _whiteBishopsBitboard;
-            bits::U64 _whiteRooksBitboard;
-            bits::U64 _whiteQueensBitboard;
-            bits::U64 _whiteKingBitboard;
+            U64 _whitePawnsBitboard;
+            U64 _whiteKnightsBitboard;
+            U64 _whiteBishopsBitboard;
+            U64 _whiteRooksBitboard;
+            U64 _whiteQueensBitboard;
+            U64 _whiteKingBitboard;
 
             // Black bitboards
-            bits::U64 _blackPawnsBitboard;
-            bits::U64 _blackKnightsBitboard;
-            bits::U64 _blackBishopsBitboard;
-            bits::U64 _blackRooksBitboard;
-            bits::U64 _blackQueensBitboard;
-            bits::U64 _blackKingBitboard;
+            U64 _blackPawnsBitboard;
+            U64 _blackKnightsBitboard;
+            U64 _blackBishopsBitboard;
+            U64 _blackRooksBitboard;
+            U64 _blackQueensBitboard;
+            U64 _blackKingBitboard;
 
-            bits::U64 _enPessantTarget;
+            U64 _enPessantTarget;
 
             // Masks
-            bits::U64 _whitePiecesBitmask;
-            bits::U64 _blackPiecesBitmask;
-            bits::U64 _occupiedPiecesBitmask;
-            bits::U64 _emptySquaresBitmask;
+            U64 _whitePiecesBitmask;
+            U64 _blackPiecesBitmask;
+            U64 _occupiedPiecesBitmask;
+            U64 _emptySquaresBitmask;
 
             int _noCaptureOrPawnMoveCount;
 

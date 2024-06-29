@@ -1,4 +1,5 @@
 #include "KingGenerator.h"
+
 #include "ChessEngine/bits/ChessUtils.h"
 #include "ChessEngine/game/PieceType.h"
 
@@ -17,11 +18,11 @@ namespace movegen {
         bits::getBitIndices(_kingIndices, isWhite ? _board.getWhiteKingBitboard() : _board.getBlackKingBitboard());
 
         for (int currentKingIndex : _kingIndices) {
-            bits::U64 kingBitMask = _kingBitmasks[currentKingIndex];
+            U64 kingBitMask = _kingBitmasks[currentKingIndex];
 
-            bits::U64 freeKingMoves = kingBitMask & _board.getEmptySquaresBitmask();
-            bits::U64 enemyPieces = isWhite ? _board.getBlackPiecesBitmask() : _board.getWhitePiecesBitmask();
-            bits::U64 capturableKingMoves = kingBitMask & enemyPieces;
+            U64 freeKingMoves = kingBitMask & _board.getEmptySquaresBitmask();
+            U64 enemyPieces = isWhite ? _board.getBlackPiecesBitmask() : _board.getWhitePiecesBitmask();
+            U64 capturableKingMoves = kingBitMask & enemyPieces;
 
             bits::getBitIndices(_freeMovesIndices, freeKingMoves);
             bits::getBitIndices(_capturableMovesIndices, capturableKingMoves);

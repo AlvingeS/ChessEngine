@@ -1,6 +1,6 @@
 #pragma once
-#include "BitBasics.h"
-#include <vector>
+
+#include "ChessEngine/common.h"
 
 namespace bits {
 

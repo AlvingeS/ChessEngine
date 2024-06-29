@@ -1,7 +1,8 @@
 #pragma once
 
+#include "ChessEngine/common.h"
+
 #include "ChessEngine/game/Move.h"
-#include <vector>
 
 namespace movegen {
     class CommonLogic {

@@ -1,6 +1,8 @@
 #pragma once
-#include "PieceType.h"
+
 #include <functional>
+
+#include "PieceType.h"
 
 namespace game {
     class Move {

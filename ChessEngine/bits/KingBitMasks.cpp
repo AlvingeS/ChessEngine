@@ -1,4 +1,5 @@
 #include "KingBitMasks.h"
+
 #include "ChessUtils.h"
 
 namespace bits {

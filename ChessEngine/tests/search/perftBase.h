@@ -1,5 +1,6 @@
 #pragma once
 #include "ChessEngine/search/Searcher.h"
+
 #include <gtest/gtest.h>
 #include <unordered_map>
 #include <sstream>

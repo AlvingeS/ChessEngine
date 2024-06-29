@@ -1,4 +1,5 @@
 #include "KnightGenerator.h"
+
 #include "ChessEngine/bits/ChessUtils.h"
 #include "ChessEngine/game/PieceType.h"
 
@@ -17,11 +18,11 @@ namespace movegen {
         bits::getBitIndices(_knightIndices, isWhite ? _board.getWhiteKnightsBitboard() : _board.getBlackKnightsBitboard());
 
         for (int currentKnightIndex : _knightIndices) {
-            bits::U64 knightBitMask = _knightBitmasks[currentKnightIndex];
+            U64 knightBitMask = _knightBitmasks[currentKnightIndex];
 
-            bits::U64 freeKnightMoves = knightBitMask & _board.getEmptySquaresBitmask();
-            bits::U64 enemyPieces = isWhite ? _board.getBlackPiecesBitmask() : _board.getWhitePiecesBitmask();
-            bits::U64 capturableKnightMoves = knightBitMask & enemyPieces;
+            U64 freeKnightMoves = knightBitMask & _board.getEmptySquaresBitmask();
+            U64 enemyPieces = isWhite ? _board.getBlackPiecesBitmask() : _board.getWhitePiecesBitmask();
+            U64 capturableKnightMoves = knightBitMask & enemyPieces;
 
             bits::getBitIndices(_freeMovesIndices, freeKnightMoves);
             bits::getBitIndices(_capturableMovesIndices, capturableKnightMoves);

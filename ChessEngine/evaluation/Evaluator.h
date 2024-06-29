@@ -1,4 +1,7 @@
 #pragma once
+
+#include "ChessEngine/common.h"
+
 #include "ChessEngine/game/ChessBoard.h"
 
 namespace evaluation {

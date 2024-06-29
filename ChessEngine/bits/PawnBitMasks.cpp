@@ -1,4 +1,5 @@
 #include "PawnBitMasks.h"
+
 #include "ChessUtils.h"
 
 namespace bits {

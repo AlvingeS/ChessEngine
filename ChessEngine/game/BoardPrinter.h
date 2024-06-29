@@ -1,15 +1,15 @@
 #pragma once
-#include <vector>
-#include <unordered_map>
+
+#include "ChessEngine/common.h"
+
 #include "PieceType.h"
-#include "ChessEngine/bits/BitBasics.h"
 
 namespace game {
     class BoardPrinter {
         public:
             // Public member functions
-            BoardPrinter(std::vector<bits::U64*> bitboards);
-            void fillBoard(std::vector<bits::U64*> bitboards);
+            BoardPrinter(std::vector<U64*> bitboards);
+            void fillBoard(std::vector<U64*> bitboards);
             void printBoard();
 
         private:

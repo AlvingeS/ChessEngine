@@ -1,4 +1,5 @@
 #include "ZHasher.h"
+
 #include <iostream>
 #include <random>
 
@@ -7,7 +8,8 @@ namespace game {
         std::random_device rd;
         std::mt19937 gen(rd());
 
-        std::uniform_int_distribution<unsigned long long> dis(0, 18446744073709551615);
+
+        std::uniform_int_distribution<U64> dis(0, std::numeric_limits<U64>::max());
 
         // Generate random numbers for board/piece table
         for (size_t i = 0; i < 64; i++) {

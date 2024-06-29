@@ -1,10 +1,11 @@
 #pragma once
 
+#include "ChessEngine/search/SearchMemory.h"
+
 #include "Move.h"
 #include "PieceType.h"
 #include "ChessBoard.h"
 #include "ZHasher.h"
-#include "ChessEngine/search/SearchMemory.h"
 
 namespace game {
     class MoveMaker {

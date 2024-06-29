@@ -1,5 +1,4 @@
 #include "Evaluator.h"
-#include "ChessEngine/bits/BitBasics.h"
 
 namespace evaluation {
     static const int PAWN_VALUE = 1000;

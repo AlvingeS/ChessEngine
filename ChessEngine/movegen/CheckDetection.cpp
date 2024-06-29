@@ -1,4 +1,5 @@
 #include "CheckDetection.h"
+
 #include "ChessEngine/bits/ChessUtils.h"
 #include "ChessEngine/game/PieceType.h"
 
@@ -39,21 +40,21 @@ namespace movegen {
 
         bits::StraightRays straightRays = _straightRayBitmasks[kingIndex];
         bits::DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
-        bits::U64 knightMoves = _knightBitmasks[kingIndex];
-        bits::U64 pawnAttackingMoves = isWhite ? _whitePawnCaptureMoveBitmasks[kingIndex] 
+        U64 knightMoves = _knightBitmasks[kingIndex];
+        U64 pawnAttackingMoves = isWhite ? _whitePawnCaptureMoveBitmasks[kingIndex] 
                                                : _blackPawnCaptureMoveBitmasks[kingIndex];
-        bits::U64 opponentRooksAndQueens = isWhite ? _board.getBlackRooksBitboard() | _board.getBlackQueensBitboard()
+        U64 opponentRooksAndQueens = isWhite ? _board.getBlackRooksBitboard() | _board.getBlackQueensBitboard()
                                                    : _board.getWhiteRooksBitboard() | _board.getWhiteQueensBitboard();
 
-        bits::U64 opponentBishopsAndQueens = isWhite ? _board.getBlackBishopsBitboard() | _board.getBlackQueensBitboard() 
+        U64 opponentBishopsAndQueens = isWhite ? _board.getBlackBishopsBitboard() | _board.getBlackQueensBitboard() 
                                                      : _board.getWhiteBishopsBitboard() | _board.getWhiteQueensBitboard();
 
-        bits::U64 opponentPawns = isWhite ? _board.getBlackPawnsBitboard() : _board.getWhitePawnsBitboard();
+        U64 opponentPawns = isWhite ? _board.getBlackPawnsBitboard() : _board.getWhitePawnsBitboard();
         if ((pawnAttackingMoves & opponentPawns) != 0) {
             return true;
         }
 
-        bits::U64 opponentKnights = isWhite ? _board.getBlackKnightsBitboard() : _board.getWhiteKnightsBitboard();
+        U64 opponentKnights = isWhite ? _board.getBlackKnightsBitboard() : _board.getWhiteKnightsBitboard();
         if ((knightMoves & opponentKnights) != 0) {
             return true;
         }

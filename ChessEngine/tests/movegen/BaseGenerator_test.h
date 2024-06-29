@@ -1,11 +1,14 @@
 #pragma once
+
+#include "ChessEngine/common.h"
+
+#include <gtest/gtest.h>
+#include <unordered_set>
+
 #include "ChessEngine/movegen/MoveGenerator.h"
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/search/SearchMemory.h"
 #include "ChessEngine/game/ZHasher.h"
-#include <gtest/gtest.h>
-#include <unordered_set>
-#include <vector>
 
 namespace movegen {
     class BaseGenerator : public ::testing::Test {

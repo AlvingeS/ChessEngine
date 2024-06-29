@@ -1,7 +1,10 @@
 #pragma once
-#include <vector>
+
+#include "ChessEngine/common.h"
+
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/bits/RayBitMasks.h"
+
 #include "RayLogic.h"
 #include "CommonLogic.h"
 

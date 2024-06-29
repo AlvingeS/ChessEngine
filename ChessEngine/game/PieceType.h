@@ -1,5 +1,6 @@
 #pragma once
-#include <cstdint>
+
+#include "ChessEngine/common.h"
 
 namespace game {
 

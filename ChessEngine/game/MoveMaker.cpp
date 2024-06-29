@@ -235,7 +235,7 @@ namespace game {
     }
 
     void MoveMaker::makeTemporaryKingMove(bool isWhite, bool isKingSide) {
-        bits::U64 kingBitboard = isWhite ? _board.getWhiteKingBitboard() : _board.getBlackKingBitboard();
+        U64 kingBitboard = isWhite ? _board.getWhiteKingBitboard() : _board.getBlackKingBitboard();
         int from = isWhite ? 3 : 59;
         int to = isKingSide ? (isWhite ? 2 : 58) : (isWhite ? 4 : 60);
 
@@ -250,7 +250,7 @@ namespace game {
     }
 
     void MoveMaker::unmakeTemporaryKingMove(bool isWhite, bool isKingSide) {
-        bits::U64 kingBitboard = isWhite ? _board.getWhiteKingBitboard() : _board.getBlackKingBitboard();
+        U64 kingBitboard = isWhite ? _board.getWhiteKingBitboard() : _board.getBlackKingBitboard();
         int from = isKingSide ? (isWhite ? 2 : 58) : (isWhite ? 4 : 60);
         int to = isWhite ? 3 : 59;
 

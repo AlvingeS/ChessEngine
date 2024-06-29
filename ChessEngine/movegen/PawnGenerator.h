@@ -1,8 +1,11 @@
 #pragma once
-#include <vector>
+
+#include "ChessEngine/common.h"
+
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/bits/PawnBitMasks.h"
 #include "ChessEngine/search/SearchMemory.h"
+
 #include "RayLogic.h"
 #include "CommonLogic.h"
 
@@ -23,10 +26,10 @@ namespace movegen {
 
             // Memory
             std::vector<int> _pawnIndices;
-            std::vector<bits::U64> _whitePawnStraightMoveBitmasks;
-            std::vector<bits::U64> _blackPawnStraightMoveBitmasks;
-            std::vector<bits::U64> _whitePawnCaptureMoveBitmasks;
-            std::vector<bits::U64> _blackPawnCaptureMoveBitmasks;
+            std::vector<U64> _whitePawnStraightMoveBitmasks;
+            std::vector<U64> _blackPawnStraightMoveBitmasks;
+            std::vector<U64> _whitePawnCaptureMoveBitmasks;
+            std::vector<U64> _blackPawnCaptureMoveBitmasks;
 
             std::vector<int> _freeMovesIndices;
             std::vector<int> _capturableMovesIndices;

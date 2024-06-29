@@ -1,4 +1,5 @@
 #include "PawnGenerator.h"
+
 #include "ChessEngine/bits/ChessUtils.h"
 #include "ChessEngine/game/PieceType.h"
 
@@ -21,17 +22,17 @@ namespace movegen {
                                                   : _board.getBlackPawnsBitboard());
 
         for (int currentPawnIndex : _pawnIndices) {
-            bits::U64 straightPawnMoveBitmask = isWhite ? _whitePawnStraightMoveBitmasks[currentPawnIndex]
+            U64 straightPawnMoveBitmask = isWhite ? _whitePawnStraightMoveBitmasks[currentPawnIndex]
                                                         : _blackPawnStraightMoveBitmasks[currentPawnIndex];
 
-            bits::U64 capturePawnMoveBitmask = isWhite ? _whitePawnCaptureMoveBitmasks[currentPawnIndex]
+            U64 capturePawnMoveBitmask = isWhite ? _whitePawnCaptureMoveBitmasks[currentPawnIndex]
                                                        : _blackPawnCaptureMoveBitmasks[currentPawnIndex];
 
 
-            bits::U64 freePawnMoves = straightPawnMoveBitmask & _board.getEmptySquaresBitmask();
-            bits::U64 enemyPieces = isWhite ? _board.getBlackPiecesBitmask() : _board.getWhitePiecesBitmask();
-            bits::U64 enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
-            bits::U64 capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
+            U64 freePawnMoves = straightPawnMoveBitmask & _board.getEmptySquaresBitmask();
+            U64 enemyPieces = isWhite ? _board.getBlackPiecesBitmask() : _board.getWhitePiecesBitmask();
+            U64 enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
+            U64 capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
 
             bits::getBitIndices(_freeMovesIndices, freePawnMoves);
             bits::getBitIndices(_capturableMovesIndices, capturablePawnMoves);

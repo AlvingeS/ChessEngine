@@ -1,7 +1,9 @@
 #include "Searcher.h"
+
 #include <cstdlib>
-#include "ChessEngine/game/BoardPrinter.h"
 #include <iostream>
+
+#include "ChessEngine/game/BoardPrinter.h"
 
 namespace search {
     Searcher::Searcher(int maxDepth) : _board(game::ChessBoard()),

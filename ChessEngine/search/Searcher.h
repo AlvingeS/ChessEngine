@@ -1,10 +1,12 @@
 #pragma once
+
 #include "ChessEngine/movegen/MoveGenerator.h"
 #include "ChessEngine/evaluation/Evaluator.h"
 #include "ChessEngine/game/ChessBoard.h"
 #include "ChessEngine/game/MoveMaker.h"
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/game/ZHasher.h"
+
 #include "SearchMemory.h"
 
 namespace search {

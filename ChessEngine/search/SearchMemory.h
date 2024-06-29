@@ -1,5 +1,7 @@
 #pragma once
-#include <vector>
+
+#include "ChessEngine/common.h"
+
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/game/PieceType.h"
 #include "ChessEngine/bits/BitBasics.h"
@@ -31,11 +33,11 @@ namespace search {
             void setCastlingRights(int currentDepth, game::Move move, bool isWhite, game::PieceType movedPieceType);
             void unsetCastlingRights(int currentDepth);
 
-            bits::U64 getEnPessantTargetAtDepth(int depth) {
+            U64 getEnPessantTargetAtDepth(int depth) {
                 return _enPessantTargets[depth];
             }
 
-            void setEnPessantTargetAtDepth(int depth, bits::U64 target) {
+            void setEnPessantTargetAtDepth(int depth, U64 target) {
                 _enPessantTargets[depth] = target;
             }
 
@@ -59,7 +61,7 @@ namespace search {
             int _maxDepth;
             std::vector<unsigned char> _castlingRights;
             std::vector<game::PieceType> _lastCapturedPieces;
-            std::vector<bits::U64> _enPessantTargets;
+            std::vector<U64> _enPessantTargets;
             std::vector<int> _noCapturedOrPawnMoveCounts;
 
             void removeCastlingRightsForRemainingDepths(int currentDepth, unsigned char rightsToRemove);

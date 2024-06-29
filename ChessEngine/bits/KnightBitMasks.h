@@ -1,6 +1,6 @@
 #pragma once
-#include <vector>
-#include "BitBasics.h"
+
+#include "ChessEngine/common.h"
 
 namespace bits {
     U64 applyKnightMoves(int ind);

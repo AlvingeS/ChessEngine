@@ -1,9 +1,12 @@
 #pragma once
-#include <vector>
+
+#include "ChessEngine/common.h"
+
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/game/ChessBoard.h"
 #include "ChessEngine/game/MoveMaker.h"
 #include "ChessEngine/bits/Castling.h"
+
 #include "RayLogic.h"
 #include "CommonLogic.h"
 #include "CheckDetection.h"
@@ -26,10 +29,10 @@ namespace movegen {
             CheckDetection* _checkDetection;
 
             // Memory
-            bits::U64 _whiteKingSideCastleBitmask;
-            bits::U64 _whiteQueenSideCastleBitmask;
-            bits::U64 _blackKingSideCastleBitmask;
-            bits::U64 _blackQueenSideCastleBitmask;
+            U64 _whiteKingSideCastleBitmask;
+            U64 _whiteQueenSideCastleBitmask;
+            U64 _blackKingSideCastleBitmask;
+            U64 _blackQueenSideCastleBitmask;
 
             // Private member functions
             void genSingleCastleMove(bool isWhite, bool isKingSide, std::vector<game::Move>& moveList);

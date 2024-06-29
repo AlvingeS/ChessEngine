@@ -1,14 +1,16 @@
 #pragma once
+
+#include "ChessEngine/common.h"
+
 #include "ChessEngine/game/Move.h"
-#include <vector>
 #include "ChessEngine/game/ChessBoard.h"
 #include "ChessEngine/bits/RayBitMasks.h"
 #include "ChessEngine/bits/BitBasics.h"
 #include "ChessEngine/bits/Castling.h"
+
 #include "RayLogic.h"
 #include "CommonLogic.h"
 #include "CheckDetection.h"
-#include <string>
 #include "RookGenerator.h"
 #include "BishopGenerator.h"
 #include "KnightGenerator.h"

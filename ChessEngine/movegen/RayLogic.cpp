@@ -1,4 +1,5 @@
 #include "RayLogic.h"
+
 #include "ChessEngine/bits/ChessUtils.h"
 
 namespace movegen {
@@ -10,7 +11,7 @@ namespace movegen {
         _freeRayIndices.reserve(8);
     }
 
-    void RayLogic::addMovesFromFreeRay(bits::U64 freeRay, int bitIndexFrom, std::vector<game::Move>& moveList) {
+    void RayLogic::addMovesFromFreeRay(U64 freeRay, int bitIndexFrom, std::vector<game::Move>& moveList) {
         bits::getBitIndices(_freeRayIndices, freeRay);
 
         for (int bitIndex : _freeRayIndices) {
@@ -72,8 +73,8 @@ namespace movegen {
         }
     }
 
-    void RayLogic::getMovesFromStraightRay(bits::U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<game::Move>& moveList) {
-            bits::U64 blockerBitMask = ray & _board.getOccupiedPiecesBitmask();          
+    void RayLogic::getMovesFromStraightRay(U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<game::Move>& moveList) {
+            U64 blockerBitMask = ray & _board.getOccupiedPiecesBitmask();          
 
             if (blockerBitMask != 0) {
                 int blockerIndex = blockerOnLSB ? bits::indexOfLSB(blockerBitMask) : bits::indexOfMSB(blockerBitMask);
@@ -84,8 +85,8 @@ namespace movegen {
             }
     }
 
-    void RayLogic::getMovesFromDiagonalRay(bits::U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<game::Move>& moveList) {
-        bits::U64 blockerBitMask = ray & _board.getOccupiedPiecesBitmask();
+    void RayLogic::getMovesFromDiagonalRay(U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<game::Move>& moveList) {
+        U64 blockerBitMask = ray & _board.getOccupiedPiecesBitmask();
 
         if (blockerBitMask != 0) {
             int blockerIndex = blockerOnLSB ? bits::indexOfLSB(blockerBitMask) : bits::indexOfMSB(blockerBitMask);
@@ -96,12 +97,12 @@ namespace movegen {
         }
     }
 
-    bool RayLogic::checkStraightRay(bits::U64& straightRay, bool firstBlockerOnLSB, bits::U64& opponentRooksAndQueens) {
-        bits::U64 rooksAndQueensBlockerBitMask = straightRay & opponentRooksAndQueens;
+    bool RayLogic::checkStraightRay(U64& straightRay, bool firstBlockerOnLSB, U64& opponentRooksAndQueens) {
+        U64 rooksAndQueensBlockerBitMask = straightRay & opponentRooksAndQueens;
         
         // There must be a rook or a queen on the file or rank to be in check
         if (rooksAndQueensBlockerBitMask != 0ULL) {
-            bits::U64 occupiedBlockerBitMask = straightRay & _board.getOccupiedPiecesBitmask();
+            U64 occupiedBlockerBitMask = straightRay & _board.getOccupiedPiecesBitmask();
 
             // If there is only one blocker out of all pieces, then it must be a rook or a queen thus the king is in check
             if (bits::popCount(occupiedBlockerBitMask) == 1) {
@@ -124,11 +125,11 @@ namespace movegen {
         return false;
     }
 
-    bool RayLogic::checkDiagonalRay(bits::U64& diagonalRay, bool firstBlockerOnLSB, bits::U64& opponentBishopsAndQueens) {
-        bits::U64 bishopsAndQueensBlockerBitMask = diagonalRay & opponentBishopsAndQueens;
+    bool RayLogic::checkDiagonalRay(U64& diagonalRay, bool firstBlockerOnLSB, U64& opponentBishopsAndQueens) {
+        U64 bishopsAndQueensBlockerBitMask = diagonalRay & opponentBishopsAndQueens;
 
         if ((bishopsAndQueensBlockerBitMask) != 0) {
-            bits::U64 occupiedBlockerBitMask = diagonalRay & _board.getOccupiedPiecesBitmask();
+            U64 occupiedBlockerBitMask = diagonalRay & _board.getOccupiedPiecesBitmask();
 
             if (bits::popCount(occupiedBlockerBitMask) == 1) {
                 return true;

@@ -1,4 +1,5 @@
 #include "SearchMemory.h"
+
 #include "ChessEngine/game/PieceType.h"
 
 namespace search {

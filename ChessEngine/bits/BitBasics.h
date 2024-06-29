@@ -1,8 +1,8 @@
 #pragma once
 
-namespace bits {
-    typedef unsigned long long U64;
+#include "ChessEngine/common.h"
 
+namespace bits {
     inline bool getBit(U64 a, int i) {
         return (a >> i) & 1;
     }

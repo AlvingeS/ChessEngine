@@ -1,9 +1,12 @@
 #pragma once
-#include <vector>
+
+#include "ChessEngine/common.h"
+
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/bits/RayBitMasks.h"
 #include "ChessEngine/bits/KnightBitMasks.h"
 #include "ChessEngine/bits/PawnBitMasks.h"
+
 #include "RayLogic.h"
 #include "CommonLogic.h"
 
@@ -24,9 +27,9 @@ namespace movegen {
             // Memory
             std::vector<bits::StraightRays> _straightRayBitmasks;
             std::vector<bits::DiagonalRays> _diagonalRayBitmasks;
-            std::vector<bits::U64> _knightBitmasks;
-            std::vector<bits::U64> _whitePawnCaptureMoveBitmasks;
-            std::vector<bits::U64> _blackPawnCaptureMoveBitmasks;
+            std::vector<U64> _knightBitmasks;
+            std::vector<U64> _whitePawnCaptureMoveBitmasks;
+            std::vector<U64> _blackPawnCaptureMoveBitmasks;
 
     };
 }

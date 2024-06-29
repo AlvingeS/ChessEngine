@@ -1,4 +1,5 @@
 #include "QueenGenerator.h"
+
 #include "ChessEngine/bits/ChessUtils.h"
 #include "ChessEngine/game/PieceType.h"
 

@@ -1,7 +1,10 @@
 #pragma once
-#include <vector>
+
+#include "ChessEngine/common.h"
+
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/bits/KnightBitMasks.h"
+
 #include "RayLogic.h"
 #include "CommonLogic.h"
 
@@ -22,7 +25,7 @@ namespace movegen {
 
             // Memory
             std::vector<int> _knightIndices;
-            std::vector<bits::U64> _knightBitmasks;
+            std::vector<U64> _knightBitmasks;
             std::vector<int> _freeMovesIndices;
             std::vector<int> _capturableMovesIndices;
     };

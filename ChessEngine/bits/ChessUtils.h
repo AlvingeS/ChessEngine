@@ -1,10 +1,11 @@
 #pragma once
-#include <vector>
-#include "BitBasics.h"
+
+#include "ChessEngine/common.h"
+
 #include "ChessEngine/game/PieceType.h"
 
 namespace bits {
-    void printU64InBits(unsigned long long int n);
+    void printU64InBits(U64 n);
     void getBitIndices(std::vector<int>& indices, U64 bitboard);
 
     constexpr U64 FILE_MASK[8] = {

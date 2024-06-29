@@ -7,14 +7,14 @@
 
 #include "ChessEngine/movegen/MoveGenerator.h"
 #include "ChessEngine/game/Move.h"
-#include "ChessEngine/search/SearchMemory.h"
+#include "ChessEngine/perft/SearchMemory.h"
 #include "ChessEngine/game/ZHasher.h"
 
 namespace movegen {
     class BaseGenerator : public ::testing::Test {
         protected:
             game::ChessBoard board;
-            search::SearchMemory searchMemory;
+            perft::SearchMemory searchMemory;
             game::ZHasher zHasher;
             game::MoveMaker moveMaker;
             MoveGenerator moveGenerator;
@@ -22,7 +22,7 @@ namespace movegen {
             std::vector<game::Move> moveList;
 
             BaseGenerator() : board(game::ChessBoard()),
-                              searchMemory(search::SearchMemory(0)),
+                              searchMemory(perft::SearchMemory(0)),
                               zHasher(game::ZHasher()),
                               moveMaker(board, searchMemory, zHasher),
                               moveGenerator(MoveGenerator(board, moveMaker)) {}

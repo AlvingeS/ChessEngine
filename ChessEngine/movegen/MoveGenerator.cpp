@@ -74,7 +74,7 @@ namespace movegen {
         _kingGenerator.generate(isWhite, moveList);
     }
 
-    void MoveGenerator::genPawnMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, search::SearchMemory& searchMemory) {
+    void MoveGenerator::genPawnMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, perft::SearchMemory& searchMemory) {
         _pawnGenerator.generate(isWhite, moveList, currentDepth, searchMemory);
     }
 

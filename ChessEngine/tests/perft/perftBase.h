@@ -1,5 +1,5 @@
 #pragma once
-#include "ChessEngine/search/Searcher.h"
+#include "ChessEngine/perft/Searcher.h"
 
 #include <gtest/gtest.h>
 #include <unordered_map>
@@ -7,7 +7,7 @@
 #include <regex>
 #include <iostream>
 
-namespace search {
+namespace perft {
     class perftBase : public ::testing::Test {
 
         struct fromToBitIndices {

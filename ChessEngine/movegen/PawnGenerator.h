@@ -4,7 +4,7 @@
 
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/masks/PawnBitMasks.h"
-#include "ChessEngine/search/SearchMemory.h"
+#include "ChessEngine/perft/SearchMemory.h"
 
 #include "RayLogic.h"
 #include "CommonLogic.h"
@@ -16,7 +16,7 @@ namespace movegen {
             PawnGenerator(game::ChessBoard& board, int& moveIndex, CommonLogic* commonLogic);
             
             // Public member functions
-            void generate(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, search::SearchMemory& searchMemory);
+            void generate(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, perft::SearchMemory& searchMemory);
         private:
 
             // Private member functions

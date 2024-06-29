@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChessEngine/search/SearchMemory.h"
+#include "ChessEngine/perft/SearchMemory.h"
 
 #include "Move.h"
 #include "PieceType.h"
@@ -11,7 +11,7 @@ namespace game {
     class MoveMaker {
         public:
             // Constructor
-            MoveMaker(ChessBoard& board, search::SearchMemory& searchMemory, ZHasher& zHasher);
+            MoveMaker(ChessBoard& board, perft::SearchMemory& searchMemory, ZHasher& zHasher);
             
             // Public member functions
             void makeMove(Move move, bool isWhite, int currentDepth);
@@ -19,7 +19,7 @@ namespace game {
             void makeTemporaryKingMove(bool isWhite, bool isKingSide);
             void unmakeTemporaryKingMove(bool wasWhite, bool wasKingSide);
 
-            search::SearchMemory& getSearchMemory() {
+            perft::SearchMemory& getSearchMemory() {
                 return _searchMemory;
             }
 
@@ -29,7 +29,7 @@ namespace game {
             PieceType getPromotionPieceType(int promotionFlag, bool isWhite);
 
             ChessBoard& _board;
-            search::SearchMemory& _searchMemory;
+            perft::SearchMemory& _searchMemory;
             ZHasher& _zHasher;
     };
 }

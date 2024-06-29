@@ -9,7 +9,7 @@
 
 #include "SearchMemory.h"
 
-namespace search {
+namespace perft {
 
     struct MoveScore {
         game::Move move;

@@ -3,7 +3,7 @@
 #include "ChessEngine/utils/ChessUtils.h"
 #include "ChessEngine/movegen/MoveGenerator.h"
 #include <iostream>
-#include "ChessEngine/search/Searcher.h"
+#include "ChessEngine/perft/Searcher.h"
 #include <chrono>
 
 int main() {
@@ -76,19 +76,19 @@ int main() {
     
     bool recPerftStats = false;
 
-    search::Searcher searcherStartPos = search::Searcher(MAX_DEPTH);
+    perft::Searcher searcherStartPos = perft::Searcher(MAX_DEPTH);
     searcherStartPos.setBoardFromFen(startPos);
     searcherStartPos.minimax(0, true, 0, recPerftStats);
 
-    search::Searcher searcherPosTwo = search::Searcher(MAX_DEPTH);
+    perft::Searcher searcherPosTwo = perft::Searcher(MAX_DEPTH);
     searcherPosTwo.setBoardFromFen(posTwo);
     searcherPosTwo.minimax(0, true, 0, recPerftStats);
 
-    search::Searcher searcherPosThree = search::Searcher(MAX_DEPTH);
+    perft::Searcher searcherPosThree = perft::Searcher(MAX_DEPTH);
     searcherPosThree.setBoardFromFen(posThree);
     searcherPosThree.minimax(0, true, 0, recPerftStats);
 
-    search::Searcher searcherPosFive = search::Searcher(MAX_DEPTH);
+    perft::Searcher searcherPosFive = perft::Searcher(MAX_DEPTH);
     searcherPosFive.setBoardFromFen(posFive);
     searcherPosFive.minimax(0, true, 0, recPerftStats);
 

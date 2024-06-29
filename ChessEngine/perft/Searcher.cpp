@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 
-namespace search {
+namespace perft {
     Searcher::Searcher(int maxDepth) : _board(game::ChessBoard()),
                                        _searchMemory(SearchMemory(maxDepth)),
                                        _zHasher(game::ZHasher()),

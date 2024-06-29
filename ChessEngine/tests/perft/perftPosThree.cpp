@@ -1,7 +1,7 @@
 #include "perftBase.h"
 
-namespace search {
-    class perftPosTwo : public perftBase {
+namespace perft {
+    class perftPosThree : public perftBase {
         protected:
             void SetUp() override {
                 perftBase::SetUp();
@@ -9,29 +9,37 @@ namespace search {
 
         // Nodes, captures, epCaptures, castling, promotion, check, checkmate
         std::unordered_map<int, std::vector<long>> expectedResults {
-            {0, {1,         0,          0,          0,          0,          0,          0}},
-            {1, {48,        8,          0,          2,          0,          0,          0}},
-            {2, {2039,      351,        1,          91,         0,          3,          0}},
-            {3, {97862,     17102,      45,         3162,       0,          993,        1}},
-            {4, {4085603,   757163,     1929,       128013,     15172,      25523,      43}},
-            {5, {193690690, 35043416,   73365,      4993637,    8392,       3309887,    30171}},
-            {6, {0,         0,          0,          0,          0,          0,          0}}
+            {0, {1,         0,          0,          0,      0,          0,          0}},
+            {1, {14,        1,          0,          0,      0,          2,          0}},
+            {2, {191,       14,         0,          0,      0,          10,         0}},
+            {3, {2812,      209,        2,          0,      0,          267,        0}},
+            {4, {43238,     3348,       123,        0,      0,          1680,       17}},
+            {5, {674624,    52051,      1165,       0,      0,          52950,      0}},
+            {6, {11030083,  940350,     33325,      0,      7552,       452473,     2733}},
+            {7, {178633661, 14519036,   294874,     0,      140024,     12797406,   87}}
         };
     };
 
-    TEST_F(perftPosTwo, perft_pos2) {
-        if (enablePos2Test) {
-            searcher.setBoardFromFen(posTwo);
+    TEST_F(perftPosThree, perft_pos3) {
+        if (enablePos3Test) {
+            searcher.setBoardFromFen(posThree);
 
-            // Make dubug move
-            // game::Move move = moveFromStrAndFlag("a2a3", 0);
+            // game::Move move = moveFromStrAndFlag("a5a4", 0);
             // searcher.makeMove(move, true);
-            // move = moveFromStrAndFlag("c7c6", 0);
-            // searcher.makeMove(game::Move(0, 0, game::Move::QUEEN_CASTLE_FLAG), false);
+            // move = moveFromStrAndFlag("h4g4", 0);
+            // searcher.makeMove(move, false);
+            // move = moveFromStrAndFlag("a4b3", 0);
+            // searcher.makeMove(move, true);
+            // move = moveFromStrAndFlag("g4f5", 0);
+            // searcher.makeMove(move, false);
+            // move = moveFromStrAndFlag("b3c4", 0);
+            // searcher.makeMove(move, true);
+            // move = moveFromStrAndFlag("f5e4", 0);
+            // searcher.makeMove(move, false);
 
             int nDebugMoves = 0;
 
-            int depth = longRuns ? posTwoMaxDepth + 1 : posTwoMaxDepth;
+            int depth = longRuns ? posThreeMaxDepth + 1 : posThreeMaxDepth;
             depth -= nDebugMoves;
             bool whiteToStart = nDebugMoves % 2 == 0;
 
@@ -39,17 +47,17 @@ namespace search {
             if (nDebugMoves > 0) {
                 debugFen = searcher.getBoard().getFenFromBoard();
                 debugFen += whiteToStart ? " w" : " b";
-                debugFen += " KQkq -";
+                debugFen += " - -";
             }
 
-            std::unordered_map<std::string, long> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posTwo, depth);
+            std::unordered_map<std::string, long> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posThree, depth);
 
             searcher.setMaxDepth(depth);
             searcher.minimax(0, whiteToStart, 0);
-            
+
             std::unordered_map<std::string, long> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
             compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
-            
+
             if (nDebugMoves == 0) {
                 for (long i = 1; i <= searcher.getMaxDepth(); i++) {
                     ASSERT_EQ(searcher._nodeCount[i], expectedResults[i][0]);

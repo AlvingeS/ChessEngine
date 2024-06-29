@@ -17,7 +17,7 @@ namespace movegen {
         _blackPawnCaptureMoveBitmasks = masks::getAllCapturePawnMoveBitmasks(false);
     }
 
-    void PawnGenerator::generate(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, search::SearchMemory& searchMemory) {
+    void PawnGenerator::generate(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, perft::SearchMemory& searchMemory) {
         utils::getBitIndices(_pawnIndices, isWhite ? _board.getWhitePawnsBitboard()
                                                   : _board.getBlackPawnsBitboard());
 

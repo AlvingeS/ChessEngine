@@ -2,7 +2,7 @@
 
 #include "ChessEngine/game/PieceType.h"
 
-namespace search {
+namespace perft {
     SearchMemory::SearchMemory(int maxDepth) : _maxDepth(maxDepth) {
         _castlingRights.resize(_maxDepth + 1);
         _lastCapturedPieces.resize(_maxDepth + 1);

@@ -1,6 +1,6 @@
 #include "perftBase.h"
 
-namespace search {
+namespace perft {
     class perftPosFive : public perftBase {
         protected:
             void SetUp() override {

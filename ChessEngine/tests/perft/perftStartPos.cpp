@@ -1,4 +1,4 @@
-#include "ChessEngine/search/Searcher.h"
+#include "ChessEngine/perft/Searcher.h"
 
 #include <gtest/gtest.h>
 #include <unordered_set>
@@ -7,7 +7,7 @@
 
 #include "perftBase.h"
 
-namespace search {
+namespace perft {
     class perftStartPos : public perftBase {
         protected:
             void SetUp() override {

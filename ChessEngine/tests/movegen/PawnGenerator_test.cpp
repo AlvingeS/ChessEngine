@@ -10,7 +10,7 @@ namespace movegen {
             std::string fenEnPessantForBlackTest;
             std::string fenPromotionTest;
             std::string fenBuggedPawnTest;
-            // search::SearchMemory searchMemory;
+            // perft::SearchMemory searchMemory;
 
             void SetUp() override {
                 BaseGenerator::SetUp();
@@ -19,7 +19,7 @@ namespace movegen {
                 fenEnPessantForBlackTest = "rnbqkbnr/8/8/8/Pp6/8/1PPPPPPP/RNBQKBNR";
                 fenPromotionTest = "3q4/2P3P1/8/8/8/8/1p5p/2N5";
                 fenBuggedPawnTest = "rnbqkb1r/pppppppp/7n/8/8/2N4N/PPPPPPPP/R1BQKB1R";
-                // searchMemory = search::SearchMemory(0);
+                // searchMemory = perft::SearchMemory(0);
             }
     };
 

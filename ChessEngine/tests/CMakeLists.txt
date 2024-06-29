@@ -1,7 +1,7 @@
 if (BUILD_TESTING)
     include(GoogleTest)
     # add_subdirectory(game)
-    add_subdirectory(search)
+    add_subdirectory(perft)
     add_subdirectory(evaluation)
     add_subdirectory(masks)
     add_subdirectory(movegen)

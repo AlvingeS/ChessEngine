@@ -6,7 +6,7 @@
 #include "ChessEngine/game/PieceType.h"
 #include "ChessEngine/utils/BitBasics.h"
 
-namespace search {
+namespace perft {
     constexpr unsigned char whiteKingSide = 0b0001;
     constexpr unsigned char whiteQueenSide = 0b0010;
     constexpr unsigned char whiteBoth = 0b0011;

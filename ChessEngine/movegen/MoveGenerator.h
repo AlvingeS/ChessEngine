@@ -36,7 +36,7 @@ namespace movegen {
             void genKnightMoves(bool isWite, std::vector<game::Move>& moveList);
             void genQueenMoves(bool isWhite, std::vector<game::Move>& moveList);
             void genKingMoves(bool isWhite, std::vector<game::Move>& moveList);
-            void genPawnMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, search::SearchMemory& searchMemory);
+            void genPawnMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, perft::SearchMemory& searchMemory);
             void genCastlingMoves(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights);
             bool isInCheck(bool isWhite);
 
@@ -52,7 +52,7 @@ namespace movegen {
             // Private member variables
             game::ChessBoard& _board;
             game::MoveMaker& _moveMaker;
-            search::SearchMemory& _searchMemory;
+            perft::SearchMemory& _searchMemory;
             CommonLogic _commonLogic;
             RayLogic _rayLogic;
             CheckDetection _checkDetection;

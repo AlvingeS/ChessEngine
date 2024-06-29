@@ -14,7 +14,7 @@ namespace movegen {
     };
 
     TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneWhite_ShouldReturn18Moves) {
-        moveGenerator.setBoardFromFen(fenOne);
+        utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genBishopMoves(true, moveList);
 
         std::vector<game::Move> moves = getMoves();
@@ -32,7 +32,7 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneBlack_ShouldReturn18Moves) {
-        moveGenerator.setBoardFromFen(fenOne);
+        utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genBishopMoves(false, moveList);
 
         std::vector<game::Move> moves = getMoves();
@@ -50,14 +50,14 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosWhite_ShouldReturn0Moves) {
-        moveGenerator.setBoardFromFen(startingPos);
+        utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genBishopMoves(true, moveList);
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }
 
     TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosBlack_ShouldReturn0Moves) {
-        moveGenerator.setBoardFromFen(startingPos);
+        utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genBishopMoves(false, moveList);;
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);

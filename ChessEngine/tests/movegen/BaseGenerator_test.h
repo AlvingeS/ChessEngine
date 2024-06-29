@@ -5,15 +5,21 @@
 #include <gtest/gtest.h>
 #include <unordered_set>
 
+#include "ChessEngine/game/BitBoards.h"
+#include "ChessEngine/game/GameStateBitMasks.h"
+#include "ChessEngine/game/SquaresLookup.h"
 #include "ChessEngine/movegen/MoveGenerator.h"
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/perft/SearchMemory.h"
 #include "ChessEngine/game/ZHasher.h"
+#include "ChessEngine/utils/Fen.h"
 
 namespace movegen {
     class BaseGenerator : public ::testing::Test {
         protected:
-            game::ChessBoard board;
+            game::BitBoards bitboards;
+            game::GameStateBitMasks gameStateBitmasks;
+            game::SquaresLookup squaresLookup;
             perft::SearchMemory searchMemory;
             game::ZHasher zHasher;
             game::MoveMaker moveMaker;
@@ -21,11 +27,13 @@ namespace movegen {
             std::string startingPos;
             std::vector<game::Move> moveList;
 
-            BaseGenerator() : board(game::ChessBoard()),
+            BaseGenerator() : bitboards(game::BitBoards()),
+                              gameStateBitmasks(game::GameStateBitMasks(bitboards)),
+                              squaresLookup(game::SquaresLookup(bitboards)),
                               searchMemory(perft::SearchMemory(0)),
                               zHasher(game::ZHasher()),
-                              moveMaker(board, searchMemory, zHasher),
-                              moveGenerator(MoveGenerator(board, moveMaker)) {}
+                              moveMaker(bitboards, squaresLookup, gameStateBitmasks, searchMemory, zHasher),
+                              moveGenerator(MoveGenerator(bitboards, gameStateBitmasks, moveMaker)) {}
 
             virtual void SetUp() override {
                 // board = game::ChessBoard();
@@ -35,7 +43,7 @@ namespace movegen {
             }
 
             virtual void TearDown() override {
-                board.resetBitboards();
+                bitboards.resetBitboards();
             }
 
         void insertExpectedMoves(std::unordered_set<game::Move>& moves, int fromBitIndex, const std::vector<int>& toBitIndices, const std::vector<int>& flags) {

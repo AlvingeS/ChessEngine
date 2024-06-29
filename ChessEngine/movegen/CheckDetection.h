@@ -6,6 +6,7 @@
 #include "ChessEngine/masks/RayBitMasks.h"
 #include "ChessEngine/masks/KnightBitMasks.h"
 #include "ChessEngine/masks/PawnBitMasks.h"
+#include "ChessEngine/game/BitBoards.h"
 
 #include "RayLogic.h"
 #include "CommonLogic.h"
@@ -14,14 +15,14 @@ namespace movegen {
     class CheckDetection {
         public:
             // Constructor
-            CheckDetection(game::ChessBoard& board, RayLogic* rayLogic);
+            CheckDetection(game::BitBoards& bitboards, RayLogic* rayLogic);
             
             // Public member functions
             bool isInCheck(bool isWhite);
         private:
 
             // Private member functions
-            game::ChessBoard& _board;
+            game::BitBoards& _bitboards;
             RayLogic* _rayLogic;
 
             // Memory

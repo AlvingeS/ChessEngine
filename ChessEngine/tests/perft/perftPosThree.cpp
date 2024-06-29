@@ -45,7 +45,7 @@ namespace perft {
 
             std::string debugFen;
             if (nDebugMoves > 0) {
-                debugFen = searcher.getBoard().getFenFromBoard();
+                debugFen = searcher.getFenFromBoard();
                 debugFen += whiteToStart ? " w" : " b";
                 debugFen += " - -";
             }

@@ -2,6 +2,8 @@
 
 #include "ChessEngine/common.h"
 
+#include "ChessEngine/game/BitBoards.h"
+#include "ChessEngine/game/GameStateBitMasks.h"
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/masks/KnightBitMasks.h"
 
@@ -12,14 +14,15 @@ namespace movegen {
     class KnightGenerator {
         public:
             // Constructor
-            KnightGenerator(game::ChessBoard& board, int& moveIndex, CommonLogic* commonLogic);
+            KnightGenerator(game::BitBoards& bitboards, game::GameStateBitMasks& gameStateBitmasks, int& moveIndex, CommonLogic* commonLogic);
             
             // Public member functions
             void generate(bool isWhite, std::vector<game::Move>& moveList);
         private:
 
             // Private member functions
-            game::ChessBoard& _board;
+            game::BitBoards& _bitboards;
+            game::GameStateBitMasks& _gameStateBitmasks;
             int& _moveIndex;
             CommonLogic* _commonLogic;
 

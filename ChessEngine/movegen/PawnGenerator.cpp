@@ -4,8 +4,9 @@
 #include "ChessEngine/game/PieceType.h"
 
 namespace movegen {
-    PawnGenerator::PawnGenerator(game::ChessBoard& board, int& moveIndex, CommonLogic* commonLogic) 
-        : _board(board),
+    PawnGenerator::PawnGenerator(game::BitBoards& bitboards, game::GameStateBitMasks& gameStateBitmasks, int& moveIndex, CommonLogic* commonLogic) 
+        : _bitboards(bitboards),
+          _gameStateBitmasks(gameStateBitmasks),
           _moveIndex(moveIndex),
           _commonLogic(commonLogic) {
         _freeMovesIndices.reserve(8);
@@ -18,8 +19,8 @@ namespace movegen {
     }
 
     void PawnGenerator::generate(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, perft::SearchMemory& searchMemory) {
-        utils::getBitIndices(_pawnIndices, isWhite ? _board.getWhitePawnsBitboard()
-                                                  : _board.getBlackPawnsBitboard());
+        utils::getBitIndices(_pawnIndices, isWhite ? _bitboards.getWhitePawnsBitboard()
+                                                  : _bitboards.getBlackPawnsBitboard());
 
         for (int currentPawnIndex : _pawnIndices) {
             U64 straightPawnMoveBitmask = isWhite ? _whitePawnStraightMoveBitmasks[currentPawnIndex]
@@ -29,8 +30,8 @@ namespace movegen {
                                                        : _blackPawnCaptureMoveBitmasks[currentPawnIndex];
 
 
-            U64 freePawnMoves = straightPawnMoveBitmask & _board.getEmptySquaresBitmask();
-            U64 enemyPieces = isWhite ? _board.getBlackPiecesBitmask() : _board.getWhitePiecesBitmask();
+            U64 freePawnMoves = straightPawnMoveBitmask & _gameStateBitmasks.getEmptySquaresBitmask();
+            U64 enemyPieces = isWhite ? _gameStateBitmasks.getBlackPiecesBitmask() : _gameStateBitmasks.getWhitePiecesBitmask();
             U64 enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
             U64 capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
 

@@ -3,13 +3,17 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "ChessEngine/utils/BoardPrinter.h"
+
 namespace perft {
-    Searcher::Searcher(int maxDepth) : _board(game::ChessBoard()),
+    Searcher::Searcher(int maxDepth) : _bitboards(game::BitBoards()),
+        	                           _squaresLookup(game::SquaresLookup(_bitboards)),
+                                       _gameStateBitMasks(game::GameStateBitMasks(_bitboards)),
                                        _searchMemory(SearchMemory(maxDepth)),
                                        _zHasher(game::ZHasher()),
-                                       _moveMaker(_board, _searchMemory, _zHasher),
-                                       _moveGenerator(movegen::MoveGenerator(_board, _moveMaker)),
-                                       _evaluator(evaluation::Evaluator(_board)),
+                                       _moveMaker(game::MoveMaker(_bitboards, _squaresLookup, _gameStateBitMasks, _searchMemory, _zHasher)),
+                                       _moveGenerator(movegen::MoveGenerator(_bitboards, _gameStateBitMasks, _moveMaker)),
+                                       _evaluator(evaluation::Evaluator(_bitboards)),
                                        _maxDepth(maxDepth) {
         
         _numMoveGenCalls = 0;
@@ -75,12 +79,12 @@ namespace perft {
         _moveMaker.unmakeMove(move, isWhite, currentDepth);
     }
 
-    // void Searcher::debugPrint(bool verbose) {
-    //     if (verbose) {
-    //         game::BoardPrinter boardPrinter = game::BoardPrinter(_board.getBitboards());
-    //         boardPrinter.printBoard();
-    //     }
-    // }
+    void Searcher::debugPrint(bool verbose) {
+        if (verbose) {
+            utils::BoardPrinter boardPrinter = utils::BoardPrinter(_bitboards);
+            boardPrinter.printBoard();
+        }
+    }
 
     // Helper function to check if there are any castling moves in the movelist
     // bool hasTwoCastlingMove(MoveList& moveList) {
@@ -115,9 +119,23 @@ namespace perft {
     //     return true;
     // }
 
+    bool Searcher::tooManyPiecesOnBoard() {
+        int count = 0;
+        for (int i = 0; i < 64; i++) {
+            if (_squaresLookup.getPieceTypeAtIndex(i) != game::PieceType::EMPTY) {
+                count++;
+            }
+        }
+
+        return count > 32;
+    }
+
     bool Searcher::checkCondition(int currentDepth, bool isMaximizer, int firstMoveIndex, game::Move currentMove, game::Move lastMove, bool verbose, size_t i) {
         // return not _board.getKingMoved(false);
-        return currentDepth == 2 && currentMove.getFlag() == 12;
+        // return tooManyPiecesOnBoard();
+        // return firstMoveIndex == 19 && currentMove.isAnyCapture();
+        // return currentMove.getBitIndexFrom() == 12 && currentMove.getBitIndexTo() == 12;
+        return lastMove.getBitIndexFrom() == 47 && lastMove.getBitIndexTo() == 38 && currentDepth == 2;
     }
 
     // TODO: Implement draw by repetition after implementing zobrist hashing
@@ -174,7 +192,7 @@ namespace perft {
             }
 
             // Move was legal, update castling rights
-            _searchMemory.setCastlingRights(currentDepth, currentMove, isMaximizer, _board.getPieceTypeAtIndex(currentMove.getBitIndexTo()));
+            _searchMemory.setCastlingRights(currentDepth, currentMove, isMaximizer, _squaresLookup.getPieceTypeAtIndex(currentMove.getBitIndexTo()));
 
             if (recPerftStats) {
                 bool retFlag;
@@ -236,11 +254,12 @@ namespace perft {
             _epCaptureCount[currentDepth + 1]++;
         }
 
-        if (_board.isDeadPosition() || _board.getNoCaptureOrPawnMoveCount() >= 50)
-        {
-            unmakeMove(currentMove, isMaximizer, currentDepth);
-            return;
-        }
+        // FIXME: This is temporary
+        // if (_board.isDeadPosition() || 49 >= 50)
+        // {
+        //     unmakeMove(currentMove, isMaximizer, currentDepth);
+        //     return;
+        // }
         retFlag = false;
     }
 }

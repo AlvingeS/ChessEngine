@@ -2,8 +2,9 @@
 
 #include "ChessEngine/common.h"
 
+
 #include "ChessEngine/utils/BitBasics.h"
-#include "ChessEngine/game/ChessBoard.h"
+#include "ChessEngine/game/GameStateBitMasks.h"
 #include "ChessEngine/game/Move.h"
 
 #include "CommonLogic.h"
@@ -12,7 +13,7 @@ namespace movegen {
     class RayLogic {
         public:
             // Constructor
-            RayLogic(game::ChessBoard& board, int& moveIndex, CommonLogic* commonLogic);
+            RayLogic(game::GameStateBitMasks& gameStateBitmasks, int& moveIndex, CommonLogic* commonLogic);
 
             // Public member functions
             void getMovesFromStraightRay(U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<game::Move>& moveList);
@@ -31,7 +32,7 @@ namespace movegen {
             std::vector<int> _freeRayIndices;
             
             // Private member variables
-            game::ChessBoard& _board;
+            game::GameStateBitMasks& _gameStateBitMasks;
             int& _moveIndex;
             CommonLogic* _commonLogic;
     };

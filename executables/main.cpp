@@ -62,6 +62,10 @@ int main() {
             Refactored searcher so that castling rights and last captured pieces info
             is now in its on class, will add everything else as well
             0.337s ~ 20.009M nodes/s ~ 8.0% SF
+
+            Refactored Chessboard intro three separate classes, now a little bit slower
+            but for sure worth it
+            0.364s ~ 19.1239M nodes/s ~ 7.7% SF
     */
 
     // Start clock

@@ -2,48 +2,59 @@
 
 namespace game {
 
-    MoveMaker::MoveMaker(ChessBoard& board, perft::SearchMemory& searchMemory, ZHasher& zHasher) : _board(board), _searchMemory(searchMemory), _zHasher(zHasher) {}
+    MoveMaker::MoveMaker(
+        BitBoards& bitboards,
+        SquaresLookup& squaresLookup,
+        GameStateBitMasks& gameStateBitmasks,
+        perft::SearchMemory& searchMemory,
+        ZHasher& zHasher
+    ) : _bitboards(bitboards), 
+        _squaresLookup(squaresLookup), 
+        _gameStateBitMasks(gameStateBitmasks), 
+        _searchMemory(searchMemory), 
+        _zHasher(zHasher)
+    {}
 
     void MoveMaker::makeCastleMove(bool isWhite, bool isKingSide) {
         if (isWhite) {
             if (isKingSide) {
-                _board.getWhiteKingBitboard() &= ~(1ULL << 3);
-                _board.getWhiteKingBitboard() |= (1ULL << 1);
-                _board.getWhiteRooksBitboard() &= ~(1ULL);
-                _board.getWhiteRooksBitboard() |= (1ULL << 2);
-                _board.setPieceTypeAtIndex(3, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(1, PieceType::W_KING);
-                _board.setPieceTypeAtIndex(0, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(2, PieceType::W_ROOK);
+                _bitboards.getWhiteKingBitboard() &= ~(1ULL << 3);
+                _bitboards.getWhiteKingBitboard() |= (1ULL << 1);
+                _bitboards.getWhiteRooksBitboard() &= ~(1ULL);
+                _bitboards.getWhiteRooksBitboard() |= (1ULL << 2);
+                _squaresLookup.setPieceTypeAtIndex(3, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(1, PieceType::W_KING);
+                _squaresLookup.setPieceTypeAtIndex(0, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(2, PieceType::W_ROOK);
             } else {
-                _board.getWhiteKingBitboard() &= ~(1ULL << 3);
-                _board.getWhiteKingBitboard() |= (1ULL << 5);
-                _board.getWhiteRooksBitboard() &= ~(1ULL << 7);
-                _board.getWhiteRooksBitboard() |= (1ULL << 4);
-                _board.setPieceTypeAtIndex(3, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(5, PieceType::W_KING);
-                _board.setPieceTypeAtIndex(7, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(4, PieceType::W_ROOK);
+                _bitboards.getWhiteKingBitboard() &= ~(1ULL << 3);
+                _bitboards.getWhiteKingBitboard() |= (1ULL << 5);
+                _bitboards.getWhiteRooksBitboard() &= ~(1ULL << 7);
+                _bitboards.getWhiteRooksBitboard() |= (1ULL << 4);
+                _squaresLookup.setPieceTypeAtIndex(3, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(5, PieceType::W_KING);
+                _squaresLookup.setPieceTypeAtIndex(7, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(4, PieceType::W_ROOK);
             }
         } else {
             if (isKingSide) {
-                _board.getBlackKingBitboard() &= ~(1ULL << 59);
-                _board.getBlackKingBitboard() |= (1ULL << 57);
-                _board.getBlackRooksBitboard() &= ~(1ULL << 56);
-                _board.getBlackRooksBitboard() |= (1ULL << 58);
-                _board.setPieceTypeAtIndex(59, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(57, PieceType::B_KING);
-                _board.setPieceTypeAtIndex(56, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(58, PieceType::B_ROOK);
+                _bitboards.getBlackKingBitboard() &= ~(1ULL << 59);
+                _bitboards.getBlackKingBitboard() |= (1ULL << 57);
+                _bitboards.getBlackRooksBitboard() &= ~(1ULL << 56);
+                _bitboards.getBlackRooksBitboard() |= (1ULL << 58);
+                _squaresLookup.setPieceTypeAtIndex(59, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(57, PieceType::B_KING);
+                _squaresLookup.setPieceTypeAtIndex(56, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(58, PieceType::B_ROOK);
             } else {
-                _board.getBlackKingBitboard() &= ~(1ULL << 59);
-                _board.getBlackKingBitboard() |= (1ULL << 61);
-                _board.getBlackRooksBitboard() &= ~(1ULL << 63);
-                _board.getBlackRooksBitboard() |= (1ULL << 60);
-                _board.setPieceTypeAtIndex(59, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(61, PieceType::B_KING);
-                _board.setPieceTypeAtIndex(63, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(60, PieceType::B_ROOK);
+                _bitboards.getBlackKingBitboard() &= ~(1ULL << 59);
+                _bitboards.getBlackKingBitboard() |= (1ULL << 61);
+                _bitboards.getBlackRooksBitboard() &= ~(1ULL << 63);
+                _bitboards.getBlackRooksBitboard() |= (1ULL << 60);
+                _squaresLookup.setPieceTypeAtIndex(59, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(61, PieceType::B_KING);
+                _squaresLookup.setPieceTypeAtIndex(63, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(60, PieceType::B_ROOK);
             }
         }
     }
@@ -51,43 +62,43 @@ namespace game {
     void MoveMaker::unmakeCastleMove(bool wasWhite, bool wasKingSide) {
         if (wasWhite) {
             if (wasKingSide) {
-                _board.getWhiteKingBitboard() &= ~(1ULL << 1);
-                _board.getWhiteKingBitboard() |= (1ULL << 3);
-                _board.getWhiteRooksBitboard() &= ~(1ULL << 2);
-                _board.getWhiteRooksBitboard() |= (1ULL);
-                _board.setPieceTypeAtIndex(1, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(3, PieceType::W_KING);
-                _board.setPieceTypeAtIndex(2, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(0, PieceType::W_ROOK);
+                _bitboards.getWhiteKingBitboard() &= ~(1ULL << 1);
+                _bitboards.getWhiteKingBitboard() |= (1ULL << 3);
+                _bitboards.getWhiteRooksBitboard() &= ~(1ULL << 2);
+                _bitboards.getWhiteRooksBitboard() |= (1ULL);
+                _squaresLookup.setPieceTypeAtIndex(1, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(3, PieceType::W_KING);
+                _squaresLookup.setPieceTypeAtIndex(2, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(0, PieceType::W_ROOK);
             } else {
-                _board.getWhiteKingBitboard() &= ~(1ULL << 5);
-                _board.getWhiteKingBitboard() |= (1ULL << 3);
-                _board.getWhiteRooksBitboard() &= ~(1ULL << 4);
-                _board.getWhiteRooksBitboard() |= (1ULL << 7);
-                _board.setPieceTypeAtIndex(5, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(3, PieceType::W_KING);
-                _board.setPieceTypeAtIndex(4, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(7, PieceType::W_ROOK);
+                _bitboards.getWhiteKingBitboard() &= ~(1ULL << 5);
+                _bitboards.getWhiteKingBitboard() |= (1ULL << 3);
+                _bitboards.getWhiteRooksBitboard() &= ~(1ULL << 4);
+                _bitboards.getWhiteRooksBitboard() |= (1ULL << 7);
+                _squaresLookup.setPieceTypeAtIndex(5, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(3, PieceType::W_KING);
+                _squaresLookup.setPieceTypeAtIndex(4, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(7, PieceType::W_ROOK);
             }
         } else {
             if (wasKingSide) {
-                _board.getBlackKingBitboard() &= ~(1ULL << 57);
-                _board.getBlackKingBitboard() |= (1ULL << 59);
-                _board.getBlackRooksBitboard() &= ~(1ULL << 58);
-                _board.getBlackRooksBitboard() |= (1ULL << 56);
-                _board.setPieceTypeAtIndex(57, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(59, PieceType::B_KING);
-                _board.setPieceTypeAtIndex(58, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(56, PieceType::B_ROOK);
+                _bitboards.getBlackKingBitboard() &= ~(1ULL << 57);
+                _bitboards.getBlackKingBitboard() |= (1ULL << 59);
+                _bitboards.getBlackRooksBitboard() &= ~(1ULL << 58);
+                _bitboards.getBlackRooksBitboard() |= (1ULL << 56);
+                _squaresLookup.setPieceTypeAtIndex(57, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(59, PieceType::B_KING);
+                _squaresLookup.setPieceTypeAtIndex(58, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(56, PieceType::B_ROOK);
             } else {
-                _board.getBlackKingBitboard() &= ~(1ULL << 61);
-                _board.getBlackKingBitboard() |= (1ULL << 59);
-                _board.getBlackRooksBitboard() &= ~(1ULL << 60);
-                _board.getBlackRooksBitboard() |= (1ULL << 63);
-                _board.setPieceTypeAtIndex(61, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(59, PieceType::B_KING);
-                _board.setPieceTypeAtIndex(60, PieceType::EMPTY);
-                _board.setPieceTypeAtIndex(63, PieceType::B_ROOK);
+                _bitboards.getBlackKingBitboard() &= ~(1ULL << 61);
+                _bitboards.getBlackKingBitboard() |= (1ULL << 59);
+                _bitboards.getBlackRooksBitboard() &= ~(1ULL << 60);
+                _bitboards.getBlackRooksBitboard() |= (1ULL << 63);
+                _squaresLookup.setPieceTypeAtIndex(61, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(59, PieceType::B_KING);
+                _squaresLookup.setPieceTypeAtIndex(60, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(63, PieceType::B_ROOK);
             }
         }
     }
@@ -131,32 +142,32 @@ namespace game {
             // Update white or black bitmasks
             if (isWhite) {
                 if (move.isKingCastle()) {
-                    _board.getWhitePiecesBitmask() |= (1ULL << 1);
-                    _board.getWhitePiecesBitmask() |= (1ULL << 2);
-                    _board.getWhitePiecesBitmask() &= ~(1ULL << 3);
-                    _board.getWhitePiecesBitmask() &= ~(1ULL << 0);
+                    _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << 1);
+                    _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << 2);
+                    _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << 3);
+                    _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << 0);
                 } else {
-                    _board.getWhitePiecesBitmask() |= (1ULL << 5);
-                    _board.getWhitePiecesBitmask() |= (1ULL << 4);
-                    _board.getWhitePiecesBitmask() &= ~(1ULL << 3);
-                    _board.getWhitePiecesBitmask() &= ~(1ULL << 7);
+                    _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << 5);
+                    _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << 4);
+                    _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << 3);
+                    _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << 7);
                 }
             } else {
                 if (move.isKingCastle()) {
-                    _board.getBlackPiecesBitmask() |= (1ULL << 57);
-                    _board.getBlackPiecesBitmask() |= (1ULL << 58);
-                    _board.getBlackPiecesBitmask() &= ~(1ULL << 59);
-                    _board.getBlackPiecesBitmask() &= ~(1ULL << 56);
+                    _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << 57);
+                    _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << 58);
+                    _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << 59);
+                    _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << 56);
                 } else {
-                    _board.getBlackPiecesBitmask() |= (1ULL << 61);
-                    _board.getBlackPiecesBitmask() |= (1ULL << 60);
-                    _board.getBlackPiecesBitmask() &= ~(1ULL << 59);
-                    _board.getBlackPiecesBitmask() &= ~(1ULL << 63);
+                    _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << 61);
+                    _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << 60);
+                    _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << 59);
+                    _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << 63);
                 }
             }
 
-            _board.fillOccupiedPiecesBitmask();
-            _board.fillEmptySquaresBitmask();
+            _gameStateBitMasks.fillOccupiedPiecesBitmask();
+            _gameStateBitMasks.fillEmptySquaresBitmask();
 
             return;
         }
@@ -166,56 +177,56 @@ namespace game {
         int to = move.getBitIndexTo();
         
         // Piece type of piece being moved
-        PieceType movedPieceType = _board.getPieceTypeAtIndex(from);
-        _board.getBitboardFromIndex(pieceTypeToInt(movedPieceType)) &= ~(1ULL << from);
+        PieceType movedPieceType = _squaresLookup.getPieceTypeAtIndex(from);
+        _bitboards.getBitboardFromIndex(pieceTypeToInt(movedPieceType)) &= ~(1ULL << from);
         
         if (isWhite) {
-            _board.getWhitePiecesBitmask() &= ~(1ULL << from);
+            _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << from);
         } else {
-            _board.getBlackPiecesBitmask() &= ~(1ULL << from);
+            _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << from);
         }
 
-        _board.setPieceTypeAtIndex(from, PieceType::EMPTY);
+        _squaresLookup.setPieceTypeAtIndex(from, PieceType::EMPTY);
 
         // FIXME: THIS IS TEMPORARY
-        if (!move.isAnyCapture() && (movedPieceType != PieceType::W_PAWN && movedPieceType != PieceType::B_PAWN)) {
-            _board.getNoCaptureOrPawnMoveCount() += 0;
-        } else {
-            _board.getNoCaptureOrPawnMoveCount() = 0;
-        }
+        // if (!move.isAnyCapture() && (movedPieceType != PieceType::W_PAWN && movedPieceType != PieceType::B_PAWN)) {
+        //     _board.getNoCaptureOrPawnMoveCount() += 0;
+        // } else {
+        //     _board.getNoCaptureOrPawnMoveCount() = 0;
+        // }
 
         // If the move is a capture, update the last captured piece and its bitboard
         if (move.isAnyCapture()) { 
             int captureIndex = move.isEpCapture() ? (isWhite ? to - 8 : to + 8) : to;
-            PieceType capturedPieceType = _board.getPieceTypeAtIndex(captureIndex);
+            PieceType capturedPieceType = _squaresLookup.getPieceTypeAtIndex(captureIndex);
             _searchMemory.setLastCapturedPieceAtDepth(currentDepth, capturedPieceType);
 
-            _board.getBitboardFromIndex(pieceTypeToInt(capturedPieceType)) &= ~(1ULL << captureIndex);
+            _bitboards.getBitboardFromIndex(pieceTypeToInt(capturedPieceType)) &= ~(1ULL << captureIndex);
 
             if (isWhite) {
-                _board.getBlackPiecesBitmask() &= ~(1ULL << captureIndex);
+                _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << captureIndex);
             } else {
-                _board.getWhitePiecesBitmask() &= ~(1ULL << captureIndex);
+                _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << captureIndex);
             }
 
             if (move.isEpCapture()) { [[unlikely]]
-                _board.setPieceTypeAtIndex(captureIndex, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(captureIndex, PieceType::EMPTY);
             }
         }
 
         if (move.isAnyPromo()) { [[unlikely]]
             PieceType promotionPieceType = getPromotionPieceType(move.getFlag(), isWhite);
-            _board.getBitboardFromIndex(pieceTypeToInt(promotionPieceType)) |= (1ULL << to);
-            _board.setPieceTypeAtIndex(to, promotionPieceType);
+            _bitboards.getBitboardFromIndex(pieceTypeToInt(promotionPieceType)) |= (1ULL << to);
+            _squaresLookup.setPieceTypeAtIndex(to, promotionPieceType);
         } else {
-            _board.getBitboardFromIndex(pieceTypeToInt(movedPieceType)) |= (1ULL << to);
-            _board.setPieceTypeAtIndex(to, movedPieceType);
+            _bitboards.getBitboardFromIndex(pieceTypeToInt(movedPieceType)) |= (1ULL << to);
+            _squaresLookup.setPieceTypeAtIndex(to, movedPieceType);
         }
 
         if (isWhite) {
-            _board.getWhitePiecesBitmask() |= (1ULL << to);
+            _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << to);
         } else {
-            _board.getBlackPiecesBitmask() |= (1ULL << to);
+            _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << to);
         }
 
         if (move.isDoublePawnPush()) { [[unlikely]]
@@ -230,12 +241,12 @@ namespace game {
             _searchMemory.resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
         }
 
-        _board.fillOccupiedPiecesBitmask();
-        _board.fillEmptySquaresBitmask();
+        _gameStateBitMasks.fillOccupiedPiecesBitmask();
+        _gameStateBitMasks.fillEmptySquaresBitmask();
     }
 
     void MoveMaker::makeTemporaryKingMove(bool isWhite, bool isKingSide) {
-        U64 kingBitboard = isWhite ? _board.getWhiteKingBitboard() : _board.getBlackKingBitboard();
+        U64 kingBitboard = isWhite ? _bitboards.getWhiteKingBitboard() : _bitboards.getBlackKingBitboard();
         int from = isWhite ? 3 : 59;
         int to = isKingSide ? (isWhite ? 2 : 58) : (isWhite ? 4 : 60);
 
@@ -243,14 +254,14 @@ namespace game {
         kingBitboard |= (1ULL << to);
 
         if (isWhite) {
-            _board.getWhiteKingBitboard() = kingBitboard;
+            _bitboards.getWhiteKingBitboard() = kingBitboard;
         } else {
-            _board.getBlackKingBitboard() = kingBitboard;
+            _bitboards.getBlackKingBitboard() = kingBitboard;
         }
     }
 
     void MoveMaker::unmakeTemporaryKingMove(bool isWhite, bool isKingSide) {
-        U64 kingBitboard = isWhite ? _board.getWhiteKingBitboard() : _board.getBlackKingBitboard();
+        U64 kingBitboard = isWhite ? _bitboards.getWhiteKingBitboard() : _bitboards.getBlackKingBitboard();
         int from = isKingSide ? (isWhite ? 2 : 58) : (isWhite ? 4 : 60);
         int to = isWhite ? 3 : 59;
 
@@ -258,9 +269,9 @@ namespace game {
         kingBitboard |= (1ULL << to);
 
         if (isWhite) {
-            _board.getWhiteKingBitboard() = kingBitboard;
+            _bitboards.getWhiteKingBitboard() = kingBitboard;
         } else {
-            _board.getBlackKingBitboard() = kingBitboard;
+            _bitboards.getBlackKingBitboard() = kingBitboard;
         }
     }
 
@@ -272,32 +283,32 @@ namespace game {
             // Update white or black bitmasks
             if (wasWhite) {
                 if (move.isKingCastle()) {
-                    _board.getWhitePiecesBitmask() &= ~(1ULL << 1);
-                    _board.getWhitePiecesBitmask() &= ~(1ULL << 2);
-                    _board.getWhitePiecesBitmask() |= (1ULL << 3);
-                    _board.getWhitePiecesBitmask() |= (1ULL << 0);
+                    _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << 1);
+                    _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << 2);
+                    _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << 3);
+                    _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << 0);
                 } else {
-                    _board.getWhitePiecesBitmask() &= ~(1ULL << 5);
-                    _board.getWhitePiecesBitmask() &= ~(1ULL << 4);
-                    _board.getWhitePiecesBitmask() |= (1ULL << 3);
-                    _board.getWhitePiecesBitmask() |= (1ULL << 7);
+                    _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << 5);
+                    _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << 4);
+                    _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << 3);
+                    _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << 7);
                 }
             } else {
                 if (move.isKingCastle()) {
-                    _board.getBlackPiecesBitmask() &= ~(1ULL << 57);
-                    _board.getBlackPiecesBitmask() &= ~(1ULL << 58);
-                    _board.getBlackPiecesBitmask() |= (1ULL << 59);
-                    _board.getBlackPiecesBitmask() |= (1ULL << 56);
+                    _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << 57);
+                    _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << 58);
+                    _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << 59);
+                    _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << 56);
                 } else {
-                    _board.getBlackPiecesBitmask() &= ~(1ULL << 61);
-                    _board.getBlackPiecesBitmask() &= ~(1ULL << 60);
-                    _board.getBlackPiecesBitmask() |= (1ULL << 59);
-                    _board.getBlackPiecesBitmask() |= (1ULL << 63);
+                    _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << 61);
+                    _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << 60);
+                    _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << 59);
+                    _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << 63);
                 }
             }
 
-            _board.fillOccupiedPiecesBitmask();
-            _board.fillEmptySquaresBitmask();
+            _gameStateBitMasks.fillOccupiedPiecesBitmask();
+            _gameStateBitMasks.fillEmptySquaresBitmask();
 
             return;
         }
@@ -316,32 +327,32 @@ namespace game {
         if (moveIsAnyPromo) {
             movedPieceType = wasWhite ? PieceType::W_PAWN : PieceType::B_PAWN;
         } else {
-            movedPieceType = _board.getPieceTypeAtIndex(to);
+            movedPieceType = _squaresLookup.getPieceTypeAtIndex(to);
         }
 
         // Place back the moved piece
-        _board.getBitboardFromIndex(pieceTypeToInt(movedPieceType)) |= (1ULL << from);
-        _board.setPieceTypeAtIndex(from, movedPieceType);
+        _bitboards.getBitboardFromIndex(pieceTypeToInt(movedPieceType)) |= (1ULL << from);
+        _squaresLookup.setPieceTypeAtIndex(from, movedPieceType);
 
         if (wasWhite) {
-            _board.getWhitePiecesBitmask() |= (1ULL << from);
+            _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << from);
         } else {
-            _board.getBlackPiecesBitmask() |= (1ULL << from);
+            _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << from);
         }
 
         // If the move was not a promotion, remove the piece in the bitboard
         // Else, remove the bit for the promoted piece
         if (not moveIsAnyPromo) {
-            _board.getBitboardFromIndex(pieceTypeToInt(movedPieceType)) &= ~(1ULL << to);
+            _bitboards.getBitboardFromIndex(pieceTypeToInt(movedPieceType)) &= ~(1ULL << to);
         } else {
             PieceType promotionPieceType = getPromotionPieceType(move.getFlag(), wasWhite);
-            _board.getBitboardFromIndex(pieceTypeToInt(promotionPieceType)) &= ~(1ULL << to);
+            _bitboards.getBitboardFromIndex(pieceTypeToInt(promotionPieceType)) &= ~(1ULL << to);
         }
 
         if (wasWhite) {
-            _board.getWhitePiecesBitmask() &= ~(1ULL << to);
+            _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << to);
         } else {
-            _board.getBlackPiecesBitmask() &= ~(1ULL << to);
+            _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << to);
         }
 
         // If the move was a capture, place back the captured piece
@@ -349,21 +360,21 @@ namespace game {
         if (move.isAnyCapture()) {
             int captureIndex = move.isEpCapture() ? (wasWhite ? to - 8 : to + 8) : to;
             game::PieceType capturedPieceType = _searchMemory.getLastCapturedPieceAtDepth(currentDepth);
-            _board.getBitboardFromIndex(pieceTypeToInt(capturedPieceType)) |= (1ULL << captureIndex);
-            _board.setPieceTypeAtIndex(captureIndex, capturedPieceType);
+            _bitboards.getBitboardFromIndex(pieceTypeToInt(capturedPieceType)) |= (1ULL << captureIndex);
+            _squaresLookup.setPieceTypeAtIndex(captureIndex, capturedPieceType);
 
             if (move.isEpCapture()) {
-                _board.setPieceTypeAtIndex(to, PieceType::EMPTY);
+                _squaresLookup.setPieceTypeAtIndex(to, PieceType::EMPTY);
             }
 
             if (wasWhite) {
-                _board.getBlackPiecesBitmask() |= (1ULL << captureIndex);
+                _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << captureIndex);
             } else {
-                _board.getWhitePiecesBitmask() |= (1ULL << captureIndex);
+                _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << captureIndex);
             }
 
         } else {
-            _board.setPieceTypeAtIndex(to, PieceType::EMPTY);
+            _squaresLookup.setPieceTypeAtIndex(to, PieceType::EMPTY);
         }
 
         if (move.isDoublePawnPush()) {
@@ -374,7 +385,7 @@ namespace game {
             _searchMemory.decrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
         }
 
-        _board.fillOccupiedPiecesBitmask();
-        _board.fillEmptySquaresBitmask();
+        _gameStateBitMasks.fillOccupiedPiecesBitmask();
+        _gameStateBitMasks.fillEmptySquaresBitmask();
     }
 }

@@ -16,84 +16,84 @@ namespace game {
 
     TEST_F(ChessBoardTest, ConstructorInit_WhitePawn) {
         U64 expected = 0x000000000000FF00ULL;
-        U64 actual = chessboard.getBitboard(PieceType::W_PAWN);
+        U64 actual = chessboard.getBitboardFromPieceType(PieceType::W_PAWN);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessBoardTest, ConstructorInit_WhiteKnight) {
         U64 expected = 0x0000000000000042ULL;
-        U64 actual = chessboard.getBitboard(PieceType::W_KNIGHT);
+        U64 actual = chessboard.getBitboardFromPieceType(PieceType::W_KNIGHT);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessBoardTest, ConstructorInit_WhiteBishop) {
         U64 expected = 0x0000000000000024ULL;
-        U64 actual = chessboard.getBitboard(PieceType::W_BISHOP);
+        U64 actual = chessboard.getBitboardFromPieceType(PieceType::W_BISHOP);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessBoardTest, ConstructorInit_WhiteRook) {
         U64 expected = 0x0000000000000081ULL;
-        U64 actual = chessboard.getBitboard(PieceType::W_ROOK);
+        U64 actual = chessboard.getBitboardFromPieceType(PieceType::W_ROOK);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessBoardTest, ConstructorInit_WhiteQueen) {
         U64 expected = 0x0000000000000010ULL;
-        U64 actual = chessboard.getBitboard(PieceType::W_QUEEN);
+        U64 actual = chessboard.getBitboardFromPieceType(PieceType::W_QUEEN);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessBoardTest, ConstructorInit_WhiteKing) {
         U64 expected = 0x0000000000000008ULL;
-        U64 actual = chessboard.getBitboard(PieceType::W_KING);
+        U64 actual = chessboard.getBitboardFromPieceType(PieceType::W_KING);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessBoardTest, ConstructorInit_BlackPawn) {
         U64 expected = 0x00FF000000000000ULL;
-        U64 actual = chessboard.getBitboard(PieceType::B_PAWN);
+        U64 actual = chessboard.getBitboardFromPieceType(PieceType::B_PAWN);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessBoardTest, ConstructorInit_BlackKnight) {
         U64 expected = 0x4200000000000000ULL;
-        U64 actual = chessboard.getBitboard(PieceType::B_KNIGHT);
+        U64 actual = chessboard.getBitboardFromPieceType(PieceType::B_KNIGHT);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessBoardTest, ConstructorInit_BlackBishop) {
         U64 expected = 0x2400000000000000ULL;
-        U64 actual = chessboard.getBitboard(PieceType::B_BISHOP);
+        U64 actual = chessboard.getBitboardFromPieceType(PieceType::B_BISHOP);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessBoardTest, ConstructorInit_BlackRook) {
         U64 expected = 0x8100000000000000ULL;
-        U64 actual = chessboard.getBitboard(PieceType::B_ROOK);
+        U64 actual = chessboard.getBitboardFromPieceType(PieceType::B_ROOK);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessBoardTest, ConstructorInit_BlackQueen) {
         U64 expected = 0x1000000000000000ULL;
-        U64 actual = chessboard.getBitboard(PieceType::B_QUEEN);
+        U64 actual = chessboard.getBitboardFromPieceType(PieceType::B_QUEEN);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessBoardTest, ConstructorInit_BlackKing) {
         U64 expected = 0x0800000000000000ULL;
-        U64 actual = chessboard.getBitboard(PieceType::B_KING);
+        U64 actual = chessboard.getBitboardFromPieceType(PieceType::B_KING);
 
         ASSERT_EQ(expected, actual);
     }

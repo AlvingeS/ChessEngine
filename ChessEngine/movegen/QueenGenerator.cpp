@@ -4,8 +4,8 @@
 #include "ChessEngine/game/PieceType.h"
 
 namespace movegen {
-    QueenGenerator::QueenGenerator(game::ChessBoard& board, RayLogic* rayLogic) 
-        : _board(board),
+    QueenGenerator::QueenGenerator(game::BitBoards& bitboards, RayLogic* rayLogic) 
+        : _bitboards(bitboards),
           _rayLogic(rayLogic) {
         _queenIndices.reserve(64);
         _straightRayBitmasks = masks::getAllStraightRayBitmasks();
@@ -13,8 +13,8 @@ namespace movegen {
     }
 
     void QueenGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
-        utils::getBitIndices(_queenIndices, isWhite ? _board.getWhiteQueensBitboard()
-                                                   : _board.getBlackQueensBitboard());
+        utils::getBitIndices(_queenIndices, isWhite ? _bitboards.getWhiteQueensBitboard()
+                                                   : _bitboards.getBlackQueensBitboard());
 
         for (int currentQueenIndex : _queenIndices) {
             masks::StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];

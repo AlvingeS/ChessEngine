@@ -4,14 +4,16 @@
 
 #include "Move.h"
 #include "PieceType.h"
-#include "ChessBoard.h"
+#include "BitBoards.h"
+#include "GameStateBitMasks.h"
+#include "SquaresLookup.h"
 #include "ZHasher.h"
 
 namespace game {
     class MoveMaker {
         public:
             // Constructor
-            MoveMaker(ChessBoard& board, perft::SearchMemory& searchMemory, ZHasher& zHasher);
+            MoveMaker(BitBoards& bitboards, SquaresLookup& squaresLookup, GameStateBitMasks& gameStateBitmasks, perft::SearchMemory& searchMemory, ZHasher& zHasher);
             
             // Public member functions
             void makeMove(Move move, bool isWhite, int currentDepth);
@@ -28,7 +30,9 @@ namespace game {
             void unmakeCastleMove(bool wasWhite, bool wasKingSide);
             PieceType getPromotionPieceType(int promotionFlag, bool isWhite);
 
-            ChessBoard& _board;
+            BitBoards& _bitboards;
+            SquaresLookup& _squaresLookup;
+            GameStateBitMasks& _gameStateBitMasks;
             perft::SearchMemory& _searchMemory;
             ZHasher& _zHasher;
     };

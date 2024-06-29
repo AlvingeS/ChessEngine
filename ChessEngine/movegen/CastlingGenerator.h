@@ -3,7 +3,8 @@
 #include "ChessEngine/common.h"
 
 #include "ChessEngine/game/Move.h"
-#include "ChessEngine/game/ChessBoard.h"
+#include "ChessEngine/game/BitBoards.h"
+#include "ChessEngine/game/GameStateBitMasks.h"
 #include "ChessEngine/game/MoveMaker.h"
 
 #include "RayLogic.h"
@@ -19,14 +20,15 @@ namespace movegen {
     class CastlingGenerator {
         public:
             // Constructor
-            CastlingGenerator(game::ChessBoard& board, game::MoveMaker& moveMaker, int& moveIndex, CommonLogic* commonLogic, CheckDetection* checkDetection);
+            CastlingGenerator(game::BitBoards& bitboards, game::GameStateBitMasks& gameStateBitmasks, game::MoveMaker& moveMaker, int& moveIndex, CommonLogic* commonLogic, CheckDetection* checkDetection);
             
             // Public member functions
             void generate(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights);
         private:
 
             // Private member functions
-            game::ChessBoard& _board;
+            game::BitBoards& _bitboards;
+            game::GameStateBitMasks& _gameStateBitmasks;
             game::MoveMaker& _moveMaker;
             int& _moveIndex;
             CommonLogic* _commonLogic;

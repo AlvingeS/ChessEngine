@@ -25,10 +25,9 @@ namespace movegen {
             static constexpr int MAX_LEGAL_MOVES = 218;
 
             // Public member functions
-            MoveGenerator(game::ChessBoard& board, game::MoveMaker& moveMaker);
+            MoveGenerator(game::BitBoards& bitboards, game::GameStateBitMasks& gameStateBitmasks, game::MoveMaker& moveMaker);
             void resetMoves(std::vector<game::Move>& moveList);
             void resetMoveIndex();
-            void setBoardFromFen(std::string fen);
             void genMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, unsigned char castlingRights);
             void genRookMoves(bool isWhite, std::vector<game::Move>& moveList);
             void genBishopMoves(bool isWhite, std::vector<game::Move>& moveList);
@@ -43,13 +42,14 @@ namespace movegen {
                 return _moveIndex;
             }
 
-            game::ChessBoard& getBoard() {
-                return _board;
-            }
+            // game::ChessBoard& getBoard() {
+            //     return _board;
+            // }
 
         private:
             // Private member variables
-            game::ChessBoard& _board;
+            game::BitBoards& _bitboards;
+            game::GameStateBitMasks& _gameStateBitmasks;
             game::MoveMaker& _moveMaker;
             perft::SearchMemory& _searchMemory;
             CommonLogic _commonLogic;

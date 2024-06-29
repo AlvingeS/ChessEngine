@@ -10,28 +10,21 @@
 #include "ChessEngine/utils/BitBasics.h"
 
 namespace movegen {
-    MoveGenerator::MoveGenerator(game::ChessBoard& board, game::MoveMaker& moveMaker)
-        : _board(board),
+    MoveGenerator::MoveGenerator(game::BitBoards& bitboards, game::GameStateBitMasks& gameStateBitmasks, game::MoveMaker& moveMaker)
+        : _bitboards(bitboards),
+          _gameStateBitmasks(gameStateBitmasks),
           _moveMaker(moveMaker),
           _searchMemory(moveMaker.getSearchMemory()),
           _commonLogic(),
-          _rayLogic(_board, _moveIndex, &_commonLogic),
-          _checkDetection(_board, &_rayLogic),
-          _rookGenerator(_board, &_rayLogic),
-          _bishopGenerator(_board, &_rayLogic),
-          _knightGenerator(_board, _moveIndex, &_commonLogic),
-          _queenGenerator(_board, &_rayLogic),
-          _kingGenerator(_board, _moveIndex, &_commonLogic),
-          _pawnGenerator(_board, _moveIndex, &_commonLogic),
-           _castlingGenerator(_board, moveMaker, _moveIndex, &_commonLogic, &_checkDetection) {
-    }
-
-    void MoveGenerator::setBoardFromFen(std::string fen) {
-        _board.setBoardFromFen(fen);
-        _board.fillBlackPiecesBitmask();
-        _board.fillWhitePiecesBitmask();
-        _board.fillOccupiedPiecesBitmask();
-        _board.fillEmptySquaresBitmask();
+          _rayLogic(_gameStateBitmasks, _moveIndex, &_commonLogic),
+          _checkDetection(_bitboards, &_rayLogic),
+          _rookGenerator(_bitboards, &_rayLogic),
+          _bishopGenerator(_bitboards, &_rayLogic),
+          _knightGenerator(_bitboards, _gameStateBitmasks, _moveIndex, &_commonLogic),
+          _queenGenerator(_bitboards, &_rayLogic),
+          _kingGenerator(_bitboards, _gameStateBitmasks, _moveIndex, &_commonLogic),
+          _pawnGenerator(_bitboards, _gameStateBitmasks, _moveIndex, &_commonLogic),
+          _castlingGenerator(_bitboards, _gameStateBitmasks, moveMaker, _moveIndex, &_commonLogic, &_checkDetection) {
     }
 
     void MoveGenerator::genMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, unsigned char castlingRights) {

@@ -6,7 +6,7 @@
 #include "ChessEngine/utils/BitBasics.h"
 
 namespace utils {
-    BoardPrinter::BoardPrinter(std::vector<U64*> bitboards) {
+    BoardPrinter::BoardPrinter(game::BitBoards& bitboards) {
         fillBoard(bitboards);
     }
 
@@ -30,12 +30,12 @@ namespace utils {
         }
     }
 
-    void BoardPrinter::fillBoard(std::vector<U64*> bitboards) {
+    void BoardPrinter::fillBoard(game::BitBoards& bitboards) {
         _board = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
         
         for (int i = 0; i < 12; i++) {
             game::PieceType pieceType = game::intToPieceType(i);
-            U64 bitboard = *(bitboards[i]);
+            U64 bitboard = bitboards.getBitboardFromIndex(i);
             char pieceChar = game::pieceTypeToChar(pieceType);
 
             for (int i = 0; i < 64; i++) {

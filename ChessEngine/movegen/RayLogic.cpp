@@ -4,8 +4,8 @@
 
 namespace movegen {
 
-    RayLogic::RayLogic(game::ChessBoard& board, int& moveIndex, CommonLogic* commonLogic) 
-        : _board(board),
+    RayLogic::RayLogic(game::GameStateBitMasks& gameStateBitmasks, int& moveIndex, CommonLogic* commonLogic) 
+        : _gameStateBitMasks(gameStateBitmasks),
           _moveIndex(moveIndex),
           _commonLogic(commonLogic) {
         _freeRayIndices.reserve(8);
@@ -20,7 +20,7 @@ namespace movegen {
     }
 
     void RayLogic::addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, std::vector<game::Move>& moveList) {
-        bool blockerIsWhite = utils::getBit(_board.getWhitePiecesBitmask(), blockerIndex);
+        bool blockerIsWhite = utils::getBit(_gameStateBitMasks.getWhitePiecesBitmask(), blockerIndex);
 
         if (blockerIsWhite != isWhite) {
             _commonLogic->addMove(bitIndexFrom, blockerIndex, game::Move::CAPTURE_FLAG, moveList, _moveIndex);
@@ -74,7 +74,7 @@ namespace movegen {
     }
 
     void RayLogic::getMovesFromStraightRay(U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<game::Move>& moveList) {
-            U64 blockerBitMask = ray & _board.getOccupiedPiecesBitmask();          
+            U64 blockerBitMask = ray & _gameStateBitMasks.getOccupiedPiecesBitmask();          
 
             if (blockerBitMask != 0) {
                 int blockerIndex = blockerOnLSB ? utils::indexOfLSB(blockerBitMask) : utils::indexOfMSB(blockerBitMask);
@@ -86,7 +86,7 @@ namespace movegen {
     }
 
     void RayLogic::getMovesFromDiagonalRay(U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<game::Move>& moveList) {
-        U64 blockerBitMask = ray & _board.getOccupiedPiecesBitmask();
+        U64 blockerBitMask = ray & _gameStateBitMasks.getOccupiedPiecesBitmask();
 
         if (blockerBitMask != 0) {
             int blockerIndex = blockerOnLSB ? utils::indexOfLSB(blockerBitMask) : utils::indexOfMSB(blockerBitMask);
@@ -102,7 +102,7 @@ namespace movegen {
         
         // There must be a rook or a queen on the file or rank to be in check
         if (rooksAndQueensBlockerBitMask != 0ULL) {
-            U64 occupiedBlockerBitMask = straightRay & _board.getOccupiedPiecesBitmask();
+            U64 occupiedBlockerBitMask = straightRay & _gameStateBitMasks.getOccupiedPiecesBitmask();
 
             // If there is only one blocker out of all pieces, then it must be a rook or a queen thus the king is in check
             if (utils::popCount(occupiedBlockerBitMask) == 1) {
@@ -129,7 +129,7 @@ namespace movegen {
         U64 bishopsAndQueensBlockerBitMask = diagonalRay & opponentBishopsAndQueens;
 
         if ((bishopsAndQueensBlockerBitMask) != 0) {
-            U64 occupiedBlockerBitMask = diagonalRay & _board.getOccupiedPiecesBitmask();
+            U64 occupiedBlockerBitMask = diagonalRay & _gameStateBitMasks.getOccupiedPiecesBitmask();
 
             if (utils::popCount(occupiedBlockerBitMask) == 1) {
                 return true;

@@ -1,5 +1,9 @@
 #pragma once
 #include "ChessEngine/perft/Searcher.h"
+#include "ChessEngine/utils/Fen.h"
+#include "ChessEngine/game/BitBoards.h"
+#include "ChessEngine/game/GameStateBitMasks.h"
+#include "ChessEngine/game/SquaresLookup.h"
 
 #include <gtest/gtest.h>
 #include <unordered_map>
@@ -16,7 +20,7 @@ namespace perft {
         };
 
         protected:
-            bool longRuns = false;
+            bool longRuns = true;
             bool megaRuns = false;
 
             // Long run should be depth 6, mega run should be depth 7
@@ -39,6 +43,7 @@ namespace perft {
             std::string posTwo;
             std::string posThree;
             std::string posFive;
+
             Searcher searcher;
 
             perftBase() : searcher(20) {}

@@ -24,7 +24,7 @@ namespace movegen {
     };
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosWhite_ShouldReturn16Moves) {
-        moveGenerator.setBoardFromFen(startingPos);
+        utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genPawnMoves(true, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
@@ -48,7 +48,7 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosBlack_ShouldReturn16Moves) {
-        moveGenerator.setBoardFromFen(startingPos);
+        utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
@@ -72,7 +72,7 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneWhite_ShouldReturn6Moves) {
-        moveGenerator.setBoardFromFen(fenOne);
+        utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genPawnMoves(true, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
@@ -91,7 +91,7 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneBlack_ShouldReturnXMoves) {
-        moveGenerator.setBoardFromFen(fenOne);
+        utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
@@ -110,8 +110,8 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Moves) {
-        moveGenerator.setBoardFromFen(fenEnPessantForWhiteTest);
-        moveGenerator.getBoard().setEnPessantTargetAtIndex(43);
+        utils::setBoardFromFen(fenEnPessantForWhiteTest, bitboards, gameStateBitmasks, squaresLookup);
+        // moveGenerator.getBoard().setEnPessantTargetAtIndex(43);
         moveGenerator.genPawnMoves(true, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
@@ -128,8 +128,8 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForBlack_ShouldReturn2Moves) {
-        moveGenerator.setBoardFromFen(fenEnPessantForBlackTest);
-        moveGenerator.getBoard().setEnPessantTargetAtIndex(23);
+        utils::setBoardFromFen(fenEnPessantForBlackTest, bitboards, gameStateBitmasks, squaresLookup);
+        // moveGenerator.getBoard().setEnPessantTargetAtIndex(23);
         moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
@@ -146,7 +146,7 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12Moves) {
-        moveGenerator.setBoardFromFen(fenPromotionTest);
+        utils::setBoardFromFen(fenPromotionTest, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genPawnMoves(true, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
@@ -165,7 +165,7 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12Moves) {
-        moveGenerator.setBoardFromFen(fenPromotionTest);
+        utils::setBoardFromFen(fenPromotionTest, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();
@@ -184,7 +184,7 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenBuggedPawnTestWhite_ShouldNotReturnh6) {
-        moveGenerator.setBoardFromFen(fenBuggedPawnTest);
+        utils::setBoardFromFen(fenBuggedPawnTest, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
 
         std::vector<game::Move> moves = getMoves();

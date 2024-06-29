@@ -4,7 +4,6 @@ namespace game {
 
     ChessBoard::ChessBoard() {
         _bitboards.reserve(12);
-        _noCaptureOrPawnMoveCount = 0;
         initPieceBitboards();
         fillWhitePiecesBitmask();
         fillBlackPiecesBitmask();
@@ -40,8 +39,6 @@ namespace game {
         _bitboards.push_back(&_blackRooksBitboard);
         _bitboards.push_back(&_blackQueensBitboard);
         _bitboards.push_back(&_blackKingBitboard);
-
-        _enPessantTarget = 0ULL;
 
         // Sets piecetype lookup to zero vector 64 squares
         _squaresLookup = std::vector<PieceType>(64, PieceType::EMPTY);

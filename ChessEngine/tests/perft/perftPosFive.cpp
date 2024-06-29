@@ -22,7 +22,7 @@ namespace perft {
     TEST_F(perftPosFive, perft_pos5) {
         if (enablePos5Test) {
             searcher.setBoardFromFen(posFive);
-    
+
             // Make dubug move
             // game::Move move = moveFromStrAndFlag("a2a3", 0);
             // searcher.makeMove(move, true);
@@ -34,7 +34,7 @@ namespace perft {
 
             std::string debugFen;
             if (nDebugMoves > 0) {
-                debugFen = searcher.getBoard().getFenFromBoard();
+                debugFen = searcher.getFenFromBoard();
                 debugFen += whiteToStart ? " w" : " b";
                 debugFen += " KQ - 1 8";
             }

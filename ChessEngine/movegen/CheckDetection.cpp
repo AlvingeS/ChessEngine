@@ -4,8 +4,8 @@
 #include "ChessEngine/game/PieceType.h"
 
 namespace movegen {
-    CheckDetection::CheckDetection(game::ChessBoard& board, RayLogic* rayLogic) 
-        : _board(board),
+    CheckDetection::CheckDetection(game::BitBoards& bitboards, RayLogic* rayLogic) 
+        : _bitboards(bitboards),
           _rayLogic(rayLogic) {
         _straightRayBitmasks = masks::getAllStraightRayBitmasks();
         _diagonalRayBitmasks = masks::getAllDiagonalRayBitmasks();
@@ -15,11 +15,11 @@ namespace movegen {
     }
 
     bool CheckDetection::isInCheck(bool isWhite) {
-        int kingIndex = utils::indexOfLSB(isWhite ? _board.getWhiteKingBitboard()
-                                                 : _board.getBlackKingBitboard());
+        int kingIndex = utils::indexOfLSB(isWhite ? _bitboards.getWhiteKingBitboard()
+                                                 : _bitboards.getBlackKingBitboard());
 
-        int opponentKingIndex = utils::indexOfLSB(isWhite ? _board.getBlackKingBitboard()
-                                                         : _board.getWhiteKingBitboard());
+        int opponentKingIndex = utils::indexOfLSB(isWhite ? _bitboards.getBlackKingBitboard()
+                                                         : _bitboards.getWhiteKingBitboard());
 
         int kingRankDiff = utils::rankFromBitIndex(kingIndex) - utils::rankFromBitIndex(opponentKingIndex);
         int kingFileDiff = utils::fileFromBitIndex(kingIndex) - utils::fileFromBitIndex(opponentKingIndex);
@@ -43,18 +43,18 @@ namespace movegen {
         U64 knightMoves = _knightBitmasks[kingIndex];
         U64 pawnAttackingMoves = isWhite ? _whitePawnCaptureMoveBitmasks[kingIndex] 
                                                : _blackPawnCaptureMoveBitmasks[kingIndex];
-        U64 opponentRooksAndQueens = isWhite ? _board.getBlackRooksBitboard() | _board.getBlackQueensBitboard()
-                                                   : _board.getWhiteRooksBitboard() | _board.getWhiteQueensBitboard();
+        U64 opponentRooksAndQueens = isWhite ? _bitboards.getBlackRooksBitboard() | _bitboards.getBlackQueensBitboard()
+                                                   : _bitboards.getWhiteRooksBitboard() | _bitboards.getWhiteQueensBitboard();
 
-        U64 opponentBishopsAndQueens = isWhite ? _board.getBlackBishopsBitboard() | _board.getBlackQueensBitboard() 
-                                                     : _board.getWhiteBishopsBitboard() | _board.getWhiteQueensBitboard();
+        U64 opponentBishopsAndQueens = isWhite ? _bitboards.getBlackBishopsBitboard() | _bitboards.getBlackQueensBitboard() 
+                                                     : _bitboards.getWhiteBishopsBitboard() | _bitboards.getWhiteQueensBitboard();
 
-        U64 opponentPawns = isWhite ? _board.getBlackPawnsBitboard() : _board.getWhitePawnsBitboard();
+        U64 opponentPawns = isWhite ? _bitboards.getBlackPawnsBitboard() : _bitboards.getWhitePawnsBitboard();
         if ((pawnAttackingMoves & opponentPawns) != 0) {
             return true;
         }
 
-        U64 opponentKnights = isWhite ? _board.getBlackKnightsBitboard() : _board.getWhiteKnightsBitboard();
+        U64 opponentKnights = isWhite ? _bitboards.getBlackKnightsBitboard() : _bitboards.getWhiteKnightsBitboard();
         if ((knightMoves & opponentKnights) != 0) {
             return true;
         }

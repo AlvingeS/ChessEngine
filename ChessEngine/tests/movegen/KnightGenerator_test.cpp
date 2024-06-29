@@ -14,7 +14,7 @@ namespace movegen {
     };
 
     TEST_F(MoveGeneratorKnightTest, genKnightMoves_startPosWhite_ShouldReturn4Moves) {
-        moveGenerator.setBoardFromFen(startingPos);
+        utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genKnightMoves(true, moveList);
 
         std::vector<game::Move> moves = getMoves();
@@ -32,7 +32,7 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorKnightTest, genKnightMoves_startPosBlack_ShouldReturn4Moves) {
-        moveGenerator.setBoardFromFen(startingPos);
+        utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genKnightMoves(false, moveList);
 
         std::vector<game::Move> moves = getMoves();
@@ -50,7 +50,7 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorKnightTest, genKnightMoves_fenOneWhite_ShouldReturn8Moves) {
-        moveGenerator.setBoardFromFen(fenOne);
+        utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genKnightMoves(true, moveList);
 
         std::vector<game::Move> moves = getMoves();
@@ -68,7 +68,7 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorKnightTest, genKnightMoves_fenOneBlack_ShouldReturn10Moves) {
-        moveGenerator.setBoardFromFen(fenOne);
+        utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genKnightMoves(false, moveList);
 
         std::vector<game::Move> moves = getMoves();

@@ -14,7 +14,7 @@ namespace movegen {
     };
 
     TEST_F(MoveGeneratorQueenTest, genQueenMoves_fenOneBlack_ShouldReturnXMoves) {
-        moveGenerator.setBoardFromFen(fenOne);
+        utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genQueenMoves(false, moveList);
 
         std::vector<game::Move> moves = getMoves();
@@ -32,7 +32,7 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorQueenTest, genQueenMoves_fenOneWhite_ShouldReturnXMoves) {
-        moveGenerator.setBoardFromFen(fenOne);
+        utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genQueenMoves(true, moveList);
 
         std::vector<game::Move> moves = getMoves();
@@ -50,14 +50,14 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorQueenTest, genQueenMoves_StartPosWhite_ShouldReturn0Moves) {
-        moveGenerator.setBoardFromFen(startingPos);
+        utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genQueenMoves(true, moveList);
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }
 
     TEST_F(MoveGeneratorQueenTest, genQueenMoves_StartPosBlack_ShouldReturn0Moves) {
-        moveGenerator.setBoardFromFen(startingPos);
+        utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genQueenMoves(false, moveList);
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);

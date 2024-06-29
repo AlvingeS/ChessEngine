@@ -1,5 +1,7 @@
 add_library(game 
-    ChessBoard.cpp 
+    BitBoards.cpp
+    GameStateBitMasks.cpp
+    SquaresLookup.cpp
     MoveMaker.cpp
     ZHasher.cpp
 )

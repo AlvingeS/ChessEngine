@@ -4,16 +4,16 @@
 #include "ChessEngine/game/PieceType.h"
 
 namespace movegen {
-    BishopGenerator::BishopGenerator(game::ChessBoard& board, RayLogic* rayLogic) 
-        : _board(board),
+    BishopGenerator::BishopGenerator(game::BitBoards& bitboards, RayLogic* rayLogic) 
+        : _bitboards(bitboards),
           _rayLogic(rayLogic) {
         _bishopIndices.reserve(64);
         _diagonalRayBitmasks = masks::getAllDiagonalRayBitmasks();
     }
 
     void BishopGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
-        utils::getBitIndices(_bishopIndices, isWhite ? _board.getWhiteBishopsBitboard()
-                                                    : _board.getBlackBishopsBitboard());
+        utils::getBitIndices(_bishopIndices, isWhite ? _bitboards.getWhiteBishopsBitboard()
+                                                    : _bitboards.getBlackBishopsBitboard());
 
         for (int currentBishopIndex : _bishopIndices) {
             masks::DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];

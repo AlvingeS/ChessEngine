@@ -28,14 +28,6 @@ namespace game {
                 _bitboards.clear();
             }
 
-            int& getNoCaptureOrPawnMoveCount() {
-                return _noCaptureOrPawnMoveCount;
-            }
-
-            void setEnPessantTargetAtIndex(int index) {
-                _enPessantTarget = (1ULL << index);
-            }
-
             PieceType getPieceTypeAtIndex(int index) {
                 return _squaresLookup[index];
             }
@@ -45,7 +37,7 @@ namespace game {
             }
 
             // Getters for game state
-            U64 getBitboard(PieceType pieceType) {
+            U64 getBitboardFromPieceType(PieceType pieceType) {
                 return *(_bitboards[pieceTypeToInt(pieceType)]);
             }
 
@@ -160,15 +152,11 @@ namespace game {
             U64 _blackQueensBitboard;
             U64 _blackKingBitboard;
 
-            U64 _enPessantTarget;
-
             // Masks
             U64 _whitePiecesBitmask;
             U64 _blackPiecesBitmask;
             U64 _occupiedPiecesBitmask;
             U64 _emptySquaresBitmask;
-
-            int _noCaptureOrPawnMoveCount;
 
             // Private member functions
             void initPieceBitboards();

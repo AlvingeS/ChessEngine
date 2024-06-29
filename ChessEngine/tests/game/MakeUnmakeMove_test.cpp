@@ -78,7 +78,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesWhite) {
-//         moveGenerator.setBoardFromFen(captures);
+//         utils::setBoardFromFen(captures, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.genMoves(true, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
@@ -95,7 +95,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesBlack) {
-//         moveGenerator.setBoardFromFen(captures);
+//         utils::setBoardFromFen(captures, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.genMoves(false, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
@@ -112,7 +112,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingWhite) {
-//         moveGenerator.setBoardFromFen(castling);
+//         utils::setBoardFromFen(castling, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.genMoves(true, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
@@ -129,7 +129,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingBlack) {
-//         moveGenerator.setBoardFromFen(castling);
+//         utils::setBoardFromFen(castling, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.genMoves(false, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
@@ -146,7 +146,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionWhite) {
-//         moveGenerator.setBoardFromFen(normalPromotion);
+//         utils::setBoardFromFen(normalPromotion, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.genMoves(true, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
@@ -163,7 +163,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionBlack) {
-//         moveGenerator.setBoardFromFen(normalPromotion);
+//         utils::setBoardFromFen(normalPromotion, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.genMoves(false, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
@@ -180,7 +180,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionWhite) {
-//         moveGenerator.setBoardFromFen(capturePromotion);
+//         utils::setBoardFromFen(capturePromotion, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.genMoves(true, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
@@ -197,7 +197,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionBlack) {
-//         moveGenerator.setBoardFromFen(capturePromotion);
+//         utils::setBoardFromFen(capturePromotion, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.genMoves(false, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
@@ -214,7 +214,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_EnPessantWhite) {
-//         moveGenerator.setBoardFromFen(enPessant);
+//         utils::setBoardFromFen(enPessant, bitboards, gameStateBitmasks, squaresLookup);
 
 //         // Make a double pawn push to enable en pessant
 //         moveGenerator.getBoard().makeMove(Move(51, 35, Move::DOUBLE_PAWN_PUSH_FLAG), false);
@@ -235,7 +235,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_EnPessantBlack) {
-//         moveGenerator.setBoardFromFen(enPessant);
+//         utils::setBoardFromFen(enPessant, bitboards, gameStateBitmasks, squaresLookup);
 
 //         // Make a double pawn push to enable en pessant
 //         moveGenerator.getBoard().makeMove(Move(9, 17, Move::DOUBLE_PAWN_PUSH_FLAG), true);
@@ -256,7 +256,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsWhite) {
-//         moveGenerator.setBoardFromFen(castling);
+//         utils::setBoardFromFen(castling, bitboards, gameStateBitmasks, squaresLookup);
 
 //         moveGenerator.genCastlingMoves(true, moveList);
 //         std::vector<Move> castlingMoves = getMoves();
@@ -280,7 +280,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsBlack) {
-//         moveGenerator.setBoardFromFen(castling);
+//         utils::setBoardFromFen(castling, bitboards, gameStateBitmasks, squaresLookup);
 
 //         moveGenerator.genCastlingMoves(false, moveList);
 //         std::vector<Move> castlingMoves = getMoves();

@@ -16,7 +16,7 @@ namespace movegen {
     };
 
     TEST_F(MoveGeneratorRookTest, genRookMoves_fenOneWhite_ShouldReturn12Moves) {
-        moveGenerator.setBoardFromFen(fenOne);
+        utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genRookMoves(true, moveList);
 
         std::vector<game::Move> moves = getMoves();
@@ -33,28 +33,28 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorRookTest, genRookMoves_fenOneBlack_ShouldReturn0Moves) {
-        moveGenerator.setBoardFromFen(fenOne);
+        utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genRookMoves(false, moveList);
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }
 
     TEST_F(MoveGeneratorRookTest, genRookMoves_startingPosWhite_ShouldReturn0Moves) {
-        moveGenerator.setBoardFromFen(startingPos);
+        utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genRookMoves(true, moveList);
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }
 
     TEST_F(MoveGeneratorRookTest, genRookMoves_startingPosBlack_ShouldReturn0Moves) {
-        moveGenerator.setBoardFromFen(startingPos);
+        utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genRookMoves(false, moveList);
 
         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
     }
 
     TEST_F(MoveGeneratorRookTest, genRookMoves_fenTwoWhite_ShouldReturn17Moves) {
-        moveGenerator.setBoardFromFen(fenTwo);
+        utils::setBoardFromFen(fenTwo, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genRookMoves(true, moveList);
 
         std::vector<game::Move> moves = getMoves();
@@ -72,7 +72,7 @@ namespace movegen {
     }
 
     TEST_F(MoveGeneratorRookTest, genRookMoves_fenTwoBlack_ShouldReturn12Moves) {
-        moveGenerator.setBoardFromFen(fenTwo);
+        utils::setBoardFromFen(fenTwo, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genRookMoves(false, moveList);
 
         std::vector<game::Move> moves = getMoves();

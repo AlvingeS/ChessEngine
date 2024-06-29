@@ -28,92 +28,92 @@ namespace movegen {
     };
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenPawnChecksWhite_ShouldReturnTrue) {
-        moveGenerator.setBoardFromFen(fenPawnChecks);
+        utils::setBoardFromFen(fenPawnChecks, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_TRUE(moveGenerator.isInCheck(true));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenPawnChecksBlack_ShouldReturnTrue) {
-        moveGenerator.setBoardFromFen(fenPawnChecks);
+        utils::setBoardFromFen(fenPawnChecks, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_TRUE(moveGenerator.isInCheck(false));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenKnightChecksWhite_ShouldReturnTrue) {
-        moveGenerator.setBoardFromFen(fenKnightChecks);
+        utils::setBoardFromFen(fenKnightChecks, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_TRUE(moveGenerator.isInCheck(true));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenKnightChecksBlack_ShouldReturnTrue) {
-        moveGenerator.setBoardFromFen(fenKnightChecks);
+        utils::setBoardFromFen(fenKnightChecks, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_TRUE(moveGenerator.isInCheck(false));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksTrueWhite_ShouldReturnTrue) {
-        moveGenerator.setBoardFromFen(fenBishopChecksTrue);
+        utils::setBoardFromFen(fenBishopChecksTrue, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_TRUE(moveGenerator.isInCheck(true));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksTrueBlack_ShouldReturnTrue) {
-        moveGenerator.setBoardFromFen(fenBishopChecksTrue);
+        utils::setBoardFromFen(fenBishopChecksTrue, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_TRUE(moveGenerator.isInCheck(false));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksFalseWhite_ShouldReturnFalse) {
-        moveGenerator.setBoardFromFen(fenBishopChecksFalse);
+        utils::setBoardFromFen(fenBishopChecksFalse, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_FALSE(moveGenerator.isInCheck(true));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksFalseBlack_ShouldReturnFalse) {
-        moveGenerator.setBoardFromFen(fenBishopChecksFalse);
+        utils::setBoardFromFen(fenBishopChecksFalse, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_FALSE(moveGenerator.isInCheck(false));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksTrueWhite_ShouldReturnTrue) {
-        moveGenerator.setBoardFromFen(fenRookChecksTrue);
+        utils::setBoardFromFen(fenRookChecksTrue, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_TRUE(moveGenerator.isInCheck(true));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksTrueBlack_ShouldReturnTrue) {
-        moveGenerator.setBoardFromFen(fenRookChecksTrue);
+        utils::setBoardFromFen(fenRookChecksTrue, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_TRUE(moveGenerator.isInCheck(false));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksFalseWhite_ShouldReturnFalse) {
-        moveGenerator.setBoardFromFen(fenRookChecksFalse);
+        utils::setBoardFromFen(fenRookChecksFalse, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_FALSE(moveGenerator.isInCheck(true));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksFalseBlack_ShouldReturnFalse) {
-        moveGenerator.setBoardFromFen(fenRookChecksFalse);
+        utils::setBoardFromFen(fenRookChecksFalse, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_FALSE(moveGenerator.isInCheck(false));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksTrueWhite_ShouldReturnTrue) {
-        moveGenerator.setBoardFromFen(fenQueenChecksTrue);
+        utils::setBoardFromFen(fenQueenChecksTrue, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_TRUE(moveGenerator.isInCheck(true));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksTrueBlack_ShouldReturnTrue) {
-        moveGenerator.setBoardFromFen(fenQueenChecksTrue);
+        utils::setBoardFromFen(fenQueenChecksTrue, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_TRUE(moveGenerator.isInCheck(false));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksFalseWhite_ShouldReturnFalse) {
-        moveGenerator.setBoardFromFen(fenQueenChecksFalse);
+        utils::setBoardFromFen(fenQueenChecksFalse, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_FALSE(moveGenerator.isInCheck(true));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksFalseBlack_ShouldReturnFalse) {
-        moveGenerator.setBoardFromFen(fenQueenChecksFalse);
+        utils::setBoardFromFen(fenQueenChecksFalse, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_FALSE(moveGenerator.isInCheck(false));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_startingPosWhite_ShouldReturnFalse) {
-        moveGenerator.setBoardFromFen(startingPos);
+        utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_FALSE(moveGenerator.isInCheck(true));
     }
 
     TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_startingPosBlack_ShouldReturnFalse) {
-        moveGenerator.setBoardFromFen(startingPos);
+        utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         ASSERT_FALSE(moveGenerator.isInCheck(false));
     }
 }

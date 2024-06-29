@@ -4,8 +4,8 @@
 #include "ChessEngine/game/PieceType.h"
 
 namespace movegen {
-    RookGenerator::RookGenerator(game::ChessBoard& board, RayLogic* rayLogic) 
-        : _board(board),
+    RookGenerator::RookGenerator(game::BitBoards& bitboards, RayLogic* rayLogic) 
+        : _bitboards(bitboards),
           _rayLogic(rayLogic) {
         _rookIndices.reserve(64);
         _straightRayBitmasks = masks::getAllStraightRayBitmasks();
@@ -14,8 +14,8 @@ namespace movegen {
     void RookGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
         masks::StraightRays rays;
 
-        utils::getBitIndices(_rookIndices, isWhite ? _board.getWhiteRooksBitboard()
-                                                  : _board.getBlackRooksBitboard());
+        utils::getBitIndices(_rookIndices, isWhite ? _bitboards.getWhiteRooksBitboard()
+                                                  : _bitboards.getBlackRooksBitboard());
 
         // Loop through all rooks and isolate them
         for (int currentRookIndex : _rookIndices) {

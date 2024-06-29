@@ -11,14 +11,14 @@ namespace movegen {
         _freeMovesIndices.reserve(8);
         _capturableMovesIndices.reserve(8);
         _pawnIndices.reserve(64);
-        _whitePawnStraightMoveBitmasks = bits::getAllStraightPawnMoveBitmasks(true);
-        _whitePawnCaptureMoveBitmasks = bits::getAllCapturePawnMoveBitmasks(true);
-        _blackPawnStraightMoveBitmasks = bits::getAllStraightPawnMoveBitmasks(false);
-        _blackPawnCaptureMoveBitmasks = bits::getAllCapturePawnMoveBitmasks(false);
+        _whitePawnStraightMoveBitmasks = masks::getAllStraightPawnMoveBitmasks(true);
+        _whitePawnCaptureMoveBitmasks = masks::getAllCapturePawnMoveBitmasks(true);
+        _blackPawnStraightMoveBitmasks = masks::getAllStraightPawnMoveBitmasks(false);
+        _blackPawnCaptureMoveBitmasks = masks::getAllCapturePawnMoveBitmasks(false);
     }
 
     void PawnGenerator::generate(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, search::SearchMemory& searchMemory) {
-        bits::getBitIndices(_pawnIndices, isWhite ? _board.getWhitePawnsBitboard()
+        utils::getBitIndices(_pawnIndices, isWhite ? _board.getWhitePawnsBitboard()
                                                   : _board.getBlackPawnsBitboard());
 
         for (int currentPawnIndex : _pawnIndices) {
@@ -34,10 +34,10 @@ namespace movegen {
             U64 enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
             U64 capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
 
-            bits::getBitIndices(_freeMovesIndices, freePawnMoves);
-            bits::getBitIndices(_capturableMovesIndices, capturablePawnMoves);
+            utils::getBitIndices(_freeMovesIndices, freePawnMoves);
+            utils::getBitIndices(_capturableMovesIndices, capturablePawnMoves);
             int offset = isWhite ? 8 : -8;
-            bool canPromote = (isWhite && bits::rankFromBitIndex(currentPawnIndex) == 6) || (!isWhite && bits::rankFromBitIndex(currentPawnIndex) == 1);
+            bool canPromote = (isWhite && utils::rankFromBitIndex(currentPawnIndex) == 6) || (!isWhite && utils::rankFromBitIndex(currentPawnIndex) == 1);
 
             if (_freeMovesIndices.size() == 2) {
                 int singleStepIndex = (isWhite ? 0 : 1);
@@ -69,7 +69,7 @@ namespace movegen {
             }
 
             if ((capturePawnMoveBitmask & enPessantTarget) != 0) {
-                _commonLogic->addMove(currentPawnIndex, bits::indexOfLSB(capturePawnMoveBitmask & enPessantTarget), game::Move::EP_CAPTURE_FLAG, moveList, _moveIndex);
+                _commonLogic->addMove(currentPawnIndex, utils::indexOfLSB(capturePawnMoveBitmask & enPessantTarget), game::Move::EP_CAPTURE_FLAG, moveList, _moveIndex);
             }
         }
     }

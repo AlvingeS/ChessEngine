@@ -11,11 +11,11 @@ namespace movegen {
         _freeMovesIndices.reserve(8);
         _capturableMovesIndices.reserve(8);
         _knightIndices.reserve(64);
-        _knightBitmasks = bits::getAllKnightBitMasks();
+        _knightBitmasks = masks::getAllKnightBitMasks();
     }
 
     void KnightGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
-        bits::getBitIndices(_knightIndices, isWhite ? _board.getWhiteKnightsBitboard() : _board.getBlackKnightsBitboard());
+        utils::getBitIndices(_knightIndices, isWhite ? _board.getWhiteKnightsBitboard() : _board.getBlackKnightsBitboard());
 
         for (int currentKnightIndex : _knightIndices) {
             U64 knightBitMask = _knightBitmasks[currentKnightIndex];
@@ -24,8 +24,8 @@ namespace movegen {
             U64 enemyPieces = isWhite ? _board.getBlackPiecesBitmask() : _board.getWhitePiecesBitmask();
             U64 capturableKnightMoves = knightBitMask & enemyPieces;
 
-            bits::getBitIndices(_freeMovesIndices, freeKnightMoves);
-            bits::getBitIndices(_capturableMovesIndices, capturableKnightMoves);
+            utils::getBitIndices(_freeMovesIndices, freeKnightMoves);
+            utils::getBitIndices(_capturableMovesIndices, capturableKnightMoves);
 
             for (int freeKnightMoveIndex : _freeMovesIndices) {
                 _commonLogic->addMove(currentKnightIndex, freeKnightMoveIndex, game::Move::QUITE_FLAG, moveList, _moveIndex);

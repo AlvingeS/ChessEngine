@@ -11,11 +11,11 @@ namespace movegen {
         _freeMovesIndices.reserve(8);
         _capturableMovesIndices.reserve(8);
         _kingIndices.reserve(64);
-        _kingBitmasks = bits::getAllKingBitMasks();
+        _kingBitmasks = masks::getAllKingBitMasks();
     }
 
     void KingGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
-        bits::getBitIndices(_kingIndices, isWhite ? _board.getWhiteKingBitboard() : _board.getBlackKingBitboard());
+        utils::getBitIndices(_kingIndices, isWhite ? _board.getWhiteKingBitboard() : _board.getBlackKingBitboard());
 
         for (int currentKingIndex : _kingIndices) {
             U64 kingBitMask = _kingBitmasks[currentKingIndex];
@@ -24,8 +24,8 @@ namespace movegen {
             U64 enemyPieces = isWhite ? _board.getBlackPiecesBitmask() : _board.getWhitePiecesBitmask();
             U64 capturableKingMoves = kingBitMask & enemyPieces;
 
-            bits::getBitIndices(_freeMovesIndices, freeKingMoves);
-            bits::getBitIndices(_capturableMovesIndices, capturableKingMoves);
+            utils::getBitIndices(_freeMovesIndices, freeKingMoves);
+            utils::getBitIndices(_capturableMovesIndices, capturableKingMoves);
 
             for (int freeKingMoveIndex : _freeMovesIndices) {
                 _commonLogic->addMove(currentKingIndex, freeKingMoveIndex, game::Move::QUITE_FLAG, moveList, _moveIndex);

@@ -3,7 +3,7 @@
 #include "ChessEngine/common.h"
 
 #include "ChessEngine/game/Move.h"
-#include "ChessEngine/bits/RayBitMasks.h"
+#include "ChessEngine/masks/RayBitMasks.h"
 
 #include "RayLogic.h"
 #include "CommonLogic.h"
@@ -24,6 +24,6 @@ namespace movegen {
 
             // Memory
             std::vector<int> _bishopIndices;
-            std::vector<bits::DiagonalRays> _diagonalRayBitmasks;
+            std::vector<masks::DiagonalRays> _diagonalRayBitmasks;
     };
 }

@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
-#include "ChessEngine/bits/RayBitMasks.h"
+#include "ChessEngine/masks/RayBitMasks.h"
 
-namespace bits {
+#include "ChessEngine/common.h"
+
+namespace masks {
     class RayBitMasks : public ::testing::Test {
         protected:
                 int indOne;

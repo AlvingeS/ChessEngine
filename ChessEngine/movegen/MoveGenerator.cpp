@@ -2,11 +2,11 @@
 
 #include <iostream>
 
-#include "ChessEngine/bits/RayBitMasks.h"
+#include "ChessEngine/masks/RayBitMasks.h"
 #include "ChessEngine/utils/ChessUtils.h"
-#include "ChessEngine/bits/KnightBitMasks.h"
-#include "ChessEngine/bits/KingBitMasks.h"
-#include "ChessEngine/bits/PawnBitMasks.h"
+#include "ChessEngine/masks/KnightBitMasks.h"
+#include "ChessEngine/masks/KingBitMasks.h"
+#include "ChessEngine/masks/PawnBitMasks.h"
 #include "ChessEngine/utils/BitBasics.h"
 
 namespace movegen {

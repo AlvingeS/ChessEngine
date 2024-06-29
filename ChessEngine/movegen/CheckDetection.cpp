@@ -7,22 +7,22 @@ namespace movegen {
     CheckDetection::CheckDetection(game::ChessBoard& board, RayLogic* rayLogic) 
         : _board(board),
           _rayLogic(rayLogic) {
-        _straightRayBitmasks = bits::getAllStraightRayBitmasks();
-        _diagonalRayBitmasks = bits::getAllDiagonalRayBitmasks();
-        _knightBitmasks = bits::getAllKnightBitMasks();
-        _whitePawnCaptureMoveBitmasks = bits::getAllCapturePawnMoveBitmasks(true);
-        _blackPawnCaptureMoveBitmasks = bits::getAllCapturePawnMoveBitmasks(false);
+        _straightRayBitmasks = masks::getAllStraightRayBitmasks();
+        _diagonalRayBitmasks = masks::getAllDiagonalRayBitmasks();
+        _knightBitmasks = masks::getAllKnightBitMasks();
+        _whitePawnCaptureMoveBitmasks = masks::getAllCapturePawnMoveBitmasks(true);
+        _blackPawnCaptureMoveBitmasks = masks::getAllCapturePawnMoveBitmasks(false);
     }
 
     bool CheckDetection::isInCheck(bool isWhite) {
-        int kingIndex = bits::indexOfLSB(isWhite ? _board.getWhiteKingBitboard()
+        int kingIndex = utils::indexOfLSB(isWhite ? _board.getWhiteKingBitboard()
                                                  : _board.getBlackKingBitboard());
 
-        int opponentKingIndex = bits::indexOfLSB(isWhite ? _board.getBlackKingBitboard()
+        int opponentKingIndex = utils::indexOfLSB(isWhite ? _board.getBlackKingBitboard()
                                                          : _board.getWhiteKingBitboard());
 
-        int kingRankDiff = bits::rankFromBitIndex(kingIndex) - bits::rankFromBitIndex(opponentKingIndex);
-        int kingFileDiff = bits::fileFromBitIndex(kingIndex) - bits::fileFromBitIndex(opponentKingIndex);
+        int kingRankDiff = utils::rankFromBitIndex(kingIndex) - utils::rankFromBitIndex(opponentKingIndex);
+        int kingFileDiff = utils::fileFromBitIndex(kingIndex) - utils::fileFromBitIndex(opponentKingIndex);
 
         kingRankDiff = kingRankDiff < 0 ? -kingRankDiff : kingRankDiff;
         kingFileDiff = kingFileDiff < 0 ? -kingFileDiff : kingFileDiff;
@@ -38,8 +38,8 @@ namespace movegen {
             }
         }
 
-        bits::StraightRays straightRays = _straightRayBitmasks[kingIndex];
-        bits::DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
+        masks::StraightRays straightRays = _straightRayBitmasks[kingIndex];
+        masks::DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
         U64 knightMoves = _knightBitmasks[kingIndex];
         U64 pawnAttackingMoves = isWhite ? _whitePawnCaptureMoveBitmasks[kingIndex] 
                                                : _blackPawnCaptureMoveBitmasks[kingIndex];

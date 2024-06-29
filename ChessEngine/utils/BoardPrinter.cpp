@@ -2,27 +2,28 @@
 
 #include <iostream>
 
+#include "ChessEngine/game/PieceType.h"
 #include "ChessEngine/utils/BitBasics.h"
 
-namespace game {
+namespace utils {
     BoardPrinter::BoardPrinter(std::vector<U64*> bitboards) {
         fillBoard(bitboards);
     }
 
-    bool BoardPrinter::isValidPiece(PieceType piece_type) {
+    bool BoardPrinter::isValidPiece(game::PieceType piece_type) {
         switch(piece_type) {
-            case PieceType::W_PAWN:
-            case PieceType::W_KNIGHT:
-            case PieceType::W_BISHOP:
-            case PieceType::W_ROOK:
-            case PieceType::W_QUEEN:
-            case PieceType::W_KING:
-            case PieceType::B_PAWN:
-            case PieceType::B_KNIGHT:
-            case PieceType::B_BISHOP:
-            case PieceType::B_ROOK:
-            case PieceType::B_QUEEN:
-            case PieceType::B_KING:
+            case game::PieceType::W_PAWN:
+            case game::PieceType::W_KNIGHT:
+            case game::PieceType::W_BISHOP:
+            case game::PieceType::W_ROOK:
+            case game::PieceType::W_QUEEN:
+            case game::PieceType::W_KING:
+            case game::PieceType::B_PAWN:
+            case game::PieceType::B_KNIGHT:
+            case game::PieceType::B_BISHOP:
+            case game::PieceType::B_ROOK:
+            case game::PieceType::B_QUEEN:
+            case game::PieceType::B_KING:
                 return true;
             default:
                 return false;
@@ -33,12 +34,12 @@ namespace game {
         _board = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
         
         for (int i = 0; i < 12; i++) {
-            PieceType pieceType = intToPieceType(i);
+            game::PieceType pieceType = game::intToPieceType(i);
             U64 bitboard = *(bitboards[i]);
-            char pieceChar = pieceTypeToChar(pieceType);
+            char pieceChar = game::pieceTypeToChar(pieceType);
 
             for (int i = 0; i < 64; i++) {
-                if (bits::getBit(bitboard, i)) {
+                if (utils::getBit(bitboard, i)) {
                     int row = i / 8;
                     int col = i % 8;
                     _board[row][col] = pieceChar;

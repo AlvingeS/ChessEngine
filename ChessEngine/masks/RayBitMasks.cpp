@@ -2,10 +2,10 @@
 
 #include "ChessEngine/utils/ChessUtils.h"
 
-namespace bits {
+namespace masks {
     U64 getNorthRay(int ind) {
-        int rank = rankFromBitIndex(ind);
-        int file = fileFromBitIndex(ind);
+        int rank = utils::rankFromBitIndex(ind);
+        int file = utils::fileFromBitIndex(ind);
 
         U64 north_ray = 0ULL;
 
@@ -17,8 +17,8 @@ namespace bits {
     }
 
     U64 getNorthEastRay(int ind) {
-        int rank = rankFromBitIndex(ind);
-        int file = fileFromBitIndex(ind);
+        int rank = utils::rankFromBitIndex(ind);
+        int file = utils::fileFromBitIndex(ind);
 
         U64 north_east_ray = 0ULL;
 
@@ -32,8 +32,8 @@ namespace bits {
     }
 
     U64 getEastRay(int ind) {
-        int rank = rankFromBitIndex(ind);
-        int file = fileFromBitIndex(ind);
+        int rank = utils::rankFromBitIndex(ind);
+        int file = utils::fileFromBitIndex(ind);
 
         U64 east_ray = 0ULL;
 
@@ -45,8 +45,8 @@ namespace bits {
     }
 
     U64 getSouthEastRay(int ind) {
-        int rank = rankFromBitIndex(ind);
-        int file = fileFromBitIndex(ind);
+        int rank = utils::rankFromBitIndex(ind);
+        int file = utils::fileFromBitIndex(ind);
 
         U64 south_east_ray = 0ULL;
 
@@ -60,8 +60,8 @@ namespace bits {
     }
 
     U64 getSouthRay(int ind) {
-        int rank = rankFromBitIndex(ind);
-        int file = fileFromBitIndex(ind);
+        int rank = utils::rankFromBitIndex(ind);
+        int file = utils::fileFromBitIndex(ind);
 
         U64 south_ray = 0ULL;
 
@@ -73,8 +73,8 @@ namespace bits {
     }
 
     U64 getSouthWestRay(int ind) {
-        int rank = rankFromBitIndex(ind);
-        int file = fileFromBitIndex(ind);
+        int rank = utils::rankFromBitIndex(ind);
+        int file = utils::fileFromBitIndex(ind);
 
         U64 south_west_ray = 0ULL;
 
@@ -88,8 +88,8 @@ namespace bits {
     }
 
     U64 getWestRay(int ind) {
-        int rank = rankFromBitIndex(ind);
-        int file = fileFromBitIndex(ind);
+        int rank = utils::rankFromBitIndex(ind);
+        int file = utils::fileFromBitIndex(ind);
 
         U64 west_ray = 0ULL;
 
@@ -101,8 +101,8 @@ namespace bits {
     }
 
     U64 getNorthWestRay(int ind) {
-        int rank = rankFromBitIndex(ind);
-        int file = fileFromBitIndex(ind);
+        int rank = utils::rankFromBitIndex(ind);
+        int file = utils::fileFromBitIndex(ind);
 
         U64 north_west_ray = 0ULL;
 

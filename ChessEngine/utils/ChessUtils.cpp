@@ -3,7 +3,7 @@
 #include <iostream>
 #include <bitset>
 
-namespace bits {
+namespace utils {
     void printU64InBits(U64 n) {
         std::cout << std::bitset<64>(n) << std::endl;
     }

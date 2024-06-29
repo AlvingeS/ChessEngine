@@ -2,7 +2,7 @@
 
 #include "ChessEngine/utils/ChessUtils.h"
 
-namespace bits {
+namespace masks {
     U64 applyCapturePawnMoves(int ind, bool isWhite) {
         U64 captureMoves = 0ULL;
 
@@ -16,10 +16,10 @@ namespace bits {
     }
 
     void removeWrapAroundPawnMoves(U64& captureMoves, int ind) {
-        U64 notAFile = ~getFileMask(7);
-        U64 notHFile = ~getFileMask(0);
+        U64 notAFile = ~utils::getFileMask(7);
+        U64 notHFile = ~utils::getFileMask(0);
 
-        switch (fileFromBitIndex(ind)) {
+        switch (utils::fileFromBitIndex(ind)) {
             case 0:
                 captureMoves &= notAFile;
                 break;

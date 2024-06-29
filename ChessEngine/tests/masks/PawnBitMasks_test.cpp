@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
-#include "ChessEngine/bits/PawnBitMasks.h"
+#include "ChessEngine/masks/PawnBitMasks.h"
 
-namespace bits {
+#include "ChessEngine/common.h"
+
+namespace masks {
     class PawnBitMasks : public ::testing::Test {
         protected:
 

@@ -5,7 +5,7 @@
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/game/ChessBoard.h"
 #include "ChessEngine/game/MoveMaker.h"
-#include "ChessEngine/bits/Castling.h"
+#include "ChessEngine/masks/Castling.h"
 
 #include "RayLogic.h"
 #include "CommonLogic.h"

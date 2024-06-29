@@ -12,7 +12,7 @@ namespace movegen {
     }
 
     void RayLogic::addMovesFromFreeRay(U64 freeRay, int bitIndexFrom, std::vector<game::Move>& moveList) {
-        bits::getBitIndices(_freeRayIndices, freeRay);
+        utils::getBitIndices(_freeRayIndices, freeRay);
 
         for (int bitIndex : _freeRayIndices) {
             _commonLogic->addMove(bitIndexFrom, bitIndex, game::Move::QUITE_FLAG, moveList, _moveIndex);
@@ -20,7 +20,7 @@ namespace movegen {
     }
 
     void RayLogic::addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, std::vector<game::Move>& moveList) {
-        bool blockerIsWhite = bits::getBit(_board.getWhitePiecesBitmask(), blockerIndex);
+        bool blockerIsWhite = utils::getBit(_board.getWhitePiecesBitmask(), blockerIndex);
 
         if (blockerIsWhite != isWhite) {
             _commonLogic->addMove(bitIndexFrom, blockerIndex, game::Move::CAPTURE_FLAG, moveList, _moveIndex);
@@ -33,16 +33,16 @@ namespace movegen {
                                                     int bitIndexFrom,
                                                     std::vector<game::Move>& moveList) {
         int start = startFromBlocker 
-                    ? (alongFile ? bits::fileFromBitIndex(blockerIndex) 
-                                : bits::rankFromBitIndex(blockerIndex)) 
+                    ? (alongFile ? utils::fileFromBitIndex(blockerIndex) 
+                                : utils::rankFromBitIndex(blockerIndex)) 
                     : (alongFile ? rookFile 
                                 : rookRank);
                                 
         int stop = startFromBlocker 
                 ? (alongFile ? rookFile 
                                 : rookRank) 
-                : (alongFile ? bits::fileFromBitIndex(blockerIndex) 
-                                : bits::rankFromBitIndex(blockerIndex));
+                : (alongFile ? utils::fileFromBitIndex(blockerIndex) 
+                                : utils::rankFromBitIndex(blockerIndex));
 
         for (int i = start - 1; i > stop; --i) {
             int rankOrFileIndex = alongFile ? rookRank * 8 + i : i * 8 + rookFile;
@@ -55,11 +55,11 @@ namespace movegen {
                                                     int bitIndexFrom,
                                                     std::vector<game::Move>& moveList) {
         
-        int startRank = startFromBlocker ? bits::rankFromBitIndex(blockerIndex) : bishopRank;
-        int startFile = startFromBlocker ? bits::fileFromBitIndex(blockerIndex) : bishopFile;
+        int startRank = startFromBlocker ? utils::rankFromBitIndex(blockerIndex) : bishopRank;
+        int startFile = startFromBlocker ? utils::fileFromBitIndex(blockerIndex) : bishopFile;
 
-        int stopRank = startFromBlocker ? bishopRank : bits::rankFromBitIndex(blockerIndex);
-        int stopFile = startFromBlocker ? bishopFile : bits::fileFromBitIndex(blockerIndex);
+        int stopRank = startFromBlocker ? bishopRank : utils::rankFromBitIndex(blockerIndex);
+        int stopFile = startFromBlocker ? bishopFile : utils::fileFromBitIndex(blockerIndex);
 
         int rankDiff = startRank - stopRank;
         int fileDiff = startFile - stopFile;
@@ -77,7 +77,7 @@ namespace movegen {
             U64 blockerBitMask = ray & _board.getOccupiedPiecesBitmask();          
 
             if (blockerBitMask != 0) {
-                int blockerIndex = blockerOnLSB ? bits::indexOfLSB(blockerBitMask) : bits::indexOfMSB(blockerBitMask);
+                int blockerIndex = blockerOnLSB ? utils::indexOfLSB(blockerBitMask) : utils::indexOfMSB(blockerBitMask);
                 addMoveIfBlockerIsEnemy(blockerIndex, isWhite, pieceIndex, moveList);
                 addMovesBetweenBlockerAndPieceOnStraightRay(blockerIndex, alongFile, blockerOnLSB, pieceRank, pieceFile, pieceIndex, moveList);
             } else {
@@ -89,7 +89,7 @@ namespace movegen {
         U64 blockerBitMask = ray & _board.getOccupiedPiecesBitmask();
 
         if (blockerBitMask != 0) {
-            int blockerIndex = blockerOnLSB ? bits::indexOfLSB(blockerBitMask) : bits::indexOfMSB(blockerBitMask);
+            int blockerIndex = blockerOnLSB ? utils::indexOfLSB(blockerBitMask) : utils::indexOfMSB(blockerBitMask);
             addMoveIfBlockerIsEnemy(blockerIndex, isWhite, pieceIndex, moveList);
             addMovesBetweenBlockerAndPieceOnDiagonalRay(blockerIndex, blockerOnLSB, pieceRank, pieceFile, pieceIndex, moveList);
         } else {
@@ -105,13 +105,13 @@ namespace movegen {
             U64 occupiedBlockerBitMask = straightRay & _board.getOccupiedPiecesBitmask();
 
             // If there is only one blocker out of all pieces, then it must be a rook or a queen thus the king is in check
-            if (bits::popCount(occupiedBlockerBitMask) == 1) {
+            if (utils::popCount(occupiedBlockerBitMask) == 1) {
                 return true;
             } else {
-                int occupiedBlockerIndex = firstBlockerOnLSB ? bits::indexOfLSB(occupiedBlockerBitMask)
-                                                             : bits::indexOfMSB(occupiedBlockerBitMask);
-                int rooksAndQueensBlockerIndex = firstBlockerOnLSB ? bits::indexOfLSB(rooksAndQueensBlockerBitMask)
-                                                                   : bits::indexOfMSB(rooksAndQueensBlockerBitMask);
+                int occupiedBlockerIndex = firstBlockerOnLSB ? utils::indexOfLSB(occupiedBlockerBitMask)
+                                                             : utils::indexOfMSB(occupiedBlockerBitMask);
+                int rooksAndQueensBlockerIndex = firstBlockerOnLSB ? utils::indexOfLSB(rooksAndQueensBlockerBitMask)
+                                                                   : utils::indexOfMSB(rooksAndQueensBlockerBitMask);
 
                 // If the the first blocker of any piece is the same as the first blocker of a rook or queen, then the king is in check
                 if (occupiedBlockerIndex == rooksAndQueensBlockerIndex) {
@@ -131,13 +131,13 @@ namespace movegen {
         if ((bishopsAndQueensBlockerBitMask) != 0) {
             U64 occupiedBlockerBitMask = diagonalRay & _board.getOccupiedPiecesBitmask();
 
-            if (bits::popCount(occupiedBlockerBitMask) == 1) {
+            if (utils::popCount(occupiedBlockerBitMask) == 1) {
                 return true;
             } else {
-                int occupiedBlockerIndex = firstBlockerOnLSB ? bits::indexOfLSB(occupiedBlockerBitMask)
-                                                             : bits::indexOfMSB(occupiedBlockerBitMask);
-                int bishopsAndQueensBlockerIndex = firstBlockerOnLSB ? bits::indexOfLSB(bishopsAndQueensBlockerBitMask)
-                                                                   : bits::indexOfMSB(bishopsAndQueensBlockerBitMask);
+                int occupiedBlockerIndex = firstBlockerOnLSB ? utils::indexOfLSB(occupiedBlockerBitMask)
+                                                             : utils::indexOfMSB(occupiedBlockerBitMask);
+                int bishopsAndQueensBlockerIndex = firstBlockerOnLSB ? utils::indexOfLSB(bishopsAndQueensBlockerBitMask)
+                                                                   : utils::indexOfMSB(bishopsAndQueensBlockerBitMask);
 
                 if (occupiedBlockerIndex == bishopsAndQueensBlockerIndex) {
                     return true;

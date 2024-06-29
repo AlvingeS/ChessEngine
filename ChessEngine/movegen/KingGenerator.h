@@ -3,7 +3,7 @@
 #include "ChessEngine/common.h"
 
 #include "ChessEngine/game/Move.h"
-#include "ChessEngine/bits/KingBitMasks.h"
+#include "ChessEngine/masks/KingBitMasks.h"
 
 #include "RayLogic.h"
 #include "CommonLogic.h"

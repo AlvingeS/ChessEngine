@@ -2,7 +2,7 @@
 
 #include "ChessEngine/common.h"
 
-namespace bits {
+namespace masks {
 
     struct StraightRays {
         U64 north;

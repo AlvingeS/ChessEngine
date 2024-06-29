@@ -4,7 +4,7 @@
 
 #include "ChessEngine/game/PieceType.h"
 
-namespace bits {
+namespace utils {
     void printU64InBits(U64 n);
     void getBitIndices(std::vector<int>& indices, U64 bitboard);
 

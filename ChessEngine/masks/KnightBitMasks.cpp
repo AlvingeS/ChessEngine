@@ -2,7 +2,7 @@
 
 #include "ChessEngine/utils/ChessUtils.h"
 
-namespace bits {
+namespace masks {
 
     // Applies all knight moves without considering looping around the board
     U64 applyKnightMoves(int ind) {
@@ -22,15 +22,15 @@ namespace bits {
 
     // Applies file masks to knight moves to prevent looping around the board
     void removeWrapAroundKnightMoves(U64& knightMoves, int ind) {
-        U64 aFile = getFileMask(7);
-        U64 bFile = getFileMask(6);
+        U64 aFile = utils::getFileMask(7);
+        U64 bFile = utils::getFileMask(6);
         U64 notAorBFile = ~(aFile | bFile);
 
-        U64 gFile = getFileMask(1);
-        U64 hFile = getFileMask(0);
+        U64 gFile = utils::getFileMask(1);
+        U64 hFile = utils::getFileMask(0);
         U64 notGorHFile = ~(gFile | hFile);
     
-        switch (fileFromBitIndex(ind)) {
+        switch (utils::fileFromBitIndex(ind)) {
             case 0:
                 knightMoves &= notAorBFile;
                 break;

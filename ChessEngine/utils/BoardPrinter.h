@@ -4,7 +4,7 @@
 
 #include "ChessEngine/game/PieceType.h"
 
-namespace game {
+namespace utils {
     class BoardPrinter {
         public:
             // Public member functions
@@ -17,6 +17,6 @@ namespace game {
             std::vector<std::vector<char>> _board;
 
             // Private member functions
-            bool isValidPiece(PieceType piece_type);
+            bool isValidPiece(game::PieceType piece_type);
     };
 }

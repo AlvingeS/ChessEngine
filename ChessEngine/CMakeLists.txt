@@ -1,4 +1,4 @@
-add_subdirectory(bits)
+add_subdirectory(masks)
 add_subdirectory(game)
 add_subdirectory(movegen)
 add_subdirectory(search)

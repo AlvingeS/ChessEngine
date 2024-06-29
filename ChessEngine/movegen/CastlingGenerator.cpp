@@ -10,10 +10,10 @@ namespace movegen {
           _moveIndex(moveIndex),
           _commonLogic(commonLogic),
           _checkDetection(checkDetection) {
-        _whiteKingSideCastleBitmask = bits::whiteKingSideCastleMask;
-        _whiteQueenSideCastleBitmask = bits::whiteQueenSideCastleMask;
-        _blackKingSideCastleBitmask = bits::blackKingSideCastleMask;
-        _blackQueenSideCastleBitmask = bits::blackQueenSideCastleMask;
+        _whiteKingSideCastleBitmask = masks::whiteKingSideCastleMask;
+        _whiteQueenSideCastleBitmask = masks::whiteQueenSideCastleMask;
+        _blackKingSideCastleBitmask = masks::blackKingSideCastleMask;
+        _blackQueenSideCastleBitmask = masks::blackQueenSideCastleMask;
     }
 
     void CastlingGenerator::generate(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights) {

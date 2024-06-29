@@ -9,5 +9,5 @@ add_executable(movegen_tests
     CheckDetection_test.cpp
 )
 
-target_link_libraries(movegen_tests PRIVATE search movegen game bits GTest::gtest_main)
+target_link_libraries(movegen_tests PRIVATE search movegen game utils masks GTest::gtest_main)
 gtest_discover_tests(movegen_tests)

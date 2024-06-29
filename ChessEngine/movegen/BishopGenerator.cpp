@@ -8,17 +8,17 @@ namespace movegen {
         : _board(board),
           _rayLogic(rayLogic) {
         _bishopIndices.reserve(64);
-        _diagonalRayBitmasks = bits::getAllDiagonalRayBitmasks();
+        _diagonalRayBitmasks = masks::getAllDiagonalRayBitmasks();
     }
 
     void BishopGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
-        bits::getBitIndices(_bishopIndices, isWhite ? _board.getWhiteBishopsBitboard()
+        utils::getBitIndices(_bishopIndices, isWhite ? _board.getWhiteBishopsBitboard()
                                                     : _board.getBlackBishopsBitboard());
 
         for (int currentBishopIndex : _bishopIndices) {
-            bits::DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];
-            int bishopRank = bits::rankFromBitIndex(currentBishopIndex);
-            int bishopFile = bits::fileFromBitIndex(currentBishopIndex);
+            masks::DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];
+            int bishopRank = utils::rankFromBitIndex(currentBishopIndex);
+            int bishopFile = utils::fileFromBitIndex(currentBishopIndex);
 
             _rayLogic->getMovesFromDiagonalRay(rays.northEast, true, isWhite, currentBishopIndex, bishopRank, bishopFile, moveList);
             _rayLogic->getMovesFromDiagonalRay(rays.southEast, false, isWhite, currentBishopIndex, bishopRank, bishopFile, moveList);;

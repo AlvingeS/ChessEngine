@@ -8,20 +8,20 @@ namespace movegen {
         : _board(board),
           _rayLogic(rayLogic) {
         _rookIndices.reserve(64);
-        _straightRayBitmasks = bits::getAllStraightRayBitmasks();
+        _straightRayBitmasks = masks::getAllStraightRayBitmasks();
     }
 
     void RookGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
-        bits::StraightRays rays;
+        masks::StraightRays rays;
 
-        bits::getBitIndices(_rookIndices, isWhite ? _board.getWhiteRooksBitboard()
+        utils::getBitIndices(_rookIndices, isWhite ? _board.getWhiteRooksBitboard()
                                                   : _board.getBlackRooksBitboard());
 
         // Loop through all rooks and isolate them
         for (int currentRookIndex : _rookIndices) {
             rays = _straightRayBitmasks[currentRookIndex];
-            int rookRank = bits::rankFromBitIndex(currentRookIndex);
-            int rookFile = bits::fileFromBitIndex(currentRookIndex);
+            int rookRank = utils::rankFromBitIndex(currentRookIndex);
+            int rookFile = utils::fileFromBitIndex(currentRookIndex);
 
             _rayLogic->getMovesFromStraightRay(rays.north, true, false, isWhite, currentRookIndex, rookRank, rookFile, moveList);
             _rayLogic->getMovesFromStraightRay(rays.east, false, true, isWhite, currentRookIndex, rookRank, rookFile, moveList);

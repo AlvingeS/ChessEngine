@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
-#include "ChessEngine/bits/KnightBitMasks.h"
+#include "ChessEngine/masks/KnightBitMasks.h"
 
-namespace bits {
+#include "ChessEngine/common.h"
+
+namespace masks {
     class KnightBitMasks : public ::testing::Test {
         protected:
 

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "ChessEngine/utils/ChessUtils.h"
 
-namespace bits {
+namespace utils {
     class ChessUtils : public ::testing::Test {
         protected:
             U64 a;

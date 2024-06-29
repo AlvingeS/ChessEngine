@@ -50,7 +50,7 @@ namespace game {
 
     bool ChessBoard::isDeadPosition() {
         // It is assumed in this method that the kings may never dissapear
-        int popCount = bits::popCount(_occupiedPiecesBitmask);
+        int popCount = utils::popCount(_occupiedPiecesBitmask);
 
         if (popCount == 2) {
             return true;

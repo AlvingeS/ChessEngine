@@ -4,9 +4,9 @@
 
 #include "ChessEngine/game/Move.h"
 #include "ChessEngine/game/ChessBoard.h"
-#include "ChessEngine/bits/RayBitMasks.h"
+#include "ChessEngine/masks/RayBitMasks.h"
 #include "ChessEngine/utils/BitBasics.h"
-#include "ChessEngine/bits/Castling.h"
+#include "ChessEngine/masks/Castling.h"
 
 #include "RayLogic.h"
 #include "CommonLogic.h"

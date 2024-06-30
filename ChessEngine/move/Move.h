@@ -2,9 +2,9 @@
 
 #include <functional>
 
-#include "PieceType.h"
+#include "ChessEngine/board/PieceType.h"
 
-namespace game {
+namespace move {
     class Move {
         public:
             static const int QUITE_FLAG = 0;
@@ -147,8 +147,8 @@ namespace game {
 
 namespace std {
     template <>
-    struct hash<game::Move> {
-        size_t operator()(const game::Move& move) const {
+    struct hash<move::Move> {
+        size_t operator()(const move::Move& move) const {
             size_t h1 = std::hash<int>()(move.getBitIndexFrom());
             size_t h2 = std::hash<int>()(move.getBitIndexTo());
             size_t h3 = std::hash<int>()(move.getFlag());

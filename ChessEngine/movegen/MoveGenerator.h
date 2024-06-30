@@ -2,7 +2,7 @@
 
 #include "ChessEngine/common.h"
 
-#include "ChessEngine/game/Move.h"
+#include "ChessEngine/move/Move.h"
 #include "ChessEngine/masks/RayBitMasks.h"
 #include "ChessEngine/utils/BitBasics.h"
 
@@ -24,32 +24,32 @@ namespace movegen {
             static constexpr int MAX_LEGAL_MOVES = 218;
 
             // Public member functions
-            MoveGenerator(game::BitBoards& bitboards, game::GameStateBitMasks& gameStateBitmasks, game::MoveMaker& moveMaker);
-            void resetMoves(std::vector<game::Move>& moveList);
+            MoveGenerator(board::BitBoards& bitboards, board::GameStateBitMasks& gameStateBitmasks, move::MoveMaker& moveMaker);
+            void resetMoves(std::vector<move::Move>& moveList);
             void resetMoveIndex();
-            void genMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, unsigned char castlingRights);
-            void genRookMoves(bool isWhite, std::vector<game::Move>& moveList);
-            void genBishopMoves(bool isWhite, std::vector<game::Move>& moveList);
-            void genKnightMoves(bool isWite, std::vector<game::Move>& moveList);
-            void genQueenMoves(bool isWhite, std::vector<game::Move>& moveList);
-            void genKingMoves(bool isWhite, std::vector<game::Move>& moveList);
-            void genPawnMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, perft::SearchMemory& searchMemory);
-            void genCastlingMoves(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights);
+            void genMoves(bool isWhite, std::vector<move::Move>& moveList, int currentDepth, unsigned char castlingRights);
+            void genRookMoves(bool isWhite, std::vector<move::Move>& moveList);
+            void genBishopMoves(bool isWhite, std::vector<move::Move>& moveList);
+            void genKnightMoves(bool isWite, std::vector<move::Move>& moveList);
+            void genQueenMoves(bool isWhite, std::vector<move::Move>& moveList);
+            void genKingMoves(bool isWhite, std::vector<move::Move>& moveList);
+            void genPawnMoves(bool isWhite, std::vector<move::Move>& moveList, int currentDepth, perft::SearchMemory& searchMemory);
+            void genCastlingMoves(bool isWhite, std::vector<move::Move>& moveList, unsigned char castlingRights);
             bool isInCheck(bool isWhite);
 
             size_t getMoveIndex() {
                 return _moveIndex;
             }
 
-            // game::ChessBoard& getBoard() {
+            // board::ChessBoard& getBoard() {
             //     return _board;
             // }
 
         private:
             // Private member variables
-            game::BitBoards& _bitboards;
-            game::GameStateBitMasks& _gameStateBitmasks;
-            game::MoveMaker& _moveMaker;
+            board::BitBoards& _bitboards;
+            board::GameStateBitMasks& _gameStateBitmasks;
+            move::MoveMaker& _moveMaker;
             perft::SearchMemory& _searchMemory;
             CommonLogic _commonLogic;
             RayLogic _rayLogic;

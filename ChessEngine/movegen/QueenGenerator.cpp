@@ -1,10 +1,10 @@
 #include "QueenGenerator.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
-#include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/board/PieceType.h"
 
 namespace movegen {
-    QueenGenerator::QueenGenerator(game::BitBoards& bitboards, RayLogic* rayLogic) 
+    QueenGenerator::QueenGenerator(board::BitBoards& bitboards, RayLogic* rayLogic) 
         : _bitboards(bitboards),
           _rayLogic(rayLogic) {
         _queenIndices.reserve(64);
@@ -12,7 +12,7 @@ namespace movegen {
         _diagonalRayBitmasks = masks::getAllDiagonalRayBitmasks();
     }
 
-    void QueenGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
+    void QueenGenerator::generate(bool isWhite, std::vector<move::Move>& moveList) {
         utils::getBitIndices(_queenIndices, isWhite ? _bitboards.getWhiteQueensBitboard()
                                                    : _bitboards.getBlackQueensBitboard());
 

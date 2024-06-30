@@ -24,7 +24,7 @@ namespace perft {
             searcher.setBoardFromFen(posFive);
 
             // Make dubug move
-            // game::Move move = moveFromStrAndFlag("a2a3", 0);
+            // move::Move move = moveFromStrAndFlag("a2a3", 0);
             // searcher.makeMove(move, true);
             int nDebugMoves = 0;
 

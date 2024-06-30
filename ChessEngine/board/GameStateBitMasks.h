@@ -4,7 +4,7 @@
 
 #include "BitBoards.h"
 
-namespace game {
+namespace board {
     class GameStateBitMasks {
         public:
             // ** Constructor **

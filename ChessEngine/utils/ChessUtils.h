@@ -2,7 +2,7 @@
 
 #include "ChessEngine/common.h"
 
-#include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/board/PieceType.h"
 
 #include "maths.h"
 

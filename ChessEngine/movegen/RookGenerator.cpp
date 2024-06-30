@@ -1,17 +1,17 @@
 #include "RookGenerator.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
-#include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/board/PieceType.h"
 
 namespace movegen {
-    RookGenerator::RookGenerator(game::BitBoards& bitboards, RayLogic* rayLogic) 
+    RookGenerator::RookGenerator(board::BitBoards& bitboards, RayLogic* rayLogic) 
         : _bitboards(bitboards),
           _rayLogic(rayLogic) {
         _rookIndices.reserve(64);
         _straightRayBitmasks = masks::getAllStraightRayBitmasks();
     }
 
-    void RookGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
+    void RookGenerator::generate(bool isWhite, std::vector<move::Move>& moveList) {
         masks::StraightRays rays;
 
         utils::getBitIndices(_rookIndices, isWhite ? _bitboards.getWhiteRooksBitboard()

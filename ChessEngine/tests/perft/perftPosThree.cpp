@@ -24,7 +24,7 @@ namespace perft {
         if (enablePos3Test) {
             searcher.setBoardFromFen(posThree);
 
-            // game::Move move = moveFromStrAndFlag("a5a4", 0);
+            // move::Move move = moveFromStrAndFlag("a5a4", 0);
             // searcher.makeMove(move, true);
             // move = moveFromStrAndFlag("h4g4", 0);
             // searcher.makeMove(move, false);

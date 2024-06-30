@@ -2,9 +2,9 @@
 
 #include "ChessEngine/common.h"
 
-#include "ChessEngine/game/BitBoards.h"
-#include "ChessEngine/game/GameStateBitMasks.h"
-#include "ChessEngine/game/Move.h"
+#include "ChessEngine/board/BitBoards.h"
+#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/move/Move.h"
 #include "ChessEngine/masks/PawnBitMasks.h"
 #include "ChessEngine/perft/SearchMemory.h"
 
@@ -15,15 +15,15 @@ namespace movegen {
     class PawnGenerator {
         public:
             // Constructor
-            PawnGenerator(game::BitBoards& bitboards, game::GameStateBitMasks& gameStateBitmasks, int& moveIndex, CommonLogic* commonLogic);
+            PawnGenerator(board::BitBoards& bitboards, board::GameStateBitMasks& gameStateBitmasks, int& moveIndex, CommonLogic* commonLogic);
             
             // Public member functions
-            void generate(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, perft::SearchMemory& searchMemory);
+            void generate(bool isWhite, std::vector<move::Move>& moveList, int currentDepth, perft::SearchMemory& searchMemory);
         private:
 
             // Private member functions
-            game::BitBoards& _bitboards;
-            game::GameStateBitMasks& _gameStateBitmasks;
+            board::BitBoards& _bitboards;
+            board::GameStateBitMasks& _gameStateBitmasks;
             int& _moveIndex;
             CommonLogic* _commonLogic;
 

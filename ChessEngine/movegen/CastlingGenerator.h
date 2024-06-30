@@ -2,10 +2,10 @@
 
 #include "ChessEngine/common.h"
 
-#include "ChessEngine/game/Move.h"
-#include "ChessEngine/game/BitBoards.h"
-#include "ChessEngine/game/GameStateBitMasks.h"
-#include "ChessEngine/game/MoveMaker.h"
+#include "ChessEngine/move/Move.h"
+#include "ChessEngine/board/BitBoards.h"
+#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/move/MoveMaker.h"
 
 #include "RayLogic.h"
 #include "CommonLogic.h"
@@ -20,16 +20,16 @@ namespace movegen {
     class CastlingGenerator {
         public:
             // Constructor
-            CastlingGenerator(game::BitBoards& bitboards, game::GameStateBitMasks& gameStateBitmasks, game::MoveMaker& moveMaker, int& moveIndex, CommonLogic* commonLogic, CheckDetection* checkDetection);
+            CastlingGenerator(board::BitBoards& bitboards, board::GameStateBitMasks& gameStateBitmasks, move::MoveMaker& moveMaker, int& moveIndex, CommonLogic* commonLogic, CheckDetection* checkDetection);
             
             // Public member functions
-            void generate(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights);
+            void generate(bool isWhite, std::vector<move::Move>& moveList, unsigned char castlingRights);
         private:
 
             // Private member functions
-            game::BitBoards& _bitboards;
-            game::GameStateBitMasks& _gameStateBitmasks;
-            game::MoveMaker& _moveMaker;
+            board::BitBoards& _bitboards;
+            board::GameStateBitMasks& _gameStateBitmasks;
+            move::MoveMaker& _moveMaker;
             int& _moveIndex;
             CommonLogic* _commonLogic;
             CheckDetection* _checkDetection;
@@ -41,7 +41,7 @@ namespace movegen {
             U64 _blackQueenSideCastleBitmask;
 
             // Private member functions
-            void genSingleCastleMove(bool isWhite, bool isKingSide, std::vector<game::Move>& moveList);
+            void genSingleCastleMove(bool isWhite, bool isKingSide, std::vector<move::Move>& moveList);
             bool kingAndRookOnCastlingSquares(bool isWhite, bool isKingSide);
             void makeTemporaryKingMove(bool isWhite, bool isKingSide);
             void unmakeTemporaryKingMove(bool isWhite, bool isKingSide);

@@ -17,8 +17,8 @@ namespace movegen {
         utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genKnightMoves(true, moveList);
 
-        std::vector<game::Move> moves = getMoves();
-        std::unordered_set<game::Move> expectedMoves;
+        std::vector<move::Move> moves = getMoves();
+        std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 1, {16, 18}, {0, 0});
         insertExpectedMoves(expectedMoves, 6, {21, 23}, {0, 0});
 
@@ -35,8 +35,8 @@ namespace movegen {
         utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genKnightMoves(false, moveList);
 
-        std::vector<game::Move> moves = getMoves();
-        std::unordered_set<game::Move> expectedMoves;
+        std::vector<move::Move> moves = getMoves();
+        std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 57, {40, 42}, {0, 0});
         insertExpectedMoves(expectedMoves, 62, {45, 47}, {0, 0});
 
@@ -53,8 +53,8 @@ namespace movegen {
         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genKnightMoves(true, moveList);
 
-        std::vector<game::Move> moves = getMoves();
-        std::unordered_set<game::Move> expectedMoves;
+        std::vector<move::Move> moves = getMoves();
+        std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 0, {10, 17}, {1, 0});
         insertExpectedMoves(expectedMoves, 37, {52, 43, 20, 22, 31, 47, 54}, {1, 0, 0, 0, 0, 0, 1});
 
@@ -71,8 +71,8 @@ namespace movegen {
         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genKnightMoves(false, moveList);
 
-        std::vector<game::Move> moves = getMoves();
-        std::unordered_set<game::Move> expectedMoves;
+        std::vector<move::Move> moves = getMoves();
+        std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 52, {58, 42, 35, 37, 46, 62}, {0, 1, 0, 1, 0, 0});
         insertExpectedMoves(expectedMoves, 54, {60, 44, 37, 39}, {0, 0, 1, 0});
 

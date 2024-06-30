@@ -1,6 +1,6 @@
 #include "SquaresLookup.h"
 
-namespace game {
+namespace board {
     SquaresLookup::SquaresLookup(BitBoards& bitboards) {
         fillSquaresLookup(bitboards);
     }

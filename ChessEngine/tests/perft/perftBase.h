@@ -1,9 +1,9 @@
 #pragma once
 #include "ChessEngine/perft/Searcher.h"
 #include "ChessEngine/utils/Fen.h"
-#include "ChessEngine/game/BitBoards.h"
-#include "ChessEngine/game/GameStateBitMasks.h"
-#include "ChessEngine/game/SquaresLookup.h"
+#include "ChessEngine/board/BitBoards.h"
+#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/board/SquaresLookup.h"
 
 #include <gtest/gtest.h>
 #include <unordered_map>
@@ -78,7 +78,7 @@ namespace perft {
                 }
             }
 
-            std::string translateMoveToStr(game::Move move, bool whiteStarted) {
+            std::string translateMoveToStr(move::Move move, bool whiteStarted) {
                 if (move.isAnyCastle()) {
                     return move.isKingCastle() ? (whiteStarted ? "e1g1" : "e8g8") 
                                                : (whiteStarted ? "e1c1" : "e8c8");
@@ -104,30 +104,30 @@ namespace perft {
 
                 if (move.isAnyPromo()) {
                     switch (move.getFlag()) {
-                        case game::Move::KNIGHT_PROMO_FLAG:
+                        case move::Move::KNIGHT_PROMO_FLAG:
                             moveStr += (whiteStarted) ? "n" : "N";
                             break;
-                        case game::Move::BISHOP_PROMO_FLAG:
+                        case move::Move::BISHOP_PROMO_FLAG:
                             moveStr += (whiteStarted) ? "b" : "B";
                             break;
-                        case game::Move::ROOK_PROMO_FLAG:
+                        case move::Move::ROOK_PROMO_FLAG:
                             moveStr += (whiteStarted) ? "r" : "R";
                             break;
-                        case game::Move::QUEEN_PROMO_FLAG:
+                        case move::Move::QUEEN_PROMO_FLAG:
                             moveStr += (whiteStarted) ? "q" : "Q";
                             break;
                         default:
                             break;
-                        case game::Move::KNIGHT_PROMO_CAPTURE_FLAG:
+                        case move::Move::KNIGHT_PROMO_CAPTURE_FLAG:
                             moveStr += (whiteStarted) ? "n" : "N";
                             break;
-                        case game::Move::BISHOP_PROMO_CAPTURE_FLAG:
+                        case move::Move::BISHOP_PROMO_CAPTURE_FLAG:
                             moveStr += (whiteStarted) ? "b" : "B";
                             break;
-                        case game::Move::ROOK_PROMO_CAPTURE_FLAG:
+                        case move::Move::ROOK_PROMO_CAPTURE_FLAG:
                             moveStr += (whiteStarted) ? "r" : "R";
                             break;
-                        case game::Move::QUEEN_PROMO_CAPTURE_FLAG:
+                        case move::Move::QUEEN_PROMO_CAPTURE_FLAG:
                             moveStr += (whiteStarted) ? "q" : "Q";
                             break;
                     }
@@ -150,9 +150,9 @@ namespace perft {
                 return fromTo;
             }
 
-            game::Move moveFromStrAndFlag(std::string moveStr, int flag) {
+            move::Move moveFromStrAndFlag(std::string moveStr, int flag) {
                 fromToBitIndices fromTo = translateStrToFromTo(moveStr);
-                return game::Move(fromTo.from, fromTo.to, flag);
+                return move::Move(fromTo.from, fromTo.to, flag);
             }
 
             std::unordered_map<std::string, long> nodeCountPerFirstMoveAsMap(bool whiteStarted) {

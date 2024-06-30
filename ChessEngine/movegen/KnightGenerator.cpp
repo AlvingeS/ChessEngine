@@ -1,10 +1,10 @@
 #include "KnightGenerator.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
-#include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/board/PieceType.h"
 
 namespace movegen {
-    KnightGenerator::KnightGenerator(game::BitBoards& bitboards, game::GameStateBitMasks& gameStateBitMasks, int& moveIndex, CommonLogic* commonLogic) 
+    KnightGenerator::KnightGenerator(board::BitBoards& bitboards, board::GameStateBitMasks& gameStateBitMasks, int& moveIndex, CommonLogic* commonLogic) 
         : _bitboards(bitboards),
           _gameStateBitmasks(gameStateBitMasks),
           _moveIndex(moveIndex),
@@ -15,7 +15,7 @@ namespace movegen {
         _knightBitmasks = masks::getAllKnightBitMasks();
     }
 
-    void KnightGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
+    void KnightGenerator::generate(bool isWhite, std::vector<move::Move>& moveList) {
         utils::getBitIndices(_knightIndices, isWhite ? _bitboards.getWhiteKnightsBitboard() : _bitboards.getBlackKnightsBitboard());
 
         for (int currentKnightIndex : _knightIndices) {
@@ -29,11 +29,11 @@ namespace movegen {
             utils::getBitIndices(_capturableMovesIndices, capturableKnightMoves);
 
             for (int freeKnightMoveIndex : _freeMovesIndices) {
-                _commonLogic->addMove(currentKnightIndex, freeKnightMoveIndex, game::Move::QUITE_FLAG, moveList, _moveIndex);
+                _commonLogic->addMove(currentKnightIndex, freeKnightMoveIndex, move::Move::QUITE_FLAG, moveList, _moveIndex);
             }
 
             for (int capturableKnightMoveIndex : _capturableMovesIndices) {
-                _commonLogic->addMove(currentKnightIndex, capturableKnightMoveIndex, game::Move::CAPTURE_FLAG, moveList, _moveIndex);
+                _commonLogic->addMove(currentKnightIndex, capturableKnightMoveIndex, move::Move::CAPTURE_FLAG, moveList, _moveIndex);
             }
         }
     }

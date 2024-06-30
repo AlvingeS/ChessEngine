@@ -10,7 +10,7 @@
 #include "ChessEngine/utils/BitBasics.h"
 
 namespace movegen {
-    MoveGenerator::MoveGenerator(game::BitBoards& bitboards, game::GameStateBitMasks& gameStateBitmasks, game::MoveMaker& moveMaker)
+    MoveGenerator::MoveGenerator(board::BitBoards& bitboards, board::GameStateBitMasks& gameStateBitmasks, move::MoveMaker& moveMaker)
         : _bitboards(bitboards),
           _gameStateBitmasks(gameStateBitmasks),
           _moveMaker(moveMaker),
@@ -27,7 +27,7 @@ namespace movegen {
           _castlingGenerator(_bitboards, _gameStateBitmasks, moveMaker, _moveIndex, &_commonLogic, &_checkDetection) {
     }
 
-    void MoveGenerator::genMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, unsigned char castlingRights) {
+    void MoveGenerator::genMoves(bool isWhite, std::vector<move::Move>& moveList, int currentDepth, unsigned char castlingRights) {
         genRookMoves(isWhite, moveList);
         genKnightMoves(isWhite, moveList);
         genBishopMoves(isWhite, moveList);
@@ -35,11 +35,11 @@ namespace movegen {
         genKingMoves(isWhite, moveList);
         genPawnMoves(isWhite, moveList, currentDepth, _searchMemory);
         genCastlingMoves(isWhite, moveList, castlingRights);
-        moveList[_moveIndex] = game::Move(); // Add a null move to the end of the move list
+        moveList[_moveIndex] = move::Move(); // Add a null move to the end of the move list
     }
 
-    void MoveGenerator::resetMoves(std::vector<game::Move>& moveList) {
-        moveList = std::vector<game::Move>(MAX_LEGAL_MOVES);
+    void MoveGenerator::resetMoves(std::vector<move::Move>& moveList) {
+        moveList = std::vector<move::Move>(MAX_LEGAL_MOVES);
         _moveIndex = 0;
     }
 
@@ -47,31 +47,31 @@ namespace movegen {
         _moveIndex = 0;
     }
 
-    void MoveGenerator::genRookMoves(bool isWhite, std::vector<game::Move>& moveList) {
+    void MoveGenerator::genRookMoves(bool isWhite, std::vector<move::Move>& moveList) {
         _rookGenerator.generate(isWhite, moveList);
     }
 
-    void MoveGenerator::genBishopMoves(bool isWhite, std::vector<game::Move>& moveList) {
+    void MoveGenerator::genBishopMoves(bool isWhite, std::vector<move::Move>& moveList) {
         _bishopGenerator.generate(isWhite, moveList);
     }
 
-    void MoveGenerator::genKnightMoves(bool isWhite, std::vector<game::Move>& moveList) {
+    void MoveGenerator::genKnightMoves(bool isWhite, std::vector<move::Move>& moveList) {
         _knightGenerator.generate(isWhite, moveList);
     }
 
-    void MoveGenerator::genQueenMoves(bool isWhite, std::vector<game::Move>& moveList) {
+    void MoveGenerator::genQueenMoves(bool isWhite, std::vector<move::Move>& moveList) {
         _queenGenerator.generate(isWhite, moveList);
     }
 
-    void MoveGenerator::genKingMoves(bool isWhite, std::vector<game::Move>& moveList) {
+    void MoveGenerator::genKingMoves(bool isWhite, std::vector<move::Move>& moveList) {
         _kingGenerator.generate(isWhite, moveList);
     }
 
-    void MoveGenerator::genPawnMoves(bool isWhite, std::vector<game::Move>& moveList, int currentDepth, perft::SearchMemory& searchMemory) {
+    void MoveGenerator::genPawnMoves(bool isWhite, std::vector<move::Move>& moveList, int currentDepth, perft::SearchMemory& searchMemory) {
         _pawnGenerator.generate(isWhite, moveList, currentDepth, searchMemory);
     }
 
-    void MoveGenerator::genCastlingMoves(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights) {
+    void MoveGenerator::genCastlingMoves(bool isWhite, std::vector<move::Move>& moveList, unsigned char castlingRights) {
         _castlingGenerator.generate(isWhite, moveList, castlingRights);
     }
 

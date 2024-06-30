@@ -4,7 +4,7 @@
 
 #include "PieceType.h"
 
-namespace game {
+namespace board {
     class ZHasher {
         public:
             ZHasher();

@@ -2,14 +2,14 @@
 
 #include "ChessEngine/common.h"
 
-#include "ChessEngine/game/BitBoards.h"
+#include "ChessEngine/board/BitBoards.h"
 
 namespace evaluation {
     class Evaluator {
         public:
-            Evaluator(game::BitBoards& bitboards);
+            Evaluator(board::BitBoards& bitboards);
             float evaluate();
         private:
-            game::BitBoards& _bitboards;
+            board::BitBoards& _bitboards;
     };
 }

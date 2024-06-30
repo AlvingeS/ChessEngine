@@ -2,15 +2,15 @@
 
 #include "ChessEngine/common.h"
 
-#include "ChessEngine/game/PieceType.h"
-#include "ChessEngine/game/BitBoards.h"
+#include "ChessEngine/board/PieceType.h"
+#include "ChessEngine/board/BitBoards.h"
 
 namespace utils {
     class BoardPrinter {
         public:
             // Public member functions
-            BoardPrinter(game::BitBoards& bitboards);
-            void fillBoard(game::BitBoards& bitboards);
+            BoardPrinter(board::BitBoards& bitboards);
+            void fillBoard(board::BitBoards& bitboards);
             void printBoard();
 
         private:
@@ -18,6 +18,6 @@ namespace utils {
             std::vector<std::vector<char>> _board;
 
             // Private member functions
-            bool isValidPiece(game::PieceType piece_type);
+            bool isValidPiece(board::PieceType piece_type);
     };
 }

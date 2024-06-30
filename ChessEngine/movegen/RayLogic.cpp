@@ -4,26 +4,26 @@
 
 namespace movegen {
 
-    RayLogic::RayLogic(game::GameStateBitMasks& gameStateBitmasks, int& moveIndex, CommonLogic* commonLogic) 
+    RayLogic::RayLogic(board::GameStateBitMasks& gameStateBitmasks, int& moveIndex, CommonLogic* commonLogic) 
         : _gameStateBitMasks(gameStateBitmasks),
           _moveIndex(moveIndex),
           _commonLogic(commonLogic) {
         _freeRayIndices.reserve(8);
     }
 
-    void RayLogic::addMovesFromFreeRay(U64 freeRay, int bitIndexFrom, std::vector<game::Move>& moveList) {
+    void RayLogic::addMovesFromFreeRay(U64 freeRay, int bitIndexFrom, std::vector<move::Move>& moveList) {
         utils::getBitIndices(_freeRayIndices, freeRay);
 
         for (int bitIndex : _freeRayIndices) {
-            _commonLogic->addMove(bitIndexFrom, bitIndex, game::Move::QUITE_FLAG, moveList, _moveIndex);
+            _commonLogic->addMove(bitIndexFrom, bitIndex, move::Move::QUITE_FLAG, moveList, _moveIndex);
         }
     }
 
-    void RayLogic::addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, std::vector<game::Move>& moveList) {
+    void RayLogic::addMoveIfBlockerIsEnemy(int blockerIndex, bool isWhite, int bitIndexFrom, std::vector<move::Move>& moveList) {
         bool blockerIsWhite = utils::getBit(_gameStateBitMasks.getWhitePiecesBitmask(), blockerIndex);
 
         if (blockerIsWhite != isWhite) {
-            _commonLogic->addMove(bitIndexFrom, blockerIndex, game::Move::CAPTURE_FLAG, moveList, _moveIndex);
+            _commonLogic->addMove(bitIndexFrom, blockerIndex, move::Move::CAPTURE_FLAG, moveList, _moveIndex);
         }
     }
 
@@ -31,7 +31,7 @@ namespace movegen {
                                                     bool startFromBlocker, int rookRank, 
                                                     int rookFile, 
                                                     int bitIndexFrom,
-                                                    std::vector<game::Move>& moveList) {
+                                                    std::vector<move::Move>& moveList) {
         int start = startFromBlocker 
                     ? (alongFile ? utils::fileFromBitIndex(blockerIndex) 
                                 : utils::rankFromBitIndex(blockerIndex)) 
@@ -46,14 +46,14 @@ namespace movegen {
 
         for (int i = start - 1; i > stop; --i) {
             int rankOrFileIndex = alongFile ? rookRank * 8 + i : i * 8 + rookFile;
-            _commonLogic->addMove(bitIndexFrom, rankOrFileIndex, game::Move::QUITE_FLAG, moveList, _moveIndex);
+            _commonLogic->addMove(bitIndexFrom, rankOrFileIndex, move::Move::QUITE_FLAG, moveList, _moveIndex);
         }
     }
 
     void RayLogic::addMovesBetweenBlockerAndPieceOnDiagonalRay(int blockerIndex, bool startFromBlocker, 
                                                     int bishopRank, int bishopFile, 
                                                     int bitIndexFrom,
-                                                    std::vector<game::Move>& moveList) {
+                                                    std::vector<move::Move>& moveList) {
         
         int startRank = startFromBlocker ? utils::rankFromBitIndex(blockerIndex) : bishopRank;
         int startFile = startFromBlocker ? utils::fileFromBitIndex(blockerIndex) : bishopFile;
@@ -69,11 +69,11 @@ namespace movegen {
 
         for (int i = startRank + rankIncrement, j = startFile + fileIncrement; i != stopRank; i += rankIncrement, j += fileIncrement) {
             int rankOrFileIndex = i * 8 + j;
-            _commonLogic->addMove(bitIndexFrom, rankOrFileIndex, game::Move::QUITE_FLAG, moveList, _moveIndex);
+            _commonLogic->addMove(bitIndexFrom, rankOrFileIndex, move::Move::QUITE_FLAG, moveList, _moveIndex);
         }
     }
 
-    void RayLogic::getMovesFromStraightRay(U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<game::Move>& moveList) {
+    void RayLogic::getMovesFromStraightRay(U64 ray, bool blockerOnLSB, bool alongFile, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<move::Move>& moveList) {
             U64 blockerBitMask = ray & _gameStateBitMasks.getOccupiedPiecesBitmask();          
 
             if (blockerBitMask != 0) {
@@ -85,7 +85,7 @@ namespace movegen {
             }
     }
 
-    void RayLogic::getMovesFromDiagonalRay(U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<game::Move>& moveList) {
+    void RayLogic::getMovesFromDiagonalRay(U64 ray, bool blockerOnLSB, bool isWhite, int pieceIndex, int pieceRank, int pieceFile, std::vector<move::Move>& moveList) {
         U64 blockerBitMask = ray & _gameStateBitMasks.getOccupiedPiecesBitmask();
 
         if (blockerBitMask != 0) {

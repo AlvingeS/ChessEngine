@@ -1,6 +1,6 @@
 #include "SearchMemory.h"
 
-#include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/board/PieceType.h"
 
 namespace perft {
     SearchMemory::SearchMemory(int maxDepth) : _maxDepth(maxDepth) {
@@ -11,7 +11,7 @@ namespace perft {
 
         for (int i = 0; i <= _maxDepth; i++) {
             _castlingRights[i] = 0b1111;
-            _lastCapturedPieces[i] = game::PieceType::EMPTY;
+            _lastCapturedPieces[i] = board::PieceType::EMPTY;
             _enPessantTargets[i] = 0ULL;
             _noCapturedOrPawnMoveCounts[i] = 0;
         }
@@ -29,12 +29,12 @@ namespace perft {
         }
     }
 
-    void SearchMemory::setCastlingRights(int currentDepth, game::Move move, bool isWhite, game::PieceType movedPieceType) {
+    void SearchMemory::setCastlingRights(int currentDepth, move::Move move, bool isWhite, board::PieceType movedPieceType) {
         if (move.isAnyCastle()) {
             removeCastlingRightsForRemainingDepths(currentDepth, isWhite ? whiteBoth : blackBoth);
         }
 
-        if (movedPieceType == game::PieceType::W_KING || movedPieceType == game::PieceType::B_KING) {
+        if (movedPieceType == board::PieceType::W_KING || movedPieceType == board::PieceType::B_KING) {
             if (isWhite) {
                 if (_castlingRights[currentDepth] & whiteBoth)
                     removeCastlingRightsForRemainingDepths(currentDepth, whiteBoth);
@@ -44,7 +44,7 @@ namespace perft {
             }
         }
 
-        if (movedPieceType == game::PieceType::W_ROOK || movedPieceType == game::PieceType::B_ROOK) {
+        if (movedPieceType == board::PieceType::W_ROOK || movedPieceType == board::PieceType::B_ROOK) {
             if (isWhite) {
                 if (move.getBitIndexFrom() == 0) {
                     if (_castlingRights[currentDepth] & whiteKingSide)

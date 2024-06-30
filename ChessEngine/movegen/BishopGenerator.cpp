@@ -1,17 +1,17 @@
 #include "BishopGenerator.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
-#include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/board/PieceType.h"
 
 namespace movegen {
-    BishopGenerator::BishopGenerator(game::BitBoards& bitboards, RayLogic* rayLogic) 
+    BishopGenerator::BishopGenerator(board::BitBoards& bitboards, RayLogic* rayLogic) 
         : _bitboards(bitboards),
           _rayLogic(rayLogic) {
         _bishopIndices.reserve(64);
         _diagonalRayBitmasks = masks::getAllDiagonalRayBitmasks();
     }
 
-    void BishopGenerator::generate(bool isWhite, std::vector<game::Move>& moveList) {
+    void BishopGenerator::generate(bool isWhite, std::vector<move::Move>& moveList) {
         utils::getBitIndices(_bishopIndices, isWhite ? _bitboards.getWhiteBishopsBitboard()
                                                     : _bitboards.getBlackBishopsBitboard());
 

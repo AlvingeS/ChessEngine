@@ -5,7 +5,7 @@
 #include "PieceType.h"
 #include "BitBoards.h"
 
-namespace game {
+namespace board {
     class SquaresLookup {
         public:
             // ** Constructor **

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <random>
 
-namespace game {
+namespace board {
     ZHasher::ZHasher() {
         std::random_device rd;
         std::mt19937 gen(rd());

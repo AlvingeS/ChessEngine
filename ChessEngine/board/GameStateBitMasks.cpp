@@ -1,6 +1,6 @@
 #include "GameStateBitMasks.h"
 
-namespace game {
+namespace board {
     GameStateBitMasks::GameStateBitMasks(BitBoards& bitboards) {
         fillWhitePiecesBitmask(bitboards);
         fillBlackPiecesBitmask(bitboards);

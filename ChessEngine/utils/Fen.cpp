@@ -1,9 +1,9 @@
 #include "Fen.h"
 
-#include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/board/PieceType.h"
 
 namespace utils {
-    void setBoardFromFen(const std::string& fen, game::BitBoards& bitboards, game::GameStateBitMasks& gameStateBitmasks, game::SquaresLookup& squaresLookup) {
+    void setBoardFromFen(const std::string& fen, board::BitBoards& bitboards, board::GameStateBitMasks& gameStateBitmasks, board::SquaresLookup& squaresLookup) {
         bitboards.resetBitboards();
 
         int rank = 7;
@@ -17,9 +17,9 @@ namespace utils {
             } else if (std::isdigit(c)) {
                 file += c - '0';
             } else {
-                game::PieceType type = game::CharToPieceType(c);
+                board::PieceType type = board::CharToPieceType(c);
                 uint64_t bit = 1ULL << (rank * 8 + (7 - file));
-                bitboards.getBitboardFromIndex(game::pieceTypeToInt(type)) |= bit;
+                bitboards.getBitboardFromIndex(board::pieceTypeToInt(type)) |= bit;
                 file++;
             }
         }
@@ -31,7 +31,7 @@ namespace utils {
         gameStateBitmasks.fillEmptySquaresBitmask();
     }
 
-    std::string& getFenFromBoard(game::SquaresLookup& squaresLookup) {
+    std::string& getFenFromBoard(board::SquaresLookup& squaresLookup) {
         std::string fen = "";
         int emptyCount = 0;
 
@@ -44,15 +44,15 @@ namespace utils {
                 fen += "/";
             }
 
-            game::PieceType type = squaresLookup.getPieceTypeAtIndex(i);
-            if (type == game::PieceType::EMPTY) {
+            board::PieceType type = squaresLookup.getPieceTypeAtIndex(i);
+            if (type == board::PieceType::EMPTY) {
                 emptyCount++;
             } else {
                 if (emptyCount != 0) {
                     fen += std::to_string(emptyCount);
                     emptyCount = 0;
                 }
-                fen += game::pieceTypeToChar(type);
+                fen += board::pieceTypeToChar(type);
             }
         }
 

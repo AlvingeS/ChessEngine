@@ -2,7 +2,7 @@
 
 #include "ChessEngine/common.h"
 
-namespace game {
+namespace board {
 
     enum class PieceType : int {
         W_PAWN,

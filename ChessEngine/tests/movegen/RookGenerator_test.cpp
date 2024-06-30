@@ -19,8 +19,8 @@ namespace movegen {
         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genRookMoves(true, moveList);
 
-        std::vector<game::Move> moves = getMoves();
-        std::unordered_set<game::Move> expectedMoves;
+        std::vector<move::Move> moves = getMoves();
+        std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 21, {29, 37, 45, 16, 17, 18, 19, 20, 5, 13, 23, 22}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}); 
 
         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
@@ -57,8 +57,8 @@ namespace movegen {
         utils::setBoardFromFen(fenTwo, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genRookMoves(true, moveList);
 
-        std::vector<game::Move> moves = getMoves();
-        std::unordered_set<game::Move> expectedMoves;
+        std::vector<move::Move> moves = getMoves();
+        std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 16, {24, 32, 40, 48, 56, 8, 0, 17, 18, 19, 20}, {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1});
         insertExpectedMoves(expectedMoves, 22, {30, 21, 20, 14, 6, 23}, {0, 0, 1, 0, 0, 0});
 
@@ -75,8 +75,8 @@ namespace movegen {
         utils::setBoardFromFen(fenTwo, bitboards, gameStateBitmasks, squaresLookup);
         moveGenerator.genRookMoves(false, moveList);
 
-        std::vector<game::Move> moves = getMoves();
-        std::unordered_set<game::Move> expectedMoves;
+        std::vector<move::Move> moves = getMoves();
+        std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 56, {48, 40, 32, 24, 16, 57, 58, 59, 60, 61, 62, 63}, {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0});
 
         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {

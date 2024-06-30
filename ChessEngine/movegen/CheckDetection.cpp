@@ -1,10 +1,10 @@
 #include "CheckDetection.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
-#include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/board/PieceType.h"
 
 namespace movegen {
-    CheckDetection::CheckDetection(game::BitBoards& bitboards, RayLogic* rayLogic) 
+    CheckDetection::CheckDetection(board::BitBoards& bitboards, RayLogic* rayLogic) 
         : _bitboards(bitboards),
           _rayLogic(rayLogic) {
         _straightRayBitmasks = masks::getAllStraightRayBitmasks();

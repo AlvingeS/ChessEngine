@@ -11,4 +11,4 @@ add_library(movegen
     CommonLogic.cpp
     CheckDetection.cpp
 )
-target_link_libraries(movegen PUBLIC game masks utils cxx_setup)
+target_link_libraries(movegen PUBLIC board masks utils cxx_setup)

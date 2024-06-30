@@ -2,8 +2,8 @@
 
 #include "ChessEngine/common.h"
 
-#include "ChessEngine/game/Move.h"
-#include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/move/Move.h"
+#include "ChessEngine/board/PieceType.h"
 #include "ChessEngine/utils/BitBasics.h"
 
 namespace perft {
@@ -22,15 +22,15 @@ namespace perft {
                 return _castlingRights[depth];
             }
 
-            game::PieceType getLastCapturedPieceAtDepth(int depth) {
+            board::PieceType getLastCapturedPieceAtDepth(int depth) {
                 return _lastCapturedPieces[depth];
             }
 
-            void setLastCapturedPieceAtDepth(int currentDepth, game::PieceType pieceType) {
+            void setLastCapturedPieceAtDepth(int currentDepth, board::PieceType pieceType) {
                 _lastCapturedPieces[currentDepth] = pieceType;
             }
 
-            void setCastlingRights(int currentDepth, game::Move move, bool isWhite, game::PieceType movedPieceType);
+            void setCastlingRights(int currentDepth, move::Move move, bool isWhite, board::PieceType movedPieceType);
             void unsetCastlingRights(int currentDepth);
 
             U64 getEnPessantTargetAtDepth(int depth) {
@@ -60,7 +60,7 @@ namespace perft {
         private:
             int _maxDepth;
             std::vector<unsigned char> _castlingRights;
-            std::vector<game::PieceType> _lastCapturedPieces;
+            std::vector<board::PieceType> _lastCapturedPieces;
             std::vector<U64> _enPessantTargets;
             std::vector<int> _noCapturedOrPawnMoveCounts;
 

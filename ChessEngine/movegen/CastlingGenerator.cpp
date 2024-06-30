@@ -1,10 +1,10 @@
 #include "CastlingGenerator.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
-#include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/board/PieceType.h"
 
 namespace movegen {
-    CastlingGenerator::CastlingGenerator(game::BitBoards& bitboards, game::GameStateBitMasks& gameStateBitmasks, game::MoveMaker& moveMaker, int& moveIndex, CommonLogic* commonLogic, CheckDetection* checkDetection) 
+    CastlingGenerator::CastlingGenerator(board::BitBoards& bitboards, board::GameStateBitMasks& gameStateBitmasks, move::MoveMaker& moveMaker, int& moveIndex, CommonLogic* commonLogic, CheckDetection* checkDetection) 
         : _bitboards(bitboards),
           _gameStateBitmasks(gameStateBitmasks),
           _moveMaker(moveMaker),
@@ -17,7 +17,7 @@ namespace movegen {
         _blackQueenSideCastleBitmask = blackQueenSideCastleMask;
     }
 
-    void CastlingGenerator::generate(bool isWhite, std::vector<game::Move>& moveList, unsigned char castlingRights) {
+    void CastlingGenerator::generate(bool isWhite, std::vector<move::Move>& moveList, unsigned char castlingRights) {
         if (castlingRights == 0) {
             return;
         }
@@ -71,7 +71,7 @@ namespace movegen {
         _moveMaker.unmakeTemporaryKingMove(isWhite, isKingSide);
     }
 
-    void CastlingGenerator::genSingleCastleMove(bool isWhite, bool isKingSide, std::vector<game::Move>& moveList) {                                                  
+    void CastlingGenerator::genSingleCastleMove(bool isWhite, bool isKingSide, std::vector<move::Move>& moveList) {                                                  
         // Check that there are no pieces between the king and rook
         U64 spaceBetweenCastlersBitmask = isWhite ? (isKingSide ? _whiteKingSideCastleBitmask : _whiteQueenSideCastleBitmask)
                                                         : (isKingSide ? _blackKingSideCastleBitmask : _blackQueenSideCastleBitmask);
@@ -100,7 +100,7 @@ namespace movegen {
         
         unmakeTemporaryKingMove(isWhite, isKingSide);
 
-        int moveFlag = isKingSide ? game::Move::KING_CASTLE_FLAG : game::Move::QUEEN_CASTLE_FLAG;        
+        int moveFlag = isKingSide ? move::Move::KING_CASTLE_FLAG : move::Move::QUEEN_CASTLE_FLAG;        
         _commonLogic->addMove(0, 0, moveFlag, moveList, _moveIndex);
     }
 }

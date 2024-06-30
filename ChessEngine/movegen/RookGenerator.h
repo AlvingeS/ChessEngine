@@ -2,8 +2,8 @@
 
 #include "ChessEngine/common.h"
 
-#include "ChessEngine/game/BitBoards.h"
-#include "ChessEngine/game/Move.h"
+#include "ChessEngine/board/BitBoards.h"
+#include "ChessEngine/move/Move.h"
 #include "ChessEngine/masks/RayBitMasks.h"
 
 #include "RayLogic.h"
@@ -13,14 +13,14 @@ namespace movegen {
     class RookGenerator {
         public:
             // Constructor
-            RookGenerator(game::BitBoards& bitboards, RayLogic* rayLogic);
+            RookGenerator(board::BitBoards& bitboards, RayLogic* rayLogic);
             
             // Public member functions
-            void generate(bool isWhite, std::vector<game::Move>& moveList);
+            void generate(bool isWhite, std::vector<move::Move>& moveList);
         private:
 
             // Private member functions
-            game::BitBoards& _bitboards;
+            board::BitBoards& _bitboards;
             RayLogic* _rayLogic;
 
             // Memory

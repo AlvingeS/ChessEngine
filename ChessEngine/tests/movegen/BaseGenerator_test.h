@@ -5,54 +5,60 @@
 #include <gtest/gtest.h>
 #include <unordered_set>
 
-#include "ChessEngine/game/BitBoards.h"
-#include "ChessEngine/game/GameStateBitMasks.h"
-#include "ChessEngine/game/SquaresLookup.h"
+#include "ChessEngine/board/BitBoards.h"
+#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/board/SquaresLookup.h"
 #include "ChessEngine/movegen/MoveGenerator.h"
-#include "ChessEngine/game/Move.h"
+#include "ChessEngine/move/Move.h"
 #include "ChessEngine/perft/SearchMemory.h"
-#include "ChessEngine/game/ZHasher.h"
+#include "ChessEngine/board/ZHasher.h"
 #include "ChessEngine/utils/Fen.h"
 
 namespace movegen {
     class BaseGenerator : public ::testing::Test {
         protected:
-            game::BitBoards bitboards;
-            game::GameStateBitMasks gameStateBitmasks;
-            game::SquaresLookup squaresLookup;
+            board::BitBoards bitboards;
+            board::GameStateBitMasks gameStateBitmasks;
+            board::SquaresLookup squaresLookup;
             perft::SearchMemory searchMemory;
-            game::ZHasher zHasher;
-            game::MoveMaker moveMaker;
+            board::ZHasher zHasher;
+            move::BitBoardUpdater bitBoardUpdater;
+            move::BitMaskUpdater bitMaskUpdater;
+            move::LookupUpdater lookupUpdater;
+            move::MoveMaker moveMaker;
             MoveGenerator moveGenerator;
             std::string startingPos;
-            std::vector<game::Move> moveList;
+            std::vector<move::Move> moveList;
 
-            BaseGenerator() : bitboards(game::BitBoards()),
-                              gameStateBitmasks(game::GameStateBitMasks(bitboards)),
-                              squaresLookup(game::SquaresLookup(bitboards)),
+            BaseGenerator() : bitboards(board::BitBoards()),
+                              gameStateBitmasks(board::GameStateBitMasks(bitboards)),
+                              squaresLookup(board::SquaresLookup(bitboards)),
                               searchMemory(perft::SearchMemory(0)),
-                              zHasher(game::ZHasher()),
-                              moveMaker(bitboards, squaresLookup, gameStateBitmasks, searchMemory, zHasher),
+                              zHasher(board::ZHasher()),
+                              bitBoardUpdater(move::BitBoardUpdater(bitboards)),
+                              bitMaskUpdater(move::BitMaskUpdater(gameStateBitmasks)),
+                              lookupUpdater(move::LookupUpdater(squaresLookup)),
+                              moveMaker(bitBoardUpdater, bitMaskUpdater, lookupUpdater, searchMemory, zHasher),
                               moveGenerator(MoveGenerator(bitboards, gameStateBitmasks, moveMaker)) {}
 
             virtual void SetUp() override {
-                // board = game::ChessBoard();
+                // board = board::ChessBoard();
                 // moveGenerator = MoveGenerator(board);
                 startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-                moveList = std::vector<game::Move>(movegen::MoveGenerator::MAX_LEGAL_MOVES);
+                moveList = std::vector<move::Move>(movegen::MoveGenerator::MAX_LEGAL_MOVES);
             }
 
             virtual void TearDown() override {
                 bitboards.resetBitboards();
             }
 
-        void insertExpectedMoves(std::unordered_set<game::Move>& moves, int fromBitIndex, const std::vector<int>& toBitIndices, const std::vector<int>& flags) {
+        void insertExpectedMoves(std::unordered_set<move::Move>& moves, int fromBitIndex, const std::vector<int>& toBitIndices, const std::vector<int>& flags) {
             for (size_t i = 0; i < toBitIndices.size(); i++) {
-                moves.insert(game::Move(fromBitIndex, toBitIndices[i], flags[i]));
+                moves.insert(move::Move(fromBitIndex, toBitIndices[i], flags[i]));
             }
         }
 
-        std::vector<game::Move> getMoves() {
+        std::vector<move::Move> getMoves() {
             return moveList;
         }
     };

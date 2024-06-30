@@ -1,6 +1,6 @@
 #include "BitBoards.h"
 
-namespace game {
+namespace board {
     BitBoards::BitBoards() {
         _bitboards.reserve(12);
 

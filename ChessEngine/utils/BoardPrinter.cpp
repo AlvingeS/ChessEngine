@@ -2,41 +2,41 @@
 
 #include <iostream>
 
-#include "ChessEngine/game/PieceType.h"
+#include "ChessEngine/board/PieceType.h"
 #include "ChessEngine/utils/BitBasics.h"
 
 namespace utils {
-    BoardPrinter::BoardPrinter(game::BitBoards& bitboards) {
+    BoardPrinter::BoardPrinter(board::BitBoards& bitboards) {
         fillBoard(bitboards);
     }
 
-    bool BoardPrinter::isValidPiece(game::PieceType piece_type) {
+    bool BoardPrinter::isValidPiece(board::PieceType piece_type) {
         switch(piece_type) {
-            case game::PieceType::W_PAWN:
-            case game::PieceType::W_KNIGHT:
-            case game::PieceType::W_BISHOP:
-            case game::PieceType::W_ROOK:
-            case game::PieceType::W_QUEEN:
-            case game::PieceType::W_KING:
-            case game::PieceType::B_PAWN:
-            case game::PieceType::B_KNIGHT:
-            case game::PieceType::B_BISHOP:
-            case game::PieceType::B_ROOK:
-            case game::PieceType::B_QUEEN:
-            case game::PieceType::B_KING:
+            case board::PieceType::W_PAWN:
+            case board::PieceType::W_KNIGHT:
+            case board::PieceType::W_BISHOP:
+            case board::PieceType::W_ROOK:
+            case board::PieceType::W_QUEEN:
+            case board::PieceType::W_KING:
+            case board::PieceType::B_PAWN:
+            case board::PieceType::B_KNIGHT:
+            case board::PieceType::B_BISHOP:
+            case board::PieceType::B_ROOK:
+            case board::PieceType::B_QUEEN:
+            case board::PieceType::B_KING:
                 return true;
             default:
                 return false;
         }
     }
 
-    void BoardPrinter::fillBoard(game::BitBoards& bitboards) {
+    void BoardPrinter::fillBoard(board::BitBoards& bitboards) {
         _board = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
         
         for (int i = 0; i < 12; i++) {
-            game::PieceType pieceType = game::intToPieceType(i);
+            board::PieceType pieceType = board::intToPieceType(i);
             U64 bitboard = bitboards.getBitboardFromIndex(i);
-            char pieceChar = game::pieceTypeToChar(pieceType);
+            char pieceChar = board::pieceTypeToChar(pieceType);
 
             for (int i = 0; i < 64; i++) {
                 if (utils::getBit(bitboard, i)) {

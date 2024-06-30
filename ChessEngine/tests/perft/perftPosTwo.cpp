@@ -24,10 +24,10 @@ namespace perft {
             searcher.setBoardFromFen(posTwo);
 
             // Make dubug move
-            // game::Move move = moveFromStrAndFlag("a2a3", 0);
+            // move::Move move = moveFromStrAndFlag("a2a3", 0);
             // searcher.makeMove(move, true);
             // move = moveFromStrAndFlag("c7c6", 0);
-            // searcher.makeMove(game::Move(0, 0, game::Move::QUEEN_CASTLE_FLAG), false);
+            // searcher.makeMove(move::Move(0, 0, move::Move::QUEEN_CASTLE_FLAG), false);
 
             int nDebugMoves = 0;
 

@@ -1,19 +1,22 @@
 #include "SquaresLookup.h"
 
 namespace board {
-    SquaresLookup::SquaresLookup(BitBoards& bitboards) {
-        fillSquaresLookup(bitboards);
-    }
 
-    void SquaresLookup::fillSquaresLookup(BitBoards& bitboards) {
-        _squaresLookup = std::vector<PieceType>(64, PieceType::EMPTY);
+SquaresLookup::SquaresLookup(const BitBoards& bitboards) 
+{
+    fillSquaresLookup(bitboards);
+}
 
-        for (int i = 0; i < 64; i++) {
-            for (int j = 0; j < 12; j++) {
-                if (bitboards.getBitboardFromIndex(j) & (1ULL << i)) {
-                    _squaresLookup[i] = intToPieceType(j);
-                }
+void SquaresLookup::fillSquaresLookup(const BitBoards& bitboards) 
+{
+    _squaresLookup = std::vector<PieceType>(64, PieceType::EMPTY);
+
+    for (int i = 0; i < 64; i++) {
+        for (int j = 0; j < 12; j++) {
+            if (bitboards.getBitboardFromIndex(j) & (1ULL << i)) {
+                _squaresLookup[i] = intToPieceType(j);
             }
         }
     }
+}
 }

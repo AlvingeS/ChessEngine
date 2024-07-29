@@ -5,45 +5,54 @@
 #include "BitBoards.h"
 
 namespace board {
-    class GameStateBitMasks {
-        public:
-            // ** Constructor **
-            GameStateBitMasks(BitBoards& bitboards);
 
-            // ** Getters & Setters **
-            U64& getWhitePiecesBitmask() {
-                return _whitePiecesBitmask;
-            }
+class GameStateBitMasks {
 
-            U64& getBlackPiecesBitmask() {
-                return _blackPiecesBitmask;
-            }
+public:
+    // ** Constructor **
+    GameStateBitMasks(BitBoards& bitboards);
 
-            U64& getOccupiedPiecesBitmask() {
-                return _occupiedPiecesBitmask;
-            }
+    // ** Getters & Setters **
+    inline U64& getWhitePiecesBitmask() 
+    {
+        return _whitePiecesBitmask;
+    }
 
-            U64& getEmptySquaresBitmask() {
-                return _emptySquaresBitmask;
-            }
-            
-            void fillWhitePiecesBitmask(BitBoards& bitboards);
-            void fillBlackPiecesBitmask(BitBoards& bitboards);
-            
-            void fillOccupiedPiecesBitmask() {
-                _occupiedPiecesBitmask = _whitePiecesBitmask | _blackPiecesBitmask;
-            }
+    inline U64& getBlackPiecesBitmask() 
+    {
+        return _blackPiecesBitmask;
+    }
 
-            void fillEmptySquaresBitmask() {
-                _emptySquaresBitmask = ~_occupiedPiecesBitmask;
-            }
-        private:
-            
+    inline U64& getOccupiedPiecesBitmask() 
+    {
+        return _occupiedPiecesBitmask;
+    }
 
-            // ** Data **
-            U64 _whitePiecesBitmask;
-            U64 _blackPiecesBitmask;
-            U64 _occupiedPiecesBitmask;
-            U64 _emptySquaresBitmask;
-        };
-}
+    inline U64& getEmptySquaresBitmask() 
+    {
+        return _emptySquaresBitmask;
+    }
+    
+    void fillWhitePiecesBitmask(BitBoards& bitboards);
+    void fillBlackPiecesBitmask(BitBoards& bitboards);
+    
+    void fillOccupiedPiecesBitmask() 
+    {
+        _occupiedPiecesBitmask = _whitePiecesBitmask | _blackPiecesBitmask;
+    }
+
+    void fillEmptySquaresBitmask() 
+    {
+        _emptySquaresBitmask = ~_occupiedPiecesBitmask;
+    }
+
+private:
+    
+    // ** Data **
+    U64 _whitePiecesBitmask;
+    U64 _blackPiecesBitmask;
+    U64 _occupiedPiecesBitmask;
+    U64 _emptySquaresBitmask;
+};
+
+} // namespace board

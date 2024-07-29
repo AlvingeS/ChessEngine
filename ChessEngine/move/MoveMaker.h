@@ -11,49 +11,137 @@
 #include "Move.h"
 
 namespace move {
-    class MoveMaker {
-        public:
-            // Constructor
-            MoveMaker(BitBoardUpdater& bitBoardUpdater, BitMaskUpdater& bitMaskUpdater, LookupUpdater& lookupUpdater, perft::SearchMemory& searchMemory, board::ZHasher& zHasher);
-            
-            // Public member functions
-            void makeMove(Move move, bool isWhite, int currentDepth);
 
-            void tryCastling(move::Move &move, bool isWhite, bool &retFlag);
-            board::PieceType pickUpPiece(move::Move &move, bool isWhite, int fromIndex);
-            void putDownPiece(move::Move &move, bool isWhite, int toIndex, board::PieceType movedPieceType);
-            void handleCapture(move::Move &move, bool isWhite, int toIndex, int currentDepth);
-            void handleEnPessantMemory(move::Move &move, int currentDepth, bool isWhite, int toIndex);
-            void handleNoCaptureCount(move::Move &move, board::PieceType movedPieceType, int currentDepth);
-            
-            void unmakeMove(Move move, bool wasWhite, int currentDepth);
+class MoveMaker {
 
-            void tryUncastling(move::Move &move, bool wasWhite, bool &retFlag);
-            void handleUncapturing(move::Move &move, bool wasWhite, int toIndex, int currentDepth);
-            void putBackMovedPiece(int fromIndex, board::PieceType movedPieceType, bool wasWhite, move::Move &move, int toIndex);
-            board::PieceType determineMovedPieceType(Move move, int toIndex, bool wasWhite);
-           
-            void makeTemporaryKingMove(bool isWhite, bool isKingSide) {
-                _bitBoardUpdater.makeTemporaryKingMove(isWhite, isKingSide);
-            }
+public:
+    // Constructor
+    MoveMaker(
+        BitBoardUpdater& bitBoardUpdater, 
+        BitMaskUpdater& bitMaskUpdater, 
+        LookupUpdater& lookupUpdater, 
+        perft::SearchMemory& searchMemory, 
+        board::ZHasher& zHasher
+    );
+    
+    // Public member functions
+    void makeMove(
+        const Move move, 
+        const bool isWhite, 
+        const int currentDepth
+    );
 
-            void unmakeTemporaryKingMove(bool wasWhite, bool wasKingSide) {
-                _bitBoardUpdater.unmakeTemporaryKingMove(wasWhite, wasKingSide);
-            }
+    void tryCastling(
+        const move::Move &move, 
+        const bool isWhite, 
+        bool &retFlag
+    );
 
-            perft::SearchMemory& getSearchMemory() {
-                return _searchMemory;
-            }
+    board::PieceType pickUpPiece(
+        const move::Move &move, 
+        const bool isWhite, 
+        const int fromIndex
+    );
 
-        private:
-            void makeCastleMove(bool isWhite, bool isKingSide);
-            void unmakeCastleMove(bool wasWhite, bool wasKingSide);
-            board::PieceType getPromotionPieceType(int promotionFlag, bool isWhite);
+    void putDownPiece(
+        const move::Move &move, 
+        const bool isWhite, int toIndex, 
+        const board::PieceType movedPieceType
+    );
 
-            BitBoardUpdater _bitBoardUpdater;
-            BitMaskUpdater _bitMaskUpdater;
-            LookupUpdater _lookupUpdater;
-            perft::SearchMemory& _searchMemory;
-            board::ZHasher& _zHasher;
-    };
+    void handleCapture(
+        const move::Move &move, 
+        const bool isWhite, 
+        const int toIndex, 
+        const int currentDepth
+    );
+
+    void handleEnPessantMemory(
+        const move::Move &move, 
+        const int currentDepth, 
+        const bool isWhite, 
+        const int toIndex
+    );
+
+    void handleNoCaptureCount(
+        const move::Move &move, 
+        const board::PieceType movedPieceType, 
+        const int currentDepth
+    );
+    
+    void unmakeMove(
+        const Move move, 
+        const bool wasWhite, 
+        const int currentDepth
+    );
+
+    void tryUncastling(
+        const move::Move &move, 
+        const bool wasWhite, 
+        bool &retFlag
+    );
+
+    void handleUncapturing(
+        const move::Move &move, 
+        const bool wasWhite, 
+        const int toIndex, 
+        const int currentDepth
+    );
+
+    void putBackMovedPiece(
+        const int fromIndex, 
+        const board::PieceType movedPieceType, 
+        const bool wasWhite, 
+        const move::Move &move, 
+        const int toIndex
+    );
+
+    board::PieceType determineMovedPieceType(
+        const Move move, 
+        const int toIndex, 
+        const bool wasWhite
+    );
+    
+    void makeTemporaryKingMove(
+        const bool isWhite, 
+        const bool isKingSide) 
+    {
+        _bitBoardUpdater.makeTemporaryKingMove(isWhite, isKingSide);
+    }
+
+    void unmakeTemporaryKingMove(
+        const bool wasWhite, 
+        const bool wasKingSide) 
+    {
+        _bitBoardUpdater.unmakeTemporaryKingMove(wasWhite, wasKingSide);
+    }
+
+    perft::SearchMemory& getSearchMemory() 
+    {
+        return _searchMemory;
+    }
+
+private:
+
+    void makeCastleMove(
+        const bool isWhite,
+        const bool isKingSide
+    );
+
+    void unmakeCastleMove(
+        const bool wasWhite, 
+        const bool wasKingSide
+    );
+
+    board::PieceType getPromotionPieceType(
+        const int promotionFlag, 
+        const bool isWhite
+    );
+
+    BitBoardUpdater _bitBoardUpdater;
+    BitMaskUpdater _bitMaskUpdater;
+    LookupUpdater _lookupUpdater;
+    perft::SearchMemory& _searchMemory;
+    board::ZHasher& _zHasher;
+};
 }

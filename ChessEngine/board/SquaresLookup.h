@@ -14,18 +14,18 @@ public:
     SquaresLookup(const BitBoards& bitboards);
 
     // ** Getters & Setters **
-    inline PieceType getPieceTypeAtIndex(const int index) 
+    inline PieceType getPieceTypeAtIndex(const int index) const
     {
         return _squaresLookup[index];
     }
 
-    inline void setPieceTypeAtIndex(const int index, const PieceType pieceType) 
+    inline void setPieceTypeAtIndex(const int index, const PieceType pieceType)
     {
         _squaresLookup[index] = pieceType;
     }
 
     // TODO: Should this really by a thing?
-    inline std::vector<PieceType>& getSquaresLookup() 
+    inline const std::vector<PieceType>& getSquaresLookup() const
     {
         return _squaresLookup;
     }

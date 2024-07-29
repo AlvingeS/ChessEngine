@@ -3,40 +3,44 @@
 #include "ChessEngine/board/GameStateBitMasks.h"
 
 namespace move {
-    class BitMaskUpdater {
-        public:
-            // ** Constructor **
-            BitMaskUpdater(board::GameStateBitMasks& gameStateBitMasks);
 
-            // ** Getters & Setters **
-            
-            // ** Functions **
-            void makeCastleMove(bool isWhite, bool isKingSide);
-            void unmakeCastleMove(bool wasWhite, bool wasKingSide);
+class BitMaskUpdater {
 
-            void setBitForWhitePiecesAtIndex(int index) {
-                _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << index);
-            }
+public:
+    // ** Constructor **
+    BitMaskUpdater(board::GameStateBitMasks& gameStateBitMasks);
 
-            void setBitForBlackPiecesAtIndex(int index) {
-                _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << index);
-            }
+    // ** Getters & Setters **
+    
+    // ** Functions **
+    void makeCastleMove(const bool isWhite, const bool isKingSide);
+    void unmakeCastleMove(const bool wasWhite, const bool wasKingSide);
 
-            void clearBitForWhitePiecesAtIndex(int index) {
-                _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << index);
-            }
+    void setBitForWhitePiecesAtIndex(const int index) {
+        _gameStateBitMasks.getWhitePiecesBitmask() |= (1ULL << index);
+    }
 
-            void clearBitForBlackPiecesAtIndex(int index) {
-                _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << index);
-            }
+    void setBitForBlackPiecesAtIndex(const int index) {
+        _gameStateBitMasks.getBlackPiecesBitmask() |= (1ULL << index);
+    }
 
-            void updateOccupiedAndEmptyBitmasks() {
-                _gameStateBitMasks.fillOccupiedPiecesBitmask();
-                _gameStateBitMasks.fillEmptySquaresBitmask();
-            }
+    void clearBitForWhitePiecesAtIndex(const int index) {
+        _gameStateBitMasks.getWhitePiecesBitmask() &= ~(1ULL << index);
+    }
 
-        private:
-            // ** Data **
-            board::GameStateBitMasks& _gameStateBitMasks;
-        };
-}
+    void clearBitForBlackPiecesAtIndex(const int index) {
+        _gameStateBitMasks.getBlackPiecesBitmask() &= ~(1ULL << index);
+    }
+
+    void updateOccupiedAndEmptyBitmasks() {
+        _gameStateBitMasks.fillOccupiedPiecesBitmask();
+        _gameStateBitMasks.fillEmptySquaresBitmask();
+    }
+
+private:
+    
+    // ** Data **
+    board::GameStateBitMasks& _gameStateBitMasks;
+};
+
+} // namespace move

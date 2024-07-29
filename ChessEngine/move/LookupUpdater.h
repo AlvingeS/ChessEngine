@@ -3,33 +3,42 @@
 #include "ChessEngine/board/SquaresLookup.h"
 
 namespace move {
-    class LookupUpdater {
-        public:
-            // ** Constructor **
-            LookupUpdater(board::SquaresLookup& squaresLookup);
 
-            // ** Getters & Setters **
-            
-            // ** Functions **
-            void makeCastleMove(bool isWhite, bool isKingSide);
-            void unmakeCastleMove(bool wasWhite, bool wasKingSide);
+class LookupUpdater {
 
-            board::PieceType getPieceTypeAtIndex(int index) {
-                return _squaresLookup.getPieceTypeAtIndex(index);
-            }
+public:
+    // ** Constructor **
+    LookupUpdater(board::SquaresLookup& squaresLookup);
 
-            void removeCapturedPieceFromLookup(int captureIndex) {
-                _squaresLookup.setPieceTypeAtIndex(captureIndex, board::PieceType::EMPTY);
-            }
+    // ** Getters & Setters **
+    
+    // ** Functions **
+    void makeCastleMove(const bool isWhite, const bool isKingSide);
+    void unmakeCastleMove(const bool wasWhite, const bool wasKingSide);
 
-            board::PieceType getPromotionPieceType(int promotionFlag, bool isWhite);
+    board::PieceType getPieceTypeAtIndex(const int index) 
+    {
+        return _squaresLookup.getPieceTypeAtIndex(index);
+    }
 
-            void setPieceTypeAtIndex(int index, board::PieceType pieceType) {
-                _squaresLookup.setPieceTypeAtIndex(index, pieceType);
-            }
+    void removeCapturedPieceFromLookup(const int captureIndex) 
+    {
+        _squaresLookup.setPieceTypeAtIndex(captureIndex, board::PieceType::EMPTY);
+    }
 
-        private:
-            // ** Data **
-            board::SquaresLookup& _squaresLookup;
-        };
-}
+    board::PieceType getPromotionPieceType(const int promotionFlag, const bool isWhite);
+
+    void setPieceTypeAtIndex(
+        const int index, 
+        const board::PieceType pieceType) 
+    {
+        _squaresLookup.setPieceTypeAtIndex(index, pieceType);
+    }
+
+private:
+
+    // ** Data **
+    board::SquaresLookup& _squaresLookup;
+};
+
+} // namespace move

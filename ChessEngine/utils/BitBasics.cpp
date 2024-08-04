@@ -6,19 +6,23 @@
 #include "ChessEngine/common.h"
 
 namespace utils {
-    void getBitIndices(std::vector<int>& indices, U64 bitboard) {
-        indices.clear();
 
-        while (bitboard != 0) {
-            int index = __builtin_ctzll(bitboard);
+void getBitIndices(std::vector<int>& indices, U64 bitboard) 
+{
+    indices.clear();
 
-            indices.push_back(index);
+    while (bitboard != 0) {
+        int index = __builtin_ctzll(bitboard);
 
-            bitboard &= (bitboard - 1);
-        }
-    }
+        indices.push_back(index);
 
-    void printU64InBits(U64 n) {
-        std::cout << std::bitset<64>(n) << std::endl;
+        bitboard &= (bitboard - 1);
     }
 }
+
+void printU64InBits(U64 n) 
+{
+    std::cout << std::bitset<64>(n) << std::endl;
+}
+
+} // namespace utils

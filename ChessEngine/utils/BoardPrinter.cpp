@@ -6,47 +6,51 @@
 #include "ChessEngine/utils/BitBasics.h"
 
 namespace utils {
-    BoardPrinter::BoardPrinter(board::BitBoards& bitboards) {
-        fillBoard(bitboards);
+
+BoardPrinter::BoardPrinter(board::BitBoards& bitboards) 
+{
+    fillBoard(bitboards);
+}
+
+bool BoardPrinter::isValidPiece(board::PieceType piece_type) 
+{
+    switch(piece_type) {
+        case board::PieceType::W_PAWN:
+        case board::PieceType::W_KNIGHT:
+        case board::PieceType::W_BISHOP:
+        case board::PieceType::W_ROOK:
+        case board::PieceType::W_QUEEN:
+        case board::PieceType::W_KING:
+        case board::PieceType::B_PAWN:
+        case board::PieceType::B_KNIGHT:
+        case board::PieceType::B_BISHOP:
+        case board::PieceType::B_ROOK:
+        case board::PieceType::B_QUEEN:
+        case board::PieceType::B_KING:
+            return true;
+        default:
+            return false;
     }
+}
 
-    bool BoardPrinter::isValidPiece(board::PieceType piece_type) {
-        switch(piece_type) {
-            case board::PieceType::W_PAWN:
-            case board::PieceType::W_KNIGHT:
-            case board::PieceType::W_BISHOP:
-            case board::PieceType::W_ROOK:
-            case board::PieceType::W_QUEEN:
-            case board::PieceType::W_KING:
-            case board::PieceType::B_PAWN:
-            case board::PieceType::B_KNIGHT:
-            case board::PieceType::B_BISHOP:
-            case board::PieceType::B_ROOK:
-            case board::PieceType::B_QUEEN:
-            case board::PieceType::B_KING:
-                return true;
-            default:
-                return false;
-        }
-    }
+void BoardPrinter::fillBoard(board::BitBoards& bitboards) 
+{
+    _board = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
+    
+    for (int i = 0; i < 12; i++) {
+        board::PieceType pieceType = board::intToPieceType(i);
+        U64 bitboard = bitboards.getBitboardFromIndex(i);
+        char pieceChar = board::pieceTypeToChar(pieceType);
 
-    void BoardPrinter::fillBoard(board::BitBoards& bitboards) {
-        _board = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
-        
-        for (int i = 0; i < 12; i++) {
-            board::PieceType pieceType = board::intToPieceType(i);
-            U64 bitboard = bitboards.getBitboardFromIndex(i);
-            char pieceChar = board::pieceTypeToChar(pieceType);
-
-            for (int i = 0; i < 64; i++) {
-                if (utils::getBit(bitboard, i)) {
-                    int row = i / 8;
-                    int col = i % 8;
-                    _board[row][col] = pieceChar;
-                }
+        for (int i = 0; i < 64; i++) {
+            if (utils::getBit(bitboard, i)) {
+                int row = i / 8;
+                int col = i % 8;
+                _board[row][col] = pieceChar;
             }
         }
     }
+}
 
 void BoardPrinter::printBoard() {
     for (int row = 7; row >= 0; row--) {  // Start from the bottom row (row 7) and go upwards.
@@ -68,5 +72,4 @@ void BoardPrinter::printBoard() {
     std::cout << "----------------------------------  ----------------------------------" << std::endl;
 }
 
-
-}
+} // namespace utils

@@ -11,25 +11,33 @@
 #include "CommonLogic.h"
 
 namespace movegen {
-    class KingGenerator {
-        public:
-            // Constructor
-            KingGenerator(board::BitBoards& bitboards, board::GameStateBitMasks& gameStateBitmasks, int& moveIndex, CommonLogic* commonLogic);
-            
-            // Public member functions
-            void generate(bool isWhite, std::vector<move::Move>& moveList);
-        private:
 
-            // Private member functions
-            board::BitBoards& _bitboards;
-            board::GameStateBitMasks& _gameStateBitmasks;
-            int& _moveIndex;
-            CommonLogic* _commonLogic;
+class KingGenerator {
 
-            // Memory
-            std::vector<int> _kingIndices;
-            std::vector<U64> _kingBitmasks;
-            std::vector<int> _freeMovesIndices;
-            std::vector<int> _capturableMovesIndices;
-    };
-}
+public:
+    // Constructor
+    KingGenerator(
+        board::BitBoards& bitboards,
+        board::GameStateBitMasks& gameStateBitmasks,
+        int& moveIndex,
+        CommonLogic* commonLogic
+    );
+    
+    // Public member functions
+    void generate(bool isWhite, std::vector<move::Move>& moveList);
+
+private:
+    // Private member functions
+    board::BitBoards& _bitboards;
+    board::GameStateBitMasks& _gameStateBitmasks;
+    int& _moveIndex;
+    CommonLogic* _commonLogic;
+
+    // Memory
+    std::vector<int> _kingIndices;
+    std::vector<U64> _kingBitmasks;
+    std::vector<int> _freeMovesIndices;
+    std::vector<int> _capturableMovesIndices;
+};
+
+} // namespace movegen

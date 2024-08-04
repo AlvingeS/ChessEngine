@@ -10,22 +10,25 @@
 #include "CommonLogic.h"
 
 namespace movegen {
-    class BishopGenerator {
-        public:
-            // Constructor
-            BishopGenerator(board::BitBoards& bitboards, RayLogic* rayLogic);
-            
-            // Public member functions
-            void generate(bool isWhite, std::vector<move::Move>& moveList);
-        private:
 
-            // Private member functions
-            board::BitBoards& _bitboards;
+class BishopGenerator {
 
-            RayLogic* _rayLogic;
+public:
+    // Constructor
+    BishopGenerator(board::BitBoards& bitboards, RayLogic* rayLogic);
+    
+    // Public member functions
+    void generate(const bool isWhite, std::vector<move::Move>& moveList);
 
-            // Memory
-            std::vector<int> _bishopIndices;
-            std::vector<masks::DiagonalRays> _diagonalRayBitmasks;
-    };
-}
+private:
+    // Private member functions
+    board::BitBoards& _bitboards;
+
+    RayLogic* _rayLogic;
+
+    // Memory
+    std::vector<int> _bishopIndices;
+    std::vector<masks::DiagonalRays> _diagonalRayBitmasks;
+};
+
+} // namespace movegen

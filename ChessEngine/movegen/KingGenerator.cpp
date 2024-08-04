@@ -4,37 +4,61 @@
 #include "ChessEngine/board/PieceType.h"
 
 namespace movegen {
-    KingGenerator::KingGenerator(board::BitBoards& bitboards, board::GameStateBitMasks& gameStateBitMasks, int& moveIndex, CommonLogic* commonLogic) 
-        : _bitboards(bitboards),
-          _gameStateBitmasks(gameStateBitMasks),
-          _moveIndex(moveIndex),
-          _commonLogic(commonLogic) {
-        _freeMovesIndices.reserve(8);
-        _capturableMovesIndices.reserve(8);
-        _kingIndices.reserve(64);
-        _kingBitmasks = masks::getAllKingBitMasks();
-    }
 
-    void KingGenerator::generate(bool isWhite, std::vector<move::Move>& moveList) {
-        utils::getBitIndices(_kingIndices, isWhite ? _bitboards.getWhiteKingBitboard() : _bitboards.getBlackKingBitboard());
+KingGenerator::KingGenerator(
+    board::BitBoards& bitboards,
+    board::GameStateBitMasks& gameStateBitMasks,
+    int& moveIndex,
+    CommonLogic* commonLogic) 
+    : _bitboards(bitboards)
+    , _gameStateBitmasks(gameStateBitMasks)
+    , _moveIndex(moveIndex)
+    , _commonLogic(commonLogic) 
+{
+    _freeMovesIndices.reserve(8);
+    _capturableMovesIndices.reserve(8);
+    _kingIndices.reserve(64);
+    _kingBitmasks = masks::getAllKingBitMasks();
+}
 
-        for (int currentKingIndex : _kingIndices) {
-            U64 kingBitMask = _kingBitmasks[currentKingIndex];
+void KingGenerator::generate(bool isWhite, std::vector<move::Move>& moveList) 
+{
+    utils::getBitIndices(_kingIndices, isWhite ? _bitboards.getWhiteKingBitboard()
+                                               : _bitboards.getBlackKingBitboard());
 
-            U64 freeKingMoves = kingBitMask & _gameStateBitmasks.getEmptySquaresBitmask();
-            U64 enemyPieces = isWhite ? _gameStateBitmasks.getBlackPiecesBitmask() : _gameStateBitmasks.getWhitePiecesBitmask();
-            U64 capturableKingMoves = kingBitMask & enemyPieces;
+    for (int currentKingIndex : _kingIndices) {
+        U64 kingBitMask = _kingBitmasks[currentKingIndex];
 
-            utils::getBitIndices(_freeMovesIndices, freeKingMoves);
-            utils::getBitIndices(_capturableMovesIndices, capturableKingMoves);
+        U64 freeKingMoves = kingBitMask & _gameStateBitmasks.getEmptySquaresBitmask();
+        
+        U64 enemyPieces = isWhite ? _gameStateBitmasks.getBlackPiecesBitmask() 
+                                  : _gameStateBitmasks.getWhitePiecesBitmask();
 
-            for (int freeKingMoveIndex : _freeMovesIndices) {
-                _commonLogic->addMove(currentKingIndex, freeKingMoveIndex, move::Move::QUITE_FLAG, moveList, _moveIndex);
-            }
+        U64 capturableKingMoves = kingBitMask & enemyPieces;
 
-            for (int capturableKingMoveIndex : _capturableMovesIndices) {
-                _commonLogic->addMove(currentKingIndex, capturableKingMoveIndex, move::Move::CAPTURE_FLAG, moveList, _moveIndex);
-            }
+        utils::getBitIndices(_freeMovesIndices, freeKingMoves);
+        utils::getBitIndices(_capturableMovesIndices, capturableKingMoves);
+
+        for (int freeKingMoveIndex : _freeMovesIndices) {
+            _commonLogic->addMove(
+                currentKingIndex,
+                freeKingMoveIndex,
+                move::Move::QUITE_FLAG,
+                moveList,
+                _moveIndex
+            );
+        }
+
+        for (int capturableKingMoveIndex : _capturableMovesIndices) {
+            _commonLogic->addMove(
+                currentKingIndex,
+                capturableKingMoveIndex,
+                move::Move::CAPTURE_FLAG,
+                moveList,
+                _moveIndex
+            );
         }
     }
 }
+
+} // namespace movegen

@@ -4,10 +4,10 @@ namespace board {
 
 SquaresLookup::SquaresLookup(const BitBoards& bitboards) 
 {
-    fillSquaresLookup(bitboards);
+    fillSquaresLookupFromBitboards(bitboards);
 }
 
-void SquaresLookup::fillSquaresLookup(const BitBoards& bitboards) 
+void SquaresLookup::fillSquaresLookupFromBitboards(const BitBoards& bitboards) 
 {
     _squaresLookup = std::vector<PieceType>(64, PieceType::EMPTY);
 
@@ -15,6 +15,7 @@ void SquaresLookup::fillSquaresLookup(const BitBoards& bitboards)
         for (int j = 0; j < 12; j++) {
             if (bitboards.getBitboardFromIndex(j) & (1ULL << i)) {
                 _squaresLookup[i] = intToPieceType(j);
+                break;
             }
         }
     }

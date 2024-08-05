@@ -2,9 +2,9 @@
 
 #include "ChessEngine/perft/SearchMemory.h"
 #include "ChessEngine/board/PieceType.h"
-#include "ChessEngine/move/BitBoardUpdater.h"
-#include "ChessEngine/move/BitMaskUpdater.h"
-#include "ChessEngine/move/LookupUpdater.h"
+#include "ChessEngine/board/BitBoards.h"
+#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/board/SquaresLookup.h"
 #include "ChessEngine/board/ZHasher.h"
 #include "ChessEngine/board/PieceType.h"
 
@@ -17,9 +17,9 @@ class MoveMaker {
 public:
     // Constructor
     MoveMaker(
-        BitBoardUpdater& bitBoardUpdater, 
-        BitMaskUpdater& bitMaskUpdater, 
-        LookupUpdater& lookupUpdater, 
+        board::BitBoards& bitBoards, 
+        board::GameStateBitMasks& gameStateBitMasks, 
+        board::SquaresLookup& squaresLookup, 
         perft::SearchMemory& searchMemory, 
         board::ZHasher& zHasher
     );
@@ -31,14 +31,7 @@ public:
         const int currentDepth
     );
 
-    void tryCastling(
-        const move::Move &move, 
-        const bool isWhite, 
-        bool &retFlag
-    );
-
     board::PieceType pickUpPiece(
-        const move::Move &move, 
         const bool isWhite, 
         const int fromIndex
     );
@@ -102,19 +95,10 @@ public:
         const bool wasWhite
     );
     
-    void makeTemporaryKingMove(
-        const bool isWhite, 
-        const bool isKingSide) 
-    {
-        _bitBoardUpdater.makeTemporaryKingMove(isWhite, isKingSide);
-    }
-
-    void unmakeTemporaryKingMove(
-        const bool wasWhite, 
-        const bool wasKingSide) 
-    {
-        _bitBoardUpdater.unmakeTemporaryKingMove(wasWhite, wasKingSide);
-    }
+    void makeCastleMove(const bool isWhite, const bool isKingSide);
+    void unmakeCastleMove(const bool isWhite, const bool isKingSide);
+    void makeTemporaryKingMove(const bool isWhite, const bool isKingSide);
+    void unmakeTemporaryKingMove(const bool isWhite, const bool isKingSide);
 
     perft::SearchMemory& getSearchMemory() 
     {
@@ -122,25 +106,14 @@ public:
     }
 
 private:
-
-    void makeCastleMove(
-        const bool isWhite,
-        const bool isKingSide
-    );
-
-    void unmakeCastleMove(
-        const bool wasWhite, 
-        const bool wasKingSide
-    );
-
     board::PieceType getPromotionPieceType(
         const int promotionFlag, 
         const bool isWhite
     );
 
-    BitBoardUpdater _bitBoardUpdater;
-    BitMaskUpdater _bitMaskUpdater;
-    LookupUpdater _lookupUpdater;
+    board::BitBoards& _bitboards;
+    board::GameStateBitMasks& _gameStateBitMasks;
+    board::SquaresLookup& _squaresLookup;
     perft::SearchMemory& _searchMemory;
     board::ZHasher& _zHasher;
 };

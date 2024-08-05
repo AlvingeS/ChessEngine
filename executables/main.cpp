@@ -65,6 +65,9 @@ int main() {
             Refactored Chessboard intro three separate classes, now a little bit slower
             but for sure worth it
             0.364s ~ 19.1239M nodes/s ~ 7.7% SF
+
+            Lot's of refactoring, killed performance a bit but a lot cleaner
+            0.474s 14.86M nodes/s ~ 5.9% SF
     */
 
     // Start clock

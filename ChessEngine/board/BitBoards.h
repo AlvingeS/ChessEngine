@@ -1,99 +1,86 @@
 #pragma once
 
-#include "ChessEngine/common.h"
+#include <cassert>
 
-#include "PieceType.h"
+#include "ChessEngine/common.h"
+#include "ChessEngine/board/PieceType.h"
 
 namespace board {
 
 class BitBoards {
 
 public:
+
     // ** Constructor **
     BitBoards();
 
-    // ** Getters & Setters **
-    inline U64& getBitboardFromPieceType(const PieceType pieceType) const 
+    inline const U64& getBitboardFromPieceType(const PieceType pieceType) const 
     {
         return *(_bitboards[pieceTypeToInt(pieceType)]);
     }
 
-    inline U64& getBitboardFromIndex(const int index) const 
+    inline const U64& getBitboardFromIndex(const int index) const 
     {
         return *(_bitboards[index]);
     }
 
-    // TODO: This is a bad getter, it should be removed
-    inline const std::vector<U64*>& getBitboards() const 
+    // inline const std::vector<U64*>& getBitboards() const 
+    // {
+    //     return _bitboards;
+    // }
+
+    inline bool pieceTypeBitIsSet(const int index, const PieceType pieceType) const 
     {
-        return _bitboards;
+        assert(pieceType != PieceType::EMPTY);
+        return (*(_bitboards[pieceTypeToInt(pieceType)]) & (1ULL << index)) != 0;
     }
 
-    inline U64& getWhitePawnsBitboard() 
+    inline void clearPieceTypeBit(const int index, const PieceType pieceType) 
     {
-        return _whitePawnsBitboard;
+        assert(pieceType != PieceType::EMPTY);
+        assert(pieceTypeBitIsSet(index, pieceType));
+        *(_bitboards[pieceTypeToInt(pieceType)]) &= ~(1ULL << index);
     }
 
-    inline U64& getWhiteKnightsBitboard() 
+    inline void setPieceTypeBit(const int index, const PieceType pieceType) 
     {
-        return _whiteKnightsBitboard;
+        assert(pieceType != PieceType::EMPTY);
+        assert(!pieceTypeBitIsSet(index, pieceType));
+        *(_bitboards[pieceTypeToInt(pieceType)]) |= (1ULL << index);
     }
 
-    inline U64& getWhiteBishopsBitboard() 
-    {
-        return _whiteBishopsBitboard;
-    }
+    #define DEFINE_BITBOARD_MACROS(PIECE_NAME, VARIABLE_NAME) \
+        inline void set##PIECE_NAME##Bit(const int square) \
+        { \
+            VARIABLE_NAME |= (1ULL << square); \
+        } \
+        inline void clear##PIECE_NAME##Bit(const int square) \
+        { \
+            VARIABLE_NAME &= ~(1ULL << square); \
+        } \
+        inline const U64& get##PIECE_NAME##Bitboard() const \
+        { \
+            return VARIABLE_NAME; \
+        }
 
-    inline U64& getWhiteRooksBitboard() 
-    {
-        return _whiteRooksBitboard;
-    }
-
-    inline U64& getWhiteQueensBitboard() 
-    {
-        return _whiteQueensBitboard;
-    }
-
-    inline U64& getWhiteKingBitboard() 
-    {
-        return _whiteKingBitboard;
-    }
-
-    inline U64& getBlackPawnsBitboard() 
-    {
-        return _blackPawnsBitboard;
-    }
-
-    inline U64& getBlackKnightsBitboard() 
-    {
-        return _blackKnightsBitboard;
-    }
-
-    inline U64& getBlackBishopsBitboard() 
-    {
-        return _blackBishopsBitboard;
-    }
-
-    inline U64& getBlackRooksBitboard() 
-    {
-        return _blackRooksBitboard;
-    }
-
-    inline U64& getBlackQueensBitboard() 
-    {
-        return _blackQueensBitboard;
-    }
-
-    inline U64& getBlackKingBitboard() 
-    {
-        return _blackKingBitboard;
-    }
+    DEFINE_BITBOARD_MACROS(WhitePawns, _whitePawnsBitboard)
+    DEFINE_BITBOARD_MACROS(WhiteKnights, _whiteKnightsBitboard)
+    DEFINE_BITBOARD_MACROS(WhiteBishops, _whiteBishopsBitboard)
+    DEFINE_BITBOARD_MACROS(WhiteRooks, _whiteRooksBitboard)
+    DEFINE_BITBOARD_MACROS(WhiteQueens, _whiteQueensBitboard)
+    DEFINE_BITBOARD_MACROS(WhiteKing, _whiteKingBitboard)
+    DEFINE_BITBOARD_MACROS(BlackPawns, _blackPawnsBitboard)
+    DEFINE_BITBOARD_MACROS(BlackKnights, _blackKnightsBitboard)
+    DEFINE_BITBOARD_MACROS(BlackBishops, _blackBishopsBitboard)
+    DEFINE_BITBOARD_MACROS(BlackRooks, _blackRooksBitboard)
+    DEFINE_BITBOARD_MACROS(BlackQueens, _blackQueensBitboard)
+    DEFINE_BITBOARD_MACROS(BlackKing, _blackKingBitboard)
 
     // ** Functions **
-    void resetBitboards() {
-        for (int i = 0; i < 12; i++) {
+    inline void resetBitboards() 
+    {
+        for (int i = 0; i < 12; i++)
             *(_bitboards[i]) = 0;
-        }
     }
 
 private:

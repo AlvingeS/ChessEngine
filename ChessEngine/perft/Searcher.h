@@ -105,7 +105,7 @@ public:
         utils::setBoardFromFen(fen, _bitboards, _gameStateBitMasks, _squaresLookup);
     }
 
-    std::string& getFenFromBoard() 
+    std::string getFenFromBoard() 
     {
         return utils::getFenFromBoard(_squaresLookup);
     }
@@ -121,9 +121,6 @@ private:
     board::GameStateBitMasks _gameStateBitMasks;
     SearchMemory _searchMemory;
     board::ZHasher _zHasher;
-    move::BitBoardUpdater _bitBoardUpdater;
-    move::BitMaskUpdater _bitMaskUpdater;
-    move::LookupUpdater _lookupUpdater;
     move::MoveMaker _moveMaker;
     movegen::MoveGenerator _moveGenerator;
     evaluation::Evaluator _evaluator;

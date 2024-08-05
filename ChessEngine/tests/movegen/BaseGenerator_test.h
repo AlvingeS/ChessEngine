@@ -22,9 +22,6 @@ namespace movegen {
             board::SquaresLookup squaresLookup;
             perft::SearchMemory searchMemory;
             board::ZHasher zHasher;
-            move::BitBoardUpdater bitBoardUpdater;
-            move::BitMaskUpdater bitMaskUpdater;
-            move::LookupUpdater lookupUpdater;
             move::MoveMaker moveMaker;
             MoveGenerator moveGenerator;
             std::string startingPos;
@@ -35,10 +32,7 @@ namespace movegen {
                               squaresLookup(board::SquaresLookup(bitboards)),
                               searchMemory(perft::SearchMemory(0)),
                               zHasher(board::ZHasher()),
-                              bitBoardUpdater(move::BitBoardUpdater(bitboards)),
-                              bitMaskUpdater(move::BitMaskUpdater(gameStateBitmasks)),
-                              lookupUpdater(move::LookupUpdater(squaresLookup)),
-                              moveMaker(bitBoardUpdater, bitMaskUpdater, lookupUpdater, searchMemory, zHasher),
+                              moveMaker(bitboards, gameStateBitmasks, squaresLookup, searchMemory, zHasher),
                               moveGenerator(MoveGenerator(bitboards, gameStateBitmasks, moveMaker)) {}
 
             virtual void SetUp() override {

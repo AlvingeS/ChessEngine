@@ -13,10 +13,7 @@ Searcher::Searcher(int maxDepth)
     , _gameStateBitMasks(board::GameStateBitMasks(_bitboards))
     , _searchMemory(SearchMemory(maxDepth))
     , _zHasher(board::ZHasher())
-    , _bitBoardUpdater(move::BitBoardUpdater(_bitboards))
-    , _bitMaskUpdater(move::BitMaskUpdater(_gameStateBitMasks))
-    , _lookupUpdater(move::LookupUpdater(_squaresLookup))
-    , _moveMaker(move::MoveMaker(_bitBoardUpdater, _bitMaskUpdater, _lookupUpdater, _searchMemory, _zHasher))
+    , _moveMaker(move::MoveMaker(_bitboards, _gameStateBitMasks, _squaresLookup, _searchMemory, _zHasher))
     , _moveGenerator(movegen::MoveGenerator(_bitboards, _gameStateBitMasks, _moveMaker))
     , _evaluator(evaluation::Evaluator(_bitboards))
     , _maxDepth(maxDepth)
@@ -166,8 +163,9 @@ bool Searcher::checkCondition(
     // return currentDepth == 3 && firstMoveIndex == 0 && currentMove.getBitIndexFrom() == 34 && currentMove.getBitIndexTo() == 27;
     // return currentMove.isAnyCapture();
     // return true;
-    // return false;
-    return diffBetweenGameStateBitMasks();
+    return false;
+    // return diffBetweenGameStateBitMasks();
+    // return currentDepth == 2 && firstMoveIndex == 0 && isMaximizer == true && currentMove.getMove() == 66;
 }
 
 // TODO: Implement draw by repetition after implementing zobrist hashing

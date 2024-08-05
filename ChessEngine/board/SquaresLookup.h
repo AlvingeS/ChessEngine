@@ -13,6 +13,7 @@ public:
     // ** Constructor **
     SquaresLookup(const BitBoards& bitboards);
 
+
     // ** Getters & Setters **
     inline PieceType getPieceTypeAtIndex(const int index) const
     {
@@ -24,14 +25,8 @@ public:
         _squaresLookup[index] = pieceType;
     }
 
-    // TODO: Should this really by a thing?
-    inline const std::vector<PieceType>& getSquaresLookup() const
-    {
-        return _squaresLookup;
-    }
-
     // ** Functions **
-    void fillSquaresLookup(const BitBoards& bitboards);
+    void fillSquaresLookupFromBitboards(const BitBoards& bitboards);
     
 private:
 

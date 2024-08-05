@@ -10,41 +10,80 @@ class GameStateBitMasks {
 
 public:
     // ** Constructor **
-    GameStateBitMasks(BitBoards& bitboards);
+    GameStateBitMasks(const BitBoards& bitboards);
+    
+    inline bool whitePiecesBitIsSet(const int square) const 
+    {
+        return (_whitePiecesBitmask & (1ULL << square)) != 0;
+    }
 
-    // ** Getters & Setters **
-    inline U64& getWhitePiecesBitmask() 
+    inline bool blackPiecesBitIsSet(const int square) const 
+    {
+        return (_blackPiecesBitmask & (1ULL << square)) != 0;
+    }
+
+    inline void setWhitePiecesBit(const int square) 
+    {
+        assert(!whitePiecesBitIsSet(square));
+        _whitePiecesBitmask |= (1ULL << square);
+    }
+
+    inline void clearWhitePiecesBit(const int square) 
+    {
+        assert(whitePiecesBitIsSet(square));
+        _whitePiecesBitmask &= ~(1ULL << square);
+    }
+
+    inline const U64& getWhitePiecesBitmask() const 
     {
         return _whitePiecesBitmask;
     }
 
-    inline U64& getBlackPiecesBitmask() 
+    inline void setBlackPiecesBit(const int square) 
+    {
+        assert(!blackPiecesBitIsSet(square));
+        _blackPiecesBitmask |= (1ULL << square);
+    }
+
+    inline void clearBlackPiecesBit(const int square) 
+    {
+        assert(blackPiecesBitIsSet(square));
+        _blackPiecesBitmask &= ~(1ULL << square);
+    }
+
+    inline const U64& getBlackPiecesBitmask() const 
     {
         return _blackPiecesBitmask;
     }
 
-    inline U64& getOccupiedPiecesBitmask() 
+    inline void updOccupiedAndEmptySquaresBitmasks() 
     {
-        return _occupiedPiecesBitmask;
+        updOccupiedPiecesBitmask();
+        updEmptySquaresBitmask();
     }
 
-    inline U64& getEmptySquaresBitmask() 
-    {
-        return _emptySquaresBitmask;
-    }
-    
-    void fillWhitePiecesBitmask(BitBoards& bitboards);
-    void fillBlackPiecesBitmask(BitBoards& bitboards);
-    
-    void fillOccupiedPiecesBitmask() 
+    inline void updOccupiedPiecesBitmask() 
     {
         _occupiedPiecesBitmask = _whitePiecesBitmask | _blackPiecesBitmask;
     }
 
-    void fillEmptySquaresBitmask() 
+    inline void updEmptySquaresBitmask() 
     {
         _emptySquaresBitmask = ~_occupiedPiecesBitmask;
     }
+
+    inline const U64& getOccupiedPiecesBitmask() const 
+    {
+        return _occupiedPiecesBitmask;
+    }
+
+    inline const U64& getEmptySquaresBitmask() const 
+    {
+        return _emptySquaresBitmask;
+    }
+
+    void fillWhitePiecesFromBitboards(const BitBoards& bitboards);
+    void fillBlackPiecesFromBitboards(const BitBoards& bitboards);
 
 private:
     

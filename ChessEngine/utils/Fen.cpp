@@ -24,20 +24,18 @@ void setBoardFromFen(
             file += c - '0';
         } else {
             board::PieceType type = board::CharToPieceType(c);
-            uint64_t bit = 1ULL << (rank * 8 + (7 - file));
-            bitboards.getBitboardFromIndex(board::pieceTypeToInt(type)) |= bit;
+            bitboards.setPieceTypeBit(rank * 8 + 7 - file, type);
             file++;
         }
     }
 
-    squaresLookup.fillSquaresLookup(bitboards);
-    gameStateBitmasks.fillBlackPiecesBitmask(bitboards);
-    gameStateBitmasks.fillWhitePiecesBitmask(bitboards);
-    gameStateBitmasks.fillOccupiedPiecesBitmask();
-    gameStateBitmasks.fillEmptySquaresBitmask();
+    squaresLookup.fillSquaresLookupFromBitboards(bitboards);
+    gameStateBitmasks.fillBlackPiecesFromBitboards(bitboards);
+    gameStateBitmasks.fillWhitePiecesFromBitboards(bitboards);
+    gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
 }
 
-std::string& getFenFromBoard(board::SquaresLookup& squaresLookup) 
+std::string getFenFromBoard(board::SquaresLookup& squaresLookup) 
 {
     std::string fen = "";
     int emptyCount = 0;

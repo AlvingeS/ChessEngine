@@ -5,8 +5,8 @@
 
 namespace movegen {
 PawnGenerator::PawnGenerator(
-    board::BitBoards& bitboards,
-    board::GameStateBitMasks& gameStateBitmasks,
+    board::Bitboards& bitboards,
+    board::GameStateBitmasks& gameStateBitmasks,
     int& moveIndex,
     CommonLogic* commonLogic) 
     : _bitboards(bitboards)

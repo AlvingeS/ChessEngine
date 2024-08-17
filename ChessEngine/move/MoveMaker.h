@@ -2,8 +2,8 @@
 
 #include "ChessEngine/perft/SearchMemory.h"
 #include "ChessEngine/board/PieceType.h"
-#include "ChessEngine/board/BitBoards.h"
-#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/board/Bitboards.h"
+#include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/board/SquaresLookup.h"
 #include "ChessEngine/board/ZHasher.h"
 #include "ChessEngine/board/PieceType.h"
@@ -17,8 +17,8 @@ class MoveMaker {
 public:
     // Constructor
     MoveMaker(
-        board::BitBoards& bitBoards, 
-        board::GameStateBitMasks& gameStateBitMasks, 
+        board::Bitboards& bitBoards, 
+        board::GameStateBitmasks& gameStateBitmasks, 
         board::SquaresLookup& squaresLookup, 
         perft::SearchMemory& searchMemory, 
         board::ZHasher& zHasher
@@ -111,8 +111,8 @@ private:
         const bool isWhite
     );
 
-    board::BitBoards& _bitboards;
-    board::GameStateBitMasks& _gameStateBitMasks;
+    board::Bitboards& _bitboards;
+    board::GameStateBitmasks& _gameStateBitmasks;
     board::SquaresLookup& _squaresLookup;
     perft::SearchMemory& _searchMemory;
     board::ZHasher& _zHasher;

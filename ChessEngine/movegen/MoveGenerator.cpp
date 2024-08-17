@@ -2,18 +2,18 @@
 
 #include <iostream>
 
-#include "ChessEngine/masks/RayBitMasks.h"
+#include "ChessEngine/masks/RayBitmasks.h"
 #include "ChessEngine/utils/ChessUtils.h"
-#include "ChessEngine/masks/KnightBitMasks.h"
-#include "ChessEngine/masks/KingBitMasks.h"
-#include "ChessEngine/masks/PawnBitMasks.h"
+#include "ChessEngine/masks/KnightBitmasks.h"
+#include "ChessEngine/masks/KingBitmasks.h"
+#include "ChessEngine/masks/PawnBitmasks.h"
 #include "ChessEngine/utils/BitBasics.h"
 
 namespace movegen {
 
 MoveGenerator::MoveGenerator(
-    board::BitBoards& bitboards,
-    board::GameStateBitMasks& gameStateBitmasks,
+    board::Bitboards& bitboards,
+    board::GameStateBitmasks& gameStateBitmasks,
     move::MoveMaker& moveMaker)
     : _bitboards(bitboards)
     ,  _gameStateBitmasks(gameStateBitmasks)

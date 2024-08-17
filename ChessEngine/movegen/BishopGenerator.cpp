@@ -5,7 +5,7 @@
 
 namespace movegen {
 
-BishopGenerator::BishopGenerator(board::BitBoards& bitboards, RayLogic* rayLogic) 
+BishopGenerator::BishopGenerator(board::Bitboards& bitboards, RayLogic* rayLogic) 
     : _bitboards(bitboards)
     , _rayLogic(rayLogic) 
 {

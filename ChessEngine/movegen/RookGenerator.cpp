@@ -5,7 +5,7 @@
 
 namespace movegen {
 RookGenerator::RookGenerator(
-    board::BitBoards& bitboards,
+    board::Bitboards& bitboards,
     RayLogic* rayLogic)
     : _bitboards(bitboards)
     , _rayLogic(rayLogic)

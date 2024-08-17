@@ -7,7 +7,7 @@ namespace evaluation {
     static const int ROOK_VALUE = 5000;
     static const int QUEEN_VALUE = 9000;
 
-    Evaluator::Evaluator(board::BitBoards& bitboards) : _bitboards(bitboards) {}
+    Evaluator::Evaluator(board::Bitboards& bitboards) : _bitboards(bitboards) {}
 
     float Evaluator::evaluate() {
         return 0.0f;

@@ -2,10 +2,10 @@
 
 #include "ChessEngine/common.h"
 
-#include "ChessEngine/board/BitBoards.h"
-#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/board/Bitboards.h"
+#include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/move/Move.h"
-#include "ChessEngine/masks/KnightBitMasks.h"
+#include "ChessEngine/masks/KnightBitmasks.h"
 
 #include "RayLogic.h"
 #include "CommonLogic.h"
@@ -17,8 +17,8 @@ class KnightGenerator {
 public:
     // Constructor
     KnightGenerator(
-        board::BitBoards& bitboards,
-        board::GameStateBitMasks& gameStateBitmasks,
+        board::Bitboards& bitboards,
+        board::GameStateBitmasks& gameStateBitmasks,
         int& moveIndex,
         CommonLogic* commonLogic
     );
@@ -28,8 +28,8 @@ public:
 
 private:
     // Private member functions
-    board::BitBoards& _bitboards;
-    board::GameStateBitMasks& _gameStateBitmasks;
+    board::Bitboards& _bitboards;
+    board::GameStateBitmasks& _gameStateBitmasks;
     int& _moveIndex;
     CommonLogic* _commonLogic;
 

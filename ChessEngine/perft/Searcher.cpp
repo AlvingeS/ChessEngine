@@ -8,13 +8,13 @@
 namespace perft {
 
 Searcher::Searcher(int maxDepth) 
-    : _bitboards(board::BitBoards())
+    : _bitboards(board::Bitboards())
     , _squaresLookup(board::SquaresLookup(_bitboards))
-    , _gameStateBitMasks(board::GameStateBitMasks(_bitboards))
+    , _gameStateBitmasks(board::GameStateBitmasks(_bitboards))
     , _searchMemory(SearchMemory(maxDepth))
     , _zHasher(board::ZHasher())
-    , _moveMaker(move::MoveMaker(_bitboards, _gameStateBitMasks, _squaresLookup, _searchMemory, _zHasher))
-    , _moveGenerator(movegen::MoveGenerator(_bitboards, _gameStateBitMasks, _moveMaker))
+    , _moveMaker(move::MoveMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
+    , _moveGenerator(movegen::MoveGenerator(_bitboards, _gameStateBitmasks, _moveMaker))
     , _evaluator(evaluation::Evaluator(_bitboards))
     , _maxDepth(maxDepth)
 {
@@ -164,7 +164,7 @@ bool Searcher::checkCondition(
     // return currentMove.isAnyCapture();
     // return true;
     return false;
-    // return diffBetweenGameStateBitMasks();
+    // return diffBetweenGameStateBitmasks();
     // return currentDepth == 2 && firstMoveIndex == 0 && isMaximizer == true && currentMove.getMove() == 66;
 }
 

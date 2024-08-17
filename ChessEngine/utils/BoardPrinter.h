@@ -3,7 +3,7 @@
 #include "ChessEngine/common.h"
 
 #include "ChessEngine/board/PieceType.h"
-#include "ChessEngine/board/BitBoards.h"
+#include "ChessEngine/board/Bitboards.h"
 
 namespace utils {
 
@@ -11,8 +11,8 @@ class BoardPrinter {
 
 public:
     // Public member functions
-    BoardPrinter(board::BitBoards& bitboards);
-    void fillBoard(board::BitBoards& bitboards);
+    BoardPrinter(board::Bitboards& bitboards);
+    void fillBoard(board::Bitboards& bitboards);
     void printBoard();
 
 private:

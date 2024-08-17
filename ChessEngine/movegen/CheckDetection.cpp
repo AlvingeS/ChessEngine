@@ -5,14 +5,14 @@
 
 namespace movegen {
 CheckDetection::CheckDetection(
-    board::BitBoards& bitboards,
+    board::Bitboards& bitboards,
     RayLogic* rayLogic)
     : _bitboards(bitboards)
     , _rayLogic(rayLogic) 
 {
     _straightRayBitmasks = masks::getAllStraightRayBitmasks();
     _diagonalRayBitmasks = masks::getAllDiagonalRayBitmasks();
-    _knightBitmasks = masks::getAllKnightBitMasks();
+    _knightBitmasks = masks::getAllKnightBitmasks();
     _whitePawnCaptureMoveBitmasks = masks::getAllCapturePawnMoveBitmasks(true);
     _blackPawnCaptureMoveBitmasks = masks::getAllCapturePawnMoveBitmasks(false);
 }

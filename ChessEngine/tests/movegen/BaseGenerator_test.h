@@ -5,8 +5,8 @@
 #include <gtest/gtest.h>
 #include <unordered_set>
 
-#include "ChessEngine/board/BitBoards.h"
-#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/board/Bitboards.h"
+#include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/board/SquaresLookup.h"
 #include "ChessEngine/movegen/MoveGenerator.h"
 #include "ChessEngine/move/Move.h"
@@ -17,8 +17,8 @@
 namespace movegen {
     class BaseGenerator : public ::testing::Test {
         protected:
-            board::BitBoards bitboards;
-            board::GameStateBitMasks gameStateBitmasks;
+            board::Bitboards bitboards;
+            board::GameStateBitmasks gameStateBitmasks;
             board::SquaresLookup squaresLookup;
             perft::SearchMemory searchMemory;
             board::ZHasher zHasher;
@@ -27,8 +27,8 @@ namespace movegen {
             std::string startingPos;
             std::vector<move::Move> moveList;
 
-            BaseGenerator() : bitboards(board::BitBoards()),
-                              gameStateBitmasks(board::GameStateBitMasks(bitboards)),
+            BaseGenerator() : bitboards(board::Bitboards()),
+                              gameStateBitmasks(board::GameStateBitmasks(bitboards)),
                               squaresLookup(board::SquaresLookup(bitboards)),
                               searchMemory(perft::SearchMemory(0)),
                               zHasher(board::ZHasher()),

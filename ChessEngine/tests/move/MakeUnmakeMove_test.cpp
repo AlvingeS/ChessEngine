@@ -35,7 +35,7 @@
 //                 return moveList;
 //             }
 
-//             std::vector<bitmask> getBitboards() {
+//             std::vector<bitboard> getBitboards() {
 //                 return moveGenerator.getBoard().getBitboards();
 //             }
 
@@ -48,7 +48,7 @@
 //         moveGenerator.genMoves(true, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
-//         std::vector<bitmask> bitboardsCopy = getBitboards();
+//         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = moveList;
 
@@ -64,7 +64,7 @@
 //         moveGenerator.genMoves(false, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
-//         std::vector<bitmask> bitboardsCopy = getBitboards();
+//         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
@@ -82,7 +82,7 @@
 //         moveGenerator.genMoves(true, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
-//         std::vector<bitmask> bitboardsCopy = getBitboards();
+//         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
@@ -99,7 +99,7 @@
 //         moveGenerator.genMoves(false, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
-//         std::vector<bitmask> bitboardsCopy = getBitboards();
+//         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
@@ -116,7 +116,7 @@
 //         moveGenerator.genMoves(true, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
-//         std::vector<bitmask> bitboardsCopy = getBitboards();
+//         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
@@ -133,7 +133,7 @@
 //         moveGenerator.genMoves(false, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
-//         std::vector<bitmask> bitboardsCopy = getBitboards();
+//         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
@@ -150,7 +150,7 @@
 //         moveGenerator.genMoves(true, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
-//         std::vector<bitmask> bitboardsCopy = getBitboards();
+//         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
@@ -167,7 +167,7 @@
 //         moveGenerator.genMoves(false, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
-//         std::vector<bitmask> bitboardsCopy = getBitboards();
+//         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
@@ -184,7 +184,7 @@
 //         moveGenerator.genMoves(true, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
-//         std::vector<bitmask> bitboardsCopy = getBitboards();
+//         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
@@ -201,7 +201,7 @@
 //         moveGenerator.genMoves(false, moveList);
 
 //         // Makes copies of the bitboards and squaresLookup
-//         std::vector<bitmask> bitboardsCopy = getBitboards();
+//         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
@@ -220,7 +220,7 @@
 //         moveGenerator.getBoard().makeMove(Move(51, 35, Move::DOUBLE_PAWN_PUSH_FLAG), false);
 
 //         // Makes copies of the bitboards and squaresLookup
-//         std::vector<bitmask> bitboardsCopy = getBitboards();
+//         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         
 //         moveGenerator.genMoves(true, moveList);
@@ -241,7 +241,7 @@
 //         moveGenerator.getBoard().makeMove(Move(9, 17, Move::DOUBLE_PAWN_PUSH_FLAG), true);
 
 //         // Makes copies of the bitboards and squaresLookup
-//         std::vector<bitmask> bitboardsCopy = getBitboards();
+//         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         
 //         moveGenerator.genMoves(false, moveList);

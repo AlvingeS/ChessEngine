@@ -3,8 +3,8 @@
 #include "ChessEngine/common.h"
 
 #include "ChessEngine/move/Move.h"
-#include "ChessEngine/board/BitBoards.h"
-#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/board/Bitboards.h"
+#include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/move/MoveMaker.h"
 
 #include "RayLogic.h"
@@ -23,8 +23,8 @@ class CastlingGenerator {
 public:
     // Constructor
     CastlingGenerator(
-        board::BitBoards& bitboards,
-        board::GameStateBitMasks& gameStateBitmasks,
+        board::Bitboards& bitboards,
+        board::GameStateBitmasks& gameStateBitmasks,
         move::MoveMaker& moveMaker, int& moveIndex,
         CommonLogic* commonLogic,
         CheckDetection* checkDetection
@@ -39,8 +39,8 @@ public:
 
 private:
     // Private member functions
-    board::BitBoards& _bitboards;
-    board::GameStateBitMasks& _gameStateBitmasks;
+    board::Bitboards& _bitboards;
+    board::GameStateBitmasks& _gameStateBitmasks;
     move::MoveMaker& _moveMaker;
     int& _moveIndex;
     CommonLogic* _commonLogic;

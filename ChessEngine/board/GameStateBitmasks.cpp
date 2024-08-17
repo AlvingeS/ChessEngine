@@ -1,15 +1,15 @@
-#include "GameStateBitMasks.h"
+#include "GameStateBitmasks.h"
 
 namespace board {
 
-GameStateBitMasks::GameStateBitMasks(const BitBoards& bitboards) 
+GameStateBitmasks::GameStateBitmasks(const Bitboards& bitboards) 
 {
     fillWhitePiecesFromBitboards(bitboards);
     fillBlackPiecesFromBitboards(bitboards);
     updOccupiedAndEmptySquaresBitmasks();
 }
 
-void GameStateBitMasks::fillWhitePiecesFromBitboards(const BitBoards& bitboards) 
+void GameStateBitmasks::fillWhitePiecesFromBitboards(const Bitboards& bitboards) 
 {
     bitmask w_all = 0;
     for (int i = 0; i < 6; i++) {
@@ -19,7 +19,7 @@ void GameStateBitMasks::fillWhitePiecesFromBitboards(const BitBoards& bitboards)
     _whitePiecesBitmask = w_all;
 }
 
-void GameStateBitMasks::fillBlackPiecesFromBitboards(const BitBoards& bitboards) 
+void GameStateBitmasks::fillBlackPiecesFromBitboards(const Bitboards& bitboards) 
 {
     bitmask b_all = 0;
     for (int i = 6; i < 12; i++) {

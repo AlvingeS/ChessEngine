@@ -1,8 +1,8 @@
 #pragma once
 #include "ChessEngine/perft/Searcher.h"
 #include "ChessEngine/utils/Fen.h"
-#include "ChessEngine/board/BitBoards.h"
-#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/board/Bitboards.h"
+#include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/board/SquaresLookup.h"
 
 #include <gtest/gtest.h>

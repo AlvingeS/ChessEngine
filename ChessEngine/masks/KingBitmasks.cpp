@@ -1,4 +1,4 @@
-#include "KingBitMasks.h"
+#include "KingBitmasks.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
 
@@ -37,22 +37,22 @@ void removeWrapAroundKingMoves(bitmask& kingMoves, const int ind)
     }
 }
 
-bitmask getKingBitMask(const int ind) 
+bitmask getKingBitmask(const int ind) 
 {
     bitmask kingMoves = applyKingMoves(ind);
     removeWrapAroundKingMoves(kingMoves, ind);
     return kingMoves;
 }
 
-const std::vector<bitmask> getAllKingBitMasks() 
+const std::vector<bitmask> getAllKingBitmasks() 
 {
-    std::vector<bitmask> kingBitMasks;
+    std::vector<bitmask> kingBitmasks;
 
     for (int i = 0; i < 64; i++) {
-        kingBitMasks.push_back(getKingBitMask(i));
+        kingBitmasks.push_back(getKingBitmask(i));
     }
 
-    return kingBitMasks;
+    return kingBitmasks;
 }
 
 } // namespace masks

@@ -6,8 +6,8 @@ namespace utils {
 
 void setBoardFromFen(
     const std::string& fen, 
-    board::BitBoards& bitboards, 
-    board::GameStateBitMasks& gameStateBitmasks, 
+    board::Bitboards& bitboards, 
+    board::GameStateBitmasks& gameStateBitmasks, 
     board::SquaresLookup& squaresLookup) 
 {
     bitboards.resetBitboards();

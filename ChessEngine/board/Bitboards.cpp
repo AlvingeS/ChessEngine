@@ -1,8 +1,8 @@
-#include "BitBoards.h"
+#include "Bitboards.h"
 
 namespace board {
 
-BitBoards::BitBoards() 
+Bitboards::Bitboards() 
 {
     _bitboards.reserve(12);
 

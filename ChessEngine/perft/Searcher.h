@@ -2,8 +2,8 @@
 
 #include "ChessEngine/movegen/MoveGenerator.h"
 #include "ChessEngine/evaluation/Evaluator.h"
-#include "ChessEngine/board/BitBoards.h"
-#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/board/Bitboards.h"
+#include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/board/SquaresLookup.h"
 #include "ChessEngine/move/MoveMaker.h"
 #include "ChessEngine/move/Move.h"
@@ -102,7 +102,7 @@ public:
 
     void setBoardFromFen(const std::string& fen) 
     {
-        utils::setBoardFromFen(fen, _bitboards, _gameStateBitMasks, _squaresLookup);
+        utils::setBoardFromFen(fen, _bitboards, _gameStateBitmasks, _squaresLookup);
     }
 
     std::string getFenFromBoard() 
@@ -110,15 +110,15 @@ public:
         return utils::getFenFromBoard(_squaresLookup);
     }
 
-    bool diffBetweenGameStateBitMasks() 
+    bool diffBetweenGameStateBitmasks() 
     {
-        return (_gameStateBitMasks.getBlackPiecesBitmask() | _gameStateBitMasks.getWhitePiecesBitmask()) != _gameStateBitMasks.getOccupiedPiecesBitmask();
+        return (_gameStateBitmasks.getBlackPiecesBitmask() | _gameStateBitmasks.getWhitePiecesBitmask()) != _gameStateBitmasks.getOccupiedPiecesBitmask();
     }
     
 private:
-    board::BitBoards _bitboards;
+    board::Bitboards _bitboards;
     board::SquaresLookup _squaresLookup;
-    board::GameStateBitMasks _gameStateBitMasks;
+    board::GameStateBitmasks _gameStateBitmasks;
     SearchMemory _searchMemory;
     board::ZHasher _zHasher;
     move::MoveMaker _moveMaker;

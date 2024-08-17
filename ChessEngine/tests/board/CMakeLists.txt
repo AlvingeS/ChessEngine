@@ -1,5 +1,5 @@
 add_executable(game_tests
-    BitBoards_test.cpp
+    Bitboards_test.cpp
     # MakeUnmakeMove_test.cpp
 )
 

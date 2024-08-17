@@ -3,7 +3,7 @@
 #include "ChessEngine/common.h"
 
 #include "PieceType.h"
-#include "BitBoards.h"
+#include "Bitboards.h"
 
 namespace board {
 
@@ -11,7 +11,7 @@ class SquaresLookup {
 
 public:
     // ** Constructor **
-    SquaresLookup(const BitBoards& bitboards);
+    SquaresLookup(const Bitboards& bitboards);
 
 
     // ** Getters & Setters **
@@ -26,7 +26,7 @@ public:
     }
 
     // ** Functions **
-    void fillSquaresLookupFromBitboards(const BitBoards& bitboards);
+    void fillSquaresLookupFromBitboards(const Bitboards& bitboards);
     
 private:
 

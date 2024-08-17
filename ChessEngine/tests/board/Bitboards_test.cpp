@@ -1,20 +1,20 @@
 #include <gtest/gtest.h>
-#include "ChessEngine/board/BitBoards.h"
-#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/board/Bitboards.h"
+#include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/board/SquaresLookup.h"
 #include "ChessEngine/utils/Fen.h"
 
 namespace board {
 
-    class BitBoardsTest : public ::testing::Test {
+    class BitboardsTest : public ::testing::Test {
         protected:
-            BitBoards bitboards;
-            GameStateBitMasks gameStateBitmasks;
+            Bitboards bitboards;
+            GameStateBitmasks gameStateBitmasks;
             SquaresLookup squaresLookup;
 
             std::string fenOne;
 
-            BitBoardsTest()
+            BitboardsTest()
                 : bitboards(), 
                 gameStateBitmasks(bitboards), 
                 squaresLookup(bitboards), 
@@ -28,105 +28,105 @@ namespace board {
     };
 
 
-    TEST_F(BitBoardsTest, ConstructorInit_WhitePawn) {
-        bitmask expected = 0x000000000000FF00ULL;
-        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::W_PAWN);
+    TEST_F(BitboardsTest, ConstructorInit_WhitePawn) {
+        bitboard expected = 0x000000000000FF00ULL;
+        bitboard actual = bitboards.getBitboardFromPieceType(PieceType::W_PAWN);
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, ConstructorInit_WhiteKnight) {
-        bitmask expected = 0x0000000000000042ULL;
-        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::W_KNIGHT);
+    TEST_F(BitboardsTest, ConstructorInit_WhiteKnight) {
+        bitboard expected = 0x0000000000000042ULL;
+        bitboard actual = bitboards.getBitboardFromPieceType(PieceType::W_KNIGHT);
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, ConstructorInit_WhiteBishop) {
-        bitmask expected = 0x0000000000000024ULL;
-        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::W_BISHOP);
+    TEST_F(BitboardsTest, ConstructorInit_WhiteBishop) {
+        bitboard expected = 0x0000000000000024ULL;
+        bitboard actual = bitboards.getBitboardFromPieceType(PieceType::W_BISHOP);
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, ConstructorInit_WhiteRook) {
-        bitmask expected = 0x0000000000000081ULL;
-        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::W_ROOK);
+    TEST_F(BitboardsTest, ConstructorInit_WhiteRook) {
+        bitboard expected = 0x0000000000000081ULL;
+        bitboard actual = bitboards.getBitboardFromPieceType(PieceType::W_ROOK);
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, ConstructorInit_WhiteQueen) {
-        bitmask expected = 0x0000000000000010ULL;
-        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::W_QUEEN);
+    TEST_F(BitboardsTest, ConstructorInit_WhiteQueen) {
+        bitboard expected = 0x0000000000000010ULL;
+        bitboard actual = bitboards.getBitboardFromPieceType(PieceType::W_QUEEN);
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, ConstructorInit_WhiteKing) {
-        bitmask expected = 0x0000000000000008ULL;
-        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::W_KING);
+    TEST_F(BitboardsTest, ConstructorInit_WhiteKing) {
+        bitboard expected = 0x0000000000000008ULL;
+        bitboard actual = bitboards.getBitboardFromPieceType(PieceType::W_KING);
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, ConstructorInit_BlackPawn) {
-        bitmask expected = 0x00FF000000000000ULL;
-        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::B_PAWN);
+    TEST_F(BitboardsTest, ConstructorInit_BlackPawn) {
+        bitboard expected = 0x00FF000000000000ULL;
+        bitboard actual = bitboards.getBitboardFromPieceType(PieceType::B_PAWN);
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, ConstructorInit_BlackKnight) {
-        bitmask expected = 0x4200000000000000ULL;
-        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::B_KNIGHT);
+    TEST_F(BitboardsTest, ConstructorInit_BlackKnight) {
+        bitboard expected = 0x4200000000000000ULL;
+        bitboard actual = bitboards.getBitboardFromPieceType(PieceType::B_KNIGHT);
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, ConstructorInit_BlackBishop) {
-        bitmask expected = 0x2400000000000000ULL;
-        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::B_BISHOP);
+    TEST_F(BitboardsTest, ConstructorInit_BlackBishop) {
+        bitboard expected = 0x2400000000000000ULL;
+        bitboard actual = bitboards.getBitboardFromPieceType(PieceType::B_BISHOP);
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, ConstructorInit_BlackRook) {
-        bitmask expected = 0x8100000000000000ULL;
-        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::B_ROOK);
+    TEST_F(BitboardsTest, ConstructorInit_BlackRook) {
+        bitboard expected = 0x8100000000000000ULL;
+        bitboard actual = bitboards.getBitboardFromPieceType(PieceType::B_ROOK);
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, ConstructorInit_BlackQueen) {
-        bitmask expected = 0x1000000000000000ULL;
-        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::B_QUEEN);
+    TEST_F(BitboardsTest, ConstructorInit_BlackQueen) {
+        bitboard expected = 0x1000000000000000ULL;
+        bitboard actual = bitboards.getBitboardFromPieceType(PieceType::B_QUEEN);
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, ConstructorInit_BlackKing) {
-        bitmask expected = 0x0800000000000000ULL;
-        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::B_KING);
+    TEST_F(BitboardsTest, ConstructorInit_BlackKing) {
+        bitboard expected = 0x0800000000000000ULL;
+        bitboard actual = bitboards.getBitboardFromPieceType(PieceType::B_KING);
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, getWhitePiecesBitmask_ShouldReturn0x000000000000FFFF) {
-        bitmask expected = 0x000000000000FFFFULL;
-        bitmask actual = gameStateBitmasks.getWhitePiecesBitmask();
+    TEST_F(BitboardsTest, getWhitePiecesbitboard_ShouldReturn0x000000000000FFFF) {
+        bitboard expected = 0x000000000000FFFFULL;
+        bitboard actual = gameStateBitmasks.getWhitePiecesBitmask();
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, getBlackPiecesBitmask_ShouldReturn0xFFFF000000000000) {
-        bitmask expected = 0xFFFF000000000000ULL;
-        bitmask actual = gameStateBitmasks.getBlackPiecesBitmask();
+    TEST_F(BitboardsTest, getBlackPiecesbitboard_ShouldReturn0xFFFF000000000000) {
+        bitboard expected = 0xFFFF000000000000ULL;
+        bitboard actual = gameStateBitmasks.getBlackPiecesBitmask();
 
         ASSERT_EQ(expected, actual);
     }
 
-    TEST_F(BitBoardsTest, fillSquaresLookupTest_ShouldReturnStartingPos) {
+    TEST_F(BitboardsTest, fillSquaresLookupTest_ShouldReturnStartingPos) {
         ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(0), board::PieceType::W_ROOK);
         ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(1), board::PieceType::W_KNIGHT);
         ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(2), board::PieceType::W_BISHOP);
@@ -158,7 +158,7 @@ namespace board {
         ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(63), board::PieceType::B_ROOK);
     }
 
-    TEST_F(BitBoardsTest, fillSquaresLookupFenOneTest_ShouldReturnTwoPieces) {
+    TEST_F(BitboardsTest, fillSquaresLookupFenOneTest_ShouldReturnTwoPieces) {
         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
     
         for (int i = 0; i < 64; i++) {

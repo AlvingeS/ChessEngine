@@ -1,4 +1,4 @@
-#include "RayBitMasks.h"
+#include "RayBitmasks.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
 

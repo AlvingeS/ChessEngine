@@ -7,12 +7,12 @@
 
 namespace board {
 
-class BitBoards {
+class Bitboards {
 
 public:
 
     // ** Constructor **
-    BitBoards();
+    Bitboards();
 
     inline const bitboard& getBitboardFromPieceType(const PieceType pieceType) const 
     {

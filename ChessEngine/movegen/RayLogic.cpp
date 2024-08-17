@@ -4,10 +4,10 @@
 
 namespace movegen {
 RayLogic::RayLogic(
-    board::GameStateBitMasks& gameStateBitmasks,
+    board::GameStateBitmasks& gameStateBitmasks,
     int& moveIndex,
     CommonLogic* commonLogic) 
-    : _gameStateBitMasks(gameStateBitmasks)
+    : _gameStateBitmasks(gameStateBitmasks)
     , _moveIndex(moveIndex)
     , _commonLogic(commonLogic)
 {
@@ -32,7 +32,7 @@ void RayLogic::addMoveIfBlockerIsEnemy(
     int bitIndexFrom,
     std::vector<move::Move>& moveList)
 {
-    bool blockerIsWhite = utils::getBit(_gameStateBitMasks.getWhitePiecesBitmask(), blockerIndex);
+    bool blockerIsWhite = utils::getBit(_gameStateBitmasks.getWhitePiecesBitmask(), blockerIndex);
 
     if (blockerIsWhite != isWhite) {
         _commonLogic->addMove(bitIndexFrom, blockerIndex, move::Move::CAPTURE_FLAG, moveList, _moveIndex);
@@ -125,12 +125,12 @@ void RayLogic::getMovesFromStraightRay(
     int pieceFile, 
     std::vector<move::Move>& moveList) 
 {
-        bitmask blockerBitMask = ray & _gameStateBitMasks.getOccupiedPiecesBitmask();          
+        bitmask blockerBitmask = ray & _gameStateBitmasks.getOccupiedPiecesBitmask();          
 
-        if (blockerBitMask != 0) {
+        if (blockerBitmask != 0) {
             int blockerIndex = blockerOnLSB
-                               ? utils::indexOfLSB(blockerBitMask)
-                               : utils::indexOfMSB(blockerBitMask);
+                               ? utils::indexOfLSB(blockerBitmask)
+                               : utils::indexOfMSB(blockerBitmask);
                                
             addMoveIfBlockerIsEnemy(
                 blockerIndex,
@@ -163,12 +163,12 @@ void RayLogic::getMovesFromDiagonalRay(
     int pieceFile, 
     std::vector<move::Move>& moveList) 
 {
-    bitmask blockerBitMask = ray & _gameStateBitMasks.getOccupiedPiecesBitmask();
+    bitmask blockerBitmask = ray & _gameStateBitmasks.getOccupiedPiecesBitmask();
 
-    if (blockerBitMask != 0) {
+    if (blockerBitmask != 0) {
         int blockerIndex = blockerOnLSB
-                           ? utils::indexOfLSB(blockerBitMask) 
-                           : utils::indexOfMSB(blockerBitMask);
+                           ? utils::indexOfLSB(blockerBitmask) 
+                           : utils::indexOfMSB(blockerBitmask);
 
         addMoveIfBlockerIsEnemy(
             blockerIndex, 
@@ -196,23 +196,23 @@ bool RayLogic::checkStraightRay(
     bool firstBlockerOnLSB, 
     bitmask& opponentRooksAndQueens) 
 {
-    bitmask rooksAndQueensBlockerBitMask = straightRay & opponentRooksAndQueens;
+    bitmask rooksAndQueensBlockerBitmask = straightRay & opponentRooksAndQueens;
     
     // There must be a rook or a queen on the file or rank to be in check
-    if (rooksAndQueensBlockerBitMask != 0ULL) {
-        bitmask occupiedBlockerBitMask = straightRay & _gameStateBitMasks.getOccupiedPiecesBitmask();
+    if (rooksAndQueensBlockerBitmask != 0ULL) {
+        bitmask occupiedBlockerBitmask = straightRay & _gameStateBitmasks.getOccupiedPiecesBitmask();
 
         // If there is only one blocker out of all pieces, then it must be a rook or a queen thus the king is in check
-        if (utils::popCount(occupiedBlockerBitMask) == 1) {
+        if (utils::popCount(occupiedBlockerBitmask) == 1) {
             return true;
         } else {
             int occupiedBlockerIndex = firstBlockerOnLSB
-                                       ? utils::indexOfLSB(occupiedBlockerBitMask)
-                                       : utils::indexOfMSB(occupiedBlockerBitMask);
+                                       ? utils::indexOfLSB(occupiedBlockerBitmask)
+                                       : utils::indexOfMSB(occupiedBlockerBitmask);
 
             int rooksAndQueensBlockerIndex = firstBlockerOnLSB 
-                                             ? utils::indexOfLSB(rooksAndQueensBlockerBitMask)
-                                             : utils::indexOfMSB(rooksAndQueensBlockerBitMask);
+                                             ? utils::indexOfLSB(rooksAndQueensBlockerBitmask)
+                                             : utils::indexOfMSB(rooksAndQueensBlockerBitmask);
 
             // If the the first blocker of any piece is the same as the first blocker of a rook or queen, then the king is in check
             if (occupiedBlockerIndex == rooksAndQueensBlockerIndex) {
@@ -231,21 +231,21 @@ bool RayLogic::checkDiagonalRay(
     bool firstBlockerOnLSB, 
     bitmask& opponentBishopsAndQueens) 
 {
-    bitmask bishopsAndQueensBlockerBitMask = diagonalRay & opponentBishopsAndQueens;
+    bitmask bishopsAndQueensBlockerBitmask = diagonalRay & opponentBishopsAndQueens;
 
-    if ((bishopsAndQueensBlockerBitMask) != 0) {
-        bitmask occupiedBlockerBitMask = diagonalRay & _gameStateBitMasks.getOccupiedPiecesBitmask();
+    if ((bishopsAndQueensBlockerBitmask) != 0) {
+        bitmask occupiedBlockerBitmask = diagonalRay & _gameStateBitmasks.getOccupiedPiecesBitmask();
 
-        if (utils::popCount(occupiedBlockerBitMask) == 1) {
+        if (utils::popCount(occupiedBlockerBitmask) == 1) {
             return true;
         } else {
             int occupiedBlockerIndex = firstBlockerOnLSB
-                                       ? utils::indexOfLSB(occupiedBlockerBitMask)
-                                       : utils::indexOfMSB(occupiedBlockerBitMask);
+                                       ? utils::indexOfLSB(occupiedBlockerBitmask)
+                                       : utils::indexOfMSB(occupiedBlockerBitmask);
 
             int bishopsAndQueensBlockerIndex = firstBlockerOnLSB
-                                               ? utils::indexOfLSB(bishopsAndQueensBlockerBitMask)
-                                               : utils::indexOfMSB(bishopsAndQueensBlockerBitMask);
+                                               ? utils::indexOfLSB(bishopsAndQueensBlockerBitmask)
+                                               : utils::indexOfMSB(bishopsAndQueensBlockerBitmask);
 
             if (occupiedBlockerIndex == bishopsAndQueensBlockerIndex) {
                 return true;

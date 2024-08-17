@@ -6,7 +6,7 @@
 namespace movegen {
 
 QueenGenerator::QueenGenerator(
-    board::BitBoards& bitboards,
+    board::Bitboards& bitboards,
     RayLogic* rayLogic) 
     : _bitboards(bitboards)
     ,  _rayLogic(rayLogic) 

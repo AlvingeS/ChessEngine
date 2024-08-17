@@ -3,7 +3,7 @@
 #include "ChessEngine/common.h"
 
 #include "ChessEngine/move/Move.h"
-#include "ChessEngine/masks/RayBitMasks.h"
+#include "ChessEngine/masks/RayBitmasks.h"
 #include "ChessEngine/utils/BitBasics.h"
 
 #include "RayLogic.h"
@@ -27,8 +27,8 @@ public:
 
     // Public member functions
     MoveGenerator(
-        board::BitBoards& bitboards,
-        board::GameStateBitMasks& gameStateBitmasks,
+        board::Bitboards& bitboards,
+        board::GameStateBitmasks& gameStateBitmasks,
         move::MoveMaker& moveMaker
     );
 
@@ -73,8 +73,8 @@ public:
 
 private:
     // Private member variables
-    board::BitBoards& _bitboards;
-    board::GameStateBitMasks& _gameStateBitmasks;
+    board::Bitboards& _bitboards;
+    board::GameStateBitmasks& _gameStateBitmasks;
     move::MoveMaker& _moveMaker;
     perft::SearchMemory& _searchMemory;
     CommonLogic _commonLogic;

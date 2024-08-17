@@ -1,4 +1,4 @@
-#include "PawnBitMasks.h"
+#include "PawnBitmasks.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
 

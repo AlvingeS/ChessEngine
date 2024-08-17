@@ -2,10 +2,10 @@
 
 #include "ChessEngine/common.h"
 
-#include "ChessEngine/board/BitBoards.h"
-#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/board/Bitboards.h"
+#include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/move/Move.h"
-#include "ChessEngine/masks/PawnBitMasks.h"
+#include "ChessEngine/masks/PawnBitmasks.h"
 #include "ChessEngine/perft/SearchMemory.h"
 
 #include "RayLogic.h"
@@ -18,8 +18,8 @@ class PawnGenerator {
 public:
     // Constructor
     PawnGenerator(
-        board::BitBoards& bitboards,
-        board::GameStateBitMasks& gameStateBitmasks,
+        board::Bitboards& bitboards,
+        board::GameStateBitmasks& gameStateBitmasks,
         int& moveIndex,
         CommonLogic* commonLogic
     );
@@ -34,8 +34,8 @@ public:
 
 private:
     // Private member functions
-    board::BitBoards& _bitboards;
-    board::GameStateBitMasks& _gameStateBitmasks;
+    board::Bitboards& _bitboards;
+    board::GameStateBitmasks& _gameStateBitmasks;
     int& _moveIndex;
     CommonLogic* _commonLogic;
 

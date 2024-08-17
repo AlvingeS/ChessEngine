@@ -2,15 +2,15 @@
 
 #include "ChessEngine/common.h"
 
-#include "BitBoards.h"
+#include "Bitboards.h"
 
 namespace board {
 
-class GameStateBitMasks {
+class GameStateBitmasks {
 
 public:
     // ** Constructor **
-    GameStateBitMasks(const BitBoards& bitboards);
+    GameStateBitmasks(const Bitboards& bitboards);
     
     inline bool whitePiecesBitIsSet(const int square) const 
     {
@@ -82,8 +82,8 @@ public:
         return _emptySquaresBitmask;
     }
 
-    void fillWhitePiecesFromBitboards(const BitBoards& bitboards);
-    void fillBlackPiecesFromBitboards(const BitBoards& bitboards);
+    void fillWhitePiecesFromBitboards(const Bitboards& bitboards);
+    void fillBlackPiecesFromBitboards(const Bitboards& bitboards);
 
 private:
     

@@ -4,7 +4,7 @@
 
 
 #include "ChessEngine/utils/BitBasics.h"
-#include "ChessEngine/board/GameStateBitMasks.h"
+#include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/move/Move.h"
 
 #include "CommonLogic.h"
@@ -16,7 +16,7 @@ class RayLogic {
 public:
     // Constructor
     RayLogic(
-        board::GameStateBitMasks& gameStateBitmasks,
+        board::GameStateBitmasks& gameStateBitmasks,
         int& moveIndex,
         CommonLogic* commonLogic
     );
@@ -93,7 +93,7 @@ private:
     std::vector<int> _freeRayIndices;
     
     // Private member variables
-    board::GameStateBitMasks& _gameStateBitMasks;
+    board::GameStateBitmasks& _gameStateBitmasks;
     int& _moveIndex;
     CommonLogic* _commonLogic;
 };

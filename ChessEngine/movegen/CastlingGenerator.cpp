@@ -5,8 +5,8 @@
 
 namespace movegen {
 CastlingGenerator::CastlingGenerator(
-    board::BitBoards& bitboards,
-    board::GameStateBitMasks& gameStateBitmasks,
+    board::Bitboards& bitboards,
+    board::GameStateBitmasks& gameStateBitmasks,
     move::MoveMaker& moveMaker, int& moveIndex,
     CommonLogic* commonLogic,
     CheckDetection* checkDetection)

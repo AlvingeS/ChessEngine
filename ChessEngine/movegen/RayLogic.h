@@ -16,7 +16,7 @@ class RayLogic {
 public:
     // Constructor
     RayLogic(
-        board::GameStateBitmasks& gameStateBitmasks,
+        const board::GameStateBitmasks& gameStateBitmasks,
         int& moveIndex,
         CommonLogic* commonLogic
     );
@@ -93,7 +93,7 @@ private:
     std::vector<int> _freeRayIndices;
     
     // Private member variables
-    board::GameStateBitmasks& _gameStateBitmasks;
+    const board::GameStateBitmasks& _gameStateBitmasksRef;
     int& _moveIndex;
     CommonLogic* _commonLogic;
 };

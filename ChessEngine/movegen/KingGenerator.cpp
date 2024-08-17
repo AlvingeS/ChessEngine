@@ -6,12 +6,12 @@
 namespace movegen {
 
 KingGenerator::KingGenerator(
-    board::Bitboards& bitboards,
-    board::GameStateBitmasks& gameStateBitmasks,
+    const board::Bitboards& bitboards,
+    const board::GameStateBitmasks& gameStateBitmasks,
     int& moveIndex,
     CommonLogic* commonLogic) 
-    : _bitboards(bitboards)
-    , _gameStateBitmasks(gameStateBitmasks)
+    : _bitboardsRef(bitboards)
+    , _gameStateBitmasksRef(gameStateBitmasks)
     , _moveIndex(moveIndex)
     , _commonLogic(commonLogic) 
 {
@@ -23,16 +23,16 @@ KingGenerator::KingGenerator(
 
 void KingGenerator::generate(bool isWhite, std::vector<move::Move>& moveList) 
 {
-    utils::getBitIndices(_kingIndices, isWhite ? _bitboards.getWhiteKingBitboard()
-                                               : _bitboards.getBlackKingBitboard());
+    utils::getBitIndices(_kingIndices, isWhite ? _bitboardsRef.getWhiteKingBitboard()
+                                               : _bitboardsRef.getBlackKingBitboard());
 
     for (int currentKingIndex : _kingIndices) {
         bitmask kingBitmask = _kingBitmasks[currentKingIndex];
 
-        bitmask freeKingMoves = kingBitmask & _gameStateBitmasks.getEmptySquaresBitmask();
+        bitmask freeKingMoves = kingBitmask & _gameStateBitmasksRef.getEmptySquaresBitmask();
         
-        bitmask enemyPieces = isWhite ? _gameStateBitmasks.getBlackPiecesBitmask() 
-                                  : _gameStateBitmasks.getWhitePiecesBitmask();
+        bitmask enemyPieces = isWhite ? _gameStateBitmasksRef.getBlackPiecesBitmask() 
+                                  : _gameStateBitmasksRef.getWhitePiecesBitmask();
 
         bitmask capturableKingMoves = kingBitmask & enemyPieces;
 

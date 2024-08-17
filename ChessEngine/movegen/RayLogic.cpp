@@ -4,10 +4,10 @@
 
 namespace movegen {
 RayLogic::RayLogic(
-    board::GameStateBitmasks& gameStateBitmasks,
+    const board::GameStateBitmasks& gameStateBitmasks,
     int& moveIndex,
     CommonLogic* commonLogic) 
-    : _gameStateBitmasks(gameStateBitmasks)
+    : _gameStateBitmasksRef(gameStateBitmasks)
     , _moveIndex(moveIndex)
     , _commonLogic(commonLogic)
 {
@@ -32,7 +32,7 @@ void RayLogic::addMoveIfBlockerIsEnemy(
     int bitIndexFrom,
     std::vector<move::Move>& moveList)
 {
-    bool blockerIsWhite = utils::getBit(_gameStateBitmasks.getWhitePiecesBitmask(), blockerIndex);
+    bool blockerIsWhite = utils::getBit(_gameStateBitmasksRef.getWhitePiecesBitmask(), blockerIndex);
 
     if (blockerIsWhite != isWhite) {
         _commonLogic->addMove(bitIndexFrom, blockerIndex, move::Move::CAPTURE_FLAG, moveList, _moveIndex);
@@ -125,7 +125,7 @@ void RayLogic::getMovesFromStraightRay(
     int pieceFile, 
     std::vector<move::Move>& moveList) 
 {
-        bitmask blockerBitmask = ray & _gameStateBitmasks.getOccupiedPiecesBitmask();          
+        bitmask blockerBitmask = ray & _gameStateBitmasksRef.getOccupiedPiecesBitmask();          
 
         if (blockerBitmask != 0) {
             int blockerIndex = blockerOnLSB
@@ -163,7 +163,7 @@ void RayLogic::getMovesFromDiagonalRay(
     int pieceFile, 
     std::vector<move::Move>& moveList) 
 {
-    bitmask blockerBitmask = ray & _gameStateBitmasks.getOccupiedPiecesBitmask();
+    bitmask blockerBitmask = ray & _gameStateBitmasksRef.getOccupiedPiecesBitmask();
 
     if (blockerBitmask != 0) {
         int blockerIndex = blockerOnLSB
@@ -200,7 +200,7 @@ bool RayLogic::checkStraightRay(
     
     // There must be a rook or a queen on the file or rank to be in check
     if (rooksAndQueensBlockerBitmask != 0ULL) {
-        bitmask occupiedBlockerBitmask = straightRay & _gameStateBitmasks.getOccupiedPiecesBitmask();
+        bitmask occupiedBlockerBitmask = straightRay & _gameStateBitmasksRef.getOccupiedPiecesBitmask();
 
         // If there is only one blocker out of all pieces, then it must be a rook or a queen thus the king is in check
         if (utils::popCount(occupiedBlockerBitmask) == 1) {
@@ -234,7 +234,7 @@ bool RayLogic::checkDiagonalRay(
     bitmask bishopsAndQueensBlockerBitmask = diagonalRay & opponentBishopsAndQueens;
 
     if ((bishopsAndQueensBlockerBitmask) != 0) {
-        bitmask occupiedBlockerBitmask = diagonalRay & _gameStateBitmasks.getOccupiedPiecesBitmask();
+        bitmask occupiedBlockerBitmask = diagonalRay & _gameStateBitmasksRef.getOccupiedPiecesBitmask();
 
         if (utils::popCount(occupiedBlockerBitmask) == 1) {
             return true;

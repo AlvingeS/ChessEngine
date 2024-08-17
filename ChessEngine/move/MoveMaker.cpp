@@ -44,11 +44,11 @@ MoveMaker::MoveMaker(
     board::SquaresLookup& squaresLookup, 
     perft::SearchMemory& searchMemory,
     board::ZHasher& zHasher
-) : _bitboards(bitBoards), 
-    _gameStateBitmasks(gameStateBitmasks), 
-    _squaresLookup(squaresLookup), 
-    _searchMemory(searchMemory), 
-    _zHasher(zHasher)
+) : _bitboardsRef(bitBoards), 
+    _gameStateBitmasksRef(gameStateBitmasks), 
+    _squaresLookupRef(squaresLookup), 
+    _searchMemoryRef(searchMemory), 
+    _zHasherRef(zHasher)
 {}
 
 void MoveMaker::makeMove(
@@ -77,7 +77,7 @@ void MoveMaker::makeMove(
     handleEnPessantMemory(move, isWhite, currentDepth, toIndex);
     handleNoCaptureCount(move, currentDepth, movedPieceType);
 
-    _gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
+    _gameStateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
 }
 
 void MoveMaker::makeCastleMove(bool isWhite,bool isKingSide)
@@ -90,43 +90,43 @@ void MoveMaker::makeCastleMove(bool isWhite,bool isKingSide)
         fromRookInd = isKingSide ? 0 : 7;
         toRookInd = isKingSide ? 2 : 4;
         
-        _bitboards.clearWhiteKingBit(fromKingInd);
-        _bitboards.setWhiteKingBit(toKingInd);
-        _bitboards.clearWhiteRooksBit(fromRookInd);
-        _bitboards.setWhiteRooksBit(toRookInd);
+        _bitboardsRef.clearWhiteKingBit(fromKingInd);
+        _bitboardsRef.setWhiteKingBit(toKingInd);
+        _bitboardsRef.clearWhiteRooksBit(fromRookInd);
+        _bitboardsRef.setWhiteRooksBit(toRookInd);
 
-        _gameStateBitmasks.clearWhitePiecesBit(fromKingInd);
-        _gameStateBitmasks.setWhitePiecesBit(toKingInd);
-        _gameStateBitmasks.clearWhitePiecesBit(fromRookInd);
-        _gameStateBitmasks.setWhitePiecesBit(toRookInd);
+        _gameStateBitmasksRef.clearWhitePiecesBit(fromKingInd);
+        _gameStateBitmasksRef.setWhitePiecesBit(toKingInd);
+        _gameStateBitmasksRef.clearWhitePiecesBit(fromRookInd);
+        _gameStateBitmasksRef.setWhitePiecesBit(toRookInd);
 
-        _squaresLookup.setPieceTypeAtIndex(fromKingInd, board::PieceType::EMPTY);
-        _squaresLookup.setPieceTypeAtIndex(toKingInd, board::PieceType::W_KING);
-        _squaresLookup.setPieceTypeAtIndex(fromRookInd, board::PieceType::EMPTY);
-        _squaresLookup.setPieceTypeAtIndex(toRookInd, board::PieceType::W_ROOK);
+        _squaresLookupRef.setPieceTypeAtIndex(fromKingInd, board::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(toKingInd, board::PieceType::W_KING);
+        _squaresLookupRef.setPieceTypeAtIndex(fromRookInd, board::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(toRookInd, board::PieceType::W_ROOK);
     } else {
         fromKingInd = 59;
         toKingInd = isKingSide ? 57 : 61;
         fromRookInd = isKingSide ? 56 : 63;
         toRookInd = isKingSide ? 58 : 60;
 
-        _bitboards.clearBlackKingBit(fromKingInd);
-        _bitboards.setBlackKingBit(toKingInd);
-        _bitboards.clearBlackRooksBit(fromRookInd);
-        _bitboards.setBlackRooksBit(toRookInd);
+        _bitboardsRef.clearBlackKingBit(fromKingInd);
+        _bitboardsRef.setBlackKingBit(toKingInd);
+        _bitboardsRef.clearBlackRooksBit(fromRookInd);
+        _bitboardsRef.setBlackRooksBit(toRookInd);
 
-        _gameStateBitmasks.clearBlackPiecesBit(fromKingInd);
-        _gameStateBitmasks.setBlackPiecesBit(toKingInd);
-        _gameStateBitmasks.clearBlackPiecesBit(fromRookInd);
-        _gameStateBitmasks.setBlackPiecesBit(toRookInd);
+        _gameStateBitmasksRef.clearBlackPiecesBit(fromKingInd);
+        _gameStateBitmasksRef.setBlackPiecesBit(toKingInd);
+        _gameStateBitmasksRef.clearBlackPiecesBit(fromRookInd);
+        _gameStateBitmasksRef.setBlackPiecesBit(toRookInd);
 
-        _squaresLookup.setPieceTypeAtIndex(fromKingInd, board::PieceType::EMPTY);
-        _squaresLookup.setPieceTypeAtIndex(toKingInd, board::PieceType::B_KING);
-        _squaresLookup.setPieceTypeAtIndex(fromRookInd, board::PieceType::EMPTY);
-        _squaresLookup.setPieceTypeAtIndex(toRookInd, board::PieceType::B_ROOK);
+        _squaresLookupRef.setPieceTypeAtIndex(fromKingInd, board::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(toKingInd, board::PieceType::B_KING);
+        _squaresLookupRef.setPieceTypeAtIndex(fromRookInd, board::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(toRookInd, board::PieceType::B_ROOK);
     }
 
-    _gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
+    _gameStateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
 }
 
 void MoveMaker::unmakeCastleMove(bool isWhite,bool wasKingSide)
@@ -139,46 +139,46 @@ void MoveMaker::unmakeCastleMove(bool isWhite,bool wasKingSide)
         fromRookInd = wasKingSide ? 0 : 7;
         toRookInd = wasKingSide ? 2 : 4;
         
-        _bitboards.clearWhiteKingBit(toKingInd);
-        _bitboards.setWhiteKingBit(fromKingInd);
-        _bitboards.clearWhiteRooksBit(toRookInd);
-        _bitboards.setWhiteRooksBit(fromRookInd);
+        _bitboardsRef.clearWhiteKingBit(toKingInd);
+        _bitboardsRef.setWhiteKingBit(fromKingInd);
+        _bitboardsRef.clearWhiteRooksBit(toRookInd);
+        _bitboardsRef.setWhiteRooksBit(fromRookInd);
 
-        _gameStateBitmasks.setWhitePiecesBit(fromKingInd);
-        _gameStateBitmasks.clearWhitePiecesBit(toKingInd);
-        _gameStateBitmasks.setWhitePiecesBit(fromRookInd);
-        _gameStateBitmasks.clearWhitePiecesBit(toRookInd);
+        _gameStateBitmasksRef.setWhitePiecesBit(fromKingInd);
+        _gameStateBitmasksRef.clearWhitePiecesBit(toKingInd);
+        _gameStateBitmasksRef.setWhitePiecesBit(fromRookInd);
+        _gameStateBitmasksRef.clearWhitePiecesBit(toRookInd);
 
-        _squaresLookup.setPieceTypeAtIndex(fromKingInd, board::PieceType::W_KING);
-        _squaresLookup.setPieceTypeAtIndex(toKingInd, board::PieceType::EMPTY);
-        _squaresLookup.setPieceTypeAtIndex(fromRookInd, board::PieceType::W_ROOK);
-        _squaresLookup.setPieceTypeAtIndex(toRookInd, board::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(fromKingInd, board::PieceType::W_KING);
+        _squaresLookupRef.setPieceTypeAtIndex(toKingInd, board::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(fromRookInd, board::PieceType::W_ROOK);
+        _squaresLookupRef.setPieceTypeAtIndex(toRookInd, board::PieceType::EMPTY);
     } else {
         fromKingInd = 59;
         toKingInd = wasKingSide ? 57 : 61;
         fromRookInd = wasKingSide ? 56 : 63;
         toRookInd = wasKingSide ? 58 : 60;
 
-        _bitboards.setBlackKingBit(fromKingInd);
-        _bitboards.clearBlackKingBit(toKingInd);
-        _bitboards.setBlackRooksBit(fromRookInd);
-        _bitboards.clearBlackRooksBit(toRookInd);
+        _bitboardsRef.setBlackKingBit(fromKingInd);
+        _bitboardsRef.clearBlackKingBit(toKingInd);
+        _bitboardsRef.setBlackRooksBit(fromRookInd);
+        _bitboardsRef.clearBlackRooksBit(toRookInd);
 
-        _gameStateBitmasks.setBlackPiecesBit(fromKingInd);
-        _gameStateBitmasks.clearBlackPiecesBit(toKingInd);
-        _gameStateBitmasks.setBlackPiecesBit(fromRookInd);
-        _gameStateBitmasks.clearBlackPiecesBit(toRookInd);
+        _gameStateBitmasksRef.setBlackPiecesBit(fromKingInd);
+        _gameStateBitmasksRef.clearBlackPiecesBit(toKingInd);
+        _gameStateBitmasksRef.setBlackPiecesBit(fromRookInd);
+        _gameStateBitmasksRef.clearBlackPiecesBit(toRookInd);
 
-        _squaresLookup.setPieceTypeAtIndex(toKingInd, board::PieceType::EMPTY);
-        _squaresLookup.setPieceTypeAtIndex(fromKingInd, board::PieceType::B_KING);
-        _squaresLookup.setPieceTypeAtIndex(toRookInd, board::PieceType::EMPTY);
-        _squaresLookup.setPieceTypeAtIndex(fromRookInd, board::PieceType::B_ROOK);
+        _squaresLookupRef.setPieceTypeAtIndex(toKingInd, board::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(fromKingInd, board::PieceType::B_KING);
+        _squaresLookupRef.setPieceTypeAtIndex(toRookInd, board::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(fromRookInd, board::PieceType::B_ROOK);
     }
 
-    _gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
+    _gameStateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
 }
 
-void MoveMaker::makeTemporaryKingMove(bool isWhite, bool isKingSide) 
+void MoveMaker::makeTemporaryKingMove(bool isWhite, bool isKingSide)
 {
     int from = isWhite ? 3 : 59;
 
@@ -186,11 +186,11 @@ void MoveMaker::makeTemporaryKingMove(bool isWhite, bool isKingSide)
                         : (isWhite ? 4 : 60);
 
     if (isWhite) {
-        _bitboards.clearWhiteKingBit(from);
-        _bitboards.setWhiteKingBit(to);
+        _bitboardsRef.clearWhiteKingBit(from);
+        _bitboardsRef.setWhiteKingBit(to);
     } else {
-        _bitboards.clearBlackKingBit(from);
-        _bitboards.setBlackKingBit(to);
+        _bitboardsRef.clearBlackKingBit(from);
+        _bitboardsRef.setBlackKingBit(to);
     }
 }
 
@@ -202,27 +202,27 @@ void MoveMaker::unmakeTemporaryKingMove(bool isWhite, bool isKingSide)
     int to = isWhite ? 3 : 59;
 
     if (isWhite) {
-        _bitboards.clearWhiteKingBit(from);
-        _bitboards.setWhiteKingBit(to);
+        _bitboardsRef.clearWhiteKingBit(from);
+        _bitboardsRef.setWhiteKingBit(to);
     } else {
-        _bitboards.clearBlackKingBit(from);
-        _bitboards.setBlackKingBit(to);
+        _bitboardsRef.clearBlackKingBit(from);
+        _bitboardsRef.setBlackKingBit(to);
     }
 }
 
 board::PieceType MoveMaker::pickUpPiece(bool isWhite, int fromIndex) 
 {
-    board::PieceType movedPieceType = _squaresLookup.getPieceTypeAtIndex(fromIndex);
+    board::PieceType movedPieceType = _squaresLookupRef.getPieceTypeAtIndex(fromIndex);
     assert(movedPieceType != board::PieceType::EMPTY);
     
-    _squaresLookup.setPieceTypeAtIndex(fromIndex, board::PieceType::EMPTY);
+    _squaresLookupRef.setPieceTypeAtIndex(fromIndex, board::PieceType::EMPTY);
 
-    _bitboards.clearPieceTypeBit(fromIndex, movedPieceType);
+    _bitboardsRef.clearPieceTypeBit(fromIndex, movedPieceType);
 
     if (isWhite) {
-        _gameStateBitmasks.clearWhitePiecesBit(fromIndex);
+        _gameStateBitmasksRef.clearWhitePiecesBit(fromIndex);
     } else {
-        _gameStateBitmasks.clearBlackPiecesBit(fromIndex);
+        _gameStateBitmasksRef.clearBlackPiecesBit(fromIndex);
     }
 
     return movedPieceType;
@@ -236,17 +236,17 @@ void MoveMaker::putDownPiece(
 {
     if (move.isAnyPromo()) {
         board::PieceType promotionPieceType = ::move::getPromotionPieceType(move.getFlag(), isWhite);
-        _bitboards.setPieceTypeBit(toIndex, promotionPieceType);
-        _squaresLookup.setPieceTypeAtIndex(toIndex, promotionPieceType);
+        _bitboardsRef.setPieceTypeBit(toIndex, promotionPieceType);
+        _squaresLookupRef.setPieceTypeAtIndex(toIndex, promotionPieceType);
     } else {
-        _bitboards.setPieceTypeBit(toIndex, movedPieceType);
-        _squaresLookup.setPieceTypeAtIndex(toIndex, movedPieceType);
+        _bitboardsRef.setPieceTypeBit(toIndex, movedPieceType);
+        _squaresLookupRef.setPieceTypeAtIndex(toIndex, movedPieceType);
     }
 
     if (isWhite) {
-        _gameStateBitmasks.setWhitePiecesBit(toIndex);
+        _gameStateBitmasksRef.setWhitePiecesBit(toIndex);
     } else {
-        _gameStateBitmasks.setBlackPiecesBit(toIndex);
+        _gameStateBitmasksRef.setBlackPiecesBit(toIndex);
     }
 }
 
@@ -256,10 +256,10 @@ void MoveMaker::handleNoCaptureCount(
     board::PieceType movedPieceType)
 {
     if (not move.isAnyCapture() && (movedPieceType != board::PieceType::W_PAWN && movedPieceType != board::PieceType::B_PAWN)) {
-        _searchMemory.incrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
+        _searchMemoryRef.incrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
     }
     else {
-        _searchMemory.resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
+        _searchMemoryRef.resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
     }
 }
 
@@ -270,10 +270,10 @@ void MoveMaker::handleEnPessantMemory(
     int toIndex) 
 {
     if (move.isDoublePawnPush()) {
-        _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, isWhite ? (1ULL << (toIndex - 8)) : (1ULL << (toIndex + 8)));
+        _searchMemoryRef.setEnPessantTargetAtDepth(currentDepth + 1, isWhite ? (1ULL << (toIndex - 8)) : (1ULL << (toIndex + 8)));
     }
     else {
-        _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
+        _searchMemoryRef.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
     }
 }
 
@@ -287,22 +287,22 @@ void MoveMaker::handleCapture(
     if (move.isAnyCapture()) {
         // Calculate index of captured piece
         int captureIndex = move.isEpCapture() ? (isWhite ? toIndex - 8 : toIndex + 8) : toIndex;
-        board::PieceType capturedPieceType = _squaresLookup.getPieceTypeAtIndex(captureIndex);
+        board::PieceType capturedPieceType = _squaresLookupRef.getPieceTypeAtIndex(captureIndex);
         assert(capturedPieceType != board::PieceType::EMPTY);
         
-        _searchMemory.setLastCapturedPieceAtDepth(currentDepth, capturedPieceType);
+        _searchMemoryRef.setLastCapturedPieceAtDepth(currentDepth, capturedPieceType);
 
         // Remove captured piece from board representations
-        _bitboards.clearPieceTypeBit(captureIndex, capturedPieceType);
+        _bitboardsRef.clearPieceTypeBit(captureIndex, capturedPieceType);
 
         if (isWhite) {
-            _gameStateBitmasks.clearBlackPiecesBit(captureIndex);
+            _gameStateBitmasksRef.clearBlackPiecesBit(captureIndex);
         } else {
-            _gameStateBitmasks.clearWhitePiecesBit(captureIndex);
+            _gameStateBitmasksRef.clearWhitePiecesBit(captureIndex);
         }
 
         if (move.isEpCapture()) {
-            _squaresLookup.setPieceTypeAtIndex(captureIndex, board::PieceType::EMPTY);
+            _squaresLookupRef.setPieceTypeAtIndex(captureIndex, board::PieceType::EMPTY);
         }
     }
 }
@@ -331,14 +331,14 @@ void MoveMaker::unmakeMove(
     handleUncapturing(move, wasWhite, toIndex, currentDepth);
 
     if (move.isDoublePawnPush()) {
-        _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
+        _searchMemoryRef.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
     }
 
     if (not move.isAnyCapture() && (movedPieceType != board::PieceType::W_PAWN && movedPieceType != board::PieceType::B_PAWN)) {
-        _searchMemory.decrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
+        _searchMemoryRef.decrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
     }
 
-    _gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
+    _gameStateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
 }
 void MoveMaker::handleUncapturing(
     const move::Move& move, 
@@ -350,22 +350,22 @@ void MoveMaker::handleUncapturing(
     // else set the square to empty
     if (move.isAnyCapture()) {
         int captureIndex = move.isEpCapture() ? (wasWhite ? toIndex - 8 : toIndex + 8) : toIndex;
-        board::PieceType capturedPieceType = _searchMemory.getLastCapturedPieceAtDepth(currentDepth);
+        board::PieceType capturedPieceType = _searchMemoryRef.getLastCapturedPieceAtDepth(currentDepth);
 
-        _bitboards.setPieceTypeBit(captureIndex, capturedPieceType);
-        _squaresLookup.setPieceTypeAtIndex(captureIndex, capturedPieceType);
+        _bitboardsRef.setPieceTypeBit(captureIndex, capturedPieceType);
+        _squaresLookupRef.setPieceTypeAtIndex(captureIndex, capturedPieceType);
 
         if (move.isEpCapture()) {
-            _squaresLookup.setPieceTypeAtIndex(toIndex, board::PieceType::EMPTY);
+            _squaresLookupRef.setPieceTypeAtIndex(toIndex, board::PieceType::EMPTY);
         }
 
         if (wasWhite) {
-            _gameStateBitmasks.setBlackPiecesBit(captureIndex);
+            _gameStateBitmasksRef.setBlackPiecesBit(captureIndex);
         } else {
-            _gameStateBitmasks.setWhitePiecesBit(captureIndex);
+            _gameStateBitmasksRef.setWhitePiecesBit(captureIndex);
         }
     } else {
-        _squaresLookup.setPieceTypeAtIndex(toIndex, board::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(toIndex, board::PieceType::EMPTY);
     }
 }
 
@@ -376,28 +376,28 @@ void MoveMaker::putBackMovedPiece(
     int toIndex,
     board::PieceType movedPieceType)
 {
-    _bitboards.setPieceTypeBit(fromIndex, movedPieceType);
-    _squaresLookup.setPieceTypeAtIndex(fromIndex, movedPieceType);
+    _bitboardsRef.setPieceTypeBit(fromIndex, movedPieceType);
+    _squaresLookupRef.setPieceTypeAtIndex(fromIndex, movedPieceType);
 
     if (wasWhite) {
-        _gameStateBitmasks.setWhitePiecesBit(fromIndex);
+        _gameStateBitmasksRef.setWhitePiecesBit(fromIndex);
     } else {
-        _gameStateBitmasks.setBlackPiecesBit(fromIndex);
+        _gameStateBitmasksRef.setBlackPiecesBit(fromIndex);
     }
 
     // If the move was not a promotion, remove the piece in the bitboard
     // Else, remove the bit for the promoted piece
     if (not move.isAnyPromo()) {
-        _bitboards.clearPieceTypeBit(toIndex, movedPieceType);
+        _bitboardsRef.clearPieceTypeBit(toIndex, movedPieceType);
     } else {
         board::PieceType promotionPieceType = ::move::getPromotionPieceType(move.getFlag(), wasWhite);
-        _bitboards.clearPieceTypeBit(toIndex, promotionPieceType);
+        _bitboardsRef.clearPieceTypeBit(toIndex, promotionPieceType);
     }
 
     if (wasWhite) {
-        _gameStateBitmasks.clearWhitePiecesBit(toIndex);
+        _gameStateBitmasksRef.clearWhitePiecesBit(toIndex);
     } else {
-        _gameStateBitmasks.clearBlackPiecesBit(toIndex);
+        _gameStateBitmasksRef.clearBlackPiecesBit(toIndex);
     }
 }
 
@@ -416,7 +416,7 @@ board::PieceType MoveMaker::determineMovedPieceType(
     if (moveIsAnyPromo) {
         movedPieceType = wasWhite ? board::PieceType::W_PAWN : board::PieceType::B_PAWN;
     } else {
-        movedPieceType = _squaresLookup.getPieceTypeAtIndex(toIndex);
+        movedPieceType = _squaresLookupRef.getPieceTypeAtIndex(toIndex);
     }
 
     return movedPieceType;

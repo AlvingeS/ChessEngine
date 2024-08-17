@@ -17,14 +17,14 @@ class CheckDetection {
 
 public:
     // Constructor
-    CheckDetection(board::Bitboards& bitboards, RayLogic* rayLogic);
+    CheckDetection(const board::Bitboards& bitboards, RayLogic* rayLogic);
     
     // Public member functions
-    bool isInCheck(bool isWhite);
+    bool isInCheck(bool isWhite) const;
 
 private:
     // Private member functions
-    board::Bitboards& _bitboards;
+    const board::Bitboards& _bitboardsRef;
     RayLogic* _rayLogic;
 
     // Memory

@@ -5,14 +5,14 @@
 
 namespace movegen {
 PawnGenerator::PawnGenerator(
-    board::Bitboards& bitboards,
-    board::GameStateBitmasks& gameStateBitmasks,
+    const board::Bitboards& bitboards,
+    const board::GameStateBitmasks& gameStateBitmasks,
     int& moveIndex,
     CommonLogic* commonLogic) 
-    : _bitboards(bitboards)
-    ,  _gameStateBitmasks(gameStateBitmasks)
-    ,  _moveIndex(moveIndex)
-    ,  _commonLogic(commonLogic)
+    : _bitboardsRef(bitboards)
+    , _gameStateBitmasksRef(gameStateBitmasks)
+    , _moveIndex(moveIndex)
+    , _commonLogic(commonLogic)
 {
     _freeMovesIndices.reserve(8);
     _capturableMovesIndices.reserve(8);
@@ -29,8 +29,8 @@ void PawnGenerator::generate(
     int currentDepth,
     perft::SearchMemory& searchMemory)
 {
-    utils::getBitIndices(_pawnIndices, isWhite ? _bitboards.getWhitePawnsBitboard()
-                                               : _bitboards.getBlackPawnsBitboard());
+    utils::getBitIndices(_pawnIndices, isWhite ? _bitboardsRef.getWhitePawnsBitboard()
+                                               : _bitboardsRef.getBlackPawnsBitboard());
 
     for (int currentPawnIndex : _pawnIndices) {
 
@@ -40,10 +40,10 @@ void PawnGenerator::generate(
         bitmask capturePawnMoveBitmask = isWhite ? _whitePawnCaptureMoveBitmasks[currentPawnIndex]
                                              : _blackPawnCaptureMoveBitmasks[currentPawnIndex];
 
-        bitmask freePawnMoves = straightPawnMoveBitmask & _gameStateBitmasks.getEmptySquaresBitmask();
+        bitmask freePawnMoves = straightPawnMoveBitmask & _gameStateBitmasksRef.getEmptySquaresBitmask();
         
-        bitmask enemyPieces = isWhite ? _gameStateBitmasks.getBlackPiecesBitmask()
-                                  : _gameStateBitmasks.getWhitePiecesBitmask();
+        bitmask enemyPieces = isWhite ? _gameStateBitmasksRef.getBlackPiecesBitmask()
+                                  : _gameStateBitmasksRef.getWhitePiecesBitmask();
         
         bitmask enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
         bitmask capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;

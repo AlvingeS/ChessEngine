@@ -12,23 +12,23 @@
 namespace movegen {
 
 MoveGenerator::MoveGenerator(
-    board::Bitboards& bitboards,
-    board::GameStateBitmasks& gameStateBitmasks,
+    const board::Bitboards& bitboards,
+    const board::GameStateBitmasks& gameStateBitmasks,
     move::MoveMaker& moveMaker)
-    : _bitboards(bitboards)
-    ,  _gameStateBitmasks(gameStateBitmasks)
-    ,  _moveMaker(moveMaker)
-    ,  _searchMemory(moveMaker.getSearchMemory())
-    ,  _commonLogic()
-    ,  _rayLogic(_gameStateBitmasks, _moveIndex, &_commonLogic)
-    ,  _checkDetection(_bitboards, &_rayLogic)
-    ,  _rookGenerator(_bitboards, &_rayLogic)
-    ,  _bishopGenerator(_bitboards, &_rayLogic)
-    ,  _knightGenerator(_bitboards, _gameStateBitmasks, _moveIndex, &_commonLogic)
-    ,  _queenGenerator(_bitboards, &_rayLogic)
-    ,  _kingGenerator(_bitboards, _gameStateBitmasks, _moveIndex, &_commonLogic)
-    ,  _pawnGenerator(_bitboards, _gameStateBitmasks, _moveIndex, &_commonLogic)
-    ,  _castlingGenerator(_bitboards, _gameStateBitmasks, moveMaker, _moveIndex, &_commonLogic, &_checkDetection)
+    : _bitboardsRef(bitboards)
+    , _gameStateBitmasksRef(gameStateBitmasks)
+    , _moveMaker(moveMaker)
+    , _searchMemory(moveMaker.getSearchMemory())
+    , _commonLogic()
+    , _rayLogic(_gameStateBitmasksRef, _moveIndex, &_commonLogic)
+    , _checkDetection(_bitboardsRef, &_rayLogic)
+    , _rookGenerator(_bitboardsRef, &_rayLogic)
+    , _bishopGenerator(_bitboardsRef, &_rayLogic)
+    , _knightGenerator(_bitboardsRef, _gameStateBitmasksRef, _moveIndex, &_commonLogic)
+    , _queenGenerator(_bitboardsRef, &_rayLogic)
+    , _kingGenerator(_bitboardsRef, _gameStateBitmasksRef, _moveIndex, &_commonLogic)
+    , _pawnGenerator(_bitboardsRef, _gameStateBitmasksRef, _moveIndex, &_commonLogic)
+    , _castlingGenerator(_bitboardsRef, _gameStateBitmasksRef, moveMaker, _moveIndex, &_commonLogic, &_checkDetection)
 {
 }
 

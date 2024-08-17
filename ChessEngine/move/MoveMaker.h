@@ -96,20 +96,20 @@ public:
     void makeCastleMove(bool isWhite, bool isKingSide);
     void unmakeCastleMove(bool isWhite, bool isKingSide);
     void makeTemporaryKingMove(bool isWhite, bool isKingSide);
-    void unmakeTemporaryKingMove(bool isWhite, bool isKingSide);
+    void unmakeTemporaryKingMove(bool isWhite, bool isKingSide); 
 
     perft::SearchMemory& getSearchMemory() const
     {
-        return _searchMemory;
+        return _searchMemoryRef;
     }
 
 private:
     board::PieceType getPromotionPieceType(int promotionFlag, bool isWhite) const;
 
-    board::Bitboards& _bitboards;
-    board::GameStateBitmasks& _gameStateBitmasks;
-    board::SquaresLookup& _squaresLookup;
-    perft::SearchMemory& _searchMemory;
-    board::ZHasher& _zHasher;
+    board::Bitboards& _bitboardsRef;
+    board::GameStateBitmasks& _gameStateBitmasksRef;
+    board::SquaresLookup& _squaresLookupRef;
+    perft::SearchMemory& _searchMemoryRef;
+    const board::ZHasher& _zHasherRef;
 };
 }

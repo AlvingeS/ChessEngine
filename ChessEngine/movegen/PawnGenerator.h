@@ -18,8 +18,8 @@ class PawnGenerator {
 public:
     // Constructor
     PawnGenerator(
-        board::Bitboards& bitboards,
-        board::GameStateBitmasks& gameStateBitmasks,
+        const board::Bitboards& bitboards,
+        const board::GameStateBitmasks& gameStateBitmasks,
         int& moveIndex,
         CommonLogic* commonLogic
     );
@@ -34,8 +34,8 @@ public:
 
 private:
     // Private member functions
-    board::Bitboards& _bitboards;
-    board::GameStateBitmasks& _gameStateBitmasks;
+    const board::Bitboards& _bitboardsRef;
+    const board::GameStateBitmasks& _gameStateBitmasksRef;
     int& _moveIndex;
     CommonLogic* _commonLogic;
 

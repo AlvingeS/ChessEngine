@@ -15,14 +15,14 @@ class BishopGenerator {
 
 public:
     // Constructor
-    BishopGenerator(board::Bitboards& bitboards, RayLogic* rayLogic);
+    BishopGenerator(const board::Bitboards& bitboards, RayLogic* rayLogic);
     
     // Public member functions
-    void generate(const bool isWhite, std::vector<move::Move>& moveList);
+    void generate(bool isWhite, std::vector<move::Move>& moveList);
 
 private:
     // Private member functions
-    board::Bitboards& _bitboards;
+    const board::Bitboards& _bitboardsRef;
 
     RayLogic* _rayLogic;
 

@@ -5,9 +5,9 @@
 
 namespace movegen {
 RookGenerator::RookGenerator(
-    board::Bitboards& bitboards,
+    const board::Bitboards& bitboards,
     RayLogic* rayLogic)
-    : _bitboards(bitboards)
+    : _bitboardsRef(bitboards)
     , _rayLogic(rayLogic)
 {
     _rookIndices.reserve(64);
@@ -21,8 +21,8 @@ void RookGenerator::generate(
     masks::StraightRays rays;
 
     utils::getBitIndices(_rookIndices, isWhite 
-                                       ? _bitboards.getWhiteRooksBitboard()
-                                       : _bitboards.getBlackRooksBitboard());
+                                       ? _bitboardsRef.getWhiteRooksBitboard()
+                                       : _bitboardsRef.getBlackRooksBitboard());
 
     // Loop through all rooks and isolate them
     for (int currentRookIndex : _rookIndices) {

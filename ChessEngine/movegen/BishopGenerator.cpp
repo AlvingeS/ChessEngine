@@ -5,8 +5,8 @@
 
 namespace movegen {
 
-BishopGenerator::BishopGenerator(board::Bitboards& bitboards, RayLogic* rayLogic) 
-    : _bitboards(bitboards)
+BishopGenerator::BishopGenerator(const board::Bitboards& bitboards, RayLogic* rayLogic) 
+    : _bitboardsRef(bitboards)
     , _rayLogic(rayLogic) 
 {
     _bishopIndices.reserve(64);
@@ -14,11 +14,11 @@ BishopGenerator::BishopGenerator(board::Bitboards& bitboards, RayLogic* rayLogic
 }
 
 void BishopGenerator::generate(
-    const bool isWhite, 
-    std::vector<move::Move>& moveList) 
+    bool isWhite,
+    std::vector<move::Move>& moveList)
 {
-    utils::getBitIndices(_bishopIndices, isWhite ? _bitboards.getWhiteBishopsBitboard()
-                                                 : _bitboards.getBlackBishopsBitboard());
+    utils::getBitIndices(_bishopIndices, isWhite ? _bitboardsRef.getWhiteBishopsBitboard()
+                                                 : _bitboardsRef.getBlackBishopsBitboard());
 
     for (int currentBishopIndex : _bishopIndices) {
         masks::DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];

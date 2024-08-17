@@ -6,9 +6,9 @@
 namespace movegen {
 
 QueenGenerator::QueenGenerator(
-    board::Bitboards& bitboards,
+    const board::Bitboards& bitboards,
     RayLogic* rayLogic) 
-    : _bitboards(bitboards)
+    : _bitboardsRef(bitboards)
     ,  _rayLogic(rayLogic) 
 {
     _queenIndices.reserve(64);
@@ -20,8 +20,8 @@ void QueenGenerator::generate(
     bool isWhite,
     std::vector<move::Move>& moveList)
 {
-    utils::getBitIndices(_queenIndices, isWhite ? _bitboards.getWhiteQueensBitboard()
-                                                : _bitboards.getBlackQueensBitboard());
+    utils::getBitIndices(_queenIndices, isWhite ? _bitboardsRef.getWhiteQueensBitboard()
+                                                : _bitboardsRef.getBlackQueensBitboard());
 
     for (int currentQueenIndex : _queenIndices) {
         masks::StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];

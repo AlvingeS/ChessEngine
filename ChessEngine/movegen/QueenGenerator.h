@@ -15,14 +15,14 @@ class QueenGenerator {
 
 public:
     // Constructor
-    QueenGenerator(board::Bitboards& bitboards, RayLogic* rayLogic);
+    QueenGenerator(const board::Bitboards& bitboards, RayLogic* rayLogic);
     
     // Public member functions
     void generate(bool isWhite, std::vector<move::Move>& moveList);
 
 private:
     // Private member functions
-    board::Bitboards& _bitboards;
+    const board::Bitboards& _bitboardsRef;
     RayLogic* _rayLogic;
 
     // Memory

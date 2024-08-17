@@ -5,11 +5,15 @@
 
 namespace movegen {
 
-KnightGenerator::KnightGenerator(board::Bitboards& bitboards, board::GameStateBitmasks& gameStateBitmasks, int& moveIndex, CommonLogic* commonLogic) 
-    : _bitboards(bitboards),
-        _gameStateBitmasks(gameStateBitmasks),
-        _moveIndex(moveIndex),
-        _commonLogic(commonLogic) {
+KnightGenerator::KnightGenerator(
+    const board::Bitboards& bitboards,
+    const board::GameStateBitmasks& gameStateBitmasks,
+    int& moveIndex,
+    CommonLogic* commonLogic) 
+    : _bitboardsRef(bitboards)
+    , _gameStateBitmasksRef(gameStateBitmasks)
+    , _moveIndex(moveIndex)
+    , _commonLogic(commonLogic) {
     _freeMovesIndices.reserve(8);
     _capturableMovesIndices.reserve(8);
     _knightIndices.reserve(64);
@@ -20,16 +24,16 @@ void KnightGenerator::generate(
     bool isWhite,
     std::vector<move::Move>& moveList) 
 {
-    utils::getBitIndices(_knightIndices, isWhite ? _bitboards.getWhiteKnightsBitboard()
-                                                    : _bitboards.getBlackKnightsBitboard());
+    utils::getBitIndices(_knightIndices, isWhite ? _bitboardsRef.getWhiteKnightsBitboard()
+                                                    : _bitboardsRef.getBlackKnightsBitboard());
 
     for (int currentKnightIndex : _knightIndices) {
         bitmask knightBitmask = _knightBitmasks[currentKnightIndex];
 
-        bitmask freeKnightMoves = knightBitmask & _gameStateBitmasks.getEmptySquaresBitmask();
+        bitmask freeKnightMoves = knightBitmask & _gameStateBitmasksRef.getEmptySquaresBitmask();
         
-        bitmask enemyPieces = isWhite ? _gameStateBitmasks.getBlackPiecesBitmask()
-                                    : _gameStateBitmasks.getWhitePiecesBitmask();
+        bitmask enemyPieces = isWhite ? _gameStateBitmasksRef.getBlackPiecesBitmask()
+                                    : _gameStateBitmasksRef.getWhitePiecesBitmask();
         
         bitmask capturableKnightMoves = knightBitmask & enemyPieces;
 

@@ -27,8 +27,8 @@ public:
 
     // Public member functions
     MoveGenerator(
-        board::Bitboards& bitboards,
-        board::GameStateBitmasks& gameStateBitmasks,
+        const board::Bitboards& bitboards,
+        const board::GameStateBitmasks& gameStateBitmasks,
         move::MoveMaker& moveMaker
     );
 
@@ -73,12 +73,15 @@ public:
 
 private:
     // Private member variables
-    board::Bitboards& _bitboards;
-    board::GameStateBitmasks& _gameStateBitmasks;
+    const board::Bitboards& _bitboardsRef;
+    const board::GameStateBitmasks& _gameStateBitmasksRef;
+    
     move::MoveMaker& _moveMaker;
     perft::SearchMemory& _searchMemory;
+   
     CommonLogic _commonLogic;
     RayLogic _rayLogic;
+    
     CheckDetection _checkDetection;
     RookGenerator _rookGenerator;
     BishopGenerator _bishopGenerator;

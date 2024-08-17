@@ -23,9 +23,10 @@ class CastlingGenerator {
 public:
     // Constructor
     CastlingGenerator(
-        board::Bitboards& bitboards,
-        board::GameStateBitmasks& gameStateBitmasks,
-        move::MoveMaker& moveMaker, int& moveIndex,
+        const board::Bitboards& bitboards,
+        const board::GameStateBitmasks& gameStateBitmasks,
+        move::MoveMaker& moveMaker, 
+        int& moveIndex,
         CommonLogic* commonLogic,
         CheckDetection* checkDetection
     );
@@ -39,9 +40,10 @@ public:
 
 private:
     // Private member functions
-    board::Bitboards& _bitboards;
-    board::GameStateBitmasks& _gameStateBitmasks;
-    move::MoveMaker& _moveMaker;
+    const board::Bitboards& _bitboardsRef;
+    const board::GameStateBitmasks& _gameStateBitmasksRef;
+    move::MoveMaker& _moveMakerRef;
+    
     int& _moveIndex;
     CommonLogic* _commonLogic;
     CheckDetection* _checkDetection;
@@ -59,7 +61,7 @@ private:
         std::vector<move::Move>& moveList
     );
 
-    bool kingAndRookOnCastlingSquares(bool isWhite, bool isKingSide);
+    bool kingAndRookOnCastlingSquares(bool isWhite, bool isKingSide) const;
     void makeTemporaryKingMove(bool isWhite, bool isKingSide);
     void unmakeTemporaryKingMove(bool isWhite, bool isKingSide);
 };

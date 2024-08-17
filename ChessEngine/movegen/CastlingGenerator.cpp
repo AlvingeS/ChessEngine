@@ -5,14 +5,15 @@
 
 namespace movegen {
 CastlingGenerator::CastlingGenerator(
-    board::Bitboards& bitboards,
-    board::GameStateBitmasks& gameStateBitmasks,
-    move::MoveMaker& moveMaker, int& moveIndex,
+    const board::Bitboards& bitboards,
+    const board::GameStateBitmasks& gameStateBitmasks,
+    move::MoveMaker& moveMaker, 
+    int& moveIndex,
     CommonLogic* commonLogic,
     CheckDetection* checkDetection)
-    : _bitboards(bitboards)
-    , _gameStateBitmasks(gameStateBitmasks)
-    , _moveMaker(moveMaker)
+    : _bitboardsRef(bitboards)
+    , _gameStateBitmasksRef(gameStateBitmasks)
+    , _moveMakerRef(moveMaker)
     , _moveIndex(moveIndex)
     , _commonLogic(commonLogic)
     , _checkDetection(checkDetection) 
@@ -49,37 +50,37 @@ void CastlingGenerator::generate(
 
 bool CastlingGenerator::kingAndRookOnCastlingSquares(
     bool isWhite,
-    bool isKingSide)
+    bool isKingSide) const
 {
     bool kingBitEnabled;
     bool rookBitEnabled;
     
     if (isWhite) {
-        kingBitEnabled = (_bitboards.getWhiteKingBitboard() & (1ULL << 3)) != 0;
+        kingBitEnabled = (_bitboardsRef.getWhiteKingBitboard() & (1ULL << 3)) != 0;
         
         if (!kingBitEnabled) {
             return false;
         }
 
         if (isKingSide) {
-            rookBitEnabled = (_bitboards.getWhiteRooksBitboard() & (1ULL << 0)) != 0;
+            rookBitEnabled = (_bitboardsRef.getWhiteRooksBitboard() & (1ULL << 0)) != 0;
             return rookBitEnabled;
         } else {
-            rookBitEnabled = (_bitboards.getWhiteRooksBitboard() & (1ULL << 7)) != 0;
+            rookBitEnabled = (_bitboardsRef.getWhiteRooksBitboard() & (1ULL << 7)) != 0;
             return rookBitEnabled;
         }
     } else {
-        kingBitEnabled = (_bitboards.getBlackKingBitboard() & (1ULL << 59)) != 0;
+        kingBitEnabled = (_bitboardsRef.getBlackKingBitboard() & (1ULL << 59)) != 0;
         
         if (!kingBitEnabled) {
             return false;
         }
 
         if (isKingSide) {
-            rookBitEnabled = (_bitboards.getBlackRooksBitboard() & (1ULL << 56)) != 0;
+            rookBitEnabled = (_bitboardsRef.getBlackRooksBitboard() & (1ULL << 56)) != 0;
             return rookBitEnabled;
         } else {
-            rookBitEnabled = (_bitboards.getBlackRooksBitboard() & (1ULL << 63)) != 0;
+            rookBitEnabled = (_bitboardsRef.getBlackRooksBitboard() & (1ULL << 63)) != 0;
             return rookBitEnabled;
         }
     }
@@ -89,12 +90,12 @@ bool CastlingGenerator::kingAndRookOnCastlingSquares(
 
 void CastlingGenerator::makeTemporaryKingMove(bool isWhite, bool isKingSide)
 {
-    _moveMaker.makeTemporaryKingMove(isWhite, isKingSide);
+    _moveMakerRef.makeTemporaryKingMove(isWhite, isKingSide);
 }
 
 void CastlingGenerator::unmakeTemporaryKingMove(bool isWhite, bool isKingSide)
 {
-    _moveMaker.unmakeTemporaryKingMove(isWhite, isKingSide);
+    _moveMakerRef.unmakeTemporaryKingMove(isWhite, isKingSide);
 }
 
 void CastlingGenerator::genSingleCastleMove(
@@ -108,7 +109,7 @@ void CastlingGenerator::genSingleCastleMove(
                                               : (isKingSide ? _blackKingSideCastleBitmask
                                                             : _blackQueenSideCastleBitmask);
     
-    if ((spaceBetweenCastlersBitmask & _gameStateBitmasks.getOccupiedPiecesBitmask()) != 0)
+    if ((spaceBetweenCastlersBitmask & _gameStateBitmasksRef.getOccupiedPiecesBitmask()) != 0)
         return;
 
     // Check that the king and rook are on the correct squares

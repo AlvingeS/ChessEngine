@@ -10,6 +10,6 @@
 namespace utils {
 
 void setBoardFromFen(const std::string& fen, board::Bitboards& bitboards, board::GameStateBitmasks& gameStateBitmasks, board::SquaresLookup& squaresLookup);
-std::string getFenFromBoard(board::SquaresLookup& squaresLookup);
+std::string getFenFromBoard(const board::SquaresLookup& squaresLookup);
 
 } // namespace utils

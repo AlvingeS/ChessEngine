@@ -11,8 +11,8 @@ class BoardPrinter {
 
 public:
     // Public member functions
-    BoardPrinter(board::Bitboards& bitboards);
-    void fillBoard(board::Bitboards& bitboards);
+    BoardPrinter(const board::Bitboards& bitboards);
+    void fillBoard(const board::Bitboards& bitboards);
     void printBoard();
 
 private:

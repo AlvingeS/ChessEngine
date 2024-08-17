@@ -35,7 +35,7 @@ void setBoardFromFen(
     gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
 }
 
-std::string getFenFromBoard(board::SquaresLookup& squaresLookup) 
+std::string getFenFromBoard(const board::SquaresLookup& squaresLookup)
 {
     std::string fen = "";
     int emptyCount = 0;

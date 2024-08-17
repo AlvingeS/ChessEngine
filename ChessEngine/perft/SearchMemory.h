@@ -20,12 +20,12 @@ class SearchMemory {
 public:
     SearchMemory(int maxDepth);
 
-    unsigned char getCastlingRightsAtDepth(int depth)
+    unsigned char getCastlingRightsAtDepth(int depth) const
     {
         return _castlingRights[depth];
     }
 
-    board::PieceType getLastCapturedPieceAtDepth(int depth) 
+    board::PieceType getLastCapturedPieceAtDepth(int depth) const
     {
         return _lastCapturedPieces[depth];
     }
@@ -39,14 +39,14 @@ public:
 
     void setCastlingRights(
         int currentDepth, 
-        move::Move move, 
+        const move::Move& move, 
         bool isWhite, 
         board::PieceType movedPieceType
     );
 
     void unsetCastlingRights(int currentDepth);
 
-    bitmask getEnPessantTargetAtDepth(int depth) 
+    bitmask getEnPessantTargetAtDepth(int depth) const
     {
         return _enPessantTargets[depth];
     }
@@ -56,7 +56,7 @@ public:
         _enPessantTargets[depth] = target;
     }
 
-    int getNoCapturedOrPawnMoveCountAtDepth(int depth) 
+    int getNoCapturedOrPawnMoveCountAtDepth(int depth) const
     {
         return _noCapturedOrPawnMoveCounts[depth];
     }

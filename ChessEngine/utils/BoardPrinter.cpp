@@ -7,7 +7,7 @@
 
 namespace utils {
 
-BoardPrinter::BoardPrinter(board::Bitboards& bitboards) 
+BoardPrinter::BoardPrinter(const board::Bitboards& bitboards) 
 {
     fillBoard(bitboards);
 }
@@ -33,7 +33,7 @@ bool BoardPrinter::isValidPiece(board::PieceType piece_type)
     }
 }
 
-void BoardPrinter::fillBoard(board::Bitboards& bitboards) 
+void BoardPrinter::fillBoard(const board::Bitboards& bitboards) 
 {
     _board = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
     

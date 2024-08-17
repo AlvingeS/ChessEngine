@@ -37,7 +37,7 @@ void SearchMemory::restoreCastlingRightsForRemainingDepths(int currentDepth)
 
 void SearchMemory::setCastlingRights(
     int currentDepth, 
-    move::Move move, 
+    const move::Move& move, 
     bool isWhite, 
     board::PieceType movedPieceType) 
 {

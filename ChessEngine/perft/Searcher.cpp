@@ -58,7 +58,7 @@ Searcher::Searcher(int maxDepth)
     }
 }
 
-long Searcher::sumNodesToDepth(int depth) {
+long Searcher::sumNodesToDepth(int depth) const {
     long sum = 0;
 
     for (long i = 1; i <= depth; i++) {
@@ -94,7 +94,7 @@ void Searcher::unmakeMove(
     _moveMaker.unmakeMove(move, isWhite, currentDepth);
 }
 
-void Searcher::debugPrint(bool verbose) 
+void Searcher::debugPrint(bool verbose) const
 {
     if (verbose) {
         utils::BoardPrinter boardPrinter = utils::BoardPrinter(_bitboards);
@@ -154,7 +154,7 @@ bool Searcher::checkCondition(
     move::Move currentMove, 
     move::Move lastMove, 
     bool verbose, 
-    size_t i) 
+    size_t i) const
 {
     // return not _board.getKingMoved(false);
     // return tooManyPiecesOnBoard();
@@ -174,8 +174,8 @@ void Searcher::minimax(
     bool isMaximizer, 
     int firstMoveIndex, 
     bool recPerftStats, 
-    move::Move lastMove, 
-    bool verbose) 
+    const move::Move& lastMove, 
+    bool verbose)
 {        
     if (currentDepth == _maxDepth) {
         return;
@@ -316,7 +316,7 @@ void Searcher::recordPerftStats(
     int currentDepth, 
     int &firstMoveIndex, 
     size_t i, 
-    move::Move &currentMove, 
+    const move::Move& currentMove, 
     bool &retFlag) 
 {
     retFlag = true;

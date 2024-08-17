@@ -14,16 +14,6 @@
 
 namespace perft {
 
-struct MoveScore {
-    move::Move move;
-    float score;
-};
-
-struct MoveList {
-    std::vector<move::Move> moves;
-    size_t numMoves;
-};
-
 class Searcher {
 
 public:
@@ -36,7 +26,7 @@ public:
         bool isMaximizer, 
         int firstMoveIndex,
         bool recPerftStats = true,
-        move::Move lastMove = move::Move(),
+        const move::Move& lastMove = move::Move(),
         bool verbose = true
     );
 
@@ -45,7 +35,7 @@ public:
         int currentDepth,
         int &firstMoveIndex,
         size_t i,
-        move::Move &currentMove,
+        const move::Move& currentMove,
         bool &retFlag
     );
 
@@ -63,7 +53,7 @@ public:
     int _numMoveGenCalls;
     int _totalNodes;
 
-    long sumNodesToDepth(int depth);
+    long sumNodesToDepth(int depth) const;
     std::vector<long> _nodeCountPerFirstMove;
     std::vector<move::Move> _firstMoves;
     std::vector<long> _nodeCount;
@@ -74,7 +64,7 @@ public:
     std::vector<long> _checkCount;
     std::vector<long> _checkmateCount;
 
-    void debugPrint(bool verbose);
+    void debugPrint(bool verbose) const;
     
     bool checkCondition(
         int currentDepth,
@@ -84,33 +74,33 @@ public:
         move::Move lastMove, 
         bool verbose, 
         size_t i
-    );
+    ) const;
 
     void setMaxDepth(int maxDepth) 
     {
         _maxDepth = maxDepth;
     }
 
-    int getMaxDepth() {
+    int getMaxDepth() const {
         return _maxDepth;
     }
 
-    movegen::MoveGenerator& getMoveGenerator() 
+    const movegen::MoveGenerator& getMoveGenerator() const
     {
         return _moveGenerator;
     }
 
-    void setBoardFromFen(const std::string& fen) 
+    void setBoardFromFen(const std::string& fen)
     {
         utils::setBoardFromFen(fen, _bitboards, _gameStateBitmasks, _squaresLookup);
     }
 
-    std::string getFenFromBoard() 
+    std::string getFenFromBoard() const
     {
         return utils::getFenFromBoard(_squaresLookup);
     }
 
-    bool diffBetweenGameStateBitmasks() 
+    bool diffBetweenGameStateBitmasks() const
     {
         return (_gameStateBitmasks.getBlackPiecesBitmask() | _gameStateBitmasks.getWhitePiecesBitmask()) != _gameStateBitmasks.getOccupiedPiecesBitmask();
     }

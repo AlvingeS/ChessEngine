@@ -18,19 +18,19 @@ struct DiagonalRays {
     bitmask northWest;
 };
 
-bitmask getNorthRay(const int ind);
-bitmask getNorthEastRay(const int ind);
-bitmask getEastRay(const int ind);
-bitmask getSouthEastRay(const int ind);
-bitmask getSouthRay(const int ind);
-bitmask getSouthWestRay(const int ind);
-bitmask getWestRay(const int ind);
-bitmask getNorthWestRay(const int ind);
+bitmask getNorthRay(int ind);
+bitmask getNorthEastRay(int ind);
+bitmask getEastRay(int ind);
+bitmask getSouthEastRay(int ind);
+bitmask getSouthRay(int ind);
+bitmask getSouthWestRay(int ind);
+bitmask getWestRay(int ind);
+bitmask getNorthWestRay(int ind);
 
-StraightRays getStraightRays(const int ind);
-DiagonalRays getDiagonalRays(const int ind);
+StraightRays getStraightRays(int ind);
+DiagonalRays getDiagonalRays(int ind);
 
-const std::vector<StraightRays> getAllStraightRayBitmasks();
-const std::vector<DiagonalRays> getAllDiagonalRayBitmasks();
+std::vector<StraightRays> getAllStraightRayBitmasks();
+std::vector<DiagonalRays> getAllDiagonalRayBitmasks();
 
 } // namespace masks

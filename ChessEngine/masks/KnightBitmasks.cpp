@@ -5,7 +5,7 @@
 namespace masks {
 
 // Applies all knight moves without considering looping around the board
-bitmask applyKnightMoves(const int ind) 
+bitmask applyKnightMoves(int ind) 
 {
     bitmask knightMoves = 0ULL;
 
@@ -22,7 +22,7 @@ bitmask applyKnightMoves(const int ind)
 }
 
 // Applies file masks to knight moves to prevent looping around the board
-void removeWrapAroundKnightMoves(bitmask& knightMoves, const int ind) 
+bitmask removeWrapAroundKnightMoves(bitmask knightMoves, int ind) 
 {
     bitmask aFile = utils::getFileMask(7);
     bitmask bFile = utils::getFileMask(6);
@@ -46,12 +46,14 @@ void removeWrapAroundKnightMoves(bitmask& knightMoves, const int ind)
             knightMoves &= notGorHFile;
             break;
     }
+
+    return knightMoves;
 }
 
-bitmask getKnightBitmask(const int ind) 
+bitmask getKnightBitmask(int ind) 
 {
     bitmask knightMoves = applyKnightMoves(ind);
-    removeWrapAroundKnightMoves(knightMoves, ind);
+    knightMoves = removeWrapAroundKnightMoves(knightMoves, ind);
     return knightMoves;
 }
 

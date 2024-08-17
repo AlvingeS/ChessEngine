@@ -4,9 +4,9 @@
 
 namespace masks {
 
-bitmask applyKingMoves(const int ind);
-void removeWrapAroundKingMoves(bitmask& kingMoves, const int ind);
-bitmask getKingBitmask(const int ind);
+bitmask applyKingMoves(int ind);
+bitmask removeWrapAroundKingMoves(bitmask kingMoves, int ind);
+bitmask getKingBitmask(int ind);
 const std::vector<bitmask> getAllKingBitmasks();
 
 } // namespace masks

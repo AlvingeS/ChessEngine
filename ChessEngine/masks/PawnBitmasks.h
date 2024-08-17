@@ -9,11 +9,11 @@ struct MoveType {
     std::vector<bitmask> straight;
 };
 
-bitmask applyCapturePawnMoves(const int ind,const  bool isWhite);
-void removeWrapAroundPawnMoves(bitmask& pawnMoves, const int ind);
-bitmask getCapturePawnMovesBitmask(const int ind, const bool isWhite);
-bitmask getStraightPawnMovesBitmask(const int ind, const bool isWhite);
-const std::vector<bitmask> getAllStraightPawnMoveBitmasks(const bool isWhite);
-const std::vector<bitmask> getAllCapturePawnMoveBitmasks(const bool isWhite);
+bitmask applyCapturePawnMoves(int ind, bool isWhite);
+bitmask removeWrapAroundPawnMoves(bitmask pawnMoves, int ind);
+bitmask getCapturePawnMovesBitmask(int ind, bool isWhite);
+bitmask getStraightPawnMovesBitmask(int ind, bool isWhite);
+std::vector<bitmask> getAllStraightPawnMoveBitmasks(bool isWhite);
+std::vector<bitmask> getAllCapturePawnMoveBitmasks(bool isWhite);
 
 } // namespace masks

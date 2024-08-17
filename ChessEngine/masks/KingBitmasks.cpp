@@ -5,7 +5,7 @@
 namespace masks {
 
 // Applies all king moves without considering looping around the board
-bitmask applyKingMoves(const int ind) 
+bitmask applyKingMoves(int ind) 
 {
     bitmask kingMoves = 0ULL;
 
@@ -22,7 +22,7 @@ bitmask applyKingMoves(const int ind)
 }
 
 // Applies file masks to king moves to prevent looping around the board
-void removeWrapAroundKingMoves(bitmask& kingMoves, const int ind) 
+bitmask removeWrapAroundKingMoves(bitmask kingMoves, int ind) 
 {
     bitmask notAFile = ~utils::getFileMask(7);
     bitmask notHFile = ~utils::getFileMask(0);
@@ -35,12 +35,14 @@ void removeWrapAroundKingMoves(bitmask& kingMoves, const int ind)
             kingMoves &= notHFile;
             break;
     }
+
+    return kingMoves;
 }
 
-bitmask getKingBitmask(const int ind) 
+bitmask getKingBitmask(int ind) 
 {
     bitmask kingMoves = applyKingMoves(ind);
-    removeWrapAroundKingMoves(kingMoves, ind);
+    kingMoves = removeWrapAroundKingMoves(kingMoves, ind);
     return kingMoves;
 }
 

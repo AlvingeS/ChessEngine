@@ -3,7 +3,7 @@
 #include "ChessEngine/utils/ChessUtils.h"
 
 namespace masks {
-bitmask getNorthRay(const int ind) 
+bitmask getNorthRay(int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
@@ -17,7 +17,7 @@ bitmask getNorthRay(const int ind)
     return north_ray;
 }
 
-bitmask getNorthEastRay(const int ind) 
+bitmask getNorthEastRay(int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
@@ -33,7 +33,7 @@ bitmask getNorthEastRay(const int ind)
     return north_east_ray;
 }
 
-bitmask getEastRay(const int ind) 
+bitmask getEastRay(int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
@@ -47,7 +47,7 @@ bitmask getEastRay(const int ind)
     return east_ray;
 }
 
-bitmask getSouthEastRay(const int ind) 
+bitmask getSouthEastRay(int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
@@ -63,7 +63,7 @@ bitmask getSouthEastRay(const int ind)
     return south_east_ray;
 }
 
-bitmask getSouthRay(const int ind) 
+bitmask getSouthRay(int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
@@ -77,7 +77,7 @@ bitmask getSouthRay(const int ind)
     return south_ray;
 }
 
-bitmask getSouthWestRay(const int ind) 
+bitmask getSouthWestRay(int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
@@ -93,7 +93,7 @@ bitmask getSouthWestRay(const int ind)
     return south_west_ray;
 }
 
-bitmask getWestRay(const int ind) 
+bitmask getWestRay(int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
@@ -107,7 +107,7 @@ bitmask getWestRay(const int ind)
     return west_ray;
 }
 
-bitmask getNorthWestRay(const int ind) 
+bitmask getNorthWestRay(int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
@@ -123,7 +123,7 @@ bitmask getNorthWestRay(const int ind)
     return north_west_ray;
 }
 
-StraightRays getStraightRays(const int ind) 
+StraightRays getStraightRays(int ind) 
 {
     return {
         getNorthRay(ind),
@@ -133,7 +133,7 @@ StraightRays getStraightRays(const int ind)
     };
 }
 
-DiagonalRays getDiagonalRays(const int ind) 
+DiagonalRays getDiagonalRays(int ind) 
 {
     return {
         getNorthEastRay(ind),
@@ -143,7 +143,7 @@ DiagonalRays getDiagonalRays(const int ind)
     };
 }
 
-const std::vector<StraightRays> getAllStraightRayBitmasks() 
+std::vector<StraightRays> getAllStraightRayBitmasks() 
 {
     std::vector<StraightRays> allStraightRayBitmasks;
 
@@ -154,7 +154,7 @@ const std::vector<StraightRays> getAllStraightRayBitmasks()
     return allStraightRayBitmasks;
 }
 
-const std::vector<DiagonalRays> getAllDiagonalRayBitmasks() 
+std::vector<DiagonalRays> getAllDiagonalRayBitmasks() 
 {
     std::vector<DiagonalRays> allDiagonalRayBitmasks;
 

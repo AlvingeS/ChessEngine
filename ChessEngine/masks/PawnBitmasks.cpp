@@ -3,7 +3,7 @@
 #include "ChessEngine/utils/ChessUtils.h"
 
 namespace masks {
-bitmask applyCapturePawnMoves(const int ind, const bool isWhite) 
+bitmask applyCapturePawnMoves(int ind, bool isWhite) 
 {
     bitmask captureMoves = 0ULL;
 
@@ -16,7 +16,7 @@ bitmask applyCapturePawnMoves(const int ind, const bool isWhite)
     return captureMoves;
 }
 
-void removeWrapAroundPawnMoves(bitmask& captureMoves, const int ind) 
+bitmask removeWrapAroundPawnMoves(bitmask captureMoves, int ind) 
 {
     bitmask notAFile = ~utils::getFileMask(7);
     bitmask notHFile = ~utils::getFileMask(0);
@@ -29,16 +29,18 @@ void removeWrapAroundPawnMoves(bitmask& captureMoves, const int ind)
             captureMoves &= notHFile;
             break;
     }
-}
 
-bitmask getCapturePawnMovesBitmask(const int ind, const bool isWhite) 
-{
-    bitmask captureMoves = applyCapturePawnMoves(ind, isWhite);
-    removeWrapAroundPawnMoves(captureMoves, ind);
     return captureMoves;
 }
 
-bitmask getStraightPawnMovesBitmask(const int ind, const bool isWhite) 
+bitmask getCapturePawnMovesBitmask(int ind, bool isWhite) 
+{
+    bitmask captureMoves = applyCapturePawnMoves(ind, isWhite);
+    captureMoves = removeWrapAroundPawnMoves(captureMoves, ind);
+    return captureMoves;
+}
+
+bitmask getStraightPawnMovesBitmask(int ind, bool isWhite) 
 {
     bitmask straightMoves = 0ULL;
 
@@ -54,7 +56,7 @@ bitmask getStraightPawnMovesBitmask(const int ind, const bool isWhite)
     return straightMoves;
 }
 
-const std::vector<bitmask> getAllStraightPawnMoveBitmasks(const bool isWhite) 
+std::vector<bitmask> getAllStraightPawnMoveBitmasks(bool isWhite) 
 {
     std::vector<bitmask> straightPawnMoveBitmasks;
 
@@ -65,7 +67,7 @@ const std::vector<bitmask> getAllStraightPawnMoveBitmasks(const bool isWhite)
     return straightPawnMoveBitmasks;
 }
 
-const std::vector<bitmask> getAllCapturePawnMoveBitmasks(const bool isWhite) 
+std::vector<bitmask> getAllCapturePawnMoveBitmasks(bool isWhite) 
 {
     std::vector<bitmask> capturePawnMoveBitmasks;
 

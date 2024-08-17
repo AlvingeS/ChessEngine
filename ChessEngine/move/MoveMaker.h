@@ -26,90 +26,85 @@ public:
     
     // Public member functions
     void makeMove(
-        const Move move, 
-        const bool isWhite, 
-        const int currentDepth
+        const Move& move,
+        bool isWhite, 
+        int currentDepth
     );
 
-    board::PieceType pickUpPiece(
-        const bool isWhite, 
-        const int fromIndex
-    );
+    board::PieceType pickUpPiece(bool isWhite, int fromIndex);
 
     void putDownPiece(
-        const move::Move &move, 
-        const bool isWhite, int toIndex, 
-        const board::PieceType movedPieceType
+        const move::Move& move, 
+        bool isWhite, 
+        int toIndex,
+        board::PieceType movedPieceType
     );
 
     void handleCapture(
-        const move::Move &move, 
-        const bool isWhite, 
-        const int toIndex, 
-        const int currentDepth
+        const move::Move& move, 
+        bool isWhite, 
+        int toIndex, 
+        int currentDepth
     );
 
     void handleEnPessantMemory(
-        const move::Move &move, 
-        const int currentDepth, 
-        const bool isWhite, 
-        const int toIndex
+        const move::Move& move, 
+        bool isWhite, 
+        int currentDepth, 
+        int toIndex
     );
 
     void handleNoCaptureCount(
-        const move::Move &move, 
-        const board::PieceType movedPieceType, 
-        const int currentDepth
+        const move::Move& move, 
+        int currentDepth,
+        board::PieceType movedPieceType 
     );
     
     void unmakeMove(
-        const Move move, 
-        const bool wasWhite, 
-        const int currentDepth
+        const Move& move, 
+        bool wasWhite, 
+        int currentDepth
     );
 
     void tryUncastling(
         const move::Move &move, 
-        const bool wasWhite, 
+        bool wasWhite, 
         bool &retFlag
     );
 
     void handleUncapturing(
-        const move::Move &move, 
-        const bool wasWhite, 
-        const int toIndex, 
-        const int currentDepth
+        const move::Move& move, 
+        bool wasWhite, 
+        int toIndex, 
+        int currentDepth
     );
 
     void putBackMovedPiece(
-        const int fromIndex, 
-        const board::PieceType movedPieceType, 
-        const bool wasWhite, 
-        const move::Move &move, 
-        const int toIndex
+        const move::Move& move,
+        bool wasWhite,
+        int fromIndex, 
+        int toIndex,
+        board::PieceType movedPieceType
     );
 
     board::PieceType determineMovedPieceType(
-        const Move move, 
-        const int toIndex, 
-        const bool wasWhite
-    );
+        const Move& move, 
+        bool wasWhite,
+        int toIndex
+    ) const;
     
-    void makeCastleMove(const bool isWhite, const bool isKingSide);
-    void unmakeCastleMove(const bool isWhite, const bool isKingSide);
-    void makeTemporaryKingMove(const bool isWhite, const bool isKingSide);
-    void unmakeTemporaryKingMove(const bool isWhite, const bool isKingSide);
+    void makeCastleMove(bool isWhite, bool isKingSide);
+    void unmakeCastleMove(bool isWhite, bool isKingSide);
+    void makeTemporaryKingMove(bool isWhite, bool isKingSide);
+    void unmakeTemporaryKingMove(bool isWhite, bool isKingSide);
 
-    perft::SearchMemory& getSearchMemory() 
+    perft::SearchMemory& getSearchMemory() const
     {
         return _searchMemory;
     }
 
 private:
-    board::PieceType getPromotionPieceType(
-        const int promotionFlag, 
-        const bool isWhite
-    );
+    board::PieceType getPromotionPieceType(int promotionFlag, bool isWhite) const;
 
     board::Bitboards& _bitboards;
     board::GameStateBitmasks& _gameStateBitmasks;

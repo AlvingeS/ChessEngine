@@ -4,9 +4,7 @@ namespace move {
 
 namespace {
 
-board::PieceType getPromotionPieceType(
-    const int promotionFlag, 
-    const bool isWhite) 
+board::PieceType getPromotionPieceType(int promotionFlag, bool isWhite) 
 {
     switch(promotionFlag) {
         case Move::KNIGHT_PROMO_FLAG:
@@ -54,9 +52,9 @@ MoveMaker::MoveMaker(
 {}
 
 void MoveMaker::makeMove(
-    const Move move, 
-    const bool isWhite, 
-    const int currentDepth) 
+    const Move& move, 
+    bool isWhite, 
+    int currentDepth) 
 {
     // If the move is a castle, update data and return
     if (move.isAnyCastle()) {
@@ -76,15 +74,13 @@ void MoveMaker::makeMove(
     handleCapture(move, isWhite, toIndex, currentDepth);
     putDownPiece(move, isWhite, toIndex, movedPieceType);
 
-    handleEnPessantMemory(move, currentDepth, isWhite, toIndex);
-    handleNoCaptureCount(move, movedPieceType, currentDepth);
+    handleEnPessantMemory(move, isWhite, currentDepth, toIndex);
+    handleNoCaptureCount(move, currentDepth, movedPieceType);
 
     _gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
 }
 
-void MoveMaker::makeCastleMove(
-    const bool isWhite,
-    const bool isKingSide)
+void MoveMaker::makeCastleMove(bool isWhite,bool isKingSide)
 {
     int fromKingInd, toKingInd, fromRookInd, toRookInd;
 
@@ -133,9 +129,7 @@ void MoveMaker::makeCastleMove(
     _gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
 }
 
-void MoveMaker::unmakeCastleMove(
-    const bool isWhite,
-    const bool wasKingSide)
+void MoveMaker::unmakeCastleMove(bool isWhite,bool wasKingSide)
 {
     int fromKingInd, toKingInd, fromRookInd, toRookInd;
 
@@ -184,9 +178,7 @@ void MoveMaker::unmakeCastleMove(
     _gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
 }
 
-void MoveMaker::makeTemporaryKingMove(
-    const bool isWhite, 
-    const bool isKingSide) 
+void MoveMaker::makeTemporaryKingMove(bool isWhite, bool isKingSide) 
 {
     int from = isWhite ? 3 : 59;
 
@@ -202,9 +194,7 @@ void MoveMaker::makeTemporaryKingMove(
     }
 }
 
-void MoveMaker::unmakeTemporaryKingMove(
-    const bool isWhite, 
-    const bool isKingSide) 
+void MoveMaker::unmakeTemporaryKingMove(bool isWhite, bool isKingSide) 
 {
     int from = isKingSide ? (isWhite ? 2 : 58) 
                           : (isWhite ? 4 : 60);
@@ -220,9 +210,7 @@ void MoveMaker::unmakeTemporaryKingMove(
     }
 }
 
-board::PieceType MoveMaker::pickUpPiece(
-    const bool isWhite, 
-    const int fromIndex) 
+board::PieceType MoveMaker::pickUpPiece(bool isWhite, int fromIndex) 
 {
     board::PieceType movedPieceType = _squaresLookup.getPieceTypeAtIndex(fromIndex);
     assert(movedPieceType != board::PieceType::EMPTY);
@@ -241,10 +229,10 @@ board::PieceType MoveMaker::pickUpPiece(
 }
 
 void MoveMaker::putDownPiece(
-    const move::Move &move, 
-    const bool isWhite, 
-    const int toIndex, 
-    const board::PieceType movedPieceType) 
+    const move::Move& move, 
+    bool isWhite, 
+    int toIndex, 
+    board::PieceType movedPieceType) 
 {
     if (move.isAnyPromo()) {
         board::PieceType promotionPieceType = ::move::getPromotionPieceType(move.getFlag(), isWhite);
@@ -263,9 +251,9 @@ void MoveMaker::putDownPiece(
 }
 
 void MoveMaker::handleNoCaptureCount(
-    const move::Move &move, 
-    const board::PieceType movedPieceType, 
-    const int currentDepth) 
+    const move::Move& move, 
+    int currentDepth, 
+    board::PieceType movedPieceType)
 {
     if (not move.isAnyCapture() && (movedPieceType != board::PieceType::W_PAWN && movedPieceType != board::PieceType::B_PAWN)) {
         _searchMemory.incrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
@@ -276,10 +264,10 @@ void MoveMaker::handleNoCaptureCount(
 }
 
 void MoveMaker::handleEnPessantMemory(
-    const move::Move &move, 
-    const int currentDepth, 
-    const bool isWhite, 
-    const int toIndex) 
+    const move::Move& move, 
+    bool isWhite, 
+    int currentDepth, 
+    int toIndex) 
 {
     if (move.isDoublePawnPush()) {
         _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, isWhite ? (1ULL << (toIndex - 8)) : (1ULL << (toIndex + 8)));
@@ -291,10 +279,10 @@ void MoveMaker::handleEnPessantMemory(
 
 
 void MoveMaker::handleCapture(
-    const move::Move &move, 
-    const bool isWhite, 
-    const int toIndex, 
-    const int currentDepth) 
+    const move::Move& move, 
+    bool isWhite, 
+    int toIndex, 
+    int currentDepth) 
 {
     if (move.isAnyCapture()) {
         // Calculate index of captured piece
@@ -321,9 +309,9 @@ void MoveMaker::handleCapture(
 
 
 void MoveMaker::unmakeMove(
-    const Move move, 
-    const bool wasWhite, 
-    const int currentDepth) 
+    const Move& move, 
+    bool wasWhite, 
+    int currentDepth) 
 {
     // If the move is a castle, update the bitboards and return
     if (move.isAnyCastle()) {
@@ -336,10 +324,10 @@ void MoveMaker::unmakeMove(
     int fromIndex = move.getBitIndexFrom();
     int toIndex = move.getBitIndexTo();
     
-    board::PieceType movedPieceType = determineMovedPieceType(move, toIndex, wasWhite);
+    board::PieceType movedPieceType = determineMovedPieceType(move, wasWhite, toIndex);
 
     // Place back the moved piece
-    putBackMovedPiece(fromIndex, movedPieceType, wasWhite, move, toIndex);
+    putBackMovedPiece(move, wasWhite, fromIndex, toIndex, movedPieceType);
     handleUncapturing(move, wasWhite, toIndex, currentDepth);
 
     if (move.isDoublePawnPush()) {
@@ -353,10 +341,10 @@ void MoveMaker::unmakeMove(
     _gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
 }
 void MoveMaker::handleUncapturing(
-    const move::Move &move, 
-    const bool wasWhite, 
-    const int toIndex, 
-    const int currentDepth)
+    const move::Move& move, 
+    bool wasWhite, 
+    int toIndex, 
+    int currentDepth)
 {
     // If the move was a capture, place back the captured piece
     // else set the square to empty
@@ -382,11 +370,11 @@ void MoveMaker::handleUncapturing(
 }
 
 void MoveMaker::putBackMovedPiece(
-    const int fromIndex, 
-    const board::PieceType movedPieceType, 
-    const bool wasWhite, 
-    const move::Move &move, 
-    const int toIndex) 
+    const move::Move& move, 
+    bool wasWhite, 
+    int fromIndex, 
+    int toIndex,
+    board::PieceType movedPieceType)
 {
     _bitboards.setPieceTypeBit(fromIndex, movedPieceType);
     _squaresLookup.setPieceTypeAtIndex(fromIndex, movedPieceType);
@@ -414,9 +402,9 @@ void MoveMaker::putBackMovedPiece(
 }
 
 board::PieceType MoveMaker::determineMovedPieceType(
-    const Move move, 
-    const int toIndex,
-     const bool wasWhite) 
+    const Move& move, 
+    bool wasWhite,
+    int toIndex) const
 {
     // Piece type of piece being moved
     board::PieceType movedPieceType;

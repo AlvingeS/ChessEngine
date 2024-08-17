@@ -41,10 +41,10 @@ private:
 
     // Memory
     std::vector<int> _pawnIndices;
-    std::vector<U64> _whitePawnStraightMoveBitmasks;
-    std::vector<U64> _blackPawnStraightMoveBitmasks;
-    std::vector<U64> _whitePawnCaptureMoveBitmasks;
-    std::vector<U64> _blackPawnCaptureMoveBitmasks;
+    std::vector<bitmask> _whitePawnStraightMoveBitmasks;
+    std::vector<bitmask> _blackPawnStraightMoveBitmasks;
+    std::vector<bitmask> _whitePawnCaptureMoveBitmasks;
+    std::vector<bitmask> _blackPawnCaptureMoveBitmasks;
 
     std::vector<int> _freeMovesIndices;
     std::vector<int> _capturableMovesIndices;

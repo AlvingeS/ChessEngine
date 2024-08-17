@@ -39,7 +39,7 @@ void BoardPrinter::fillBoard(board::BitBoards& bitboards)
     
     for (int i = 0; i < 12; i++) {
         board::PieceType pieceType = board::intToPieceType(i);
-        U64 bitboard = bitboards.getBitboardFromIndex(i);
+        bitmask bitboard = bitboards.getBitboardFromIndex(i);
         char pieceChar = board::pieceTypeToChar(pieceType);
 
         for (int i = 0; i < 64; i++) {

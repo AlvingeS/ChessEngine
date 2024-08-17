@@ -8,7 +8,7 @@
 
 namespace utils {
 
-constexpr U64 FILE_MASK[8] = {
+constexpr bitmask FILE_MASK[8] = {
     0x0101010101010101ULL,
     0x0202020202020202ULL,
     0x0404040404040404ULL,
@@ -19,7 +19,7 @@ constexpr U64 FILE_MASK[8] = {
     0x8080808080808080ULL
 };
 
-constexpr U64 RANK_MASK[8] = {
+constexpr bitmask RANK_MASK[8] = {
     0x00000000000000FFULL,
     0x000000000000FF00ULL,
     0x0000000000FF0000ULL,
@@ -30,12 +30,12 @@ constexpr U64 RANK_MASK[8] = {
     0xFF00000000000000ULL
 };
 
-inline U64 getFileMask(int file) 
+inline bitmask getFileMask(int file) 
 {
     return FILE_MASK[file];
 }
 
-inline U64 getRankMask(int rank) 
+inline bitmask getRankMask(int rank) 
 {
     return RANK_MASK[rank];
 }
@@ -50,22 +50,22 @@ inline int fileFromBitIndex(int i)
     return i % 8;
 }
 
-inline U64 getOccupiedSquaresBitmask(U64 whitePieces, U64 blackPieces) 
+inline bitmask getOccupiedSquaresBitmask(bitmask whitePieces, bitmask blackPieces) 
 {
     return whitePieces | blackPieces;
 }
 
-inline U64 getEmptySquaresBitmask(U64 whitePieces, U64 blackPieces) 
+inline bitmask getEmptySquaresBitmask(bitmask whitePieces, bitmask blackPieces) 
 {
     return ~getOccupiedSquaresBitmask(whitePieces, blackPieces);
 }
 
-inline U64 getWhiteSquaresBitmask() 
+inline bitmask getWhiteSquaresBitmask() 
 {
     return 0xAA55AA55AA55AA55ULL;
 }
 
-inline U64 getBlackSquaresBitmask() 
+inline bitmask getBlackSquaresBitmask() 
 {
     return 0x55AA55AA55AA55AAULL;
 }

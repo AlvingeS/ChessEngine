@@ -6,11 +6,11 @@
 namespace utils {
     class ChessUtils : public ::testing::Test {
         protected:
-            U64 a;
-            U64 b;
-            U64 c;
-            U64 whitePieces;
-            U64 blackPieces;
+            bitmask a;
+            bitmask b;
+            bitmask c;
+            bitmask whitePieces;
+            bitmask blackPieces;
             void SetUp() override {
                 a = 0x0000000000FF0501;
                 b = 0x0000000000000000;
@@ -21,98 +21,98 @@ namespace utils {
     };
 
     TEST_F(ChessUtils, getFileMask_File7_ShouldReturn0x8080808080808080) {
-        U64 expected = 0x8080808080808080ULL;
-        U64 actual = getFileMask(7);
+        bitmask expected = 0x8080808080808080ULL;
+        bitmask actual = getFileMask(7);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getFileMask_File6_ShouldReturn0x4040404040404040) {
-        U64 expected = 0x4040404040404040ULL;
-        U64 actual = getFileMask(6);
+        bitmask expected = 0x4040404040404040ULL;
+        bitmask actual = getFileMask(6);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getFileMask_File5_ShouldReturn0x2020202020202020) {
-        U64 expected = 0x2020202020202020ULL;
-        U64 actual = getFileMask(5);
+        bitmask expected = 0x2020202020202020ULL;
+        bitmask actual = getFileMask(5);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getFileMask_File4_ShouldReturn0x1010101010101010) {
-        U64 expected = 0x1010101010101010ULL;
-        U64 actual = getFileMask(4);
+        bitmask expected = 0x1010101010101010ULL;
+        bitmask actual = getFileMask(4);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getFileMask_File3_ShouldReturn0x0808080808080808) {
-        U64 expected = 0x0808080808080808ULL;
-        U64 actual = getFileMask(3);
+        bitmask expected = 0x0808080808080808ULL;
+        bitmask actual = getFileMask(3);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getFileMask_File2_ShouldReturn0x0404040404040404) {
-        U64 expected = 0x0404040404040404ULL;
-        U64 actual = getFileMask(2);
+        bitmask expected = 0x0404040404040404ULL;
+        bitmask actual = getFileMask(2);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getFileMask_File1_ShouldReturn0x0202020202020202) {
-        U64 expected = 0x0202020202020202ULL;
-        U64 actual = getFileMask(1);
+        bitmask expected = 0x0202020202020202ULL;
+        bitmask actual = getFileMask(1);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getFileMask_File0_ShouldReturn0x0101010101010101) {
-        U64 expected = 0x0101010101010101ULL;
-        U64 actual = getFileMask(0);
+        bitmask expected = 0x0101010101010101ULL;
+        bitmask actual = getFileMask(0);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getRankMask_Rank0_ShouldReturn0x00000000000000FF) {
-        U64 expected = 0x00000000000000FFULL;
-        U64 actual = getRankMask(0);
+        bitmask expected = 0x00000000000000FFULL;
+        bitmask actual = getRankMask(0);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getRankMask_Rank1_ShouldReturn0x000000000000FF00) {
-        U64 expected = 0x000000000000FF00ULL;
-        U64 actual = getRankMask(1);
+        bitmask expected = 0x000000000000FF00ULL;
+        bitmask actual = getRankMask(1);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getRankMask_Rank2_ShouldReturn0x0000000000FF0000) {
-        U64 expected = 0x0000000000FF0000ULL;
-        U64 actual = getRankMask(2);
+        bitmask expected = 0x0000000000FF0000ULL;
+        bitmask actual = getRankMask(2);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getRankMask_Rank3_ShouldReturn0x00000000FF000000) {
-        U64 expected = 0x00000000FF000000ULL;
-        U64 actual = getRankMask(3);
+        bitmask expected = 0x00000000FF000000ULL;
+        bitmask actual = getRankMask(3);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getRankMask_Rank4_ShouldReturn0x000000FF00000000) {
-        U64 expected = 0x000000FF00000000ULL;
-        U64 actual = getRankMask(4);
+        bitmask expected = 0x000000FF00000000ULL;
+        bitmask actual = getRankMask(4);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getRankMask_Rank5_ShouldReturn0x0000FF0000000000) {
-        U64 expected = 0x0000FF0000000000ULL;
-        U64 actual = getRankMask(5);
+        bitmask expected = 0x0000FF0000000000ULL;
+        bitmask actual = getRankMask(5);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getRankMask_Rank6_ShouldReturn0x00FF000000000000) {
-        U64 expected = 0x00FF000000000000ULL;
-        U64 actual = getRankMask(6);
+        bitmask expected = 0x00FF000000000000ULL;
+        bitmask actual = getRankMask(6);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getRankMask_Rank7_ShouldReturn0xFF00000000000000) {
-        U64 expected = 0xFF00000000000000ULL;
-        U64 actual = getRankMask(7);
+        bitmask expected = 0xFF00000000000000ULL;
+        bitmask actual = getRankMask(7);
         ASSERT_EQ(expected, actual);
     }
 
@@ -206,14 +206,14 @@ namespace utils {
     }
 
     TEST_F(ChessUtils, getOccupiedSquaresBitmask_StartingPosition_ShouldReturn0xFFFF00000000FFFF) {
-        U64 expected = 0xFFFF00000000FFFFULL;
-        U64 actual = getOccupiedSquaresBitmask(whitePieces, blackPieces);
+        bitmask expected = 0xFFFF00000000FFFFULL;
+        bitmask actual = getOccupiedSquaresBitmask(whitePieces, blackPieces);
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(ChessUtils, getEmptySquaresBitmask_StartingPosition_ShouldReturn0x0000FFFFFFFF0000) {
-        U64 expected = 0x0000FFFFFFFF0000ULL;
-        U64 actual = getEmptySquaresBitmask(whitePieces, blackPieces);
+        bitmask expected = 0x0000FFFFFFFF0000ULL;
+        bitmask actual = getEmptySquaresBitmask(whitePieces, blackPieces);
         ASSERT_EQ(expected, actual);
     }
 }

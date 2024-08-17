@@ -7,4 +7,5 @@
 #include <memory>
 #include <cassert>
 
-typedef uint64_t U64;
+typedef uint64_t bitboard;
+typedef uint64_t bitmask;

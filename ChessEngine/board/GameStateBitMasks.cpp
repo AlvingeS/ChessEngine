@@ -11,7 +11,7 @@ GameStateBitMasks::GameStateBitMasks(const BitBoards& bitboards)
 
 void GameStateBitMasks::fillWhitePiecesFromBitboards(const BitBoards& bitboards) 
 {
-    U64 w_all = 0;
+    bitmask w_all = 0;
     for (int i = 0; i < 6; i++) {
         w_all |= bitboards.getBitboardFromIndex(i);
     }
@@ -21,7 +21,7 @@ void GameStateBitMasks::fillWhitePiecesFromBitboards(const BitBoards& bitboards)
 
 void GameStateBitMasks::fillBlackPiecesFromBitboards(const BitBoards& bitboards) 
 {
-    U64 b_all = 0;
+    bitmask b_all = 0;
     for (int i = 6; i < 12; i++) {
         b_all |= bitboards.getBitboardFromIndex(i);
     }

@@ -23,7 +23,7 @@ public:
 
     // Public member functions
     void getMovesFromStraightRay(
-        U64 ray,
+        bitmask ray,
         bool blockerOnLSB,
         bool alongFile,
         bool isWhite,
@@ -34,7 +34,7 @@ public:
     );
 
     void getMovesFromDiagonalRay(
-        U64 ray,
+        bitmask ray,
         bool blockerOnLSB,
         bool isWhite,
         int pieceIndex,
@@ -44,21 +44,21 @@ public:
     );
 
     bool checkStraightRay(
-        U64& straightRay,
+        bitmask& straightRay,
         bool firstBlockerOnLSB,
-        U64& opponentRooksAndQueens
+        bitmask& opponentRooksAndQueens
     );
 
     bool checkDiagonalRay(
-        U64& diagonalRay,
+        bitmask& diagonalRay,
         bool firstBlockerOnLSB,
-        U64& opponentBishopsAndQueens
+        bitmask& opponentBishopsAndQueens
     );
 
 private:
     // Private member functions
     void addMovesFromFreeRay(
-        U64 freeRay,
+        bitmask freeRay,
         int bitIndexFrom,
         std::vector<move::Move>& moveList
     );

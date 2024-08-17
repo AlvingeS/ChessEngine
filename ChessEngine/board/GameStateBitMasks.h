@@ -34,7 +34,7 @@ public:
         _whitePiecesBitmask &= ~(1ULL << square);
     }
 
-    inline const U64& getWhitePiecesBitmask() const 
+    inline const bitmask& getWhitePiecesBitmask() const 
     {
         return _whitePiecesBitmask;
     }
@@ -51,7 +51,7 @@ public:
         _blackPiecesBitmask &= ~(1ULL << square);
     }
 
-    inline const U64& getBlackPiecesBitmask() const 
+    inline const bitmask& getBlackPiecesBitmask() const 
     {
         return _blackPiecesBitmask;
     }
@@ -72,12 +72,12 @@ public:
         _emptySquaresBitmask = ~_occupiedPiecesBitmask;
     }
 
-    inline const U64& getOccupiedPiecesBitmask() const 
+    inline const bitmask& getOccupiedPiecesBitmask() const 
     {
         return _occupiedPiecesBitmask;
     }
 
-    inline const U64& getEmptySquaresBitmask() const 
+    inline const bitmask& getEmptySquaresBitmask() const 
     {
         return _emptySquaresBitmask;
     }
@@ -88,10 +88,10 @@ public:
 private:
     
     // ** Data **
-    U64 _whitePiecesBitmask;
-    U64 _blackPiecesBitmask;
-    U64 _occupiedPiecesBitmask;
-    U64 _emptySquaresBitmask;
+    bitmask _whitePiecesBitmask;
+    bitmask _blackPiecesBitmask;
+    bitmask _occupiedPiecesBitmask;
+    bitmask _emptySquaresBitmask;
 };
 
 } // namespace board

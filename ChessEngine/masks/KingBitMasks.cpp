@@ -5,9 +5,9 @@
 namespace masks {
 
 // Applies all king moves without considering looping around the board
-U64 applyKingMoves(const int ind) 
+bitmask applyKingMoves(const int ind) 
 {
-    U64 kingMoves = 0ULL;
+    bitmask kingMoves = 0ULL;
 
     if (ind + 8 <= 63) kingMoves |= (1ULL << (ind + 8));
     if (ind + 1 <= 63) kingMoves |= (1ULL << (ind + 1));
@@ -22,10 +22,10 @@ U64 applyKingMoves(const int ind)
 }
 
 // Applies file masks to king moves to prevent looping around the board
-void removeWrapAroundKingMoves(U64& kingMoves, const int ind) 
+void removeWrapAroundKingMoves(bitmask& kingMoves, const int ind) 
 {
-    U64 notAFile = ~utils::getFileMask(7);
-    U64 notHFile = ~utils::getFileMask(0);
+    bitmask notAFile = ~utils::getFileMask(7);
+    bitmask notHFile = ~utils::getFileMask(0);
 
     switch (utils::fileFromBitIndex(ind)) {
         case 0:
@@ -37,16 +37,16 @@ void removeWrapAroundKingMoves(U64& kingMoves, const int ind)
     }
 }
 
-U64 getKingBitMask(const int ind) 
+bitmask getKingBitMask(const int ind) 
 {
-    U64 kingMoves = applyKingMoves(ind);
+    bitmask kingMoves = applyKingMoves(ind);
     removeWrapAroundKingMoves(kingMoves, ind);
     return kingMoves;
 }
 
-const std::vector<U64> getAllKingBitMasks() 
+const std::vector<bitmask> getAllKingBitMasks() 
 {
-    std::vector<U64> kingBitMasks;
+    std::vector<bitmask> kingBitMasks;
 
     for (int i = 0; i < 64; i++) {
         kingBitMasks.push_back(getKingBitMask(i));

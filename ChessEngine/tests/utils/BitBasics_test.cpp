@@ -4,7 +4,7 @@
 namespace utils {
     class BitBasics : public ::testing::Test {
     protected:
-        U64 a;
+        bitmask a;
 
         void SetUp() override {
             a = 0x000000000000FF00ULL;

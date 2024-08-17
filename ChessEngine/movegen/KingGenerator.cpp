@@ -27,14 +27,14 @@ void KingGenerator::generate(bool isWhite, std::vector<move::Move>& moveList)
                                                : _bitboards.getBlackKingBitboard());
 
     for (int currentKingIndex : _kingIndices) {
-        U64 kingBitMask = _kingBitmasks[currentKingIndex];
+        bitmask kingBitMask = _kingBitmasks[currentKingIndex];
 
-        U64 freeKingMoves = kingBitMask & _gameStateBitmasks.getEmptySquaresBitmask();
+        bitmask freeKingMoves = kingBitMask & _gameStateBitmasks.getEmptySquaresBitmask();
         
-        U64 enemyPieces = isWhite ? _gameStateBitmasks.getBlackPiecesBitmask() 
+        bitmask enemyPieces = isWhite ? _gameStateBitmasks.getBlackPiecesBitmask() 
                                   : _gameStateBitmasks.getWhitePiecesBitmask();
 
-        U64 capturableKingMoves = kingBitMask & enemyPieces;
+        bitmask capturableKingMoves = kingBitMask & enemyPieces;
 
         utils::getBitIndices(_freeMovesIndices, freeKingMoves);
         utils::getBitIndices(_capturableMovesIndices, capturableKingMoves);

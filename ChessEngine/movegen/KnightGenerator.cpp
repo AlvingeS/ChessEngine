@@ -24,14 +24,14 @@ void KnightGenerator::generate(
                                                     : _bitboards.getBlackKnightsBitboard());
 
     for (int currentKnightIndex : _knightIndices) {
-        U64 knightBitMask = _knightBitmasks[currentKnightIndex];
+        bitmask knightBitMask = _knightBitmasks[currentKnightIndex];
 
-        U64 freeKnightMoves = knightBitMask & _gameStateBitmasks.getEmptySquaresBitmask();
+        bitmask freeKnightMoves = knightBitMask & _gameStateBitmasks.getEmptySquaresBitmask();
         
-        U64 enemyPieces = isWhite ? _gameStateBitmasks.getBlackPiecesBitmask()
+        bitmask enemyPieces = isWhite ? _gameStateBitmasks.getBlackPiecesBitmask()
                                     : _gameStateBitmasks.getWhitePiecesBitmask();
         
-        U64 capturableKnightMoves = knightBitMask & enemyPieces;
+        bitmask capturableKnightMoves = knightBitMask & enemyPieces;
 
         utils::getBitIndices(_freeMovesIndices, freeKnightMoves);
         utils::getBitIndices(_capturableMovesIndices, capturableKnightMoves);

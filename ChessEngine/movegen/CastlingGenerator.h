@@ -13,10 +13,10 @@
 
 namespace movegen {
 
-constexpr U64 whiteKingSideCastleMask = 0x000000000000006ULL;
-constexpr U64 whiteQueenSideCastleMask = 0x0000000000000070ULL;
-constexpr U64 blackKingSideCastleMask = 0x0600000000000000ULL;
-constexpr U64 blackQueenSideCastleMask = 0x7000000000000000ULL;
+constexpr bitmask whiteKingSideCastleMask = 0x000000000000006ULL;
+constexpr bitmask whiteQueenSideCastleMask = 0x0000000000000070ULL;
+constexpr bitmask blackKingSideCastleMask = 0x0600000000000000ULL;
+constexpr bitmask blackQueenSideCastleMask = 0x7000000000000000ULL;
 
 class CastlingGenerator {
 
@@ -47,10 +47,10 @@ private:
     CheckDetection* _checkDetection;
 
     // Memory
-    U64 _whiteKingSideCastleBitmask;
-    U64 _whiteQueenSideCastleBitmask;
-    U64 _blackKingSideCastleBitmask;
-    U64 _blackQueenSideCastleBitmask;
+    bitmask _whiteKingSideCastleBitmask;
+    bitmask _whiteQueenSideCastleBitmask;
+    bitmask _blackKingSideCastleBitmask;
+    bitmask _blackQueenSideCastleBitmask;
 
     // Private member functions
     void genSingleCastleMove(

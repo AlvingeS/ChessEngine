@@ -51,22 +51,22 @@ bool CheckDetection::isInCheck(bool isWhite)
     masks::StraightRays straightRays = _straightRayBitmasks[kingIndex];
     masks::DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
 
-    U64 knightMoves = _knightBitmasks[kingIndex];
+    bitmask knightMoves = _knightBitmasks[kingIndex];
 
-    U64 pawnAttackingMoves = isWhite ? _whitePawnCaptureMoveBitmasks[kingIndex] 
+    bitmask pawnAttackingMoves = isWhite ? _whitePawnCaptureMoveBitmasks[kingIndex] 
                                      : _blackPawnCaptureMoveBitmasks[kingIndex];
-    U64 opponentRooksAndQueens = isWhite ? _bitboards.getBlackRooksBitboard() | _bitboards.getBlackQueensBitboard()
+    bitmask opponentRooksAndQueens = isWhite ? _bitboards.getBlackRooksBitboard() | _bitboards.getBlackQueensBitboard()
                                          : _bitboards.getWhiteRooksBitboard() | _bitboards.getWhiteQueensBitboard();
 
-    U64 opponentBishopsAndQueens = isWhite ? _bitboards.getBlackBishopsBitboard() | _bitboards.getBlackQueensBitboard() 
+    bitmask opponentBishopsAndQueens = isWhite ? _bitboards.getBlackBishopsBitboard() | _bitboards.getBlackQueensBitboard() 
                                            : _bitboards.getWhiteBishopsBitboard() | _bitboards.getWhiteQueensBitboard();
 
-    U64 opponentPawns = isWhite ? _bitboards.getBlackPawnsBitboard() : _bitboards.getWhitePawnsBitboard();
+    bitmask opponentPawns = isWhite ? _bitboards.getBlackPawnsBitboard() : _bitboards.getWhitePawnsBitboard();
     
     if ((pawnAttackingMoves & opponentPawns) != 0)
         return true;
 
-    U64 opponentKnights = isWhite ? _bitboards.getBlackKnightsBitboard() 
+    bitmask opponentKnights = isWhite ? _bitboards.getBlackKnightsBitboard() 
                                   : _bitboards.getWhiteKnightsBitboard();
 
     if ((knightMoves & opponentKnights) != 0)

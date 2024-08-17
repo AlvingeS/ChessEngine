@@ -34,19 +34,19 @@ void PawnGenerator::generate(
 
     for (int currentPawnIndex : _pawnIndices) {
 
-        U64 straightPawnMoveBitmask = isWhite ? _whitePawnStraightMoveBitmasks[currentPawnIndex]
+        bitmask straightPawnMoveBitmask = isWhite ? _whitePawnStraightMoveBitmasks[currentPawnIndex]
                                               : _blackPawnStraightMoveBitmasks[currentPawnIndex];
 
-        U64 capturePawnMoveBitmask = isWhite ? _whitePawnCaptureMoveBitmasks[currentPawnIndex]
+        bitmask capturePawnMoveBitmask = isWhite ? _whitePawnCaptureMoveBitmasks[currentPawnIndex]
                                              : _blackPawnCaptureMoveBitmasks[currentPawnIndex];
 
-        U64 freePawnMoves = straightPawnMoveBitmask & _gameStateBitmasks.getEmptySquaresBitmask();
+        bitmask freePawnMoves = straightPawnMoveBitmask & _gameStateBitmasks.getEmptySquaresBitmask();
         
-        U64 enemyPieces = isWhite ? _gameStateBitmasks.getBlackPiecesBitmask()
+        bitmask enemyPieces = isWhite ? _gameStateBitmasks.getBlackPiecesBitmask()
                                   : _gameStateBitmasks.getWhitePiecesBitmask();
         
-        U64 enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
-        U64 capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
+        bitmask enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
+        bitmask capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
 
         utils::getBitIndices(_freeMovesIndices, freePawnMoves);
         utils::getBitIndices(_capturableMovesIndices, capturablePawnMoves);

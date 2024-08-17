@@ -29,99 +29,99 @@ namespace board {
 
 
     TEST_F(BitBoardsTest, ConstructorInit_WhitePawn) {
-        U64 expected = 0x000000000000FF00ULL;
-        U64 actual = bitboards.getBitboardFromPieceType(PieceType::W_PAWN);
+        bitmask expected = 0x000000000000FF00ULL;
+        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::W_PAWN);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, ConstructorInit_WhiteKnight) {
-        U64 expected = 0x0000000000000042ULL;
-        U64 actual = bitboards.getBitboardFromPieceType(PieceType::W_KNIGHT);
+        bitmask expected = 0x0000000000000042ULL;
+        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::W_KNIGHT);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, ConstructorInit_WhiteBishop) {
-        U64 expected = 0x0000000000000024ULL;
-        U64 actual = bitboards.getBitboardFromPieceType(PieceType::W_BISHOP);
+        bitmask expected = 0x0000000000000024ULL;
+        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::W_BISHOP);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, ConstructorInit_WhiteRook) {
-        U64 expected = 0x0000000000000081ULL;
-        U64 actual = bitboards.getBitboardFromPieceType(PieceType::W_ROOK);
+        bitmask expected = 0x0000000000000081ULL;
+        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::W_ROOK);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, ConstructorInit_WhiteQueen) {
-        U64 expected = 0x0000000000000010ULL;
-        U64 actual = bitboards.getBitboardFromPieceType(PieceType::W_QUEEN);
+        bitmask expected = 0x0000000000000010ULL;
+        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::W_QUEEN);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, ConstructorInit_WhiteKing) {
-        U64 expected = 0x0000000000000008ULL;
-        U64 actual = bitboards.getBitboardFromPieceType(PieceType::W_KING);
+        bitmask expected = 0x0000000000000008ULL;
+        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::W_KING);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, ConstructorInit_BlackPawn) {
-        U64 expected = 0x00FF000000000000ULL;
-        U64 actual = bitboards.getBitboardFromPieceType(PieceType::B_PAWN);
+        bitmask expected = 0x00FF000000000000ULL;
+        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::B_PAWN);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, ConstructorInit_BlackKnight) {
-        U64 expected = 0x4200000000000000ULL;
-        U64 actual = bitboards.getBitboardFromPieceType(PieceType::B_KNIGHT);
+        bitmask expected = 0x4200000000000000ULL;
+        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::B_KNIGHT);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, ConstructorInit_BlackBishop) {
-        U64 expected = 0x2400000000000000ULL;
-        U64 actual = bitboards.getBitboardFromPieceType(PieceType::B_BISHOP);
+        bitmask expected = 0x2400000000000000ULL;
+        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::B_BISHOP);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, ConstructorInit_BlackRook) {
-        U64 expected = 0x8100000000000000ULL;
-        U64 actual = bitboards.getBitboardFromPieceType(PieceType::B_ROOK);
+        bitmask expected = 0x8100000000000000ULL;
+        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::B_ROOK);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, ConstructorInit_BlackQueen) {
-        U64 expected = 0x1000000000000000ULL;
-        U64 actual = bitboards.getBitboardFromPieceType(PieceType::B_QUEEN);
+        bitmask expected = 0x1000000000000000ULL;
+        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::B_QUEEN);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, ConstructorInit_BlackKing) {
-        U64 expected = 0x0800000000000000ULL;
-        U64 actual = bitboards.getBitboardFromPieceType(PieceType::B_KING);
+        bitmask expected = 0x0800000000000000ULL;
+        bitmask actual = bitboards.getBitboardFromPieceType(PieceType::B_KING);
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, getWhitePiecesBitmask_ShouldReturn0x000000000000FFFF) {
-        U64 expected = 0x000000000000FFFFULL;
-        U64 actual = gameStateBitmasks.getWhitePiecesBitmask();
+        bitmask expected = 0x000000000000FFFFULL;
+        bitmask actual = gameStateBitmasks.getWhitePiecesBitmask();
 
         ASSERT_EQ(expected, actual);
     }
 
     TEST_F(BitBoardsTest, getBlackPiecesBitmask_ShouldReturn0xFFFF000000000000) {
-        U64 expected = 0xFFFF000000000000ULL;
-        U64 actual = gameStateBitmasks.getBlackPiecesBitmask();
+        bitmask expected = 0xFFFF000000000000ULL;
+        bitmask actual = gameStateBitmasks.getBlackPiecesBitmask();
 
         ASSERT_EQ(expected, actual);
     }

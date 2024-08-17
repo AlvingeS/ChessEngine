@@ -7,7 +7,7 @@
 
 namespace utils {
 
-void getBitIndices(std::vector<int>& indices, U64 bitboard) 
+void getBitIndices(std::vector<int>& indices, bitboard bitboard) 
 {
     indices.clear();
 
@@ -20,7 +20,7 @@ void getBitIndices(std::vector<int>& indices, U64 bitboard)
     }
 }
 
-void printU64InBits(U64 n) 
+void printBitboardInBits(bitboard n) 
 {
     std::cout << std::bitset<64>(n) << std::endl;
 }

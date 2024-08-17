@@ -14,17 +14,17 @@ public:
     // ** Constructor **
     BitBoards();
 
-    inline const U64& getBitboardFromPieceType(const PieceType pieceType) const 
+    inline const bitboard& getBitboardFromPieceType(const PieceType pieceType) const 
     {
         return *(_bitboards[pieceTypeToInt(pieceType)]);
     }
 
-    inline const U64& getBitboardFromIndex(const int index) const 
+    inline const bitboard& getBitboardFromIndex(const int index) const 
     {
         return *(_bitboards[index]);
     }
 
-    // inline const std::vector<U64*>& getBitboards() const 
+    // inline const std::vector<bitboard*>& getBitboards() const 
     // {
     //     return _bitboards;
     // }
@@ -58,7 +58,7 @@ public:
         { \
             VARIABLE_NAME &= ~(1ULL << square); \
         } \
-        inline const U64& get##PIECE_NAME##Bitboard() const \
+        inline const bitboard& get##PIECE_NAME##Bitboard() const \
         { \
             return VARIABLE_NAME; \
         }
@@ -85,23 +85,23 @@ public:
 
 private:
 // ** Data **
-std::vector<U64*> _bitboards;
+std::vector<bitboard*> _bitboards;
 
 // White bitboards
-U64 _whitePawnsBitboard;
-U64 _whiteKnightsBitboard;
-U64 _whiteBishopsBitboard;
-U64 _whiteRooksBitboard;
-U64 _whiteQueensBitboard;
-U64 _whiteKingBitboard;
+bitboard _whitePawnsBitboard;
+bitboard _whiteKnightsBitboard;
+bitboard _whiteBishopsBitboard;
+bitboard _whiteRooksBitboard;
+bitboard _whiteQueensBitboard;
+bitboard _whiteKingBitboard;
 
 // Black bitboards
-U64 _blackPawnsBitboard;
-U64 _blackKnightsBitboard;
-U64 _blackBishopsBitboard;
-U64 _blackRooksBitboard;
-U64 _blackQueensBitboard;
-U64 _blackKingBitboard;
+bitboard _blackPawnsBitboard;
+bitboard _blackKnightsBitboard;
+bitboard _blackBishopsBitboard;
+bitboard _blackRooksBitboard;
+bitboard _blackQueensBitboard;
+bitboard _blackKingBitboard;
 
 };
 

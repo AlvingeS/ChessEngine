@@ -30,9 +30,9 @@ private:
     // Memory
     std::vector<masks::StraightRays> _straightRayBitmasks;
     std::vector<masks::DiagonalRays> _diagonalRayBitmasks;
-    std::vector<U64> _knightBitmasks;
-    std::vector<U64> _whitePawnCaptureMoveBitmasks;
-    std::vector<U64> _blackPawnCaptureMoveBitmasks;
+    std::vector<bitmask> _knightBitmasks;
+    std::vector<bitmask> _whitePawnCaptureMoveBitmasks;
+    std::vector<bitmask> _blackPawnCaptureMoveBitmasks;
 
 };
 

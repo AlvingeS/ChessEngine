@@ -13,11 +13,11 @@ public:
 
 private:
 
-    U64 _randBoardPieceTypeNums[64][12];
-    U64 _randCastleRightsNums[4];
-    U64 _randEnPassantFileNums[8];
-    U64 _randIsWhiteNum;
-    U64 _hash;
+    uint64_t _randBoardPieceTypeNums[64][12];
+    uint64_t _randCastleRightsNums[4];
+    uint64_t _randEnPassantFileNums[8];
+    uint64_t _randIsWhiteNum;
+    uint64_t _hash;
 };
 
 } // namespace board

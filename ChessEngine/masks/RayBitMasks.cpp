@@ -3,12 +3,12 @@
 #include "ChessEngine/utils/ChessUtils.h"
 
 namespace masks {
-U64 getNorthRay(const int ind) 
+bitmask getNorthRay(const int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
 
-    U64 north_ray = 0ULL;
+    bitmask north_ray = 0ULL;
 
     for (int i = rank + 1; i < 8; i++) {
         north_ray |= (1ULL << (i * 8 + file));
@@ -17,12 +17,12 @@ U64 getNorthRay(const int ind)
     return north_ray;
 }
 
-U64 getNorthEastRay(const int ind) 
+bitmask getNorthEastRay(const int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
 
-    U64 north_east_ray = 0ULL;
+    bitmask north_east_ray = 0ULL;
 
     for (int i = 1; i < 8; i++) {
         if (rank + i < 8 && file - i >= 0) {
@@ -33,12 +33,12 @@ U64 getNorthEastRay(const int ind)
     return north_east_ray;
 }
 
-U64 getEastRay(const int ind) 
+bitmask getEastRay(const int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
 
-    U64 east_ray = 0ULL;
+    bitmask east_ray = 0ULL;
 
     for (int i = file - 1; i >= 0; i--) {
         east_ray |= (1ULL << (rank * 8 + i));
@@ -47,12 +47,12 @@ U64 getEastRay(const int ind)
     return east_ray;
 }
 
-U64 getSouthEastRay(const int ind) 
+bitmask getSouthEastRay(const int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
 
-    U64 south_east_ray = 0ULL;
+    bitmask south_east_ray = 0ULL;
 
     for (int i = 1; i < 8; i++) {
         if (rank - i >= 0 && file - i >= 0) {
@@ -63,12 +63,12 @@ U64 getSouthEastRay(const int ind)
     return south_east_ray;
 }
 
-U64 getSouthRay(const int ind) 
+bitmask getSouthRay(const int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
 
-    U64 south_ray = 0ULL;
+    bitmask south_ray = 0ULL;
 
     for (int i = rank - 1; i >= 0; i--) {
         south_ray |= (1ULL << (i * 8 + file));
@@ -77,12 +77,12 @@ U64 getSouthRay(const int ind)
     return south_ray;
 }
 
-U64 getSouthWestRay(const int ind) 
+bitmask getSouthWestRay(const int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
 
-    U64 south_west_ray = 0ULL;
+    bitmask south_west_ray = 0ULL;
 
     for (int i = 1; i < 8; i++) {
         if (rank - i >= 0 && file + i < 8) {
@@ -93,12 +93,12 @@ U64 getSouthWestRay(const int ind)
     return south_west_ray;
 }
 
-U64 getWestRay(const int ind) 
+bitmask getWestRay(const int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
 
-    U64 west_ray = 0ULL;
+    bitmask west_ray = 0ULL;
 
     for (int i = file + 1; i < 8; i++) {
         west_ray |= (1ULL << (rank * 8 + i));
@@ -107,12 +107,12 @@ U64 getWestRay(const int ind)
     return west_ray;
 }
 
-U64 getNorthWestRay(const int ind) 
+bitmask getNorthWestRay(const int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);
     int file = utils::fileFromBitIndex(ind);
 
-    U64 north_west_ray = 0ULL;
+    bitmask north_west_ray = 0ULL;
 
     for (int i = 1; i < 8; i++) {
         if (rank + i < 8 && file + i < 8) {

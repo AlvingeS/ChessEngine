@@ -10,7 +10,7 @@ ZHasher::ZHasher()
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    std::uniform_int_distribution<U64> dis(0, std::numeric_limits<U64>::max());
+    std::uniform_int_distribution<uint64_t> dis(0, std::numeric_limits<uint64_t>::max());
 
     // Generate random numbers for board/piece table
     for (size_t i = 0; i < 64; i++) {

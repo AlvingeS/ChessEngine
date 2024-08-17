@@ -103,7 +103,7 @@ void CastlingGenerator::genSingleCastleMove(
     std::vector<move::Move>& moveList)
 {                                                  
     // Check that there are no pieces between the king and rook
-    U64 spaceBetweenCastlersBitmask = isWhite ? (isKingSide ? _whiteKingSideCastleBitmask 
+    bitmask spaceBetweenCastlersBitmask = isWhite ? (isKingSide ? _whiteKingSideCastleBitmask 
                                                             : _whiteQueenSideCastleBitmask)
                                               : (isKingSide ? _blackKingSideCastleBitmask
                                                             : _blackQueenSideCastleBitmask);

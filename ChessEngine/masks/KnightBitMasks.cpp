@@ -5,9 +5,9 @@
 namespace masks {
 
 // Applies all knight moves without considering looping around the board
-U64 applyKnightMoves(const int ind) 
+bitmask applyKnightMoves(const int ind) 
 {
-    U64 knightMoves = 0ULL;
+    bitmask knightMoves = 0ULL;
 
     if (ind + 15 <= 63) knightMoves |= (1ULL << (ind + 15));
     if (ind + 6 <= 63) knightMoves |= (1ULL << (ind + 6));
@@ -22,15 +22,15 @@ U64 applyKnightMoves(const int ind)
 }
 
 // Applies file masks to knight moves to prevent looping around the board
-void removeWrapAroundKnightMoves(U64& knightMoves, const int ind) 
+void removeWrapAroundKnightMoves(bitmask& knightMoves, const int ind) 
 {
-    U64 aFile = utils::getFileMask(7);
-    U64 bFile = utils::getFileMask(6);
-    U64 notAorBFile = ~(aFile | bFile);
+    bitmask aFile = utils::getFileMask(7);
+    bitmask bFile = utils::getFileMask(6);
+    bitmask notAorBFile = ~(aFile | bFile);
 
-    U64 gFile = utils::getFileMask(1);
-    U64 hFile = utils::getFileMask(0);
-    U64 notGorHFile = ~(gFile | hFile);
+    bitmask gFile = utils::getFileMask(1);
+    bitmask hFile = utils::getFileMask(0);
+    bitmask notGorHFile = ~(gFile | hFile);
 
     switch (utils::fileFromBitIndex(ind)) {
         case 0:
@@ -48,16 +48,16 @@ void removeWrapAroundKnightMoves(U64& knightMoves, const int ind)
     }
 }
 
-U64 getKnightBitMask(const int ind) 
+bitmask getKnightBitMask(const int ind) 
 {
-    U64 knightMoves = applyKnightMoves(ind);
+    bitmask knightMoves = applyKnightMoves(ind);
     removeWrapAroundKnightMoves(knightMoves, ind);
     return knightMoves;
 }
 
-const std::vector<U64> getAllKnightBitMasks() 
+const std::vector<bitmask> getAllKnightBitMasks() 
 {
-    std::vector<U64> knightBitMasks;
+    std::vector<bitmask> knightBitMasks;
 
     for (int i = 0; i < 64; i++) {
         knightBitMasks.push_back(getKnightBitMask(i));

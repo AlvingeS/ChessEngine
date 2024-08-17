@@ -35,7 +35,7 @@ private:
 
     // Memory
     std::vector<int> _kingIndices;
-    std::vector<U64> _kingBitmasks;
+    std::vector<bitmask> _kingBitmasks;
     std::vector<int> _freeMovesIndices;
     std::vector<int> _capturableMovesIndices;
 };

@@ -5,15 +5,15 @@
 namespace masks {
 
 struct MoveType {
-    std::vector<U64> diagonal;
-    std::vector<U64> straight;
+    std::vector<bitmask> diagonal;
+    std::vector<bitmask> straight;
 };
 
-U64 applyCapturePawnMoves(const int ind,const  bool isWhite);
-void removeWrapAroundPawnMoves(U64& pawnMoves, const int ind);
-U64 getCapturePawnMovesBitmask(const int ind, const bool isWhite);
-U64 getStraightPawnMovesBitmask(const int ind, const bool isWhite);
-const std::vector<U64> getAllStraightPawnMoveBitmasks(const bool isWhite);
-const std::vector<U64> getAllCapturePawnMoveBitmasks(const bool isWhite);
+bitmask applyCapturePawnMoves(const int ind,const  bool isWhite);
+void removeWrapAroundPawnMoves(bitmask& pawnMoves, const int ind);
+bitmask getCapturePawnMovesBitmask(const int ind, const bool isWhite);
+bitmask getStraightPawnMovesBitmask(const int ind, const bool isWhite);
+const std::vector<bitmask> getAllStraightPawnMoveBitmasks(const bool isWhite);
+const std::vector<bitmask> getAllCapturePawnMoveBitmasks(const bool isWhite);
 
 } // namespace masks

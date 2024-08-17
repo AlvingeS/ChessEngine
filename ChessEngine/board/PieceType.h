@@ -21,9 +21,9 @@ enum class PieceType : int {
     ERROR
 };
 
-PieceType CharToPieceType(const char c);
-char pieceTypeToChar(const PieceType piece_type); 
-int pieceTypeToInt(const PieceType piece_type); 
-PieceType intToPieceType(const int i); 
+PieceType CharToPieceType(char c);
+char pieceTypeToChar(PieceType piece_type); 
+int pieceTypeToInt(PieceType piece_type); 
+PieceType intToPieceType(int i); 
 
 } // namespace board

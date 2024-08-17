@@ -12,23 +12,23 @@ public:
     // ** Constructor **
     GameStateBitmasks(const Bitboards& bitboards);
     
-    inline bool whitePiecesBitIsSet(const int square) const 
+    inline bool whitePiecesBitIsSet(int square) const 
     {
         return (_whitePiecesBitmask & (1ULL << square)) != 0;
     }
 
-    inline bool blackPiecesBitIsSet(const int square) const 
+    inline bool blackPiecesBitIsSet(int square) const 
     {
         return (_blackPiecesBitmask & (1ULL << square)) != 0;
     }
 
-    inline void setWhitePiecesBit(const int square) 
+    inline void setWhitePiecesBit(int square) 
     {
         assert(!whitePiecesBitIsSet(square));
         _whitePiecesBitmask |= (1ULL << square);
     }
 
-    inline void clearWhitePiecesBit(const int square) 
+    inline void clearWhitePiecesBit(int square) 
     {
         assert(whitePiecesBitIsSet(square));
         _whitePiecesBitmask &= ~(1ULL << square);
@@ -39,13 +39,13 @@ public:
         return _whitePiecesBitmask;
     }
 
-    inline void setBlackPiecesBit(const int square) 
+    inline void setBlackPiecesBit(int square) 
     {
         assert(!blackPiecesBitIsSet(square));
         _blackPiecesBitmask |= (1ULL << square);
     }
 
-    inline void clearBlackPiecesBit(const int square) 
+    inline void clearBlackPiecesBit(int square) 
     {
         assert(blackPiecesBitIsSet(square));
         _blackPiecesBitmask &= ~(1ULL << square);

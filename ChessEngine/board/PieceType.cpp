@@ -2,7 +2,7 @@
 
 namespace board {
 
-PieceType CharToPieceType(const char c) 
+PieceType CharToPieceType(char c) 
 {
     switch (c) {
         case 'P': return PieceType::W_PAWN;
@@ -21,7 +21,7 @@ PieceType CharToPieceType(const char c)
     }
 }
 
-char pieceTypeToChar(const PieceType piece_type) 
+char pieceTypeToChar(PieceType piece_type) 
 {
     switch(piece_type) {
         case PieceType::W_PAWN: return 'P';
@@ -40,12 +40,12 @@ char pieceTypeToChar(const PieceType piece_type)
     }
 }
 
-int pieceTypeToInt(const PieceType piece_type) 
+int pieceTypeToInt(PieceType piece_type) 
 {
     return static_cast<int>(piece_type);
 }
 
-PieceType intToPieceType(const int i) 
+PieceType intToPieceType(int i) 
 {
     return static_cast<PieceType>(i);
 }

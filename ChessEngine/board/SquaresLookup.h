@@ -15,12 +15,12 @@ public:
 
 
     // ** Getters & Setters **
-    inline PieceType getPieceTypeAtIndex(const int index) const
+    inline PieceType getPieceTypeAtIndex(int index) const
     {
         return _squaresLookup[index];
     }
 
-    inline void setPieceTypeAtIndex(const int index, const PieceType pieceType)
+    inline void setPieceTypeAtIndex(int index, PieceType pieceType)
     {
         _squaresLookup[index] = pieceType;
     }

@@ -14,12 +14,12 @@ public:
     // ** Constructor **
     Bitboards();
 
-    inline const bitboard& getBitboardFromPieceType(const PieceType pieceType) const 
+    inline const bitboard& getBitboardFromPieceType(PieceType pieceType) const 
     {
         return *(_bitboards[pieceTypeToInt(pieceType)]);
     }
 
-    inline const bitboard& getBitboardFromIndex(const int index) const 
+    inline const bitboard& getBitboardFromIndex(int index) const 
     {
         return *(_bitboards[index]);
     }
@@ -29,20 +29,20 @@ public:
     //     return _bitboards;
     // }
 
-    inline bool pieceTypeBitIsSet(const int index, const PieceType pieceType) const 
+    inline bool pieceTypeBitIsSet(int index, PieceType pieceType) const 
     {
         assert(pieceType != PieceType::EMPTY);
         return (*(_bitboards[pieceTypeToInt(pieceType)]) & (1ULL << index)) != 0;
     }
 
-    inline void clearPieceTypeBit(const int index, const PieceType pieceType) 
+    inline void clearPieceTypeBit(int index, PieceType pieceType)
     {
         assert(pieceType != PieceType::EMPTY);
         assert(pieceTypeBitIsSet(index, pieceType));
         *(_bitboards[pieceTypeToInt(pieceType)]) &= ~(1ULL << index);
     }
 
-    inline void setPieceTypeBit(const int index, const PieceType pieceType) 
+    inline void setPieceTypeBit(int index, PieceType pieceType) 
     {
         assert(pieceType != PieceType::EMPTY);
         assert(!pieceTypeBitIsSet(index, pieceType));
@@ -50,11 +50,11 @@ public:
     }
 
     #define DEFINE_BITBOARD_MACROS(PIECE_NAME, VARIABLE_NAME) \
-        inline void set##PIECE_NAME##Bit(const int square) \
+        inline void set##PIECE_NAME##Bit(int square) \
         { \
             VARIABLE_NAME |= (1ULL << square); \
         } \
-        inline void clear##PIECE_NAME##Bit(const int square) \
+        inline void clear##PIECE_NAME##Bit(int square) \
         { \
             VARIABLE_NAME &= ~(1ULL << square); \
         } \

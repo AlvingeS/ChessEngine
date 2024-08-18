@@ -9,6 +9,7 @@
 #include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/board/SquaresLookup.h"
 #include "ChessEngine/movegen/MoveGenerator.h"
+#include "ChessEngine/movegen/Movelist.h"
 #include "ChessEngine/move/Move.h"
 #include "ChessEngine/perft/SearchMemory.h"
 #include "ChessEngine/board/ZHasher.h"
@@ -25,7 +26,7 @@ namespace movegen {
             move::MoveMaker moveMaker;
             MoveGenerator moveGenerator;
             std::string startingPos;
-            std::vector<move::Move> moveList;
+            Movelist movelist;
 
             BaseGenerator() : bitboards(board::Bitboards()),
                               gameStateBitmasks(board::GameStateBitmasks(bitboards)),
@@ -33,13 +34,13 @@ namespace movegen {
                               searchMemory(perft::SearchMemory(0)),
                               zHasher(board::ZHasher()),
                               moveMaker(bitboards, gameStateBitmasks, squaresLookup, searchMemory, zHasher),
-                              moveGenerator(MoveGenerator(bitboards, gameStateBitmasks, moveMaker)) {}
+                              moveGenerator(MoveGenerator(bitboards, gameStateBitmasks, moveMaker)),
+                              movelist(Movelist()) {}
 
             virtual void SetUp() override {
                 // board = board::ChessBoard();
                 // moveGenerator = MoveGenerator(board);
-                startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-                moveList = std::vector<move::Move>(movegen::MoveGenerator::MAX_LEGAL_MOVES);
+                startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";;
             }
 
             virtual void TearDown() override {
@@ -52,8 +53,8 @@ namespace movegen {
             }
         }
 
-        std::vector<move::Move> getMoves() {
-            return moveList;
+        Movelist getMoves() {
+            return movelist;
         }
     };
 }

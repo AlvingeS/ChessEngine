@@ -1,36 +1,39 @@
-#include "RookGenerator.h"
+#include "ChessEngine/utils/Containers.h"
+
+#include "ChessEngine/movegen/RookGenerator.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
+#include "ChessEngine/utils/BitBasics.h"
 #include "ChessEngine/board/PieceType.h"
 
 namespace movegen {
 RookGenerator::RookGenerator(
     const board::Bitboards& bitboards,
-    RayLogic* rayLogic)
+    const board::GameStateBitmasks& gameStateBitmasks)
     : _bitboardsRef(bitboards)
-    , _rayLogic(rayLogic)
+    , _gameStateBitmasksRef(gameStateBitmasks)
 {
-    _rookIndices.reserve(64);
     _straightRayBitmasks = masks::getAllStraightRayBitmasks();
 }
 
 void RookGenerator::generate(
     bool isWhite,
-    std::vector<move::Move>& moveList)
+    Movelist& moveListRef)
 {
+    std::vector<int>& rookIndices = utils::Containers::getPiecePositionIndices();
+
     masks::StraightRays rays;
 
-    utils::getBitIndices(_rookIndices, isWhite 
-                                       ? _bitboardsRef.getWhiteRooksBitboard()
-                                       : _bitboardsRef.getBlackRooksBitboard());
+    utils::getBitIndices(rookIndices, isWhite ? _bitboardsRef.getWhiteRooksBitboard()
+                                              : _bitboardsRef.getBlackRooksBitboard());
 
     // Loop through all rooks and isolate them
-    for (int currentRookIndex : _rookIndices) {
+    for (int currentRookIndex : rookIndices) {
         rays = _straightRayBitmasks[currentRookIndex];
         int rookRank = utils::rankFromBitIndex(currentRookIndex);
         int rookFile = utils::fileFromBitIndex(currentRookIndex);
 
-        _rayLogic->getMovesFromStraightRay(
+        RayLogic::addMovesFromStraightRay(
             rays.north,
             true, 
             false, 
@@ -38,10 +41,12 @@ void RookGenerator::generate(
             currentRookIndex, 
             rookRank, 
             rookFile, 
-            moveList
+            moveListRef,
+            _gameStateBitmasksRef.getWhitePiecesBitmask(),
+            _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
-        _rayLogic->getMovesFromStraightRay(
+        RayLogic::addMovesFromStraightRay(
             rays.east,
             false, 
             true, 
@@ -49,10 +54,12 @@ void RookGenerator::generate(
             currentRookIndex, 
             rookRank, 
             rookFile, 
-            moveList
+            moveListRef,
+            _gameStateBitmasksRef.getWhitePiecesBitmask(),
+            _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
-        _rayLogic->getMovesFromStraightRay(
+        RayLogic::addMovesFromStraightRay(
             rays.south,
             false, 
             false, 
@@ -60,10 +67,12 @@ void RookGenerator::generate(
             currentRookIndex, 
             rookRank, 
             rookFile, 
-            moveList
+            moveListRef,
+            _gameStateBitmasksRef.getWhitePiecesBitmask(),
+            _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
-        ;
-        _rayLogic->getMovesFromStraightRay(
+
+        RayLogic::addMovesFromStraightRay(
             rays.west,
             true, 
             true, 
@@ -71,7 +80,9 @@ void RookGenerator::generate(
             currentRookIndex, 
             rookRank, 
             rookFile, 
-            moveList
+            moveListRef,
+            _gameStateBitmasksRef.getWhitePiecesBitmask(),
+            _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
     }
 }

@@ -7,9 +7,10 @@
 #include "ChessEngine/masks/KnightBitmasks.h"
 #include "ChessEngine/masks/PawnBitmasks.h"
 #include "ChessEngine/board/Bitboards.h"
+#include "ChessEngine/board/GameStateBitmasks.h"
+#include "ChessEngine/movegen/Movelist.h"
 
 #include "RayLogic.h"
-#include "CommonLogic.h"
 
 namespace movegen {
 
@@ -17,7 +18,7 @@ class CheckDetection {
 
 public:
     // Constructor
-    CheckDetection(const board::Bitboards& bitboards, RayLogic* rayLogic);
+    CheckDetection(const board::Bitboards& bitboards, const board::GameStateBitmasks& gameStateBitmasks);
     
     // Public member functions
     bool isInCheck(bool isWhite) const;
@@ -25,7 +26,7 @@ public:
 private:
     // Private member functions
     const board::Bitboards& _bitboardsRef;
-    RayLogic* _rayLogic;
+    const board::GameStateBitmasks& _gameStateBitmasksRef;
 
     // Memory
     std::vector<masks::StraightRays> _straightRayBitmasks;

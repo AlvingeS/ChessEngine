@@ -17,7 +17,7 @@
 //             std::string normalPromotion;
 //             std::string capturePromotion;
 //             std::string enPessant;
-//             std::vector<Move> moveList;
+//             std::vector<Move> movelist;
 
 //             MakeUnmakeMoveTest() : board(ChessBoard()), moveGenerator(MoveGenerator(board)) {}
 
@@ -28,11 +28,11 @@
 //                 capturePromotion = "p1b5/1P6/8/8/8/8/6p1/5N1Q";
 //                 startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 //                 enPessant = "8/4p3/8/3P4/7p/8/6P1/8";
-//                 moveList = std::vector<Move>(movegen::MoveGenerator::MAX_LEGAL_MOVES);
+//                 movelist = std::vector<Move>(movegen::MoveGenerator::MAX_LEGAL_MOVES);
 //             }
 
 //             std::vector<Move> getMoves() {
-//                 return moveList;
+//                 return movelist;
 //             }
 
 //             std::vector<bitboard> getBitboards() {
@@ -45,14 +45,14 @@
 //     };
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_StartingPositionWhite) {
-//         moveGenerator.genMoves(true, moveList);
+//         moveGenerator.genMoves(true, movelist);
 
 //         // Makes copies of the bitboards and squaresLookup
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
-//         std::vector<Move> moves = moveList;
+//         std::vector<Move> moves = movelist;
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], true);
 //             moveGenerator.getBoard().unmakeMove(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
@@ -61,14 +61,14 @@
 //     }
 
 //         TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_StartingPositionBlack) {
-//         moveGenerator.genMoves(false, moveList);
+//         moveGenerator.genMoves(false, movelist);
 
 //         // Makes copies of the bitboards and squaresLookup
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], false);
 //             moveGenerator.getBoard().unmakeMove(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
@@ -79,14 +79,14 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesWhite) {
 //         utils::setBoardFromFen(captures, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genMoves(true, moveList);
+//         moveGenerator.genMoves(true, movelist);
 
 //         // Makes copies of the bitboards and squaresLookup
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], true);
 //             moveGenerator.getBoard().unmakeMove(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
@@ -96,14 +96,14 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesBlack) {
 //         utils::setBoardFromFen(captures, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genMoves(false, moveList);
+//         moveGenerator.genMoves(false, movelist);
 
 //         // Makes copies of the bitboards and squaresLookup
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], false);
 //             moveGenerator.getBoard().unmakeMove(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
@@ -113,14 +113,14 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingWhite) {
 //         utils::setBoardFromFen(castling, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genMoves(true, moveList);
+//         moveGenerator.genMoves(true, movelist);
 
 //         // Makes copies of the bitboards and squaresLookup
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], true);
 //             moveGenerator.getBoard().unmakeMove(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
@@ -130,14 +130,14 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingBlack) {
 //         utils::setBoardFromFen(castling, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genMoves(false, moveList);
+//         moveGenerator.genMoves(false, movelist);
 
 //         // Makes copies of the bitboards and squaresLookup
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], false);
 //             moveGenerator.getBoard().unmakeMove(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
@@ -147,14 +147,14 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionWhite) {
 //         utils::setBoardFromFen(normalPromotion, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genMoves(true, moveList);
+//         moveGenerator.genMoves(true, movelist);
 
 //         // Makes copies of the bitboards and squaresLookup
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], true);
 //             moveGenerator.getBoard().unmakeMove(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
@@ -164,14 +164,14 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionBlack) {
 //         utils::setBoardFromFen(normalPromotion, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genMoves(false, moveList);
+//         moveGenerator.genMoves(false, movelist);
 
 //         // Makes copies of the bitboards and squaresLookup
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], false);
 //             moveGenerator.getBoard().unmakeMove(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
@@ -181,14 +181,14 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionWhite) {
 //         utils::setBoardFromFen(capturePromotion, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genMoves(true, moveList);
+//         moveGenerator.genMoves(true, movelist);
 
 //         // Makes copies of the bitboards and squaresLookup
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], true);
 //             moveGenerator.getBoard().unmakeMove(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
@@ -198,14 +198,14 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionBlack) {
 //         utils::setBoardFromFen(capturePromotion, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genMoves(false, moveList);
+//         moveGenerator.genMoves(false, movelist);
 
 //         // Makes copies of the bitboards and squaresLookup
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
 //         std::vector<Move> moves = getMoves();
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], false);
 //             moveGenerator.getBoard().unmakeMove(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
@@ -223,10 +223,10 @@
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         
-//         moveGenerator.genMoves(true, moveList);
+//         moveGenerator.genMoves(true, movelist);
 //         std::vector<Move> moves = getMoves();
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], true);
 //             moveGenerator.getBoard().unmakeMove(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
@@ -244,10 +244,10 @@
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
         
-//         moveGenerator.genMoves(false, moveList);
+//         moveGenerator.genMoves(false, movelist);
 //         std::vector<Move> moves = getMoves();
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], false);
 //             moveGenerator.getBoard().unmakeMove(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
@@ -258,7 +258,7 @@
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsWhite) {
 //         utils::setBoardFromFen(castling, bitboards, gameStateBitmasks, squaresLookup);
 
-//         moveGenerator.genCastlingMoves(true, moveList);
+//         moveGenerator.genCastlingMoves(true, movelist);
 //         std::vector<Move> castlingMoves = getMoves();
 
 //         Move whiteHRookMove = Move(0, 8, 0);
@@ -272,8 +272,8 @@
 //         moveGenerator.getBoard().makeMove(whiteKingMove, true);
 //         moveGenerator.getBoard().unmakeMove(whiteKingMove, true);
 
-//         moveGenerator.resetMoves(moveList);
-//         moveGenerator.genCastlingMoves(true, moveList);
+//         moveGenerator.resetMoves(movelist);
+//         moveGenerator.genCastlingMoves(true, movelist);
 //         std::vector<Move> castlingMovesAfterUnmake = getMoves();
 
 //         ASSERT_EQ(castlingMoves, castlingMovesAfterUnmake);
@@ -282,7 +282,7 @@
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsBlack) {
 //         utils::setBoardFromFen(castling, bitboards, gameStateBitmasks, squaresLookup);
 
-//         moveGenerator.genCastlingMoves(false, moveList);
+//         moveGenerator.genCastlingMoves(false, movelist);
 //         std::vector<Move> castlingMoves = getMoves();
 
 //         Move blackHRookMove = Move(56, 48, 0);
@@ -296,8 +296,8 @@
 //         moveGenerator.getBoard().makeMove(blackKingMove, false);
 //         moveGenerator.getBoard().unmakeMove(blackKingMove, false);
 
-//         moveGenerator.resetMoves(moveList);
-//         moveGenerator.genCastlingMoves(false, moveList);
+//         moveGenerator.resetMoves(movelist);
+//         moveGenerator.genCastlingMoves(false, movelist);
 //         std::vector<Move> castlingMovesAfterUnmake = getMoves();
 
 //         ASSERT_EQ(castlingMoves, castlingMovesAfterUnmake);

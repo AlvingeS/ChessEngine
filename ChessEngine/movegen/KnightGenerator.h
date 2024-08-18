@@ -6,9 +6,9 @@
 #include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/move/Move.h"
 #include "ChessEngine/masks/KnightBitmasks.h"
+#include "ChessEngine/movegen/Movelist.h"
 
-#include "RayLogic.h"
-#include "CommonLogic.h"
+#include "ChessEngine/movegen/RayLogic.h"
 
 namespace movegen {
 
@@ -18,26 +18,19 @@ public:
     // Constructor
     KnightGenerator(
         const board::Bitboards& bitboards,
-        const board::GameStateBitmasks& gameStateBitmasks,
-        int& moveIndex,
-        CommonLogic* commonLogic
+        const board::GameStateBitmasks& gameStateBitmasks
     );
     
     // Public member functions
-    void generate(bool isWhite, std::vector<move::Move>& moveList);
+    void generate(bool isWhite, Movelist& moveListRef);
 
 private:
     // Private member functions
     const board::Bitboards& _bitboardsRef;
     const board::GameStateBitmasks& _gameStateBitmasksRef;
-    int& _moveIndex;
-    CommonLogic* _commonLogic;
 
     // Memory
-    std::vector<int> _knightIndices;
     std::vector<bitmask> _knightBitmasks;
-    std::vector<int> _freeMovesIndices;
-    std::vector<int> _capturableMovesIndices;
 };
 
 }

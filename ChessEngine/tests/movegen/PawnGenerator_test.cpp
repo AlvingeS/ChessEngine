@@ -25,9 +25,9 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosWhite_ShouldReturn16Moves) {
         utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genPawnMoves(true, moveList, 0, searchMemory);
+        moveGenerator.genPawnMoves(true, movelist, 0, searchMemory);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
         std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 8, {16, 24}, {0, move::Move::DOUBLE_PAWN_PUSH_FLAG});
         insertExpectedMoves(expectedMoves, 9, {17, 25}, {0, move::Move::DOUBLE_PAWN_PUSH_FLAG});
@@ -38,8 +38,8 @@ namespace movegen {
         insertExpectedMoves(expectedMoves, 14, {22, 30}, {0, move::Move::DOUBLE_PAWN_PUSH_FLAG});
         insertExpectedMoves(expectedMoves, 15, {23, 31}, {0, move::Move::DOUBLE_PAWN_PUSH_FLAG});
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(movelist.getMoveAt(i));
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -49,9 +49,9 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosBlack_ShouldReturn16Moves) {
         utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
+        moveGenerator.genPawnMoves(false, movelist, 0, searchMemory);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
         std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 48, {40, 32}, {0, move::Move::DOUBLE_PAWN_PUSH_FLAG});
         insertExpectedMoves(expectedMoves, 49, {41, 33}, {0, move::Move::DOUBLE_PAWN_PUSH_FLAG});
@@ -62,8 +62,8 @@ namespace movegen {
         insertExpectedMoves(expectedMoves, 54, {46, 38}, {0, move::Move::DOUBLE_PAWN_PUSH_FLAG});
         insertExpectedMoves(expectedMoves, 55, {47, 39}, {0, move::Move::DOUBLE_PAWN_PUSH_FLAG});
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(movelist.getMoveAt(i));
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -73,16 +73,16 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneWhite_ShouldReturn6Moves) {
         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genPawnMoves(true, moveList, 0, searchMemory);
+        moveGenerator.genPawnMoves(true, movelist, 0, searchMemory);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
         std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 28, {37, 36}, {1, 0});
         insertExpectedMoves(expectedMoves, 10, {18, 26}, {0, move::Move::DOUBLE_PAWN_PUSH_FLAG});
         insertExpectedMoves(expectedMoves, 8, {16, 24}, {0, move::Move::DOUBLE_PAWN_PUSH_FLAG});
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(movelist.getMoveAt(i));
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -92,16 +92,16 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneBlack_ShouldReturnXMoves) {
         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
+        moveGenerator.genPawnMoves(false, movelist, 0, searchMemory);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
         std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 40, {32}, {0});
         insertExpectedMoves(expectedMoves, 37, {28, 29}, {1, 0});
         insertExpectedMoves(expectedMoves, 23, {15}, {0});
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(movelist.getMoveAt(i));
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -112,14 +112,14 @@ namespace movegen {
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Moves) {
         utils::setBoardFromFen(fenEnPessantForWhiteTest, bitboards, gameStateBitmasks, squaresLookup);
         // moveGenerator.getBoard().setEnPessantTargetAtIndex(43);
-        moveGenerator.genPawnMoves(true, moveList, 0, searchMemory);
+        moveGenerator.genPawnMoves(true, movelist, 0, searchMemory);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
         std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 36, {44, 43}, {0, move::Move::EP_CAPTURE_FLAG});
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(movelist.getMoveAt(i));
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -130,14 +130,14 @@ namespace movegen {
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForBlack_ShouldReturn2Moves) {
         utils::setBoardFromFen(fenEnPessantForBlackTest, bitboards, gameStateBitmasks, squaresLookup);
         // moveGenerator.getBoard().setEnPessantTargetAtIndex(23);
-        moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
+        moveGenerator.genPawnMoves(false, movelist, 0, searchMemory);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
         std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 30, {22, 23}, {0, move::Move::EP_CAPTURE_FLAG});
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(movelist.getMoveAt(i));
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -147,16 +147,16 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12Moves) {
         utils::setBoardFromFen(fenPromotionTest, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genPawnMoves(true, moveList, 0, searchMemory);
+        moveGenerator.genPawnMoves(true, movelist, 0, searchMemory);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
         std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 53, {61, 61, 61, 61}, {move::Move::KNIGHT_PROMO_FLAG, move::Move::BISHOP_PROMO_FLAG, move::Move::ROOK_PROMO_FLAG, move::Move::QUEEN_PROMO_FLAG});
         insertExpectedMoves(expectedMoves, 53, {60, 60, 60, 60}, {move::Move::KNIGHT_PROMO_CAPTURE_FLAG, move::Move::BISHOP_PROMO_CAPTURE_FLAG, move::Move::ROOK_PROMO_CAPTURE_FLAG, move::Move::QUEEN_PROMO_CAPTURE_FLAG});
         insertExpectedMoves(expectedMoves, 49, {57, 57, 57, 57}, {move::Move::KNIGHT_PROMO_FLAG, move::Move::BISHOP_PROMO_FLAG, move::Move::ROOK_PROMO_FLAG, move::Move::QUEEN_PROMO_FLAG});
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(movelist.getMoveAt(i));
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -166,16 +166,16 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12Moves) {
         utils::setBoardFromFen(fenPromotionTest, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
+        moveGenerator.genPawnMoves(false, movelist, 0, searchMemory);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
         std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 8, {0, 0, 0, 0}, {move::Move::KNIGHT_PROMO_FLAG, move::Move::BISHOP_PROMO_FLAG, move::Move::ROOK_PROMO_FLAG, move::Move::QUEEN_PROMO_FLAG});
         insertExpectedMoves(expectedMoves, 14, {5, 5, 5, 5}, {move::Move::KNIGHT_PROMO_CAPTURE_FLAG, move::Move::BISHOP_PROMO_CAPTURE_FLAG, move::Move::ROOK_PROMO_CAPTURE_FLAG, move::Move::QUEEN_PROMO_CAPTURE_FLAG});
         insertExpectedMoves(expectedMoves, 14, {6, 6, 6, 6}, {move::Move::KNIGHT_PROMO_FLAG, move::Move::BISHOP_PROMO_FLAG, move::Move::ROOK_PROMO_FLAG, move::Move::QUEEN_PROMO_FLAG});
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(movelist.getMoveAt(i));
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -185,12 +185,12 @@ namespace movegen {
 
     TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenBuggedPawnTestWhite_ShouldNotReturnh6) {
         utils::setBoardFromFen(fenBuggedPawnTest, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genPawnMoves(false, moveList, 0, searchMemory);
+        moveGenerator.genPawnMoves(false, movelist, 0, searchMemory);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            ASSERT_NE(moves[i], move::Move(46, 38, move::Move::QUITE_FLAG));
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            ASSERT_NE(movelist.getMoveAt(i), move::Move(46, 38, move::Move::QUITE_FLAG));
         }
     }
 }

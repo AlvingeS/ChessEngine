@@ -15,14 +15,14 @@ namespace movegen {
 
     TEST_F(MoveGeneratorKingTest, genKingMoves_fenOneWhite_ShouldReturn4Moves) {
         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genKingMoves(true, moveList);
+        moveGenerator.genKingMoves(true, movelist);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
         std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 6, {14, 13, 5, 7}, {1, 0, 0, 0});
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(movelist.getMoveAt(i));
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -32,14 +32,14 @@ namespace movegen {
 
     TEST_F(MoveGeneratorKingTest, genKingMoves_fenOneBlack_ShouldReturn6Moves) {
         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genKingMoves(false, moveList);
+        moveGenerator.genKingMoves(false, movelist);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
         std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 51, {59, 50, 42, 43, 44, 60}, {0, 0, 0, 1, 0, 0});
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(movelist.getMoveAt(i));
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -49,15 +49,15 @@ namespace movegen {
 
     TEST_F(MoveGeneratorKingTest, genKingMoves_startingPosWhite_ShouldReturn0Moves) {
         utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genKingMoves(true, moveList);
+        moveGenerator.genKingMoves(true, movelist);
 
-        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+        ASSERT_EQ(movelist.getMoveIndex(), 0);
     }
 
     TEST_F(MoveGeneratorKingTest, genKingMoves_startingPosBlack_ShouldReturn0Moves) {
         utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genKingMoves(false, moveList);
+        moveGenerator.genKingMoves(false, movelist);
 
-        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+        ASSERT_EQ(movelist.getMoveIndex(), 0);
     }
 }

@@ -1,14 +1,15 @@
 #include "CheckDetection.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
+#include "ChessEngine/utils/BitBasics.h"
 #include "ChessEngine/board/PieceType.h"
 
 namespace movegen {
 CheckDetection::CheckDetection(
     const board::Bitboards& bitboards,
-    RayLogic* rayLogic)
+    const board::GameStateBitmasks& gameStateBitmasks)
     : _bitboardsRef(bitboards)
-    , _rayLogic(rayLogic) 
+    , _gameStateBitmasksRef(gameStateBitmasks)
 {
     _straightRayBitmasks = masks::getAllStraightRayBitmasks();
     _diagonalRayBitmasks = masks::getAllDiagonalRayBitmasks();
@@ -62,7 +63,7 @@ bool CheckDetection::isInCheck(bool isWhite) const
                                            : _bitboardsRef.getWhiteBishopsBitboard() | _bitboardsRef.getWhiteQueensBitboard();
 
     bitmask opponentPawns = isWhite ? _bitboardsRef.getBlackPawnsBitboard() : _bitboardsRef.getWhitePawnsBitboard();
-    
+
     if ((pawnAttackingMoves & opponentPawns) != 0)
         return true;
 
@@ -72,28 +73,28 @@ bool CheckDetection::isInCheck(bool isWhite) const
     if ((knightMoves & opponentKnights) != 0)
         return true;
 
-    if (_rayLogic->checkStraightRay(straightRays.north, true, opponentRooksAndQueens))
+    if (RayLogic::checkStraightRay(straightRays.north, true, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (_rayLogic->checkStraightRay(straightRays.east, false, opponentRooksAndQueens))
+    if (RayLogic::checkStraightRay(straightRays.east, false, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (_rayLogic->checkStraightRay(straightRays.south, false, opponentRooksAndQueens))
+    if (RayLogic::checkStraightRay(straightRays.south, false, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (_rayLogic->checkStraightRay(straightRays.west, true, opponentRooksAndQueens))
+    if (RayLogic::checkStraightRay(straightRays.west, true, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (_rayLogic->checkDiagonalRay(diagonalRays.northEast, true, opponentBishopsAndQueens))
+    if (RayLogic::checkDiagonalRay(diagonalRays.northEast, true, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (_rayLogic->checkDiagonalRay(diagonalRays.southEast, false, opponentBishopsAndQueens))
+    if (RayLogic::checkDiagonalRay(diagonalRays.southEast, false, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (_rayLogic->checkDiagonalRay(diagonalRays.southWest, false, opponentBishopsAndQueens))
+    if (RayLogic::checkDiagonalRay(diagonalRays.southWest, false, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (_rayLogic->checkDiagonalRay(diagonalRays.northWest, true, opponentBishopsAndQueens))
+    if (RayLogic::checkDiagonalRay(diagonalRays.northWest, true, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
     return false;

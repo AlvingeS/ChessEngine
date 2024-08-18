@@ -8,7 +8,6 @@ add_library(movegen
     PawnGenerator.cpp
     CastlingGenerator.cpp
     RayLogic.cpp
-    CommonLogic.cpp
     CheckDetection.cpp
 )
 target_link_libraries(movegen PUBLIC board masks utils cxx_setup)

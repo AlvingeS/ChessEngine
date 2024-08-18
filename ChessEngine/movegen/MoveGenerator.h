@@ -5,17 +5,18 @@
 #include "ChessEngine/move/Move.h"
 #include "ChessEngine/masks/RayBitmasks.h"
 #include "ChessEngine/utils/BitBasics.h"
+#include "ChessEngine/movegen/Movelist.h"
 
-#include "RayLogic.h"
-#include "CommonLogic.h"
-#include "CheckDetection.h"
-#include "RookGenerator.h"
-#include "BishopGenerator.h"
-#include "KnightGenerator.h"
-#include "QueenGenerator.h"
-#include "KingGenerator.h"
-#include "PawnGenerator.h"
-#include "CastlingGenerator.h"
+#include "ChessEngine/movegen/RayLogic.h"
+#include "ChessEngine/movegen/CheckDetection.h"
+#include "ChessEngine/movegen/RookGenerator.h"
+#include "ChessEngine/movegen/BishopGenerator.h"
+#include "ChessEngine/movegen/KnightGenerator.h"
+#include "ChessEngine/movegen/QueenGenerator.h"
+#include "ChessEngine/movegen/KingGenerator.h"
+#include "ChessEngine/movegen/PawnGenerator.h"
+#include "ChessEngine/movegen/CastlingGenerator.h"
+
 
 namespace movegen {
 
@@ -32,66 +33,49 @@ public:
         move::MoveMaker& moveMaker
     );
 
-    void resetMoves(std::vector<move::Move>& moveList);
-    void resetMoveIndex();
-
     void genMoves(
         bool isWhite,
-        std::vector<move::Move>& moveList,
+        Movelist& moveListRef,
         int currentDepth,
-        unsigned char castlingRights
+        unsigned char castlingRight
     );
-
-    void genRookMoves(bool isWhite, std::vector<move::Move>& moveList);
-    void genBishopMoves(bool isWhite, std::vector<move::Move>& moveList);
-    void genKnightMoves(bool isWite, std::vector<move::Move>& moveList);
-    void genQueenMoves(bool isWhite, std::vector<move::Move>& moveList);
-    void genKingMoves(bool isWhite, std::vector<move::Move>& moveList);
+    void genRookMoves(bool isWhite, Movelist& moveListRef);
+    void genBishopMoves(bool isWhite, Movelist& moveListRef);
+    void genQueenMoves(bool isWhite, Movelist& moveListRef);
+    void genKnightMoves(bool isWite, Movelist& moveListRef);
+    void genKingMoves(bool isWhite, Movelist& moveListRef);
     
     void genPawnMoves(
         bool isWhite,
-        std::vector<move::Move>& moveList,
+        Movelist& moveListRef,
         int currentDepth,
         perft::SearchMemory& searchMemory
     );
 
     void genCastlingMoves(
         bool isWhite,
-        std::vector<move::Move>& moveList,
+        Movelist& moveListRef,
         unsigned char castlingRights
     );
     
     bool isInCheck(bool isWhite);
-
-    size_t getMoveIndex() {
-        return _moveIndex;
-    }
-
-    // board::ChessBoard& getBoard() {
-    //     return _board;
-    // }
 
 private:
     // Private member variables
     const board::Bitboards& _bitboardsRef;
     const board::GameStateBitmasks& _gameStateBitmasksRef;
     
-    move::MoveMaker& _moveMaker;
-    perft::SearchMemory& _searchMemory;
-   
-    CommonLogic _commonLogic;
-    RayLogic _rayLogic;
+    move::MoveMaker& _moveMakerRef;
+    perft::SearchMemory& _searchMemoryRef;
     
     CheckDetection _checkDetection;
     RookGenerator _rookGenerator;
     BishopGenerator _bishopGenerator;
-    KnightGenerator _knightGenerator;
     QueenGenerator _queenGenerator;
+    KnightGenerator _knightGenerator;
     KingGenerator _kingGenerator;
     PawnGenerator _pawnGenerator;
     CastlingGenerator _castlingGenerator;
-
-    int _moveIndex = 0;
 };
 
 }

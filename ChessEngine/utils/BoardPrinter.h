@@ -13,7 +13,7 @@ public:
     // Public member functions
     BoardPrinter(const board::Bitboards& bitboards);
     void fillBoard(const board::Bitboards& bitboards);
-    void printBoard();
+    void printBoard() const;
 
 private:
     // Private member variables

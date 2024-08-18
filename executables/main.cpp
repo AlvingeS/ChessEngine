@@ -4,6 +4,7 @@
 #include <iostream>
 #include "ChessEngine/perft/Searcher.h"
 #include <chrono>
+#include "ChessEngine/utils/Containers.h"
 
 int main() {
 
@@ -72,6 +73,8 @@ int main() {
 
     // Start clock
     auto start = std::chrono::high_resolution_clock::now();
+
+    utils::Containers::init();
 
     int const MAX_DEPTH = 4;
 

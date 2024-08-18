@@ -3,11 +3,11 @@
 #include "ChessEngine/common.h"
 
 #include "ChessEngine/board/Bitboards.h"
+#include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/move/Move.h"
 #include "ChessEngine/masks/RayBitmasks.h"
-
-#include "RayLogic.h"
-#include "CommonLogic.h"
+#include "ChessEngine/movegen/Movelist.h"
+#include "ChessEngine/movegen/RayLogic.h"
 
 namespace movegen {
 
@@ -15,19 +15,20 @@ class BishopGenerator {
 
 public:
     // Constructor
-    BishopGenerator(const board::Bitboards& bitboards, RayLogic* rayLogic);
+    BishopGenerator(const board::Bitboards& bitboards, const board::GameStateBitmasks& gameStateBitmasks);
     
     // Public member functions
-    void generate(bool isWhite, std::vector<move::Move>& moveList);
+    void generate(
+        bool isWhite, 
+        Movelist& movelist
+    );
 
 private:
     // Private member functions
     const board::Bitboards& _bitboardsRef;
-
-    RayLogic* _rayLogic;
+    const board::GameStateBitmasks& _gameStateBitmasksRef;
 
     // Memory
-    std::vector<int> _bishopIndices;
     std::vector<masks::DiagonalRays> _diagonalRayBitmasks;
 };
 

@@ -30,12 +30,12 @@ Searcher::Searcher(int maxDepth)
     }
 
     _lastCapturedPieces.resize(_maxDepth);
-    _moveLists.resize(_maxDepth);
+    _movelists.resize(_maxDepth);
     _noCapturedOrPawnMoveCounts.resize(_maxDepth);
 
     for (int i = 0; i < _maxDepth; i++) {
         _lastCapturedPieces[i] = board::PieceType::EMPTY;
-        _moveLists[i] = std::vector<move::Move>(MAX_LEGAL_MOVES);
+        _movelists[i] = movegen::Movelist();
         _noCapturedOrPawnMoveCounts[i] = 0;
     }
 
@@ -70,12 +70,11 @@ long Searcher::sumNodesToDepth(int depth) const {
 
 void Searcher::genMoves(
     bool isWhite,
-    std::vector<move::Move>& moveList,
+    movegen::Movelist& movelist,
     int currentDepth,
     unsigned char castlingRights) 
 {
-    _moveGenerator.resetMoveIndex();
-    _moveGenerator.genMoves(isWhite, moveList, currentDepth, castlingRights);
+    _moveGenerator.genMoves(isWhite, _movelists[currentDepth], currentDepth, castlingRights);
 }
 
 void Searcher::makeMove(
@@ -103,11 +102,11 @@ void Searcher::debugPrint(bool verbose) const
 }
 
 // Helper function to check if there are any castling moves in the movelist
-// bool hasTwoCastlingMove(MoveList& moveList) {
+// bool hasTwoCastlingMove(MoveList& movelist) {
 //     int count = 0;
 
-//     for (size_t i = 0; i < moveList.numMoves; i++) {
-//         if (moveList.moves[i].isAnyCastle()) {
+//     for (size_t i = 0; i < movelist.numMoves; i++) {
+//         if (movelist.moves[i].isAnyCastle()) {
 //             count++;
 //         }
 //     }
@@ -115,9 +114,9 @@ void Searcher::debugPrint(bool verbose) const
 //     return count == 2;
 // }
 
-// bool noKingSideCastling(MoveList& moveList) {
-//     for (size_t i = 0; i < moveList.numMoves; i++) {
-//         if (moveList.moves[i].getFlag() == 3) {
+// bool noKingSideCastling(MoveList& movelist) {
+//     for (size_t i = 0; i < movelist.numMoves; i++) {
+//         if (movelist.moves[i].getFlag() == 3) {
 //             return false;
 //         }
 //     }
@@ -125,9 +124,9 @@ void Searcher::debugPrint(bool verbose) const
 //     return true;
 // }
 
-// bool noQueenSideCastling(MoveList& moveList) {
-//     for (size_t i = 0; i < moveList.numMoves; i++) {
-//         if (moveList.moves[i].getFlag() == 2) {
+// bool noQueenSideCastling(MoveList& movelist) {
+//     for (size_t i = 0; i < movelist.numMoves; i++) {
+//         if (movelist.moves[i].getFlag() == 2) {
 //             return false;
 //         }
 //     }
@@ -183,7 +182,7 @@ void Searcher::minimax(
 
     genMoves(
         isMaximizer, 
-        _moveLists[currentDepth], 
+        _movelists[currentDepth], 
         currentDepth, 
         _searchMemory.getCastlingRightsAtDepth(currentDepth)
     );
@@ -193,7 +192,7 @@ void Searcher::minimax(
     size_t numIllegalMoves = 0;
 
     for (size_t i = 0; i < MAX_LEGAL_MOVES; i++) {
-        move::Move currentMove = _moveLists[currentDepth][i];
+        move::Move currentMove = _movelists[currentDepth].getMoveAt(i);
 
         if (currentMove.getMove() == 0) {
             break;
@@ -245,7 +244,7 @@ void Searcher::minimax(
                 int x = 4;
             }
 
-            if (numIllegalMoves == i + 1 && _moveLists[currentDepth][i + 1].getMove() == 0) {
+            if (numIllegalMoves == i + 1 && _movelists[currentDepth].getMoveAt(i + 1).getMove() == 0) {
                 bool wasInCheckBeforeMove = _moveGenerator.isInCheck(isMaximizer);
 
                 if (wasInCheckBeforeMove) {

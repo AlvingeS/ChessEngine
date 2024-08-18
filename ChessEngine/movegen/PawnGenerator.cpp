@@ -1,4 +1,6 @@
-#include "PawnGenerator.h"
+#include "ChessEngine/utils/Containers.h"
+
+#include "ChessEngine/movegen/PawnGenerator.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
 #include "ChessEngine/board/PieceType.h"
@@ -6,17 +8,10 @@
 namespace movegen {
 PawnGenerator::PawnGenerator(
     const board::Bitboards& bitboards,
-    const board::GameStateBitmasks& gameStateBitmasks,
-    int& moveIndex,
-    CommonLogic* commonLogic) 
+    const board::GameStateBitmasks& gameStateBitmasks) 
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
-    , _moveIndex(moveIndex)
-    , _commonLogic(commonLogic)
 {
-    _freeMovesIndices.reserve(8);
-    _capturableMovesIndices.reserve(8);
-    _pawnIndices.reserve(64);
     _whitePawnStraightMoveBitmasks = masks::getAllStraightPawnMoveBitmasks(true);
     _whitePawnCaptureMoveBitmasks = masks::getAllCapturePawnMoveBitmasks(true);
     _blackPawnStraightMoveBitmasks = masks::getAllStraightPawnMoveBitmasks(false);
@@ -25,107 +20,72 @@ PawnGenerator::PawnGenerator(
 
 void PawnGenerator::generate(
     bool isWhite,
-    std::vector<move::Move>& moveList,
+    Movelist& moveListRef,
     int currentDepth,
     perft::SearchMemory& searchMemory)
 {
-    utils::getBitIndices(_pawnIndices, isWhite ? _bitboardsRef.getWhitePawnsBitboard()
-                                               : _bitboardsRef.getBlackPawnsBitboard());
+    std::vector<int>& pawnIndices = utils::Containers::getPiecePositionIndices();
+    std::vector<int>& freeMovesIndices = utils::Containers::getLeapingPiecefreeMovesIndices();
+    std::vector<int>& capturableMovesIndices = utils::Containers::getLeapingPieceCapturableMovesIndices();
 
-    for (int currentPawnIndex : _pawnIndices) {
+    utils::getBitIndices(pawnIndices, isWhite ? _bitboardsRef.getWhitePawnsBitboard()
+                                              : _bitboardsRef.getBlackPawnsBitboard());
+
+    for (int currentPawnIndex : pawnIndices) {
 
         bitmask straightPawnMoveBitmask = isWhite ? _whitePawnStraightMoveBitmasks[currentPawnIndex]
-                                              : _blackPawnStraightMoveBitmasks[currentPawnIndex];
+                                                  : _blackPawnStraightMoveBitmasks[currentPawnIndex];
 
         bitmask capturePawnMoveBitmask = isWhite ? _whitePawnCaptureMoveBitmasks[currentPawnIndex]
-                                             : _blackPawnCaptureMoveBitmasks[currentPawnIndex];
+                                                 : _blackPawnCaptureMoveBitmasks[currentPawnIndex];
 
         bitmask freePawnMoves = straightPawnMoveBitmask & _gameStateBitmasksRef.getEmptySquaresBitmask();
         
         bitmask enemyPieces = isWhite ? _gameStateBitmasksRef.getBlackPiecesBitmask()
-                                  : _gameStateBitmasksRef.getWhitePiecesBitmask();
+                                      : _gameStateBitmasksRef.getWhitePiecesBitmask();
         
         bitmask enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
         bitmask capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
 
-        utils::getBitIndices(_freeMovesIndices, freePawnMoves);
-        utils::getBitIndices(_capturableMovesIndices, capturablePawnMoves);
+        utils::getBitIndices(freeMovesIndices, freePawnMoves);
+        utils::getBitIndices(capturableMovesIndices, capturablePawnMoves);
 
         int offset = isWhite ? 8 : -8;
         bool canPromote = (isWhite && utils::rankFromBitIndex(currentPawnIndex) == 6) || (!isWhite && utils::rankFromBitIndex(currentPawnIndex) == 1);
 
-        if (_freeMovesIndices.size() == 2) {
+        if (freeMovesIndices.size() == 2) {
             int singleStepIndex = (isWhite ? 0 : 1);
             int doubleStepIndex = (isWhite ? 1 : 0);
 
-            _commonLogic->addMove(
-                currentPawnIndex,
-                _freeMovesIndices[singleStepIndex],
-                (move::Move::QUITE_FLAG), moveList,
-                _moveIndex
-            );
+            moveListRef.addMove(move::Move(currentPawnIndex, freeMovesIndices[singleStepIndex], move::Move::QUITE_FLAG));
+            moveListRef.addMove(move::Move(currentPawnIndex, freeMovesIndices[doubleStepIndex], move::Move::DOUBLE_PAWN_PUSH_FLAG));
 
-            _commonLogic->addMove(
-                currentPawnIndex,
-                _freeMovesIndices[doubleStepIndex],
-                (move::Move::DOUBLE_PAWN_PUSH_FLAG),
-                moveList,
-                _moveIndex
-            );
-
-        } else if (_freeMovesIndices.size() == 1 && _freeMovesIndices[0] == currentPawnIndex + offset) {
+        } else if (freeMovesIndices.size() == 1 && freeMovesIndices[0] == currentPawnIndex + offset) {
             // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces
             if (canPromote) {
-                _commonLogic->addMove(
-                    currentPawnIndex,
-                    _freeMovesIndices[0],
-                    move::Move::KNIGHT_PROMO_FLAG,
-                    moveList,
-                    _moveIndex
-                );
-
-                _commonLogic->addMove(
-                    currentPawnIndex,
-                    _freeMovesIndices[0],
-                    move::Move::BISHOP_PROMO_FLAG,
-                    moveList,
-                    _moveIndex
-                );
-
-                _commonLogic->addMove(
-                    currentPawnIndex,
-                    _freeMovesIndices[0],
-                    move::Move::ROOK_PROMO_FLAG, 
-                    moveList,
-                    _moveIndex);
-                
- 
-                _commonLogic->addMove(
-                    currentPawnIndex,
-                    _freeMovesIndices[0],
-                    move::Move::QUEEN_PROMO_FLAG, 
-                    moveList, 
-                    _moveIndex)
-                ;
-
+                moveListRef.addMove(move::Move(currentPawnIndex, freeMovesIndices[0], move::Move::KNIGHT_PROMO_FLAG));
+                moveListRef.addMove(move::Move(currentPawnIndex, freeMovesIndices[0], move::Move::BISHOP_PROMO_FLAG));
+                moveListRef.addMove(move::Move(currentPawnIndex, freeMovesIndices[0], move::Move::ROOK_PROMO_FLAG));
+                moveListRef.addMove(move::Move(currentPawnIndex, freeMovesIndices[0], move::Move::QUEEN_PROMO_FLAG));
+            
             } else {
-                _commonLogic->addMove(currentPawnIndex, _freeMovesIndices[0], move::Move::QUITE_FLAG, moveList, _moveIndex);
+                moveListRef.addMove(move::Move(currentPawnIndex, freeMovesIndices[0], move::Move::QUITE_FLAG));
             }
         }
 
-        for (int capturablePawnMoveIndex : _capturableMovesIndices) {
+        for (int capturablePawnMoveIndex : capturableMovesIndices) {
             if (canPromote) {
-                _commonLogic->addMove(currentPawnIndex, capturablePawnMoveIndex, move::Move::KNIGHT_PROMO_CAPTURE_FLAG, moveList, _moveIndex);
-                _commonLogic->addMove(currentPawnIndex, capturablePawnMoveIndex, move::Move::BISHOP_PROMO_CAPTURE_FLAG, moveList, _moveIndex);
-                _commonLogic->addMove(currentPawnIndex, capturablePawnMoveIndex, move::Move::ROOK_PROMO_CAPTURE_FLAG, moveList, _moveIndex);
-                _commonLogic->addMove(currentPawnIndex, capturablePawnMoveIndex, move::Move::QUEEN_PROMO_CAPTURE_FLAG, moveList, _moveIndex);
+                moveListRef.addMove(move::Move(currentPawnIndex, capturablePawnMoveIndex, move::Move::QUEEN_PROMO_CAPTURE_FLAG));
+                moveListRef.addMove(move::Move(currentPawnIndex, capturablePawnMoveIndex, move::Move::ROOK_PROMO_CAPTURE_FLAG));
+                moveListRef.addMove(move::Move(currentPawnIndex, capturablePawnMoveIndex, move::Move::BISHOP_PROMO_CAPTURE_FLAG));
+                moveListRef.addMove(move::Move(currentPawnIndex, capturablePawnMoveIndex, move::Move::KNIGHT_PROMO_CAPTURE_FLAG));
             } else {
-                _commonLogic->addMove(currentPawnIndex, capturablePawnMoveIndex, move::Move::CAPTURE_FLAG, moveList, _moveIndex);
+                moveListRef.addMove(move::Move(currentPawnIndex, capturablePawnMoveIndex, move::Move::CAPTURE_FLAG));
             }
         }
 
         if ((capturePawnMoveBitmask & enPessantTarget) != 0) {
-            _commonLogic->addMove(currentPawnIndex, utils::indexOfLSB(capturePawnMoveBitmask & enPessantTarget), move::Move::EP_CAPTURE_FLAG, moveList, _moveIndex);
+            moveListRef.addMove(move::Move(currentPawnIndex, utils::indexOfLSB(capturePawnMoveBitmask & enPessantTarget), move::Move::EP_CAPTURE_FLAG));
         }
     }
 }

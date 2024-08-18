@@ -9,6 +9,7 @@
 #include "ChessEngine/move/Move.h"
 #include "ChessEngine/board/ZHasher.h"
 #include "ChessEngine/utils/Fen.h"
+#include "ChessEngine/movegen/Movelist.h"
 
 #include "SearchMemory.h"
 
@@ -41,7 +42,7 @@ public:
 
     void genMoves(
         bool isWhite,
-        std::vector<move::Move> &moveList,
+        movegen::Movelist& movelist,
         int currentDepth, 
         unsigned char castlingRights
     );
@@ -117,7 +118,7 @@ private:
     int _maxDepth;
 
     int _pseudoLegalMovesCount;
-    std::vector<std::vector<move::Move>> _moveLists;
+    std::vector<movegen::Movelist> _movelists;
     std::vector<board::PieceType> _lastCapturedPieces;
     std::vector<int> _noCapturedOrPawnMoveCounts; 
 

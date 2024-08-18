@@ -15,15 +15,15 @@ namespace movegen {
 
     TEST_F(MoveGeneratorQueenTest, genQueenMoves_fenOneBlack_ShouldReturnXMoves) {
         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genQueenMoves(false, moveList);
+        moveGenerator.genQueenMoves(false, movelist);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
         std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 42, {50, 49, 56, 41, 40, 33, 24, 34, 35, 28, 21, 43, 44, 45, 46, 47, 51, 60, 50}, {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0});
         insertExpectedMoves(expectedMoves, 30, {38, 46, 54, 62, 37, 44, 51, 29, 28, 27, 26, 25, 24, 21, 22, 14, 6, 23, 31}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0});
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(movelist.getMoveAt(i));
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -33,15 +33,15 @@ namespace movegen {
 
     TEST_F(MoveGeneratorQueenTest, genQueenMoves_fenOneWhite_ShouldReturnXMoves) {
         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genQueenMoves(true, moveList);
+        moveGenerator.genQueenMoves(true, movelist);
 
-        std::vector<move::Move> moves = getMoves();
+        Movelist moves = getMoves();
         std::unordered_set<move::Move> expectedMoves;
         insertExpectedMoves(expectedMoves, 21, {29, 37, 45, 28, 35, 42, 20, 19, 12, 3, 13, 5, 14, 7, 22, 23, 30}, {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1});
         insertExpectedMoves(expectedMoves, 18, {26, 25, 32, 17, 16, 9, 0, 10, 2, 11, 4, 19, 20, 27, 36, 45, 54, 63}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
 
-        for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-            auto found = expectedMoves.find(moves[i]);
+        for (int i = 0; i < movelist.getMoveIndex(); i++) {
+            auto found = expectedMoves.find(movelist.getMoveAt(i));
             ASSERT_TRUE(found != expectedMoves.end());
             expectedMoves.erase(found); // Remove found move from the set
         }
@@ -51,15 +51,15 @@ namespace movegen {
 
     TEST_F(MoveGeneratorQueenTest, genQueenMoves_StartPosWhite_ShouldReturn0Moves) {
         utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genQueenMoves(true, moveList);
+        moveGenerator.genQueenMoves(true, movelist);
 
-        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+        ASSERT_EQ(movelist.getMoveIndex(), 0);
     }
 
     TEST_F(MoveGeneratorQueenTest, genQueenMoves_StartPosBlack_ShouldReturn0Moves) {
         utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
-        moveGenerator.genQueenMoves(false, moveList);
+        moveGenerator.genQueenMoves(false, movelist);
 
-        ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+        ASSERT_EQ(movelist.getMoveIndex(), 0);
     }
 }

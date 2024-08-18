@@ -52,7 +52,7 @@ void BoardPrinter::fillBoard(const board::Bitboards& bitboards)
     }
 }
 
-void BoardPrinter::printBoard() {
+void BoardPrinter::printBoard() const {
     for (int row = 7; row >= 0; row--) {  // Start from the bottom row (row 7) and go upwards.
         std::cout << "---------------------------------   ---------------------------------" << std::endl;
         for (int col = 7; col >= 0; col--) {  // Iterate through columns from left to right.

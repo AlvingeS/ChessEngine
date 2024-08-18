@@ -1,4 +1,4 @@
-#include "CastlingGenerator.h"
+#include "ChessEngine/movegen/CastlingGenerator.h"
 
 #include "ChessEngine/utils/ChessUtils.h"
 #include "ChessEngine/board/PieceType.h"
@@ -8,14 +8,10 @@ CastlingGenerator::CastlingGenerator(
     const board::Bitboards& bitboards,
     const board::GameStateBitmasks& gameStateBitmasks,
     move::MoveMaker& moveMaker, 
-    int& moveIndex,
-    CommonLogic* commonLogic,
     CheckDetection* checkDetection)
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
     , _moveMakerRef(moveMaker)
-    , _moveIndex(moveIndex)
-    , _commonLogic(commonLogic)
     , _checkDetection(checkDetection) 
 {
     _whiteKingSideCastleBitmask = whiteKingSideCastleMask;
@@ -26,7 +22,7 @@ CastlingGenerator::CastlingGenerator(
 
 void CastlingGenerator::generate(
     bool isWhite,
-    std::vector<move::Move>& moveList,
+    Movelist& movelist,
     unsigned char castlingRights) 
 {
     if (castlingRights == 0) {
@@ -35,16 +31,16 @@ void CastlingGenerator::generate(
     
     if (isWhite) {
         if (castlingRights & 0b0001)
-            genSingleCastleMove(isWhite, true, moveList);
+            genSingleCastleMove(isWhite, true, movelist);
 
         if (castlingRights & 0b0010)
-            genSingleCastleMove(isWhite, false, moveList);
+            genSingleCastleMove(isWhite, false, movelist);
     } else {
         if (castlingRights & 0b0100)
-            genSingleCastleMove(isWhite, true, moveList);
+            genSingleCastleMove(isWhite, true, movelist);
 
         if (castlingRights & 0b1000)
-            genSingleCastleMove(isWhite, false, moveList);
+            genSingleCastleMove(isWhite, false, movelist);
     }
 }
 
@@ -101,7 +97,7 @@ void CastlingGenerator::unmakeTemporaryKingMove(bool isWhite, bool isKingSide)
 void CastlingGenerator::genSingleCastleMove(
     bool isWhite,
     bool isKingSide,
-    std::vector<move::Move>& moveList)
+    Movelist& moveListRef)
 {                                                  
     // Check that there are no pieces between the king and rook
     bitmask spaceBetweenCastlersBitmask = isWhite ? (isKingSide ? _whiteKingSideCastleBitmask 
@@ -133,7 +129,7 @@ void CastlingGenerator::genSingleCastleMove(
     int moveFlag = isKingSide ? move::Move::KING_CASTLE_FLAG 
                               : move::Move::QUEEN_CASTLE_FLAG;    
 
-    _commonLogic->addMove(0, 0, moveFlag, moveList, _moveIndex);
+    moveListRef.addMove(move::Move(0, 0, moveFlag));
 }
 
 } // namespace movegen

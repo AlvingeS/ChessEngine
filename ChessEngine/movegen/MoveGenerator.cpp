@@ -17,98 +17,86 @@ MoveGenerator::MoveGenerator(
     move::MoveMaker& moveMaker)
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
-    , _moveMaker(moveMaker)
-    , _searchMemory(moveMaker.getSearchMemory())
-    , _commonLogic()
-    , _rayLogic(_gameStateBitmasksRef, _moveIndex, &_commonLogic)
-    , _checkDetection(_bitboardsRef, &_rayLogic)
-    , _rookGenerator(_bitboardsRef, &_rayLogic)
-    , _bishopGenerator(_bitboardsRef, &_rayLogic)
-    , _knightGenerator(_bitboardsRef, _gameStateBitmasksRef, _moveIndex, &_commonLogic)
-    , _queenGenerator(_bitboardsRef, &_rayLogic)
-    , _kingGenerator(_bitboardsRef, _gameStateBitmasksRef, _moveIndex, &_commonLogic)
-    , _pawnGenerator(_bitboardsRef, _gameStateBitmasksRef, _moveIndex, &_commonLogic)
-    , _castlingGenerator(_bitboardsRef, _gameStateBitmasksRef, moveMaker, _moveIndex, &_commonLogic, &_checkDetection)
+    , _moveMakerRef(moveMaker)
+    , _searchMemoryRef(moveMaker.getSearchMemory())
+    , _checkDetection(_bitboardsRef, _gameStateBitmasksRef)
+    , _rookGenerator(_bitboardsRef, _gameStateBitmasksRef)
+    , _bishopGenerator(_bitboardsRef, _gameStateBitmasksRef)
+    , _queenGenerator(_bitboardsRef, _gameStateBitmasksRef)
+    , _knightGenerator(_bitboardsRef, _gameStateBitmasksRef)
+    , _kingGenerator(_bitboardsRef, _gameStateBitmasksRef)
+    , _pawnGenerator(_bitboardsRef, _gameStateBitmasksRef)
+    , _castlingGenerator(_bitboardsRef, _gameStateBitmasksRef, moveMaker, &_checkDetection)
 {
 }
 
 void MoveGenerator::genMoves(
     bool isWhite,
-    std::vector<move::Move>& moveList,
+    Movelist& moveListRef,
     int currentDepth,
     unsigned char castlingRights)
 {
-    genRookMoves(isWhite, moveList);
-    genKnightMoves(isWhite, moveList);
-    genBishopMoves(isWhite, moveList);
-    genQueenMoves(isWhite, moveList);
-    genKingMoves(isWhite, moveList);
-    genPawnMoves(isWhite, moveList, currentDepth, _searchMemory);
-    genCastlingMoves(isWhite, moveList, castlingRights);
-    moveList[_moveIndex] = move::Move(); // Add a null move to the end of the move list
-}
-
-void MoveGenerator::resetMoves(std::vector<move::Move>& moveList)
-{
-    moveList = std::vector<move::Move>(MAX_LEGAL_MOVES);
-    _moveIndex = 0;
-}
-
-void MoveGenerator::resetMoveIndex()
-{
-    _moveIndex = 0;
+    moveListRef.reset();
+    genRookMoves(isWhite, moveListRef);
+    genBishopMoves(isWhite, moveListRef);
+    genQueenMoves(isWhite, moveListRef);
+    genKnightMoves(isWhite, moveListRef);
+    genKingMoves(isWhite, moveListRef);
+    genPawnMoves(isWhite, moveListRef, currentDepth, _searchMemoryRef);
+    genCastlingMoves(isWhite, moveListRef, castlingRights);
+    moveListRef.addNullMove(); // Add a null move to the end of the move list
 }
 
 void MoveGenerator::genRookMoves(
     bool isWhite,
-    std::vector<move::Move>& moveList)
+    Movelist& moveListRef)
 {
-    _rookGenerator.generate(isWhite, moveList);
+    _rookGenerator.generate(isWhite, moveListRef);
 }
 
 void MoveGenerator::genBishopMoves(
     bool isWhite,
-    std::vector<move::Move>& moveList)
+    Movelist& moveListRef)
 {
-    _bishopGenerator.generate(isWhite, moveList);
-}
-
-void MoveGenerator::genKnightMoves(
-    bool isWhite,
-    std::vector<move::Move>& moveList)
-{
-    _knightGenerator.generate(isWhite, moveList);
+    _bishopGenerator.generate(isWhite, moveListRef);
 }
 
 void MoveGenerator::genQueenMoves(
     bool isWhite,
-    std::vector<move::Move>& moveList)
+    Movelist& moveListRef)
 {
-    _queenGenerator.generate(isWhite, moveList);
+    _queenGenerator.generate(isWhite, moveListRef);;
+}
+
+void MoveGenerator::genKnightMoves(
+    bool isWhite,
+    Movelist& moveListRef)
+{
+    _knightGenerator.generate(isWhite, moveListRef);
 }
 
 void MoveGenerator::genKingMoves(
     bool isWhite,
-    std::vector<move::Move>& moveList)
+    Movelist& moveListRef)
 {
-    _kingGenerator.generate(isWhite, moveList);
+    _kingGenerator.generate(isWhite, moveListRef);
 }
 
 void MoveGenerator::genPawnMoves(
     bool isWhite,
-    std::vector<move::Move>& moveList,
+    Movelist& moveListRef,
     int currentDepth,
     perft::SearchMemory& searchMemory)
 {
-    _pawnGenerator.generate(isWhite, moveList, currentDepth, searchMemory);
+    _pawnGenerator.generate(isWhite, moveListRef, currentDepth, searchMemory);
 }
 
 void MoveGenerator::genCastlingMoves(
     bool isWhite,
-    std::vector<move::Move>& moveList,
+    Movelist& moveListRef,
     unsigned char castlingRights)
 {
-    _castlingGenerator.generate(isWhite, moveList, castlingRights);
+    _castlingGenerator.generate(isWhite, moveListRef, castlingRights);
 }
 
 bool MoveGenerator::isInCheck(bool isWhite) {

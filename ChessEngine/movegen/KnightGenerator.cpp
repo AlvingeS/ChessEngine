@@ -1,33 +1,32 @@
-#include "KnightGenerator.h"
+#include "ChessEngine/utils/Containers.h"
 
-#include "ChessEngine/utils/ChessUtils.h"
+#include "ChessEngine/movegen/KnightGenerator.h"
+
+#include "ChessEngine/utils/BitBasics.h"
 #include "ChessEngine/board/PieceType.h"
 
 namespace movegen {
 
 KnightGenerator::KnightGenerator(
     const board::Bitboards& bitboards,
-    const board::GameStateBitmasks& gameStateBitmasks,
-    int& moveIndex,
-    CommonLogic* commonLogic) 
+    const board::GameStateBitmasks& gameStateBitmasks) 
     : _bitboardsRef(bitboards)
-    , _gameStateBitmasksRef(gameStateBitmasks)
-    , _moveIndex(moveIndex)
-    , _commonLogic(commonLogic) {
-    _freeMovesIndices.reserve(8);
-    _capturableMovesIndices.reserve(8);
-    _knightIndices.reserve(64);
+    , _gameStateBitmasksRef(gameStateBitmasks) {
     _knightBitmasks = masks::getAllKnightBitmasks();
 }
 
 void KnightGenerator::generate(
     bool isWhite,
-    std::vector<move::Move>& moveList) 
+    Movelist& movelist) 
 {
-    utils::getBitIndices(_knightIndices, isWhite ? _bitboardsRef.getWhiteKnightsBitboard()
+    std::vector<int>& knightIndices = utils::Containers::getPiecePositionIndices();
+    std::vector<int>& freeMovesIndices = utils::Containers::getLeapingPiecefreeMovesIndices();
+    std::vector<int>& capturableMovesIndices = utils::Containers::getLeapingPieceCapturableMovesIndices();
+
+    utils::getBitIndices(knightIndices, isWhite ? _bitboardsRef.getWhiteKnightsBitboard()
                                                     : _bitboardsRef.getBlackKnightsBitboard());
 
-    for (int currentKnightIndex : _knightIndices) {
+    for (int currentKnightIndex : knightIndices) {
         bitmask knightBitmask = _knightBitmasks[currentKnightIndex];
 
         bitmask freeKnightMoves = knightBitmask & _gameStateBitmasksRef.getEmptySquaresBitmask();
@@ -37,15 +36,15 @@ void KnightGenerator::generate(
         
         bitmask capturableKnightMoves = knightBitmask & enemyPieces;
 
-        utils::getBitIndices(_freeMovesIndices, freeKnightMoves);
-        utils::getBitIndices(_capturableMovesIndices, capturableKnightMoves);
+        utils::getBitIndices(freeMovesIndices, freeKnightMoves);
+        utils::getBitIndices(capturableMovesIndices, capturableKnightMoves);
 
-        for (int freeKnightMoveIndex : _freeMovesIndices) {
-            _commonLogic->addMove(currentKnightIndex, freeKnightMoveIndex, move::Move::QUITE_FLAG, moveList, _moveIndex);
+        for (int freeKnightMoveIndex : freeMovesIndices) {
+            movelist.addMove(move::Move(currentKnightIndex, freeKnightMoveIndex, move::Move::QUITE_FLAG));
         }
 
-        for (int capturableKnightMoveIndex : _capturableMovesIndices) {
-            _commonLogic->addMove(currentKnightIndex, capturableKnightMoveIndex, move::Move::CAPTURE_FLAG, moveList, _moveIndex);
+        for (int capturableKnightMoveIndex : capturableMovesIndices) {
+            movelist.addMove(move::Move(currentKnightIndex, capturableKnightMoveIndex, move::Move::CAPTURE_FLAG));
         }
     }
 }

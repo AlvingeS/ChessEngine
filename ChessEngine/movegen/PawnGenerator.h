@@ -7,9 +7,9 @@
 #include "ChessEngine/move/Move.h"
 #include "ChessEngine/masks/PawnBitmasks.h"
 #include "ChessEngine/perft/SearchMemory.h"
+#include "ChessEngine/movegen/Movelist.h"
 
-#include "RayLogic.h"
-#include "CommonLogic.h"
+#include "ChessEngine/movegen/RayLogic.h"
 
 namespace movegen {
 
@@ -19,15 +19,13 @@ public:
     // Constructor
     PawnGenerator(
         const board::Bitboards& bitboards,
-        const board::GameStateBitmasks& gameStateBitmasks,
-        int& moveIndex,
-        CommonLogic* commonLogic
+        const board::GameStateBitmasks& gameStateBitmasks
     );
     
     // Public member functions
     void generate(
         bool isWhite,
-        std::vector<move::Move>& moveList,
+        Movelist& moveListRef,
         int currentDepth,
         perft::SearchMemory& searchMemory
     );
@@ -36,18 +34,12 @@ private:
     // Private member functions
     const board::Bitboards& _bitboardsRef;
     const board::GameStateBitmasks& _gameStateBitmasksRef;
-    int& _moveIndex;
-    CommonLogic* _commonLogic;
 
     // Memory
-    std::vector<int> _pawnIndices;
     std::vector<bitmask> _whitePawnStraightMoveBitmasks;
     std::vector<bitmask> _blackPawnStraightMoveBitmasks;
     std::vector<bitmask> _whitePawnCaptureMoveBitmasks;
     std::vector<bitmask> _blackPawnCaptureMoveBitmasks;
-
-    std::vector<int> _freeMovesIndices;
-    std::vector<int> _capturableMovesIndices;
 };
 
 }

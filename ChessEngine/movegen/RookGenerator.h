@@ -3,11 +3,12 @@
 #include "ChessEngine/common.h"
 
 #include "ChessEngine/board/Bitboards.h"
+#include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/move/Move.h"
 #include "ChessEngine/masks/RayBitmasks.h"
+#include "ChessEngine/movegen/Movelist.h"
 
-#include "RayLogic.h"
-#include "CommonLogic.h"
+#include "ChessEngine/movegen/RayLogic.h"
 
 namespace movegen {
 
@@ -15,18 +16,20 @@ class RookGenerator {
 
 public:
     // Constructor
-    RookGenerator(const board::Bitboards& bitboards, RayLogic* rayLogic);
+    RookGenerator(const board::Bitboards& bitboards, const board::GameStateBitmasks& gameStateBitmasks);
     
     // Public member functions
-    void generate(bool isWhite, std::vector<move::Move>& moveList);
+    void generate(
+        bool isWhite,
+        Movelist& moveListRef
+    );
 
 private:
     // Private member functions
     const board::Bitboards& _bitboardsRef;
-    RayLogic* _rayLogic;
+    const board::GameStateBitmasks& _gameStateBitmasksRef;
 
     // Memory
-    std::vector<int> _rookIndices;
     std::vector<masks::StraightRays> _straightRayBitmasks;
 };
 

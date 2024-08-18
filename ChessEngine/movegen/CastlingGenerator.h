@@ -6,10 +6,9 @@
 #include "ChessEngine/board/Bitboards.h"
 #include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/move/MoveMaker.h"
-
-#include "RayLogic.h"
-#include "CommonLogic.h"
-#include "CheckDetection.h"
+#include "ChessEngine/movegen/Movelist.h"
+#include "ChessEngine/movegen/RayLogic.h"
+#include "ChessEngine/movegen/CheckDetection.h"
 
 namespace movegen {
 
@@ -25,16 +24,14 @@ public:
     CastlingGenerator(
         const board::Bitboards& bitboards,
         const board::GameStateBitmasks& gameStateBitmasks,
-        move::MoveMaker& moveMaker, 
-        int& moveIndex,
-        CommonLogic* commonLogic,
+        move::MoveMaker& moveMaker,
         CheckDetection* checkDetection
     );
     
     // Public member functions
     void generate(
         bool isWhite, 
-        std::vector<move::Move>& moveList, 
+        Movelist& movelist, 
         unsigned char castlingRights
     );
 
@@ -44,8 +41,6 @@ private:
     const board::GameStateBitmasks& _gameStateBitmasksRef;
     move::MoveMaker& _moveMakerRef;
     
-    int& _moveIndex;
-    CommonLogic* _commonLogic;
     CheckDetection* _checkDetection;
 
     // Memory
@@ -58,7 +53,7 @@ private:
     void genSingleCastleMove(
         bool isWhite,
         bool isKingSide,
-        std::vector<move::Move>& moveList
+        Movelist& movelist
     );
 
     bool kingAndRookOnCastlingSquares(bool isWhite, bool isKingSide) const;

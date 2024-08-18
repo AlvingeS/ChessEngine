@@ -8,7 +8,7 @@
 namespace utils {
 
 void getBitIndices(std::vector<int>& indices, bitboard bitboard)
-{
+{ 
     indices.clear();
 
     while (bitboard != 0) {

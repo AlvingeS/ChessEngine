@@ -29,14 +29,14 @@
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhite_ShouldReturn2Moves) {
 //         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genCastlingMoves(true, moveList);
+//         moveGenerator.genCastlingMoves(true, movelist);
 
-//         std::vector<move::Move> moves = getMoves();
+//         Movelist moves = getMoves();
 //         std::unordered_set<move::Move> expectedMoves;
 //         insertExpectedMoves(expectedMoves, 0, {0, 0}, {move::Move::KING_CASTLE_FLAG, move::Move::QUEEN_CASTLE_FLAG});
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-//             auto found = expectedMoves.find(moves[i]);
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
+//             auto found = expectedMoves.find(movelist.getMoveAt(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
 //         }
@@ -46,14 +46,14 @@
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlack_ShouldReturn2Moves) {
 //         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genCastlingMoves(true, moveList);
+//         moveGenerator.genCastlingMoves(true, movelist);
 
-//         std::vector<move::Move> moves = getMoves();
+//         Movelist moves = getMoves();
 //         std::unordered_set<move::Move> expectedMoves;
 //         insertExpectedMoves(expectedMoves, 0, {0, 0}, {move::Move::KING_CASTLE_FLAG, move::Move::QUEEN_CASTLE_FLAG});
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-//             auto found = expectedMoves.find(moves[i]);
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
+//             auto found = expectedMoves.find(movelist.getMoveAt(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
 //         }
@@ -64,24 +64,24 @@
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenTwo_ShouldReturn0Moves) {
 //         utils::setBoardFromFen(fenTwo, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genCastlingMoves(true, moveList);
-//         moveGenerator.genCastlingMoves(false, moveList);
+//         moveGenerator.genCastlingMoves(true, movelist);
+//         moveGenerator.genCastlingMoves(false, movelist);
 
-//         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+//         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenThreeWhite_ShouldReturn1Moves) {
 //         utils::setBoardFromFen(fenThree, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.getBoard().setRookHMoved(true, true);
-//         moveGenerator.genCastlingMoves(true, moveList);
+//         moveGenerator.genCastlingMoves(true, movelist);
 
-//         std::vector<move::Move> moves = getMoves();
+//         Movelist moves = getMoves();
 //         std::unordered_set<move::Move> expectedMoves;
 
 //         insertExpectedMoves(expectedMoves, 0, {0}, {move::Move::QUEEN_CASTLE_FLAG});
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-//             auto found = expectedMoves.find(moves[i]);
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
+//             auto found = expectedMoves.find(movelist.getMoveAt(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
 //         }
@@ -92,15 +92,15 @@
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenThreeBlack_ShouldReturn1Moves) {
 //         utils::setBoardFromFen(fenThree, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.getBoard().setRookAMoved(false, true);
-//         moveGenerator.genCastlingMoves(false, moveList);
+//         moveGenerator.genCastlingMoves(false, movelist);
 
-//         std::vector<move::Move> moves = getMoves();
+//         Movelist moves = getMoves();
 //         std::unordered_set<move::Move> expectedMoves;
 
 //         insertExpectedMoves(expectedMoves, 0, {0}, {move::Move::KING_CASTLE_FLAG});
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-//             auto found = expectedMoves.find(moves[i]);
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
+//             auto found = expectedMoves.find(movelist.getMoveAt(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
 //         }
@@ -110,40 +110,40 @@
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenStartingPos_ShouldReturn0Moves) {
 //         utils::setBoardFromFen(startingPos, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genCastlingMoves(true, moveList);
-//         moveGenerator.genCastlingMoves(false, moveList);
+//         moveGenerator.genCastlingMoves(true, movelist);
+//         moveGenerator.genCastlingMoves(false, movelist);
 
-//         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+//         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteKingMoved_ShouldReturn0Moves) {
 //         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.getBoard().setKingMoved(true, true);
-//         moveGenerator.genCastlingMoves(true, moveList);
+//         moveGenerator.genCastlingMoves(true, movelist);
 
-//         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+//         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackKingMoved_ShouldReturn0Moves) {
 //         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.getBoard().setKingMoved(false, true);
-//         moveGenerator.genCastlingMoves(false, moveList);
+//         moveGenerator.genCastlingMoves(false, movelist);
 
-//         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+//         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteRookAMoved_ShouldReturn1Moves) {
 //         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.getBoard().setRookAMoved(true, true);
-//         moveGenerator.genCastlingMoves(true, moveList);
+//         moveGenerator.genCastlingMoves(true, movelist);
 
-//         std::vector<move::Move> moves = getMoves();
+//         Movelist moves = getMoves();
 //         std::unordered_set<move::Move> expectedMoves;
 
 //         insertExpectedMoves(expectedMoves, 0, {0}, {move::Move::KING_CASTLE_FLAG});
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-//             auto found = expectedMoves.find(moves[i]);
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
+//             auto found = expectedMoves.find(movelist.getMoveAt(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
 //         }
@@ -154,15 +154,15 @@
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackRookAMoved_ShouldReturn1Moves) {
 //         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.getBoard().setRookAMoved(false, true);
-//         moveGenerator.genCastlingMoves(false, moveList);
+//         moveGenerator.genCastlingMoves(false, movelist);
 
-//         std::vector<move::Move> moves = getMoves();
+//         Movelist moves = getMoves();
 //         std::unordered_set<move::Move> expectedMoves;
 
 //         insertExpectedMoves(expectedMoves, 0, {0}, {move::Move::KING_CASTLE_FLAG});
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-//             auto found = expectedMoves.find(moves[i]);
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
+//             auto found = expectedMoves.find(movelist.getMoveAt(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
 //         }
@@ -173,15 +173,15 @@
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteRookHMoved_ShouldReturn1Moves) {
 //         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.getBoard().setRookHMoved(true, true);
-//         moveGenerator.genCastlingMoves(true, moveList);
+//         moveGenerator.genCastlingMoves(true, movelist);
 
-//         std::vector<move::Move> moves = getMoves();
+//         Movelist moves = getMoves();
 //         std::unordered_set<move::Move> expectedMoves;
 
 //         insertExpectedMoves(expectedMoves, 0, {0}, {move::Move::QUEEN_CASTLE_FLAG});
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-//             auto found = expectedMoves.find(moves[i]);
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
+//             auto found = expectedMoves.find(movelist.getMoveAt(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
 //         }
@@ -192,15 +192,15 @@
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackRookHMoved_ShouldReturn1Moves) {
 //         utils::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
 //         moveGenerator.getBoard().setRookHMoved(false, true);
-//         moveGenerator.genCastlingMoves(false, moveList);
+//         moveGenerator.genCastlingMoves(false, movelist);
 
-//         std::vector<move::Move> moves = getMoves();
+//         Movelist moves = getMoves();
 //         std::unordered_set<move::Move> expectedMoves;
 
 //         insertExpectedMoves(expectedMoves, 0, {0}, {move::Move::QUEEN_CASTLE_FLAG});
 
-//         for (size_t i = 0; i < moveGenerator.getMoveIndex(); i++) {
-//             auto found = expectedMoves.find(moves[i]);
+//         for (int i = 0; i < movelist.getMoveIndex(); i++) {
+//             auto found = expectedMoves.find(movelist.getMoveAt(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
 //         }
@@ -210,36 +210,36 @@
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_bugFenWhite_ShouldReturn0Moves) {
 //         utils::setBoardFromFen(bugFen, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genCastlingMoves(true, moveList);
+//         moveGenerator.genCastlingMoves(true, movelist);
 
-//         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+//         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingWhileInCheckWhiteFen_ShouldReturn0Moves) {
 //         utils::setBoardFromFen(castlingWhileInCheckWhiteFen, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genCastlingMoves(true, moveList);
+//         moveGenerator.genCastlingMoves(true, movelist);
 
-//         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+//         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingWhileInCheckBlackFen_ShouldReturn0Moves) {
 //         utils::setBoardFromFen(castlingWhileInCheckBlackFen, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genCastlingMoves(false, moveList);
+//         moveGenerator.genCastlingMoves(false, movelist);
 
-//         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+//         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //         }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingThroughAttacksWhiteFenWhite_ShouldReturn0Moves) {
 //         utils::setBoardFromFen(castlingThroughAttacksWhiteFen, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genCastlingMoves(true, moveList);
+//         moveGenerator.genCastlingMoves(true, movelist);
 
-//         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+//         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingThroughAttacksBlackFenBlack_ShouldReturn0Moves) {
 //         utils::setBoardFromFen(castlingThroughAttacksBlackFen, bitboards, gameStateBitmasks, squaresLookup);
-//         moveGenerator.genCastlingMoves(false, moveList);
+//         moveGenerator.genCastlingMoves(false, movelist);
 
-//         ASSERT_EQ(moveGenerator.getMoveIndex(), 0);
+//         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //     }
 // }

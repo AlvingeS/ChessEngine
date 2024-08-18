@@ -3,6 +3,7 @@
 #include "ChessEngine/utils/ChessUtils.h"
 
 namespace masks {
+
 bitmask getNorthRay(int ind) 
 {
     int rank = utils::rankFromBitIndex(ind);

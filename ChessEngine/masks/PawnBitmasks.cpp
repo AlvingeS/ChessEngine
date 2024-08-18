@@ -3,6 +3,7 @@
 #include "ChessEngine/utils/ChessUtils.h"
 
 namespace masks {
+
 bitmask applyCapturePawnMoves(int ind, bool isWhite) 
 {
     bitmask captureMoves = 0ULL;

@@ -14,7 +14,8 @@ Searcher::Searcher(int maxDepth)
     , _searchMemory(SearchMemory(maxDepth))
     , _zHasher(board::ZHasher())
     , _moveMaker(move::MoveMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
-    , _moveGenerator(movegen::MoveGenerator(_bitboards, _gameStateBitmasks, _moveMaker))
+    , _moveRetractor(move::MoveRetractor(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
+    , _moveGenerator(movegen::MoveGenerator(_bitboards, _gameStateBitmasks, _moveMaker, _moveRetractor))
     , _evaluator(evaluation::Evaluator(_bitboards))
     , _maxDepth(maxDepth)
 {
@@ -70,7 +71,6 @@ long Searcher::sumNodesToDepth(int depth) const {
 
 void Searcher::genMoves(
     bool isWhite,
-    movegen::Movelist& movelist,
     int currentDepth,
     unsigned char castlingRights) 
 {
@@ -90,7 +90,7 @@ void Searcher::unmakeMove(
     bool isWhite,
     int currentDepth)
 {
-    _moveMaker.unmakeMove(move, isWhite, currentDepth);
+    _moveRetractor.unmakeMove(move, isWhite, currentDepth);
 }
 
 void Searcher::debugPrint(bool verbose) const
@@ -182,7 +182,6 @@ void Searcher::minimax(
 
     genMoves(
         isMaximizer, 
-        _movelists[currentDepth], 
         currentDepth, 
         _searchMemory.getCastlingRightsAtDepth(currentDepth)
     );

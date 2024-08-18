@@ -24,6 +24,7 @@ namespace movegen {
             perft::SearchMemory searchMemory;
             board::ZHasher zHasher;
             move::MoveMaker moveMaker;
+            move::MoveRetractor moveRetractor;
             MoveGenerator moveGenerator;
             std::string startingPos;
             Movelist movelist;
@@ -34,7 +35,8 @@ namespace movegen {
                               searchMemory(perft::SearchMemory(0)),
                               zHasher(board::ZHasher()),
                               moveMaker(bitboards, gameStateBitmasks, squaresLookup, searchMemory, zHasher),
-                              moveGenerator(MoveGenerator(bitboards, gameStateBitmasks, moveMaker)),
+                              moveRetractor(bitboards, gameStateBitmasks, squaresLookup, searchMemory, zHasher),
+                              moveGenerator(MoveGenerator(bitboards, gameStateBitmasks, moveMaker, moveRetractor)),
                               movelist(Movelist()) {}
 
             virtual void SetUp() override {

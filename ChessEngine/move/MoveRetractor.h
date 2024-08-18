@@ -8,15 +8,15 @@
 #include "ChessEngine/board/ZHasher.h"
 #include "ChessEngine/board/PieceType.h"
 
-#include "Move.h"
+#include "ChessEngine/move/Move.h"
 
 namespace move {
 
-class MoveMaker {
+class MoveRetractor {
 
 public:
     // Constructor
-    MoveMaker(
+    MoveRetractor(
         board::Bitboards& bitBoards, 
         board::GameStateBitmasks& gameStateBitmasks, 
         board::SquaresLookup& squaresLookup, 
@@ -24,14 +24,13 @@ public:
         board::ZHasher& zHasher
     );
     
-    // Public member functions
-    void makeMove(
-        const Move& move,
-        bool isWhite, 
+    void unmakeMove(
+        const Move& move, 
+        bool wasWhite, 
         int currentDepth
     );
 
-    void makeTemporaryKingMove(bool isWhite, bool isKingSide);
+    void unmakeTemporaryKingMove(bool isWhite, bool isKingSide); 
 
     perft::SearchMemory& getSearchMemory() const
     {
@@ -39,38 +38,13 @@ public:
     }
 
 private:
-    void makeCastleMove(bool isWhite, bool isKingSide);
+    void unmakeCastleMove(bool isWhite, bool isKingSide);
+
+    board::PieceType determineMovedPieceType(const Move& move, bool wasWhite,int toIndex) const;
     
-    board::PieceType removeMovedPieceFromBoard(
-        bool isWhite, 
-        int fromIndex
-    );
-
-    void removeCapturedPieceFromBoard(
-        bool isEP, 
-        bool isWhite, 
-        int captureIndex, 
-        board::PieceType capturedPieceType
-    );
-
-    void placeMovedPieceOnBoard(
-        bool isWhite, 
-        int toIndex,
-        board::PieceType movedPieceType
-    );
-
-    void handleEnPessantMemory(
-        const move::Move& move, 
-        bool isWhite, 
-        int currentDepth, 
-        int toIndex
-    );
-
-    void handleNoCaptureCount(
-        const move::Move& move, 
-        int currentDepth,
-        board::PieceType movedPieceType 
-    );
+    void removePreviouslyMovedPieceFromBoard(const Move& move, int toIndex, board::PieceType previouslyMovedPieceType, bool wasWhite);
+    void placeBackCapturedPieceOnBoard(bool isEP, int captureIndex, int toIndex, bool wasWhite, board::PieceType previouslyCapturedPieceType);
+    void placeBackMovedPieceOnBoard(bool wasWhite, int fromIndex, board::PieceType movedPieceType);
 
     board::Bitboards& _bitboardsRef;
     board::GameStateBitmasks& _gameStateBitmasksRef;

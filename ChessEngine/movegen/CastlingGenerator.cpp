@@ -8,10 +8,12 @@ CastlingGenerator::CastlingGenerator(
     const board::Bitboards& bitboards,
     const board::GameStateBitmasks& gameStateBitmasks,
     move::MoveMaker& moveMaker, 
+    move::MoveRetractor& moveRetractor, 
     CheckDetection* checkDetection)
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
     , _moveMakerRef(moveMaker)
+    , _moveRetractorRef(moveRetractor)
     , _checkDetection(checkDetection) 
 {
     _whiteKingSideCastleBitmask = whiteKingSideCastleMask;
@@ -91,7 +93,7 @@ void CastlingGenerator::makeTemporaryKingMove(bool isWhite, bool isKingSide)
 
 void CastlingGenerator::unmakeTemporaryKingMove(bool isWhite, bool isKingSide)
 {
-    _moveMakerRef.unmakeTemporaryKingMove(isWhite, isKingSide);
+    _moveRetractorRef.unmakeTemporaryKingMove(isWhite, isKingSide);
 }
 
 void CastlingGenerator::genSingleCastleMove(

@@ -30,7 +30,8 @@ public:
     MoveGenerator(
         const board::Bitboards& bitboards,
         const board::GameStateBitmasks& gameStateBitmasks,
-        move::MoveMaker& moveMaker
+        move::MoveMaker& moveMaker,
+        move::MoveRetractor& moveRetractor
     );
 
     void genMoves(
@@ -39,6 +40,7 @@ public:
         int currentDepth,
         unsigned char castlingRight
     );
+    
     void genRookMoves(bool isWhite, Movelist& moveListRef);
     void genBishopMoves(bool isWhite, Movelist& moveListRef);
     void genQueenMoves(bool isWhite, Movelist& moveListRef);
@@ -66,6 +68,7 @@ private:
     const board::GameStateBitmasks& _gameStateBitmasksRef;
     
     move::MoveMaker& _moveMakerRef;
+    move::MoveRetractor& _moveRetractorRef;
     perft::SearchMemory& _searchMemoryRef;
     
     CheckDetection _checkDetection;

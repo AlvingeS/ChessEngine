@@ -6,6 +6,7 @@
 #include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/board/SquaresLookup.h"
 #include "ChessEngine/move/MoveMaker.h"
+#include "ChessEngine/move/MoveRetractor.h"
 #include "ChessEngine/move/Move.h"
 #include "ChessEngine/board/ZHasher.h"
 #include "ChessEngine/utils/Fen.h"
@@ -42,7 +43,6 @@ public:
 
     void genMoves(
         bool isWhite,
-        movegen::Movelist& movelist,
         int currentDepth, 
         unsigned char castlingRights
     );
@@ -113,6 +113,7 @@ private:
     SearchMemory _searchMemory;
     board::ZHasher _zHasher;
     move::MoveMaker _moveMaker;
+    move::MoveRetractor _moveRetractor;
     movegen::MoveGenerator _moveGenerator;
     evaluation::Evaluator _evaluator;
     int _maxDepth;

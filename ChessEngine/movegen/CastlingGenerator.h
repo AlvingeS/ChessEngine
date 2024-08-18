@@ -6,6 +6,7 @@
 #include "ChessEngine/board/Bitboards.h"
 #include "ChessEngine/board/GameStateBitmasks.h"
 #include "ChessEngine/move/MoveMaker.h"
+#include "ChessEngine/move/MoveRetractor.h"
 #include "ChessEngine/movegen/Movelist.h"
 #include "ChessEngine/movegen/RayLogic.h"
 #include "ChessEngine/movegen/CheckDetection.h"
@@ -24,6 +25,7 @@ public:
         const board::Bitboards& bitboards,
         const board::GameStateBitmasks& gameStateBitmasks,
         move::MoveMaker& moveMaker,
+        move::MoveRetractor& moveRetractor,
         CheckDetection* checkDetection
     );
     
@@ -36,7 +38,9 @@ public:
 private:
     const board::Bitboards& _bitboardsRef;
     const board::GameStateBitmasks& _gameStateBitmasksRef;
+    
     move::MoveMaker& _moveMakerRef;
+    move::MoveRetractor& _moveRetractorRef;
     
     CheckDetection* _checkDetection;
 

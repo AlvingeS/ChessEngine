@@ -14,10 +14,12 @@ namespace movegen {
 MoveGenerator::MoveGenerator(
     const board::Bitboards& bitboards,
     const board::GameStateBitmasks& gameStateBitmasks,
-    move::MoveMaker& moveMaker)
+    move::MoveMaker& moveMaker,
+    move::MoveRetractor& moveRetractor)
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
     , _moveMakerRef(moveMaker)
+    , _moveRetractorRef(moveRetractor)
     , _searchMemoryRef(moveMaker.getSearchMemory())
     , _checkDetection(_bitboardsRef, _gameStateBitmasksRef)
     , _rookGenerator(_bitboardsRef, _gameStateBitmasksRef)
@@ -26,7 +28,7 @@ MoveGenerator::MoveGenerator(
     , _knightGenerator(_bitboardsRef, _gameStateBitmasksRef)
     , _kingGenerator(_bitboardsRef, _gameStateBitmasksRef)
     , _pawnGenerator(_bitboardsRef, _gameStateBitmasksRef)
-    , _castlingGenerator(_bitboardsRef, _gameStateBitmasksRef, moveMaker, &_checkDetection)
+    , _castlingGenerator(_bitboardsRef, _gameStateBitmasksRef, moveMaker, moveRetractor, &_checkDetection)
 {
 }
 

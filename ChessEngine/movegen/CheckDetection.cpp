@@ -5,6 +5,7 @@
 #include "ChessEngine/board/PieceType.h"
 
 namespace movegen {
+
 CheckDetection::CheckDetection(
     const board::Bitboards& bitboards,
     const board::GameStateBitmasks& gameStateBitmasks)

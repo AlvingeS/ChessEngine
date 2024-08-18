@@ -20,7 +20,6 @@ constexpr bitmask blackQueenSideCastleMask = 0x7000000000000000ULL;
 class CastlingGenerator {
 
 public:
-    // Constructor
     CastlingGenerator(
         const board::Bitboards& bitboards,
         const board::GameStateBitmasks& gameStateBitmasks,
@@ -28,7 +27,6 @@ public:
         CheckDetection* checkDetection
     );
     
-    // Public member functions
     void generate(
         bool isWhite, 
         Movelist& movelist, 
@@ -36,20 +34,17 @@ public:
     );
 
 private:
-    // Private member functions
     const board::Bitboards& _bitboardsRef;
     const board::GameStateBitmasks& _gameStateBitmasksRef;
     move::MoveMaker& _moveMakerRef;
     
     CheckDetection* _checkDetection;
 
-    // Memory
     bitmask _whiteKingSideCastleBitmask;
     bitmask _whiteQueenSideCastleBitmask;
     bitmask _blackKingSideCastleBitmask;
     bitmask _blackQueenSideCastleBitmask;
 
-    // Private member functions
     void genSingleCastleMove(
         bool isWhite,
         bool isKingSide,

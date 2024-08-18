@@ -7,7 +7,7 @@
 namespace move {
 
 class Move {
-    
+
 public:
     static const int QUITE_FLAG = 0;
     static const int CAPTURE_FLAG = 1;

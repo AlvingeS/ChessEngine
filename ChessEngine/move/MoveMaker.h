@@ -31,20 +31,12 @@ public:
         int currentDepth
     );
 
-    board::PieceType pickUpPiece(bool isWhite, int fromIndex);
+    board::PieceType removeMovedPieceFromBoard(bool isWhite, int fromIndex);
 
-    void putDownPiece(
-        const move::Move& move, 
+    void placeMovedPieceOnBoard(
         bool isWhite, 
         int toIndex,
         board::PieceType movedPieceType
-    );
-
-    void handleCapture(
-        const move::Move& move, 
-        bool isWhite, 
-        int toIndex, 
-        int currentDepth
     );
 
     void handleEnPessantMemory(
@@ -66,32 +58,12 @@ public:
         int currentDepth
     );
 
-    void tryUncastling(
-        const move::Move &move, 
-        bool wasWhite, 
-        bool &retFlag
-    );
-
-    void handleUncapturing(
-        const move::Move& move, 
-        bool wasWhite, 
-        int toIndex, 
-        int currentDepth
-    );
-
-    void putBackMovedPiece(
-        const move::Move& move,
+    void placeBackMovedPieceOnBoard(
         bool wasWhite,
         int fromIndex, 
-        int toIndex,
         board::PieceType movedPieceType
     );
 
-    board::PieceType determineMovedPieceType(
-        const Move& move, 
-        bool wasWhite,
-        int toIndex
-    ) const;
     
     void makeCastleMove(bool isWhite, bool isKingSide);
     void unmakeCastleMove(bool isWhite, bool isKingSide);
@@ -104,7 +76,16 @@ public:
     }
 
 private:
+    board::PieceType determineMovedPieceType(
+        const Move& move, 
+        bool wasWhite,
+        int toIndex
+    ) const;
+
     board::PieceType getPromotionPieceType(int promotionFlag, bool isWhite) const;
+    void removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captureIndex, board::PieceType capturedPieceType);
+    void placeBackCapturedPieceOnBoard(bool isEP, int captureIndex, int toIndex, bool wasWhite, board::PieceType previouslyCapturedPieceType);
+    void removePreviouslyMovedPieceFromBoard(const Move& move, int toIndex, board::PieceType previouslyMovedPieceType, bool wasWhite);
 
     board::Bitboards& _bitboardsRef;
     board::GameStateBitmasks& _gameStateBitmasksRef;

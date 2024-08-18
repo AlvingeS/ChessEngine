@@ -36,6 +36,11 @@ board::PieceType getPromotionPieceType(int promotionFlag, bool isWhite)
     return board::PieceType::EMPTY;
 }
 
+int determineCaptureIndex(const Move& move, bool isWhite, int toIndex)
+{
+    return move.isEpCapture() ? (isWhite ? toIndex - 8 : toIndex + 8) : toIndex;
+}
+
 } // namespace
 
 MoveMaker::MoveMaker(
@@ -56,7 +61,7 @@ void MoveMaker::makeMove(
     bool isWhite, 
     int currentDepth) 
 {
-    // If the move is a castle, update data and return
+    // If the move is a castle, update and return
     if (move.isAnyCastle()) {
         makeCastleMove(isWhite, move.isKingCastle());
 
@@ -68,15 +73,33 @@ void MoveMaker::makeMove(
     int toIndex = move.getBitIndexTo();
     assert(fromIndex != toIndex);
 
-    board::PieceType movedPieceType = pickUpPiece(isWhite, fromIndex);
+    // Pick up the piece from the from square and get the moved piece type
+    board::PieceType movedPieceType = removeMovedPieceFromBoard(isWhite, fromIndex);
 
-    // If the move is a capture, update the last captured piece and its bitboard
-    handleCapture(move, isWhite, toIndex, currentDepth);
-    putDownPiece(move, isWhite, toIndex, movedPieceType);
+    // Update the moved piece type if the move is a promotion    
+    if (move.isAnyPromo()) {
+        movedPieceType = move::getPromotionPieceType(move.getFlag(), isWhite);
+    }
 
+    // If the move is a capture, handle memory and remove the captured piece
+    if (move.isAnyCapture()) {
+        // Calculate index of captured piece, might be EP
+        int captureIndex = determineCaptureIndex(move, isWhite, toIndex);
+        board::PieceType capturedPieceType = _squaresLookupRef.getPieceTypeAtIndex(captureIndex);
+        
+        _searchMemoryRef.setLastCapturedPieceAtDepth(currentDepth, capturedPieceType);
+        
+        removeCapturedPieceFromBoard(move.isEpCapture(), isWhite, captureIndex, capturedPieceType);
+    }
+
+    // Place the moved piece on the to square
+    placeMovedPieceOnBoard(isWhite, toIndex, movedPieceType);
+
+    // Misc. memory handling
     handleEnPessantMemory(move, isWhite, currentDepth, toIndex);
     handleNoCaptureCount(move, currentDepth, movedPieceType);
 
+    // Update occupied and empty squares bitmasks
     _gameStateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
 }
 
@@ -210,13 +233,14 @@ void MoveMaker::unmakeTemporaryKingMove(bool isWhite, bool isKingSide)
     }
 }
 
-board::PieceType MoveMaker::pickUpPiece(bool isWhite, int fromIndex) 
+board::PieceType MoveMaker::removeMovedPieceFromBoard(bool isWhite, int fromIndex) 
 {
+    // Determine the piece type of the piece being moved
     board::PieceType movedPieceType = _squaresLookupRef.getPieceTypeAtIndex(fromIndex);
     assert(movedPieceType != board::PieceType::EMPTY);
     
+    // Clear the piece from bitboards, squarelookup and gamestate bitmasks
     _squaresLookupRef.setPieceTypeAtIndex(fromIndex, board::PieceType::EMPTY);
-
     _bitboardsRef.clearPieceTypeBit(fromIndex, movedPieceType);
 
     if (isWhite) {
@@ -228,20 +252,13 @@ board::PieceType MoveMaker::pickUpPiece(bool isWhite, int fromIndex)
     return movedPieceType;
 }
 
-void MoveMaker::putDownPiece(
-    const move::Move& move, 
+void MoveMaker::placeMovedPieceOnBoard(
     bool isWhite, 
     int toIndex, 
     board::PieceType movedPieceType) 
 {
-    if (move.isAnyPromo()) {
-        board::PieceType promotionPieceType = ::move::getPromotionPieceType(move.getFlag(), isWhite);
-        _bitboardsRef.setPieceTypeBit(toIndex, promotionPieceType);
-        _squaresLookupRef.setPieceTypeAtIndex(toIndex, promotionPieceType);
-    } else {
-        _bitboardsRef.setPieceTypeBit(toIndex, movedPieceType);
-        _squaresLookupRef.setPieceTypeAtIndex(toIndex, movedPieceType);
-    }
+    _bitboardsRef.setPieceTypeBit(toIndex, movedPieceType);
+    _squaresLookupRef.setPieceTypeAtIndex(toIndex, movedPieceType);
 
     if (isWhite) {
         _gameStateBitmasksRef.setWhitePiecesBit(toIndex);
@@ -257,8 +274,7 @@ void MoveMaker::handleNoCaptureCount(
 {
     if (not move.isAnyCapture() && (movedPieceType != board::PieceType::W_PAWN && movedPieceType != board::PieceType::B_PAWN)) {
         _searchMemoryRef.incrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
-    }
-    else {
+    } else {
         _searchMemoryRef.resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
     }
 }
@@ -271,124 +287,107 @@ void MoveMaker::handleEnPessantMemory(
 {
     if (move.isDoublePawnPush()) {
         _searchMemoryRef.setEnPessantTargetAtDepth(currentDepth + 1, isWhite ? (1ULL << (toIndex - 8)) : (1ULL << (toIndex + 8)));
-    }
-    else {
+    } else {
         _searchMemoryRef.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
     }
 }
 
+void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captureIndex, board::PieceType capturedPieceType) {
+    // Remove captured piece from board representations
+    _bitboardsRef.clearPieceTypeBit(captureIndex, capturedPieceType);
 
-void MoveMaker::handleCapture(
-    const move::Move& move, 
-    bool isWhite, 
-    int toIndex, 
-    int currentDepth) 
-{
-    if (move.isAnyCapture()) {
-        // Calculate index of captured piece
-        int captureIndex = move.isEpCapture() ? (isWhite ? toIndex - 8 : toIndex + 8) : toIndex;
-        board::PieceType capturedPieceType = _squaresLookupRef.getPieceTypeAtIndex(captureIndex);
-        assert(capturedPieceType != board::PieceType::EMPTY);
-        
-        _searchMemoryRef.setLastCapturedPieceAtDepth(currentDepth, capturedPieceType);
+    if (isWhite) {
+        _gameStateBitmasksRef.clearBlackPiecesBit(captureIndex);
+    } else {
+        _gameStateBitmasksRef.clearWhitePiecesBit(captureIndex);
+    }
 
-        // Remove captured piece from board representations
-        _bitboardsRef.clearPieceTypeBit(captureIndex, capturedPieceType);
-
-        if (isWhite) {
-            _gameStateBitmasksRef.clearBlackPiecesBit(captureIndex);
-        } else {
-            _gameStateBitmasksRef.clearWhitePiecesBit(captureIndex);
-        }
-
-        if (move.isEpCapture()) {
-            _squaresLookupRef.setPieceTypeAtIndex(captureIndex, board::PieceType::EMPTY);
-        }
+    // Only clear from the squares lookup if the move was an ep capture
+    // because the capture index points to the square where the pawn was
+    // and is now empty, the square we moved to will have been updated
+    if (isEP) {
+        _squaresLookupRef.setPieceTypeAtIndex(captureIndex, board::PieceType::EMPTY);
     }
 }
 
-
 void MoveMaker::unmakeMove(
-    const Move& move, 
+    const Move& previousMove, 
     bool wasWhite, 
     int currentDepth) 
 {
     // If the move is a castle, update the bitboards and return
-    if (move.isAnyCastle()) {
-        unmakeCastleMove(wasWhite, move.isKingCastle());
+    if (previousMove.isAnyCastle()) {
+        unmakeCastleMove(wasWhite, previousMove.isKingCastle());
 
         return;
     }
 
     // Get the from and to indices
-    int fromIndex = move.getBitIndexFrom();
-    int toIndex = move.getBitIndexTo();
+    // Things get a bit tricky here because the move is being unmade, and so
+    // we are "moving to" the from square and "moving from" the to square
+    int fromIndex = previousMove.getBitIndexFrom();
+    int toIndex = previousMove.getBitIndexTo();
+    assert(fromIndex != toIndex);
     
-    board::PieceType movedPieceType = determineMovedPieceType(move, wasWhite, toIndex);
+    // Determine the piece type of the piece that was previously moved,
+    // takes into consideration if the move was a promotion
+    board::PieceType previouslyMovedPieceType = determineMovedPieceType(previousMove, wasWhite, toIndex);
 
-    // Place back the moved piece
-    putBackMovedPiece(move, wasWhite, fromIndex, toIndex, movedPieceType);
-    handleUncapturing(move, wasWhite, toIndex, currentDepth);
+    // We do the move in reverse, so now we pick up the previously moved piece
+    removePreviouslyMovedPieceFromBoard(previousMove, toIndex, previouslyMovedPieceType, wasWhite);
 
-    if (move.isDoublePawnPush()) {
+    // We place back the captured piece if there was one
+    if (previousMove.isAnyCapture()) {
+       // Calculate the index of the previously captured piece, might be EP
+        int captureIndex = determineCaptureIndex(previousMove, wasWhite, toIndex);
+        board::PieceType previouslyCapturedPieceType = _searchMemoryRef.getLastCapturedPieceAtDepth(currentDepth);
+
+        placeBackCapturedPieceOnBoard(previousMove.isEpCapture(), captureIndex, toIndex, wasWhite, previouslyCapturedPieceType);
+    } else {
+        // If there was no capture, we place back an empty square on the to square
+        _squaresLookupRef.setPieceTypeAtIndex(toIndex, board::PieceType::EMPTY);
+    }
+
+    // Place the moved piece back on the from square
+    placeBackMovedPieceOnBoard(wasWhite, fromIndex, previouslyMovedPieceType);
+
+    if (previousMove.isDoublePawnPush()) {
         _searchMemoryRef.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
     }
 
-    if (not move.isAnyCapture() && (movedPieceType != board::PieceType::W_PAWN && movedPieceType != board::PieceType::B_PAWN)) {
+    if (not previousMove.isAnyCapture() && (previouslyMovedPieceType != board::PieceType::W_PAWN && previouslyMovedPieceType != board::PieceType::B_PAWN)) {
         _searchMemoryRef.decrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
     }
 
     _gameStateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
 }
-void MoveMaker::handleUncapturing(
-    const move::Move& move, 
-    bool wasWhite, 
-    int toIndex, 
-    int currentDepth)
+
+void MoveMaker::placeBackCapturedPieceOnBoard(bool isEP, int captureIndex, int toIndex, bool wasWhite, board::PieceType previouslyCapturedPieceType) 
 {
-    // If the move was a capture, place back the captured piece
-    // else set the square to empty
-    if (move.isAnyCapture()) {
-        int captureIndex = move.isEpCapture() ? (wasWhite ? toIndex - 8 : toIndex + 8) : toIndex;
-        board::PieceType capturedPieceType = _searchMemoryRef.getLastCapturedPieceAtDepth(currentDepth);
+    _bitboardsRef.setPieceTypeBit(captureIndex, previouslyCapturedPieceType);
+    _squaresLookupRef.setPieceTypeAtIndex(captureIndex, previouslyCapturedPieceType);
 
-        _bitboardsRef.setPieceTypeBit(captureIndex, capturedPieceType);
-        _squaresLookupRef.setPieceTypeAtIndex(captureIndex, capturedPieceType);
-
-        if (move.isEpCapture()) {
-            _squaresLookupRef.setPieceTypeAtIndex(toIndex, board::PieceType::EMPTY);
-        }
-
-        if (wasWhite) {
-            _gameStateBitmasksRef.setBlackPiecesBit(captureIndex);
-        } else {
-            _gameStateBitmasksRef.setWhitePiecesBit(captureIndex);
-        }
-    } else {
+    // If the move was an ep capture, the to square will be empty
+    if (isEP) {
         _squaresLookupRef.setPieceTypeAtIndex(toIndex, board::PieceType::EMPTY);
+    }
+
+    if (wasWhite) {
+        _gameStateBitmasksRef.setBlackPiecesBit(captureIndex);
+    } else {
+        _gameStateBitmasksRef.setWhitePiecesBit(captureIndex);
     }
 }
 
-void MoveMaker::putBackMovedPiece(
-    const move::Move& move, 
-    bool wasWhite, 
-    int fromIndex, 
-    int toIndex,
-    board::PieceType movedPieceType)
+void MoveMaker::removePreviouslyMovedPieceFromBoard(const Move& move, int toIndex, board::PieceType previouslyMovedPieceType, bool wasWhite) 
 {
-    _bitboardsRef.setPieceTypeBit(fromIndex, movedPieceType);
-    _squaresLookupRef.setPieceTypeAtIndex(fromIndex, movedPieceType);
-
-    if (wasWhite) {
-        _gameStateBitmasksRef.setWhitePiecesBit(fromIndex);
-    } else {
-        _gameStateBitmasksRef.setBlackPiecesBit(fromIndex);
-    }
+    // Square lookup is dependent on if there was a capture or promotion,
+    // handled by the placeBackCapturedPieceOnBoard method 
 
     // If the move was not a promotion, remove the piece in the bitboard
     // Else, remove the bit for the promoted piece
     if (not move.isAnyPromo()) {
-        _bitboardsRef.clearPieceTypeBit(toIndex, movedPieceType);
+        _bitboardsRef.clearPieceTypeBit(toIndex, previouslyMovedPieceType);
     } else {
         board::PieceType promotionPieceType = ::move::getPromotionPieceType(move.getFlag(), wasWhite);
         _bitboardsRef.clearPieceTypeBit(toIndex, promotionPieceType);
@@ -401,25 +400,38 @@ void MoveMaker::putBackMovedPiece(
     }
 }
 
+void MoveMaker::placeBackMovedPieceOnBoard(
+    bool wasWhite, 
+    int fromIndex, 
+    board::PieceType movedPieceType)
+{
+    _bitboardsRef.setPieceTypeBit(fromIndex, movedPieceType);
+    _squaresLookupRef.setPieceTypeAtIndex(fromIndex, movedPieceType);
+
+    if (wasWhite) {
+        _gameStateBitmasksRef.setWhitePiecesBit(fromIndex);
+    } else {
+        _gameStateBitmasksRef.setBlackPiecesBit(fromIndex);
+    }
+}
+
 board::PieceType MoveMaker::determineMovedPieceType(
     const Move& move, 
     bool wasWhite,
     int toIndex) const
 {
     // Piece type of piece being moved
-    board::PieceType movedPieceType;
+    board::PieceType previouslyMovedPieceType;
 
     // If the move was a promotion, set the moved piece to a pawn of the same color
     // Else, set the moved piece to the piece occupying the to square
-    bool moveIsAnyPromo = move.isAnyPromo();
-    
-    if (moveIsAnyPromo) {
-        movedPieceType = wasWhite ? board::PieceType::W_PAWN : board::PieceType::B_PAWN;
+    if (move.isAnyPromo()) {
+        previouslyMovedPieceType = wasWhite ? board::PieceType::W_PAWN : board::PieceType::B_PAWN;
     } else {
-        movedPieceType = _squaresLookupRef.getPieceTypeAtIndex(toIndex);
+        previouslyMovedPieceType = _squaresLookupRef.getPieceTypeAtIndex(toIndex);
     }
 
-    return movedPieceType;
+    return previouslyMovedPieceType;
 }
 
 } // namespace move

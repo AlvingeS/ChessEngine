@@ -10,8 +10,6 @@ namespace board {
 class Bitboards {
 
 public:
-
-    // ** Constructor **
     Bitboards();
 
     inline const bitboard& getBitboardFromPieceType(PieceType pieceType) const 
@@ -23,11 +21,6 @@ public:
     {
         return *(_bitboards[index]);
     }
-
-    // inline const std::vector<bitboard*>& getBitboards() const 
-    // {
-    //     return _bitboards;
-    // }
 
     inline bool pieceTypeBitIsSet(int index, PieceType pieceType) const 
     {
@@ -76,7 +69,6 @@ public:
     DEFINE_BITBOARD_MACROS(BlackQueens, _blackQueensBitboard)
     DEFINE_BITBOARD_MACROS(BlackKing, _blackKingBitboard)
 
-    // ** Functions **
     inline void resetBitboards() 
     {
         for (int i = 0; i < 12; i++)
@@ -84,10 +76,9 @@ public:
     }
 
 private:
-// ** Data **
+
 std::vector<bitboard*> _bitboards;
 
-// White bitboards
 bitboard _whitePawnsBitboard;
 bitboard _whiteKnightsBitboard;
 bitboard _whiteBishopsBitboard;
@@ -95,7 +86,6 @@ bitboard _whiteRooksBitboard;
 bitboard _whiteQueensBitboard;
 bitboard _whiteKingBitboard;
 
-// Black bitboards
 bitboard _blackPawnsBitboard;
 bitboard _blackKnightsBitboard;
 bitboard _blackBishopsBitboard;

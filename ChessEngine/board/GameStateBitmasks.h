@@ -9,7 +9,6 @@ namespace board {
 class GameStateBitmasks {
 
 public:
-    // ** Constructor **
     GameStateBitmasks(const Bitboards& bitboards);
     
     inline bool whitePiecesBitIsSet(int square) const 
@@ -86,8 +85,7 @@ public:
     void fillBlackPiecesFromBitboards(const Bitboards& bitboards);
 
 private:
-    
-    // ** Data **
+
     bitmask _whitePiecesBitmask;
     bitmask _blackPiecesBitmask;
     bitmask _occupiedPiecesBitmask;

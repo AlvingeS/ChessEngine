@@ -20,4 +20,5 @@ void SquaresLookup::fillSquaresLookupFromBitboards(const Bitboards& bitboards)
         }
     }
 }
-}
+
+} // namespace board

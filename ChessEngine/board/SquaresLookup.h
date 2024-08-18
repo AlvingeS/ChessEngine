@@ -10,11 +10,8 @@ namespace board {
 class SquaresLookup {
 
 public:
-    // ** Constructor **
     SquaresLookup(const Bitboards& bitboards);
 
-
-    // ** Getters & Setters **
     inline PieceType getPieceTypeAtIndex(int index) const
     {
         return _squaresLookup[index];
@@ -25,12 +22,10 @@ public:
         _squaresLookup[index] = pieceType;
     }
 
-    // ** Functions **
     void fillSquaresLookupFromBitboards(const Bitboards& bitboards);
     
 private:
 
-    // ** Data **
     std::vector<PieceType> _squaresLookup;
 };
 

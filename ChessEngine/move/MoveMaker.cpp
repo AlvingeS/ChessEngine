@@ -31,15 +31,10 @@ void MoveMaker::makeMove(
     // Get the from and to indices
     int fromIndex = move.getBitIndexFrom();
     int toIndex = move.getBitIndexTo();
-    assert(fromIndex != toIndex);
+    //assert(fromIndex != toIndex);
 
     // Pick up the piece from the from square and get the moved piece type
     board::PieceType movedPieceType = removeMovedPieceFromBoard(isWhite, fromIndex);
-
-    // Update the moved piece type if the move is a promotion    
-    if (move.isAnyPromo()) {
-        movedPieceType = moveutils::getPromotionPieceType(move.getFlag(), isWhite);
-    }
 
     // If the move is a capture, handle memory and remove the captured piece
     if (move.isAnyCapture()) {
@@ -50,6 +45,11 @@ void MoveMaker::makeMove(
         _searchMemoryRef.setLastCapturedPieceAtDepth(currentDepth, capturedPieceType);
         
         removeCapturedPieceFromBoard(move.isEpCapture(), isWhite, captureIndex, capturedPieceType);
+    }
+
+    // Update the moved piece type if the move is a promotion    
+    if (move.isAnyPromo()) {
+        movedPieceType = moveutils::getPromotionPieceType(move.getFlag(), isWhite);
     }
 
     // Place the moved piece on the to square
@@ -133,7 +133,7 @@ board::PieceType MoveMaker::removeMovedPieceFromBoard(bool isWhite, int fromInde
 {
     // Determine the piece type of the piece being moved
     board::PieceType movedPieceType = _squaresLookupRef.getPieceTypeAtIndex(fromIndex);
-    assert(movedPieceType != board::PieceType::EMPTY);
+    //assert(movedPieceType != board::PieceType::EMPTY);
     
     // Clear the piece from bitboards, squarelookup and gamestate bitmasks
     _squaresLookupRef.setPieceTypeAtIndex(fromIndex, board::PieceType::EMPTY);

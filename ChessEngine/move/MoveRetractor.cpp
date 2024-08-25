@@ -1,5 +1,5 @@
-#include "ChessEngine/move/MoveRetractor.h";
-#include "ChessEngine/move/MoveUtils.h";
+#include "ChessEngine/move/MoveRetractor.h"
+#include "ChessEngine/move/MoveUtils.h"
 
 namespace move {
 
@@ -16,11 +16,11 @@ MoveRetractor::MoveRetractor(
     _zHasherRef(zHasher)
 {}
 
-void MoveRetractor::unmakeCastleMove(bool isWhite,bool wasKingSide)
+void MoveRetractor::unmakeCastleMove(bool wasWhite, bool wasKingSide)
 {
     int fromKingInd, toKingInd, fromRookInd, toRookInd;
 
-    if (isWhite) {
+    if (wasWhite) {
         fromKingInd = 3;
         toKingInd = wasKingSide ? 1 : 5;
         fromRookInd = wasKingSide ? 0 : 7;
@@ -65,14 +65,14 @@ void MoveRetractor::unmakeCastleMove(bool isWhite,bool wasKingSide)
     _gameStateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
 }
 
-void MoveRetractor::unmakeTemporaryKingMove(bool isWhite, bool isKingSide) 
+void MoveRetractor::unmakeTemporaryKingMove(bool wasWhite, bool isKingSide) 
 {
-    int from = isKingSide ? (isWhite ? 2 : 58) 
-                          : (isWhite ? 4 : 60);
+    int from = isKingSide ? (wasWhite ? 2 : 58) 
+                          : (wasWhite ? 4 : 60);
 
-    int to = isWhite ? 3 : 59;
+    int to = wasWhite ? 3 : 59;
 
-    if (isWhite) {
+    if (wasWhite) {
         _bitboardsRef.clearWhiteKingBit(from);
         _bitboardsRef.setWhiteKingBit(to);
     } else {

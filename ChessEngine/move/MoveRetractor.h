@@ -30,7 +30,7 @@ public:
         int currentDepth
     );
 
-    void unmakeTemporaryKingMove(bool isWhite, bool isKingSide); 
+    void unmakeTemporaryKingMove(bool wasWhite, bool isKingSide); 
 
     perft::SearchMemory& getSearchMemory() const
     {
@@ -38,7 +38,10 @@ public:
     }
 
 private:
-    void unmakeCastleMove(bool isWhite, bool isKingSide);
+    /// @brief Unmakes a castle move
+    /// @param wasWhite if the move was made by white
+    /// @param isKingSide if the castle was king side
+    void unmakeCastleMove(bool wasWhite, bool isKingSide);
 
     board::PieceType determineMovedPieceType(const Move& move, bool wasWhite,int toIndex) const;
     

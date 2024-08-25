@@ -4,12 +4,12 @@ namespace board {
 
 GameStateBitmasks::GameStateBitmasks(const Bitboards& bitboards) 
 {
-    fillWhitePiecesFromBitboards(bitboards);
-    fillBlackPiecesFromBitboards(bitboards);
+    fillWhitePiecesBitmaskFromBitboards(bitboards);
+    fillBlackPiecesBitmaskFromBitboards(bitboards);
     updOccupiedAndEmptySquaresBitmasks();
 }
 
-void GameStateBitmasks::fillWhitePiecesFromBitboards(const Bitboards& bitboards) 
+void GameStateBitmasks::fillWhitePiecesBitmaskFromBitboards(const Bitboards& bitboards) 
 {
     bitmask w_all = 0;
     for (int i = 0; i < 6; i++) {
@@ -19,7 +19,7 @@ void GameStateBitmasks::fillWhitePiecesFromBitboards(const Bitboards& bitboards)
     _whitePiecesBitmask = w_all;
 }
 
-void GameStateBitmasks::fillBlackPiecesFromBitboards(const Bitboards& bitboards) 
+void GameStateBitmasks::fillBlackPiecesBitmaskFromBitboards(const Bitboards& bitboards) 
 {
     bitmask b_all = 0;
     for (int i = 6; i < 12; i++) {

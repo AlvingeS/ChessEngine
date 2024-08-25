@@ -30,8 +30,8 @@ void setBoardFromFen(
     }
 
     squaresLookup.fillSquaresLookupFromBitboards(bitboards);
-    gameStateBitmasks.fillBlackPiecesFromBitboards(bitboards);
-    gameStateBitmasks.fillWhitePiecesFromBitboards(bitboards);
+    gameStateBitmasks.fillBlackPiecesBitmaskFromBitboards(bitboards);
+    gameStateBitmasks.fillWhitePiecesBitmaskFromBitboards(bitboards);
     gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
 }
 

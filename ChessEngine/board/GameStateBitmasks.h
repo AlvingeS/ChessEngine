@@ -94,11 +94,13 @@ public:
 
 private:
 
+    /// @brief Updates the occupied pieces bitmask
     inline void updOccupiedPiecesBitmask() 
     {
         _occupiedPiecesBitmask = _whitePiecesBitmask | _blackPiecesBitmask;
     }
 
+    /// @brief Updates the empty squares bitmask
     inline void updEmptySquaresBitmask() 
     {
         _emptySquaresBitmask = ~_occupiedPiecesBitmask;

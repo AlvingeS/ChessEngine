@@ -9,6 +9,7 @@ namespace board {
 class ZHasher {
 
 public:
+    /// @brief Constructor
     ZHasher();
 
 private:

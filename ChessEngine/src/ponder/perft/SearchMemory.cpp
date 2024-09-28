@@ -2,6 +2,7 @@
 
 #include "ChessEngine/src/game/board/PieceType.h"
 
+namespace ponder {
 namespace perft {
 
 SearchMemory::SearchMemory(int maxDepth) : _maxDepth(maxDepth) 
@@ -13,7 +14,7 @@ SearchMemory::SearchMemory(int maxDepth) : _maxDepth(maxDepth)
 
     for (int i = 0; i <= _maxDepth; i++) {
         _castlingRights[i] = 0b1111;
-        _lastCapturedPieces[i] = board::PieceType::EMPTY;
+        _lastCapturedPieces[i] = game::board::PieceType::EMPTY;
         _enPessantTargets[i] = 0ULL;
         _noCapturedOrPawnMoveCounts[i] = 0;
     }
@@ -37,9 +38,9 @@ void SearchMemory::restoreCastlingRightsForRemainingDepths(int currentDepth)
 
 void SearchMemory::setCastlingRights(
     int currentDepth, 
-    const move::Move& move, 
+    const game::move::Move& move, 
     bool isWhite, 
-    board::PieceType movedPieceType) 
+    game::board::PieceType movedPieceType) 
 {
     if (move.isAnyCastle()) {
         removeCastlingRightsForRemainingDepths(
@@ -48,7 +49,7 @@ void SearchMemory::setCastlingRights(
         );
     }
 
-    if (movedPieceType == board::PieceType::W_KING || movedPieceType == board::PieceType::B_KING) {
+    if (movedPieceType == game::board::PieceType::W_KING || movedPieceType == game::board::PieceType::B_KING) {
         if (isWhite) {
             if (_castlingRights[currentDepth] & whiteBoth)
                 removeCastlingRightsForRemainingDepths(currentDepth, whiteBoth);
@@ -58,7 +59,7 @@ void SearchMemory::setCastlingRights(
         }
     }
 
-    if (movedPieceType == board::PieceType::W_ROOK || movedPieceType == board::PieceType::B_ROOK) {
+    if (movedPieceType == game::board::PieceType::W_ROOK || movedPieceType == game::board::PieceType::B_ROOK) {
         if (isWhite) {
             if (move.getBitIndexFrom() == 0) {
                 if (_castlingRights[currentDepth] & whiteKingSide)
@@ -94,3 +95,4 @@ void SearchMemory::overrideCastlingRights(unsigned char rights)
 }
 
 } // namespace perft
+} // namespace ponder

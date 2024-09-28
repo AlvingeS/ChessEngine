@@ -3,6 +3,7 @@
 #include "ChessEngine/src/game/board/PieceType.h"
 #include "ChessEngine/src/game/board/Bitboards.h"
 
+namespace game {
 namespace board {
 
 class SquaresLookup {
@@ -32,3 +33,4 @@ private:
 };
 
 } // namespace board
+} // namespace game

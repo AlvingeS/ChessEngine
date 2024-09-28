@@ -10,6 +10,7 @@
 #include "ChessEngine/src/game/move/MoveMaker.h"
 #include "ChessEngine/src/game/move/MoveRetractor.h"
 
+namespace game {
 namespace movegen {
 
 constexpr bitmask whiteKingSideCastleMask = 0x000000000000006ULL;
@@ -60,3 +61,4 @@ private:
 };
 
 } // namespace movegen
+} // namespace game

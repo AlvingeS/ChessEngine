@@ -5,6 +5,7 @@
 #include "ChessEngine/src/utils/Containers.h"
 #include "ChessEngine/src/utils/BitBasics.h"
 
+namespace game {
 namespace movegen {
 
 KnightGenerator::KnightGenerator(
@@ -50,3 +51,4 @@ void KnightGenerator::generate(
 }
 
 } // namespace movegen
+} // namespace game

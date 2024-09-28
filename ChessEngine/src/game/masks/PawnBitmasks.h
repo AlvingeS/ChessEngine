@@ -2,6 +2,7 @@
 
 #include "ChessEngine/src/common.h"
 
+namespace game {
 namespace masks {
 
 struct MoveType {
@@ -17,3 +18,4 @@ std::vector<bitmask> getAllStraightPawnMoveBitmasks(bool isWhite);
 std::vector<bitmask> getAllCapturePawnMoveBitmasks(bool isWhite);
 
 } // namespace masks
+} // namespace game

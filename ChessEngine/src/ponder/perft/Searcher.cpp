@@ -5,17 +5,18 @@
 #include <cstdlib>
 #include <iostream>
 
+namespace ponder {
 namespace perft {
 
 Searcher::Searcher(int maxDepth) 
-    : _bitboards(board::Bitboards())
-    , _squaresLookup(board::SquaresLookup(_bitboards))
-    , _gameStateBitmasks(board::GameStateBitmasks(_bitboards))
+    : _bitboards(game::board::Bitboards())
+    , _squaresLookup(game::board::SquaresLookup(_bitboards))
+    , _gameStateBitmasks(game::board::GameStateBitmasks(_bitboards))
     , _searchMemory(SearchMemory(maxDepth))
-    , _zHasher(board::ZHasher(_squaresLookup))
-    , _moveMaker(move::MoveMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
-    , _moveRetractor(move::MoveRetractor(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
-    , _moveGenerator(movegen::MoveGenerator(_bitboards, _gameStateBitmasks, _moveMaker, _moveRetractor))
+    , _zHasher(game::board::ZHasher(_squaresLookup))
+    , _moveMaker(game::move::MoveMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
+    , _moveRetractor(game::move::MoveRetractor(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
+    , _moveGenerator(game::movegen::MoveGenerator(_bitboards, _gameStateBitmasks, _moveMaker, _moveRetractor))
     , _evaluator(evaluation::Evaluator(_bitboards))
     , _maxDepth(maxDepth)
 {
@@ -27,7 +28,7 @@ Searcher::Searcher(int maxDepth)
 
     for (int i = 0; i < MAX_LEGAL_MOVES; i++) {
         _nodeCountPerFirstMove[i] = 0;
-        _firstMoves[i] = move::Move();
+        _firstMoves[i] = game::move::Move();
     }
 
     _lastCapturedPieces.resize(_maxDepth);
@@ -35,8 +36,8 @@ Searcher::Searcher(int maxDepth)
     _noCapturedOrPawnMoveCounts.resize(_maxDepth);
 
     for (int i = 0; i < _maxDepth; i++) {
-        _lastCapturedPieces[i] = board::PieceType::EMPTY;
-        _movelists[i] = movegen::Movelist();
+        _lastCapturedPieces[i] = game::board::PieceType::EMPTY;
+        _movelists[i] = game::movegen::Movelist();
         _noCapturedOrPawnMoveCounts[i] = 0;
     }
 
@@ -78,7 +79,7 @@ void Searcher::genMoves(
 }
 
 void Searcher::makeMove(
-    move::Move move,
+    game::move::Move move,
     bool isWhite,
     int currentdepth) 
 {
@@ -86,7 +87,7 @@ void Searcher::makeMove(
 }
 
 void Searcher::unmakeMove(
-    move::Move move,
+    game::move::Move move,
     bool isWhite,
     int currentDepth)
 {
@@ -138,7 +139,7 @@ bool Searcher::tooManyPiecesOnBoard()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (_squaresLookup.getPieceTypeAtIndex(i) != board::PieceType::EMPTY) {
+        if (_squaresLookup.getPieceTypeAtIndex(i) != game::board::PieceType::EMPTY) {
             count++;
         }
     }
@@ -150,8 +151,8 @@ bool Searcher::checkCondition(
     int currentDepth,
     bool isMaximizer,
     int firstMoveIndex, 
-    move::Move currentMove, 
-    move::Move lastMove, 
+    game::move::Move currentMove, 
+    game::move::Move lastMove, 
     bool verbose, 
     size_t i) const
 {
@@ -173,7 +174,7 @@ void Searcher::minimax(
     bool isMaximizer, 
     int firstMoveIndex, 
     bool recPerftStats, 
-    const move::Move& lastMove, 
+    const game::move::Move& lastMove, 
     bool verbose)
 {        
     if (currentDepth == _maxDepth) {
@@ -191,7 +192,7 @@ void Searcher::minimax(
     size_t numIllegalMoves = 0;
 
     for (size_t i = 0; i < MAX_LEGAL_MOVES; i++) {
-        move::Move currentMove = _movelists[currentDepth].getMoveAt(i);
+        game::move::Move currentMove = _movelists[currentDepth].getMoveAt(i);
 
         if (currentMove.getMove() == 0) {
             break;
@@ -314,7 +315,7 @@ void Searcher::recordPerftStats(
     int currentDepth, 
     int &firstMoveIndex, 
     size_t i, 
-    const move::Move& currentMove, 
+    const game::move::Move& currentMove, 
     bool &retFlag) 
 {
     retFlag = true;
@@ -360,3 +361,4 @@ void Searcher::recordPerftStats(
 }
 
 } // namespace perft
+} // namespace ponder

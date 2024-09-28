@@ -2,6 +2,7 @@
 
 #include "ChessEngine/src/utils/ChessUtils.h"
 
+namespace game {
 namespace masks {
 
 // Applies all king moves without considering looping around the board
@@ -58,3 +59,4 @@ const std::vector<bitmask> getAllKingBitmasks()
 }
 
 } // namespace masks
+} // namespace game

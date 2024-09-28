@@ -16,6 +16,7 @@
 
 #include "ChessEngine/src/utils/BitBasics.h"
 
+namespace game {
 namespace movegen {
 
 class MoveGenerator {
@@ -49,7 +50,7 @@ public:
         bool isWhite,
         Movelist& moveListRef,
         int currentDepth,
-        perft::SearchMemory& searchMemory
+        ponder::perft::SearchMemory& searchMemory
     );
 
     void genCastlingMoves(
@@ -67,7 +68,7 @@ private:
     
     move::MoveMaker& _moveMakerRef;
     move::MoveRetractor& _moveRetractorRef;
-    perft::SearchMemory& _searchMemoryRef;
+    ponder::perft::SearchMemory& _searchMemoryRef;
     
     CheckDetection _checkDetection;
     RookGenerator _rookGenerator;
@@ -79,4 +80,5 @@ private:
     CastlingGenerator _castlingGenerator;
 };
 
-}
+} // namespace movegen
+} // namespace game

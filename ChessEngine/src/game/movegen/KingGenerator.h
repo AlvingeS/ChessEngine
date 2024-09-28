@@ -8,6 +8,7 @@
 #include "ChessEngine/src/game/move/Move.h"
 #include "ChessEngine/src/game/masks/KingBitmasks.h"
 
+namespace game {
 namespace movegen {
 
 class KingGenerator {
@@ -32,3 +33,4 @@ private:
 };
 
 } // namespace movegen
+} // namespace game

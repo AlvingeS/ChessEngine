@@ -2,13 +2,14 @@
 
 #include "ChessEngine/src/game/move/MoveUtils.h"
 
+namespace game {
 namespace move {
 
 MoveMaker::MoveMaker(
     board::Bitboards& bitBoards, 
     board::GameStateBitmasks& gameStateBitmasks, 
     board::SquaresLookup& squaresLookup, 
-    perft::SearchMemory& searchMemory,
+    ponder::perft::SearchMemory& searchMemory,
     board::ZHasher& zHasher
 ) : _bitboardsRef(bitBoards), 
     _gameStateBitmasksRef(gameStateBitmasks), 
@@ -208,3 +209,4 @@ void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captur
 }
 
 } // namespace move
+} // namespace game

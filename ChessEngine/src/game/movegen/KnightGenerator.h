@@ -8,6 +8,7 @@
 #include "ChessEngine/src/game/move/Move.h"
 #include "ChessEngine/src/game/masks/KnightBitmasks.h"
 
+namespace game {
 namespace movegen {
 
 class KnightGenerator {
@@ -31,4 +32,5 @@ private:
     std::vector<bitmask> _knightBitmasks;
 };
 
-}
+} // namespace movegen
+} // namespace game

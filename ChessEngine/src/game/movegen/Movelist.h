@@ -4,6 +4,7 @@
 
 #include "ChessEngine/src/game/move/Move.h"
 
+namespace game {
 namespace movegen {
 
 class Movelist {
@@ -43,3 +44,4 @@ private:
 };
 
 } // namespace movegen
+} // namespace game

@@ -6,6 +6,7 @@
 #include "ChessEngine/src/utils/ChessUtils.h"
 #include "ChessEngine/src/utils/BitBasics.h"
 
+namespace game {
 namespace movegen {
 namespace RayLogic {
 
@@ -252,5 +253,5 @@ bool checkDiagonalRay(
 }
 
 } // namespace raylogic
-
 } // namespace movegen
+} // namespace game

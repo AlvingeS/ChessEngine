@@ -2,6 +2,7 @@
 
 #include "ChessEngine/src/utils/ChessUtils.h"
 
+namespace game {
 namespace masks {
 
 bitmask applyCapturePawnMoves(int ind, bool isWhite) 
@@ -80,3 +81,4 @@ std::vector<bitmask> getAllCapturePawnMoveBitmasks(bool isWhite)
 }
 
 } // namspace masks
+} // namespace game

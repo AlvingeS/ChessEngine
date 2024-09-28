@@ -8,6 +8,7 @@
 #include "ChessEngine/src/utils/BitBasics.h"
 #include "ChessEngine/src/utils/ChessUtils.h"
 
+namespace game {
 namespace movegen {
 
 BishopGenerator::BishopGenerator(const board::Bitboards& bitboards, const board::GameStateBitmasks& gameStateBitmasks) 
@@ -39,3 +40,4 @@ void BishopGenerator::generate(
 }
 
 } // namespace movegen
+} // namespace game

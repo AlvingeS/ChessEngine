@@ -2,6 +2,7 @@
 
 #include "ChessEngine/src/common.h"
 
+namespace game {
 namespace board {
 
 enum class PieceType : int {
@@ -34,3 +35,4 @@ int pieceTypeToInt(PieceType piece_type);
 PieceType intToPieceType(int i); 
 
 } // namespace board
+} // namespace game

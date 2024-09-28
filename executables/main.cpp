@@ -7,8 +7,8 @@
 #include <iostream>
 #include <chrono>
 
-int main() {
-
+int main() 
+{
     /*
     Total number of nodes for depth 4: 6605806
 
@@ -86,19 +86,19 @@ int main() {
     
     bool recPerftStats = false;
 
-    perft::Searcher searcherStartPos = perft::Searcher(MAX_DEPTH);
+    ponder::perft::Searcher searcherStartPos = ponder::perft::Searcher(MAX_DEPTH);
     searcherStartPos.setBoardFromFen(startPos);
     searcherStartPos.minimax(0, true, 0, recPerftStats);
 
-    perft::Searcher searcherPosTwo = perft::Searcher(MAX_DEPTH);
+    ponder::perft::Searcher searcherPosTwo = ponder::perft::Searcher(MAX_DEPTH);
     searcherPosTwo.setBoardFromFen(posTwo);
     searcherPosTwo.minimax(0, true, 0, recPerftStats);
 
-    perft::Searcher searcherPosThree = perft::Searcher(MAX_DEPTH);
+    ponder::perft::Searcher searcherPosThree = ponder::perft::Searcher(MAX_DEPTH);
     searcherPosThree.setBoardFromFen(posThree);
     searcherPosThree.minimax(0, true, 0, recPerftStats);
 
-    perft::Searcher searcherPosFive = perft::Searcher(MAX_DEPTH);
+    ponder::perft::Searcher searcherPosFive = ponder::perft::Searcher(MAX_DEPTH);
     searcherPosFive.setBoardFromFen(posFive);
     searcherPosFive.minimax(0, true, 0, recPerftStats);
 

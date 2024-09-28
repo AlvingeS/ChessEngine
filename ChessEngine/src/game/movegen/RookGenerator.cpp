@@ -6,7 +6,9 @@
 #include "ChessEngine/src/utils/ChessUtils.h"
 #include "ChessEngine/src/utils/BitBasics.h"
 
+namespace game {
 namespace movegen {
+
 RookGenerator::RookGenerator(
     const board::Bitboards& bitboards,
     const board::GameStateBitmasks& gameStateBitmasks)
@@ -88,3 +90,4 @@ void RookGenerator::generate(
 }
 
 } // namespace movegen
+} // namespace game

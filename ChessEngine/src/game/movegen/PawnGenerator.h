@@ -11,6 +11,7 @@
 // FIXME: We cant have a dependency to perft
 #include "ChessEngine/src/ponder/perft/SearchMemory.h"
 
+namespace game {
 namespace movegen {
 
 class PawnGenerator {
@@ -27,7 +28,7 @@ public:
         bool isWhite,
         Movelist& moveListRef,
         int currentDepth,
-        perft::SearchMemory& searchMemory
+        ponder::perft::SearchMemory& searchMemory
     );
 
 private:
@@ -42,4 +43,5 @@ private:
     std::vector<bitmask> _blackPawnCaptureMoveBitmasks;
 };
 
-}
+} // namespace movegen
+} // namespace game

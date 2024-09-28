@@ -6,9 +6,9 @@ namespace utils {
 
 void setBoardFromFen(
     const std::string& fen, 
-    board::Bitboards& bitboards, 
-    board::GameStateBitmasks& gameStateBitmasks, 
-    board::SquaresLookup& squaresLookup) 
+    game::board::Bitboards& bitboards, 
+    game::board::GameStateBitmasks& gameStateBitmasks, 
+    game::board::SquaresLookup& squaresLookup) 
 {
     bitboards.resetBitboards();
 
@@ -23,7 +23,7 @@ void setBoardFromFen(
         } else if (std::isdigit(c)) {
             file += c - '0';
         } else {
-            board::PieceType type = board::CharToPieceType(c);
+            game::board::PieceType type = game::board::CharToPieceType(c);
             bitboards.setPieceTypeBit(rank * 8 + 7 - file, type);
             file++;
         }
@@ -35,7 +35,7 @@ void setBoardFromFen(
     gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
 }
 
-std::string getFenFromBoard(const board::SquaresLookup& squaresLookup)
+std::string getFenFromBoard(const game::board::SquaresLookup& squaresLookup)
 {
     std::string fen = "";
     int emptyCount = 0;
@@ -49,15 +49,15 @@ std::string getFenFromBoard(const board::SquaresLookup& squaresLookup)
             fen += "/";
         }
 
-        board::PieceType type = squaresLookup.getPieceTypeAtIndex(i);
-        if (type == board::PieceType::EMPTY) {
+        game::board::PieceType type = squaresLookup.getPieceTypeAtIndex(i);
+        if (type == game::board::PieceType::EMPTY) {
             emptyCount++;
         } else {
             if (emptyCount != 0) {
                 fen += std::to_string(emptyCount);
                 emptyCount = 0;
             }
-            fen += board::pieceTypeToChar(type);
+            fen += game::board::pieceTypeToChar(type);
         }
     }
 

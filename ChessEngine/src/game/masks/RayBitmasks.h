@@ -2,6 +2,7 @@
 
 #include "ChessEngine/src/common.h"
 
+namespace game {
 namespace masks {
 
 struct StraightRays {
@@ -34,3 +35,4 @@ std::vector<StraightRays> getAllStraightRayBitmasks();
 std::vector<DiagonalRays> getAllDiagonalRayBitmasks();
 
 } // namespace masks
+} // namespace game

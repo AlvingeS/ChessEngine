@@ -1,5 +1,6 @@
 #include "ChessEngine/src/game/move/MoveUtils.h"
 
+namespace game {
 namespace move {
 namespace moveutils {
 
@@ -42,3 +43,4 @@ int determineCaptureIndex(const Move& move, bool isWhite, int toIndex)
     
 } // namespace utils
 } // namespace move
+} // namespace game

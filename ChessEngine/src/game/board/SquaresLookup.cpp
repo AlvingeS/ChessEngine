@@ -1,5 +1,6 @@
 #include "ChessEngine/src/game/board/SquaresLookup.h"
 
+namespace game {
 namespace board {
 
 SquaresLookup::SquaresLookup(const Bitboards& bitboards) 
@@ -22,3 +23,4 @@ void SquaresLookup::fillSquaresLookupFromBitboards(const Bitboards& bitboards)
 }
 
 } // namespace board
+} // namespace game

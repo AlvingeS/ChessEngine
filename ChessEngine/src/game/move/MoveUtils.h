@@ -4,6 +4,7 @@
 
 #include "ChessEngine/src/game/board/PieceType.h"
 
+namespace game {
 namespace move {
 namespace moveutils {
 
@@ -13,3 +14,4 @@ int determineCaptureIndex(const Move& move, bool isWhite, int toIndex);
 
 } // namespace utils
 } // namespace move
+} // namespace game

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <random>
 
+namespace game {
 namespace board {
 
 ZHasher::ZHasher(SquaresLookup& squaresLookup) 
@@ -60,3 +61,4 @@ void ZHasher::computeInitialHash()
 }
 
 } // namespace board
+} // namespace game

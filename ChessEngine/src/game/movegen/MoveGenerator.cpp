@@ -10,6 +10,7 @@
 
 #include <iostream>
 
+namespace game {
 namespace movegen {
 
 MoveGenerator::MoveGenerator(
@@ -89,7 +90,7 @@ void MoveGenerator::genPawnMoves(
     bool isWhite,
     Movelist& moveListRef,
     int currentDepth,
-    perft::SearchMemory& searchMemory)
+    ponder::perft::SearchMemory& searchMemory)
 {
     _pawnGenerator.generate(isWhite, moveListRef, currentDepth, searchMemory);
 }
@@ -107,3 +108,4 @@ bool MoveGenerator::isInCheck(bool isWhite) {
 }
 
 } // namespace movegen
+} // namespace game

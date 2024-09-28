@@ -4,7 +4,9 @@
 
 #include "ChessEngine/src/utils/ChessUtils.h"
 
+namespace game {
 namespace movegen {
+
 CastlingGenerator::CastlingGenerator(
     const board::Bitboards& bitboards,
     const board::GameStateBitmasks& gameStateBitmasks,
@@ -136,3 +138,4 @@ void CastlingGenerator::genSingleCastleMove(
 }
 
 } // namespace movegen
+} // namespace game

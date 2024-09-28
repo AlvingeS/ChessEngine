@@ -5,7 +5,9 @@
 #include "ChessEngine/src/utils/Containers.h"
 #include "ChessEngine/src/utils/ChessUtils.h"
 
+namespace game {
 namespace movegen {
+
 PawnGenerator::PawnGenerator(
     const board::Bitboards& bitboards,
     const board::GameStateBitmasks& gameStateBitmasks) 
@@ -22,7 +24,7 @@ void PawnGenerator::generate(
     bool isWhite,
     Movelist& moveListRef,
     int currentDepth,
-    perft::SearchMemory& searchMemory)
+    ponder::perft::SearchMemory& searchMemory)
 {
     std::vector<int>& pawnIndices = utils::Containers::getPiecePositionIndices();
     std::vector<int>& freeMovesIndices = utils::Containers::getLeapingPiecefreeMovesIndices();
@@ -91,3 +93,4 @@ void PawnGenerator::generate(
 }
 
 } // namespace movegen
+} // namespace game

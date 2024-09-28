@@ -6,40 +6,40 @@
 
 namespace utils {
 
-BoardPrinter::BoardPrinter(const board::Bitboards& bitboards) 
+BoardPrinter::BoardPrinter(const game::board::Bitboards& bitboards) 
 {
     fillBoard(bitboards);
 }
 
-bool BoardPrinter::isValidPiece(board::PieceType piece_type) 
+bool BoardPrinter::isValidPiece(game::board::PieceType piece_type) 
 {
     switch(piece_type) {
-        case board::PieceType::W_PAWN:
-        case board::PieceType::W_KNIGHT:
-        case board::PieceType::W_BISHOP:
-        case board::PieceType::W_ROOK:
-        case board::PieceType::W_QUEEN:
-        case board::PieceType::W_KING:
-        case board::PieceType::B_PAWN:
-        case board::PieceType::B_KNIGHT:
-        case board::PieceType::B_BISHOP:
-        case board::PieceType::B_ROOK:
-        case board::PieceType::B_QUEEN:
-        case board::PieceType::B_KING:
+        case game::board::PieceType::W_PAWN:
+        case game::board::PieceType::W_KNIGHT:
+        case game::board::PieceType::W_BISHOP:
+        case game::board::PieceType::W_ROOK:
+        case game::board::PieceType::W_QUEEN:
+        case game::board::PieceType::W_KING:
+        case game::board::PieceType::B_PAWN:
+        case game::board::PieceType::B_KNIGHT:
+        case game::board::PieceType::B_BISHOP:
+        case game::board::PieceType::B_ROOK:
+        case game::board::PieceType::B_QUEEN:
+        case game::board::PieceType::B_KING:
             return true;
         default:
             return false;
     }
 }
 
-void BoardPrinter::fillBoard(const board::Bitboards& bitboards) 
+void BoardPrinter::fillBoard(const game::board::Bitboards& bitboards) 
 {
     _board = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
     
     for (int i = 0; i < 12; i++) {
-        board::PieceType pieceType = board::intToPieceType(i);
+        game::board::PieceType pieceType = game::board::intToPieceType(i);
         bitmask bitboard = bitboards.getBitboardFromIndex(i);
-        char pieceChar = board::pieceTypeToChar(pieceType);
+        char pieceChar = game::board::pieceTypeToChar(pieceType);
 
         for (int i = 0; i < 64; i++) {
             if (utils::getBit(bitboard, i)) {

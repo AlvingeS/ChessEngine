@@ -10,6 +10,7 @@
 #include "ChessEngine/src/game/board/Bitboards.h"
 #include "ChessEngine/src/game/board/GameStateBitmasks.h"
 
+namespace game {
 namespace movegen {
 
 class CheckDetection {
@@ -36,3 +37,4 @@ private:
 };
 
 } // namespace movegen
+} // namespace game

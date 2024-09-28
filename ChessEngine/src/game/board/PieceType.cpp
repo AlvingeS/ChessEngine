@@ -1,5 +1,6 @@
 #include "ChessEngine/src/game/board/PieceType.h"
 
+namespace game {
 namespace board {
 
 PieceType CharToPieceType(char c) 
@@ -51,3 +52,4 @@ PieceType intToPieceType(int i)
 }
 
 } // namespace board
+} // namespace game

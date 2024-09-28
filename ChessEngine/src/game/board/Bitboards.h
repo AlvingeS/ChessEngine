@@ -4,6 +4,7 @@
 
 #include <cassert>
 
+namespace game {
 namespace board {
 
 class Bitboards {
@@ -108,3 +109,4 @@ bitboard _blackKingBitboard;
 };
 
 } // namespace board
+} // namespace game

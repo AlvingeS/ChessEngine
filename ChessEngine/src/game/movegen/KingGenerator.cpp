@@ -5,6 +5,7 @@
 #include "ChessEngine/src/utils/Containers.h"
 #include "ChessEngine/src/utils/BitBasics.h"
 
+namespace game {
 namespace movegen {
 
 KingGenerator::KingGenerator(
@@ -50,3 +51,4 @@ void KingGenerator::generate(bool isWhite, Movelist& moveListRef)
 }
 
 } // namespace movegen
+} // namespace game

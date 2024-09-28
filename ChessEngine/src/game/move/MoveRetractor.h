@@ -12,7 +12,7 @@
 // FIXME: We cant have a dependency to perft
 #include "ChessEngine/src/ponder/perft/SearchMemory.h"
 
-
+namespace game {
 namespace move {
 
 class MoveRetractor {
@@ -23,7 +23,7 @@ public:
         board::Bitboards& bitBoards, 
         board::GameStateBitmasks& gameStateBitmasks, 
         board::SquaresLookup& squaresLookup, 
-        perft::SearchMemory& searchMemory, 
+        ponder::perft::SearchMemory& searchMemory, 
         board::ZHasher& zHasher
     );
     
@@ -35,7 +35,7 @@ public:
 
     void unmakeTemporaryKingMove(bool wasWhite, bool isKingSide); 
 
-    perft::SearchMemory& getSearchMemory() const
+    ponder::perft::SearchMemory& getSearchMemory() const
     {
         return _searchMemoryRef;
     }
@@ -55,7 +55,9 @@ private:
     board::Bitboards& _bitboardsRef;
     board::GameStateBitmasks& _gameStateBitmasksRef;
     board::SquaresLookup& _squaresLookupRef;
-    perft::SearchMemory& _searchMemoryRef;
+    ponder::perft::SearchMemory& _searchMemoryRef;
     const board::ZHasher& _zHasherRef;
 };
-}
+
+} // namespace move
+} // namespace game

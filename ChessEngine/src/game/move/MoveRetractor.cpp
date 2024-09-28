@@ -2,13 +2,14 @@
 
 #include "ChessEngine/src/game/move/MoveUtils.h"
 
+namespace game {
 namespace move {
 
 MoveRetractor::MoveRetractor(
     board::Bitboards& bitBoards, 
     board::GameStateBitmasks& gameStateBitmasks, 
     board::SquaresLookup& squaresLookup, 
-    perft::SearchMemory& searchMemory,
+    ponder::perft::SearchMemory& searchMemory,
     board::ZHasher& zHasher
 ) : _bitboardsRef(bitBoards), 
     _gameStateBitmasksRef(gameStateBitmasks), 
@@ -208,3 +209,4 @@ void MoveRetractor::unmakeMove(
 }
 
 } // namespace move
+} // namespace game

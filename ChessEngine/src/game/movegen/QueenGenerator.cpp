@@ -6,6 +6,7 @@
 #include "ChessEngine/src/utils/BitBasics.h"
 #include "ChessEngine/src/utils/ChessUtils.h"
 
+namespace game {
 namespace movegen {
 
 QueenGenerator::QueenGenerator(
@@ -137,3 +138,4 @@ void QueenGenerator::generate(
 }
 
 } // namespace movegen
+} // namespace game

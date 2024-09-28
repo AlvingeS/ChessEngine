@@ -4,6 +4,7 @@
 
 #include <functional>
 
+namespace game {
 namespace move {
 
 class Move {
@@ -147,11 +148,12 @@ private:
 };
 
 } // namespace move
+} // namespace game
 
 namespace std {
     template <>
-    struct hash<move::Move> {
-        size_t operator()(const move::Move& move) const {
+    struct hash<game::move::Move> {
+        size_t operator()(const game::move::Move& move) const {
             size_t h1 = std::hash<int>()(move.getBitIndexFrom());
             size_t h2 = std::hash<int>()(move.getBitIndexTo());
             size_t h3 = std::hash<int>()(move.getFlag());

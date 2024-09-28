@@ -1,5 +1,6 @@
 #include "ChessEngine/src/game/board/GameStateBitmasks.h"
 
+namespace game {
 namespace board {
 
 GameStateBitmasks::GameStateBitmasks(const Bitboards& bitboards) 
@@ -30,3 +31,4 @@ void GameStateBitmasks::fillBlackPiecesBitmaskFromBitboards(const Bitboards& bit
 }
 
 } // namespace board
+} // namespace game

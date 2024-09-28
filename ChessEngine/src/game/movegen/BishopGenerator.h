@@ -8,7 +8,7 @@
 #include "ChessEngine/src/game/masks/RayBitmasks.h"
 #include "ChessEngine/src/game/move/Move.h"
 
-
+namespace game {
 namespace movegen {
 
 class BishopGenerator {
@@ -33,3 +33,4 @@ private:
 };
 
 } // namespace movegen
+} // namespace game

@@ -6,7 +6,7 @@
 
 namespace utils {
 
-void setBoardFromFen(const std::string& fen, board::Bitboards& bitboards, board::GameStateBitmasks& gameStateBitmasks, board::SquaresLookup& squaresLookup);
-std::string getFenFromBoard(const board::SquaresLookup& squaresLookup);
+void setBoardFromFen(const std::string& fen, game::board::Bitboards& bitboards, game::board::GameStateBitmasks& gameStateBitmasks, game::board::SquaresLookup& squaresLookup);
+std::string getFenFromBoard(const game::board::SquaresLookup& squaresLookup);
 
 } // namespace utils

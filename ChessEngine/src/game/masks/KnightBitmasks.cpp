@@ -2,6 +2,7 @@
 
 #include "ChessEngine/src/utils/ChessUtils.h"
 
+namespace game {
 namespace masks {
 
 // Applies all knight moves without considering looping around the board
@@ -69,3 +70,4 @@ const std::vector<bitmask> getAllKnightBitmasks()
 }
 
 } // namespace masks
+} // namespace game

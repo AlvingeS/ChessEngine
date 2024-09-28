@@ -14,6 +14,7 @@
 #include "ChessEngine/src/game/move/Move.h"
 #include "ChessEngine/src/utils/Fen.h"
 
+namespace ponder {
 namespace perft {
 
 class Searcher {
@@ -28,7 +29,7 @@ public:
         bool isMaximizer, 
         int firstMoveIndex,
         bool recPerftStats = true,
-        const move::Move& lastMove = move::Move(),
+        const game::move::Move& lastMove = game::move::Move(),
         bool verbose = true
     );
 
@@ -37,7 +38,7 @@ public:
         int currentDepth,
         int &firstMoveIndex,
         size_t i,
-        const move::Move& currentMove,
+        const game::move::Move& currentMove,
         bool &retFlag
     );
 
@@ -47,8 +48,8 @@ public:
         unsigned char castlingRights
     );
 
-    void makeMove(move::Move move, bool isWhite, int currentDepth);
-    void unmakeMove(move::Move move, bool isWhite, int currentDepth);
+    void makeMove(game::move::Move move, bool isWhite, int currentDepth);
+    void unmakeMove(game::move::Move move, bool isWhite, int currentDepth);
     void undoMove();
     
     int _numMoveGenCalls;
@@ -56,7 +57,7 @@ public:
 
     long sumNodesToDepth(int depth) const;
     std::vector<long> _nodeCountPerFirstMove;
-    std::vector<move::Move> _firstMoves;
+    std::vector<game::move::Move> _firstMoves;
     std::vector<long> _nodeCount;
     std::vector<long> _captureCount;
     std::vector<long> _epCaptureCount;
@@ -71,8 +72,8 @@ public:
         int currentDepth,
         bool isMaximizer, 
         int firstMoveIndex, 
-        move::Move currentMove, 
-        move::Move lastMove, 
+        game::move::Move currentMove, 
+        game::move::Move lastMove, 
         bool verbose, 
         size_t i
     ) const;
@@ -86,7 +87,7 @@ public:
         return _maxDepth;
     }
 
-    const movegen::MoveGenerator& getMoveGenerator() const
+    const game::movegen::MoveGenerator& getMoveGenerator() const
     {
         return _moveGenerator;
     }
@@ -107,23 +108,24 @@ public:
     }
     
 private:
-    board::Bitboards _bitboards;
-    board::SquaresLookup _squaresLookup;
-    board::GameStateBitmasks _gameStateBitmasks;
+    game::board::Bitboards _bitboards;
+    game::board::SquaresLookup _squaresLookup;
+    game::board::GameStateBitmasks _gameStateBitmasks;
     SearchMemory _searchMemory;
-    board::ZHasher _zHasher;
-    move::MoveMaker _moveMaker;
-    move::MoveRetractor _moveRetractor;
-    movegen::MoveGenerator _moveGenerator;
+    game::board::ZHasher _zHasher;
+    game::move::MoveMaker _moveMaker;
+    game::move::MoveRetractor _moveRetractor;
+    game::movegen::MoveGenerator _moveGenerator;
     evaluation::Evaluator _evaluator;
     int _maxDepth;
 
     int _pseudoLegalMovesCount;
-    std::vector<movegen::Movelist> _movelists;
-    std::vector<board::PieceType> _lastCapturedPieces;
+    std::vector<game::movegen::Movelist> _movelists;
+    std::vector<game::board::PieceType> _lastCapturedPieces;
     std::vector<int> _noCapturedOrPawnMoveCounts; 
 
     bool tooManyPiecesOnBoard();
 };
 
 } // namespace perft
+} // namespace ponder

@@ -2,6 +2,7 @@
 
 #include "ChessEngine/src/utils/ChessUtils.h"
 
+namespace game {
 namespace masks {
 
 bitmask getNorthRay(int ind) 
@@ -167,3 +168,4 @@ std::vector<DiagonalRays> getAllDiagonalRayBitmasks()
 }
 
 } // namespace masks
+} // namespace game

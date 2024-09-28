@@ -5,6 +5,7 @@
 #include "ChessEngine/src/utils/ChessUtils.h"
 #include "ChessEngine/src/utils/BitBasics.h"
 
+namespace game {
 namespace movegen {
 
 CheckDetection::CheckDetection(
@@ -103,3 +104,4 @@ bool CheckDetection::isInCheck(bool isWhite) const
 }
 
 } // namespace movegen
+} // namespace game

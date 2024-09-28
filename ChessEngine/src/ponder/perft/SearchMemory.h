@@ -4,6 +4,7 @@
 #include "ChessEngine/src/game/board/PieceType.h"
 #include "ChessEngine/src/utils/BitBasics.h"
 
+namespace ponder {
 namespace perft {
 
 constexpr unsigned char whiteKingSide = 0b0001;
@@ -23,23 +24,23 @@ public:
         return _castlingRights[depth];
     }
 
-    board::PieceType getLastCapturedPieceAtDepth(int depth) const
+    game::board::PieceType getLastCapturedPieceAtDepth(int depth) const
     {
         return _lastCapturedPieces[depth];
     }
 
     void setLastCapturedPieceAtDepth(
         int currentDepth,
-        board::PieceType pieceType) 
+        game::board::PieceType pieceType) 
     {
         _lastCapturedPieces[currentDepth] = pieceType;
     }
 
     void setCastlingRights(
         int currentDepth, 
-        const move::Move& move, 
+        const game::move::Move& move, 
         bool isWhite, 
-        board::PieceType movedPieceType
+        game::board::PieceType movedPieceType
     );
 
     void unsetCastlingRights(int currentDepth);
@@ -77,7 +78,7 @@ public:
 private:
     int _maxDepth;
     std::vector<unsigned char> _castlingRights;
-    std::vector<board::PieceType> _lastCapturedPieces;
+    std::vector<game::board::PieceType> _lastCapturedPieces;
     std::vector<bitmask> _enPessantTargets;
     std::vector<int> _noCapturedOrPawnMoveCounts;
 
@@ -91,4 +92,5 @@ private:
 
 };
 
-}
+} // namespace perft
+} // namespace ponder

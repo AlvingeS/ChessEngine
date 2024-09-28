@@ -2,6 +2,7 @@
 
 #include "ChessEngine/src/game/board/Bitboards.h"
 
+namespace game {
 namespace board {
 
 class GameStateBitmasks {
@@ -111,3 +112,4 @@ private:
 };
 
 } // namespace board
+} // namespace game

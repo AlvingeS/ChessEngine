@@ -8,6 +8,7 @@
 #include "ChessEngine/src/game/move/Move.h"
 #include "ChessEngine/src/game/masks/RayBitmasks.h"
 
+namespace game {
 namespace movegen {
 
 class QueenGenerator {
@@ -33,3 +34,4 @@ private:
 };
 
 } // namespace movegen
+} // namespace game

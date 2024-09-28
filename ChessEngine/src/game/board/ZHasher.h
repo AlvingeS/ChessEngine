@@ -3,6 +3,7 @@
 #include "ChessEngine/src/game/board/SquaresLookup.h"
 #include "ChessEngine/src/game/board/PieceType.h"
 
+namespace game {
 namespace board {
 
 class ZHasher {
@@ -30,3 +31,4 @@ private:
 };
 
 } // namespace board
+} // namespace game

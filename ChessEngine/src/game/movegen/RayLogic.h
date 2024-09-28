@@ -2,6 +2,7 @@
 
 #include "ChessEngine/src/game/movegen/Movelist.h"
 
+namespace game {
 namespace movegen {
 namespace RayLogic {
 
@@ -46,3 +47,4 @@ namespace RayLogic {
 
 } // namespace raylogic
 } // namespace movegen
+} // namespace game

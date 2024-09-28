@@ -1,5 +1,6 @@
 #include "ChessEngine/src/game/board/Bitboards.h"
 
+namespace game {
 namespace board {
 
 Bitboards::Bitboards() 
@@ -36,3 +37,4 @@ Bitboards::Bitboards()
 }
 
 } // namespace board
+} // namespace game

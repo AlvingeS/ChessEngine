@@ -9,8 +9,8 @@ class BoardPrinter {
 
 public:
     // Public member functions
-    BoardPrinter(const board::Bitboards& bitboards);
-    void fillBoard(const board::Bitboards& bitboards);
+    BoardPrinter(const game::board::Bitboards& bitboards);
+    void fillBoard(const game::board::Bitboards& bitboards);
     void printBoard() const;
 
 private:
@@ -18,7 +18,7 @@ private:
     std::vector<std::vector<char>> _board;
 
     // Private member functions
-    bool isValidPiece(board::PieceType piece_type);
+    bool isValidPiece(game::board::PieceType piece_type);
     
 };
 

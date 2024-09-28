@@ -33,7 +33,7 @@ namespace movegen {
                               gameStateBitmasks(board::GameStateBitmasks(bitboards)),
                               squaresLookup(board::SquaresLookup(bitboards)),
                               searchMemory(perft::SearchMemory(0)),
-                              zHasher(board::ZHasher()),
+                              zHasher(board::ZHasher(squaresLookup)),
                               moveMaker(bitboards, gameStateBitmasks, squaresLookup, searchMemory, zHasher),
                               moveRetractor(bitboards, gameStateBitmasks, squaresLookup, searchMemory, zHasher),
                               moveGenerator(MoveGenerator(bitboards, gameStateBitmasks, moveMaker, moveRetractor)),

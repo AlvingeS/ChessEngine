@@ -5,7 +5,8 @@
 
 namespace board {
 
-ZHasher::ZHasher()
+ZHasher::ZHasher(SquaresLookup& squaresLookup) 
+    : _squaresLookupRef(squaresLookup)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -31,6 +32,31 @@ ZHasher::ZHasher()
 
     // Generate random number for is white table
     _randIsWhiteNum = dis(gen);
+    
+    computeInitialHash();
+}
+
+void ZHasher::computeInitialHash()
+{
+    _hash = 0;
+
+    for (size_t i = 0; i < 64; i++) {
+        PieceType pieceType = _squaresLookupRef.getPieceTypeAtIndex(i);
+
+        if (pieceType != PieceType::EMPTY) {
+            _hash ^= _randBoardPieceTypeNums[i][static_cast<int>(pieceType)];
+        }
+    }
+
+    // We know that we have castling rights, so we can just add them
+    for (size_t i = 0; i < 4; i++) {
+        _hash ^= _randCastleRightsNums[i];
+    }
+
+    // There can be no en passant file
+
+    // We know that it is white's turn
+    _hash ^= _randIsWhiteNum;
 }
 
 } // namespace board

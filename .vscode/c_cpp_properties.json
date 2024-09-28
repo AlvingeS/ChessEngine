@@ -3,10 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}",
                 "${workspaceFolder}/external/**",
-                "${workspaceFolder}/ChessEngine/**"
+                "${workspaceFolder}/ChessEngine/src/",
+                "${workspaceFolder}/"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
-#include "ChessEngine/utils/BitBasics.h"
+
+#include "ChessEngine/src/utils/BitBasics.h"
 
 namespace utils {
     class BitBasics : public ::testing::Test {

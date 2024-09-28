@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "ChessEngine/utils/ChessUtils.h"
-#include "ChessEngine/utils/BitBasics.h"
+#include "ChessEngine/src/utils/ChessUtils.h"
+#include "ChessEngine/src/utils/BitBasics.h"
 
 namespace utils {
     class ChessUtils : public ::testing::Test {

@@ -1,10 +1,11 @@
-#include "ChessEngine/utils/BoardPrinter.h"
-#include "ChessEngine/utils/ChessUtils.h"
-#include "ChessEngine/movegen/MoveGenerator.h"
+#include "ChessEngine/src/game/movegen/MoveGenerator.h"
+#include "ChessEngine/src/ponder/perft/Searcher.h"
+#include "ChessEngine/src/utils/BoardPrinter.h"
+#include "ChessEngine/src/utils/ChessUtils.h"
+#include "ChessEngine/src/utils/Containers.h"
+
 #include <iostream>
-#include "ChessEngine/perft/Searcher.h"
 #include <chrono>
-#include "ChessEngine/utils/Containers.h"
 
 int main() {
 

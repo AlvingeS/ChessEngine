@@ -26,7 +26,7 @@ protected:
 TEST_F(perftPosThree, perft_pos3) 
 {
     if (enablePos3Test) {
-        searcher.setBoardFromFen(posThree);
+        engine.resetToFEN(posThree);
 
         // game::move::Move move = moveFromStrAndFlag("a5a4", 0);
         // searcher.makeMove(move, true);
@@ -49,30 +49,30 @@ TEST_F(perftPosThree, perft_pos3)
 
         std::string debugFen;
         if (nDebugMoves > 0) {
-            debugFen = searcher.getFenFromBoard();
+            debugFen = engine.getFenFromBoard();
             debugFen += whiteToStart ? " w" : " b";
             debugFen += " - -";
         }
 
         std::unordered_map<std::string, long> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posThree, depth);
 
-        searcher.setMaxDepth(depth);
-        searcher.minimax(0, whiteToStart, 0);
+        engine.setMaxSearchDepth(depth);
+        engine.runPerft(0, whiteToStart, 0, true);
 
         std::unordered_map<std::string, long> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
         compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
 
         if (nDebugMoves == 0) {
-            for (long i = 1; i <= searcher.getMaxDepth(); i++) {
-                ASSERT_EQ(searcher._nodeCount[i], expectedResults[i][0]);
-                ASSERT_EQ(searcher._captureCount[i], expectedResults[i][1]);
-                ASSERT_EQ(searcher._epCaptureCount[i], expectedResults[i][2]);
-                ASSERT_EQ(searcher._castlingCount[i], expectedResults[i][3]);
-                ASSERT_EQ(searcher._promotionCount[i], expectedResults[i][4]);
-                ASSERT_EQ(searcher._checkCount[i], expectedResults[i][5]);
+            for (long i = 1; i <= engine.getMaxSearchDepth(); i++) {
+                ASSERT_EQ(engine.getNodeCount()[i], expectedResults[i][0]);
+                ASSERT_EQ(engine.getCaptureCount()[i], expectedResults[i][1]);
+                ASSERT_EQ(engine.getEpCaptureCount()[i], expectedResults[i][2]);
+                ASSERT_EQ(engine.getCastlingCount()[i], expectedResults[i][3]);
+                ASSERT_EQ(engine.getPromotionCount()[i], expectedResults[i][4]);
+                ASSERT_EQ(engine.getCheckCount()[i], expectedResults[i][5]);
                 
-                if (i < searcher.getMaxDepth()) {
-                    ASSERT_EQ(searcher._checkmateCount[i], expectedResults[i][6]);
+                if (i < engine.getMaxSearchDepth()) {
+                    ASSERT_EQ(engine.getCheckmateCount()[i], expectedResults[i][6]);
                 }       
             }
         }

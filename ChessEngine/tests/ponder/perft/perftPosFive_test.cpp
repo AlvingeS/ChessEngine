@@ -24,7 +24,7 @@ protected:
 TEST_F(perftPosFive, perft_pos5) 
 {
     if (enablePos5Test) {
-        searcher.setBoardFromFen(posFive);
+        engine.resetToFEN(posFive);
 
         // Make dubug move
         // game::move::Move move = moveFromStrAndFlag("a2a3", 0);
@@ -37,22 +37,22 @@ TEST_F(perftPosFive, perft_pos5)
 
         std::string debugFen;
         if (nDebugMoves > 0) {
-            debugFen = searcher.getFenFromBoard();
+            debugFen = engine.getFenFromBoard();
             debugFen += whiteToStart ? " w" : " b";
             debugFen += " KQ - 1 8";
         }
 
         std::unordered_map<std::string, long> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posFive, depth);
 
-        searcher.setMaxDepth(depth);
-        searcher.minimax(0, whiteToStart, 0);
+        engine.setMaxSearchDepth(depth);
+        engine.runPerft(0, whiteToStart, 0, true);
 
         std::unordered_map<std::string, long> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
         compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
 
         if (nDebugMoves == 0) {
-            for (long i = 1; i <= searcher.getMaxDepth(); i++) {
-                ASSERT_EQ(searcher._nodeCount[i], expectedNodes[i]);
+            for (long i = 1; i <= engine.getMaxSearchDepth(); i++) {
+                ASSERT_EQ(engine.getNodeCount()[i], expectedNodes[i]);
             }
         }
     }

@@ -8,16 +8,26 @@
 namespace ponder {
 namespace perft {
 
-Searcher::Searcher(int maxDepth) 
-    : _bitboards(game::board::Bitboards())
-    , _squaresLookup(game::board::SquaresLookup(_bitboards))
-    , _gameStateBitmasks(game::board::GameStateBitmasks(_bitboards))
-    , _searchMemory(SearchMemory(maxDepth))
-    , _zHasher(game::board::ZHasher(_squaresLookup))
-    , _moveMaker(game::move::MoveMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
-    , _moveRetractor(game::move::MoveRetractor(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
-    , _moveGenerator(game::movegen::MoveGenerator(_bitboards, _gameStateBitmasks, _moveMaker, _moveRetractor))
-    , _evaluator(evaluation::Evaluator(_bitboards))
+Searcher::Searcher(
+    int maxDepth,
+    game::board::Bitboards& bitboards,
+    game::board::SquaresLookup& squaresLookup,
+    game::board::GameStateBitmasks& gameStateBitmasks,
+    SearchMemory& searchMemory,
+    game::board::ZHasher& zHasher,
+    game::move::MoveMaker& moveMaker,
+    game::move::MoveRetractor& moveRetractor,
+    game::movegen::MoveGenerator& moveGenerator,
+    evaluation::Evaluator& evaluator) 
+    : _bitboardsRef(bitboards)
+    , _squaresLookupRef(squaresLookup)
+    , _gameStateBitmasksRef(gameStateBitmasks)
+    , _searchMemoryRef(searchMemory) 
+    , _zHasherRef(zHasher)
+    , _moveMakerRef(moveMaker)
+    , _moveRetractorRef(moveRetractor)
+    , _moveGeneratorRef(moveGenerator)
+    , _evaluatorRef(evaluator)
     , _maxDepth(maxDepth)
 {
     _numMoveGenCalls = 0;
@@ -75,7 +85,7 @@ void Searcher::genMoves(
     int currentDepth,
     unsigned char castlingRights) 
 {
-    _moveGenerator.genMoves(isWhite, _movelists[currentDepth], currentDepth, castlingRights);
+    _moveGeneratorRef.genMoves(isWhite, _movelists[currentDepth], currentDepth, castlingRights);
 }
 
 void Searcher::makeMove(
@@ -83,7 +93,7 @@ void Searcher::makeMove(
     bool isWhite,
     int currentdepth) 
 {
-    _moveMaker.makeMove(move, isWhite, currentdepth);
+    _moveMakerRef.makeMove(move, isWhite, currentdepth);
 }
 
 void Searcher::unmakeMove(
@@ -91,13 +101,13 @@ void Searcher::unmakeMove(
     bool isWhite,
     int currentDepth)
 {
-    _moveRetractor.unmakeMove(move, isWhite, currentDepth);
+    _moveRetractorRef.unmakeMove(move, isWhite, currentDepth);
 }
 
 void Searcher::debugPrint(bool verbose) const
 {
     if (verbose) {
-        utils::BoardPrinter boardPrinter = utils::BoardPrinter(_bitboards);
+        utils::BoardPrinter boardPrinter = utils::BoardPrinter(_bitboardsRef);
         boardPrinter.printBoard();
     }
 }
@@ -139,12 +149,25 @@ bool Searcher::tooManyPiecesOnBoard()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (_squaresLookup.getPieceTypeAtIndex(i) != game::board::PieceType::EMPTY) {
+        if (_squaresLookupRef.getPieceTypeAtIndex(i) != game::board::PieceType::EMPTY) {
             count++;
         }
     }
 
     return count > 32;
+}
+
+void Searcher::resetNodeCounts() 
+{
+    for (int i = 0; i < 20; i++) {
+        _nodeCount[i] = 0;
+        _captureCount[i] = 0;
+        _epCaptureCount[i] = 0;
+        _castlingCount[i] = 0;
+        _promotionCount[i] = 0;
+        _checkCount[i] = 0;
+        _checkmateCount[i] = 0;
+    }
 }
 
 bool Searcher::checkCondition(
@@ -184,7 +207,7 @@ void Searcher::minimax(
     genMoves(
         isMaximizer, 
         currentDepth, 
-        _searchMemory.getCastlingRightsAtDepth(currentDepth)
+        _searchMemoryRef.getCastlingRightsAtDepth(currentDepth)
     );
 
     _numMoveGenCalls++;
@@ -227,7 +250,7 @@ void Searcher::minimax(
             int x = 4;
         }
 
-        if (_moveGenerator.isInCheck(isMaximizer)) {
+        if (_moveGeneratorRef.isInCheck(isMaximizer)) {
             numIllegalMoves++;
             unmakeMove(currentMove, isMaximizer, currentDepth);
 
@@ -245,7 +268,7 @@ void Searcher::minimax(
             }
 
             if (numIllegalMoves == i + 1 && _movelists[currentDepth].getMoveAt(i + 1).getMove() == 0) {
-                bool wasInCheckBeforeMove = _moveGenerator.isInCheck(isMaximizer);
+                bool wasInCheckBeforeMove = _moveGeneratorRef.isInCheck(isMaximizer);
 
                 if (wasInCheckBeforeMove) {
                     _checkmateCount[currentDepth]++;
@@ -258,11 +281,11 @@ void Searcher::minimax(
         }
 
         // Move was legal, update castling rights
-        _searchMemory.setCastlingRights(
+        _searchMemoryRef.setCastlingRights(
             currentDepth,
             currentMove, 
             isMaximizer, 
-            _squaresLookup.getPieceTypeAtIndex(currentMove.getBitIndexTo())
+            _squaresLookupRef.getPieceTypeAtIndex(currentMove.getBitIndexTo())
         );
 
         if (recPerftStats) {
@@ -291,7 +314,7 @@ void Searcher::minimax(
         );
 
         unmakeMove(currentMove, isMaximizer, currentDepth);
-        _searchMemory.unsetCastlingRights(currentDepth);
+        _searchMemoryRef.unsetCastlingRights(currentDepth);
         
         if (checkCondition(
             currentDepth, 
@@ -319,7 +342,7 @@ void Searcher::recordPerftStats(
     bool &retFlag) 
 {
     retFlag = true;
-    if (_moveGenerator.isInCheck(!isMaximizer))
+    if (_moveGeneratorRef.isInCheck(!isMaximizer))
     {
         _checkCount[currentDepth + 1]++;
     }

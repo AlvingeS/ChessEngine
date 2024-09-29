@@ -1,5 +1,4 @@
-#include "ChessEngine/src/game/movegen/MoveGenerator.h"
-#include "ChessEngine/src/ponder/perft/Searcher.h"
+#include "ChessEngine/src/engine/Engine.h"
 #include "ChessEngine/src/utils/BoardPrinter.h"
 #include "ChessEngine/src/utils/ChessUtils.h"
 #include "ChessEngine/src/utils/Containers.h"
@@ -85,29 +84,29 @@ int main()
     std::string posFive = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
     
     bool recPerftStats = false;
+    int sum = 0;
 
-    ponder::perft::Searcher searcherStartPos = ponder::perft::Searcher(MAX_DEPTH);
-    searcherStartPos.setBoardFromFen(startPos);
-    searcherStartPos.minimax(0, true, 0, recPerftStats);
+    engine::Engine engine(MAX_DEPTH);
+    engine.runPerft(0, true, 0, recPerftStats);
+    if (recPerftStats)
+        sum += engine.getSumNodesToDepth(MAX_DEPTH);
 
-    ponder::perft::Searcher searcherPosTwo = ponder::perft::Searcher(MAX_DEPTH);
-    searcherPosTwo.setBoardFromFen(posTwo);
-    searcherPosTwo.minimax(0, true, 0, recPerftStats);
+    engine.resetToFEN(posTwo);
+    engine.runPerft(0, true, 0, recPerftStats);
+    if (recPerftStats)
+        sum += engine.getSumNodesToDepth(MAX_DEPTH);
 
-    ponder::perft::Searcher searcherPosThree = ponder::perft::Searcher(MAX_DEPTH);
-    searcherPosThree.setBoardFromFen(posThree);
-    searcherPosThree.minimax(0, true, 0, recPerftStats);
+    engine.resetToFEN(posThree);
+    engine.runPerft(0, true, 0, recPerftStats);
+    if (recPerftStats)
+        sum += engine.getSumNodesToDepth(MAX_DEPTH);
 
-    ponder::perft::Searcher searcherPosFive = ponder::perft::Searcher(MAX_DEPTH);
-    searcherPosFive.setBoardFromFen(posFive);
-    searcherPosFive.minimax(0, true, 0, recPerftStats);
+    engine.resetToFEN(posFive);
+    engine.runPerft(0, true, 0, recPerftStats);
+    if (recPerftStats)
+        sum += engine.getSumNodesToDepth(MAX_DEPTH);
 
     if (recPerftStats) {
-        int sum = 0;
-        sum += searcherStartPos.sumNodesToDepth(MAX_DEPTH);
-        sum += searcherPosTwo.sumNodesToDepth(MAX_DEPTH);
-        sum += searcherPosThree.sumNodesToDepth(MAX_DEPTH);
-        sum += searcherPosFive.sumNodesToDepth(MAX_DEPTH);
         std::cout << "Total nodes: " << sum << std::endl;
     }
 

@@ -34,10 +34,10 @@ ZHasher::ZHasher(SquaresLookup& squaresLookup)
     // Generate random number for is white table
     _randIsWhiteNum = dis(gen);
     
-    computeInitialHash();
+    computeHash();
 }
 
-void ZHasher::computeInitialHash()
+void ZHasher::computeHash()
 {
     _hash = 0;
 

@@ -22,7 +22,18 @@ class Searcher {
 public:
     static constexpr int MAX_LEGAL_MOVES = 218;
 
-    Searcher(int maxDepth);
+    Searcher(
+        int maxDepth,
+        game::board::Bitboards& bitboards,
+        game::board::SquaresLookup& squaresLookup,
+        game::board::GameStateBitmasks& gameStateBitmasks,
+        SearchMemory& searchMemory,
+        game::board::ZHasher& zHasher,
+        game::move::MoveMaker& moveMaker,
+        game::move::MoveRetractor& moveRetractor,
+        game::movegen::MoveGenerator& moveGenerator,
+        evaluation::Evaluator& evaluator
+    );
     
     void minimax(
         int current_depth,
@@ -89,34 +100,36 @@ public:
 
     const game::movegen::MoveGenerator& getMoveGenerator() const
     {
-        return _moveGenerator;
+        return _moveGeneratorRef;
     }
 
     void setBoardFromFen(const std::string& fen)
     {
-        utils::setBoardFromFen(fen, _bitboards, _gameStateBitmasks, _squaresLookup);
+        utils::setBoardFromFen(fen, _bitboardsRef, _gameStateBitmasksRef, _squaresLookupRef);
     }
 
     std::string getFenFromBoard() const
     {
-        return utils::getFenFromBoard(_squaresLookup);
+        return utils::getFenFromBoard(_squaresLookupRef);
     }
 
     bool diffBetweenGameStateBitmasks() const
     {
-        return (_gameStateBitmasks.getBlackPiecesBitmask() | _gameStateBitmasks.getWhitePiecesBitmask()) != _gameStateBitmasks.getOccupiedPiecesBitmask();
+        return (_gameStateBitmasksRef.getBlackPiecesBitmask() | _gameStateBitmasksRef.getWhitePiecesBitmask()) != _gameStateBitmasksRef.getOccupiedPiecesBitmask();
     }
+
+    void resetNodeCounts();
     
 private:
-    game::board::Bitboards _bitboards;
-    game::board::SquaresLookup _squaresLookup;
-    game::board::GameStateBitmasks _gameStateBitmasks;
-    SearchMemory _searchMemory;
-    game::board::ZHasher _zHasher;
-    game::move::MoveMaker _moveMaker;
-    game::move::MoveRetractor _moveRetractor;
-    game::movegen::MoveGenerator _moveGenerator;
-    evaluation::Evaluator _evaluator;
+    game::board::Bitboards& _bitboardsRef;
+    game::board::SquaresLookup& _squaresLookupRef;
+    game::board::GameStateBitmasks& _gameStateBitmasksRef;
+    SearchMemory& _searchMemoryRef;
+    game::board::ZHasher& _zHasherRef;
+    game::move::MoveMaker& _moveMakerRef;
+    game::move::MoveRetractor& _moveRetractorRef;
+    game::movegen::MoveGenerator& _moveGeneratorRef;
+    evaluation::Evaluator& _evaluatorRef;
     int _maxDepth;
 
     int _pseudoLegalMovesCount;

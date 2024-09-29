@@ -11,8 +11,8 @@ class ZHasher {
 public:
     ZHasher(SquaresLookup& squaresLookup);
 
+    void computeHash();
 private:
-    void computeInitialHash();
 
     uint64_t _randBoardPieceTypeNums[64][12];
     

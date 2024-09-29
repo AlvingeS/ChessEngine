@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChessEngine/src/ponder/perft/Searcher.h"
+#include "ChessEngine/src/engine/Engine.h"
 
 #include "ChessEngine/src/utils/Fen.h"
 #include "ChessEngine/src/game/board/Bitboards.h"
@@ -49,9 +49,9 @@ protected:
     std::string posThree;
     std::string posFive;
 
-    Searcher searcher;
+    engine::Engine engine;
 
-    perftBase() : searcher(20) {}
+    perftBase() : engine(20) {}
 
     virtual void SetUp() override 
     {
@@ -169,14 +169,14 @@ protected:
         std::unordered_map<std::string, long> nodeCountPerFirstMoveMap;
         int sum = 0;
 
-        for (size_t i = 0; i < searcher._nodeCountPerFirstMove.size(); i++) {
-            if (searcher._firstMoves[i].getMove() != 0) {
-                std::string moveStr = translateMoveToStr(searcher._firstMoves[i], whiteStarted);
-                std::string nodeCountStr = std::to_string(searcher._nodeCountPerFirstMove[i]);
+        for (size_t i = 0; i < engine.getNodeCountPerFirstMove().size(); i++) {
+            if (engine.getFirstMoves()[i].getMove() != 0) {
+                std::string moveStr = translateMoveToStr(engine.getFirstMoves()[i], whiteStarted);
+                std::string nodeCountStr = std::to_string(engine.getNodeCountPerFirstMove()[i]);
                 std::string moveNodeCountStr = moveStr + ": " + nodeCountStr;
-                nodeCountPerFirstMoveMap[moveStr] = searcher._nodeCountPerFirstMove[i];
+                nodeCountPerFirstMoveMap[moveStr] = engine.getNodeCountPerFirstMove()[i];
 
-                sum += searcher._nodeCountPerFirstMove[i];
+                sum += engine.getNodeCountPerFirstMove()[i];
             }
         }
 

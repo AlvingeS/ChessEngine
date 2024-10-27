@@ -27,7 +27,7 @@ TEST_F(perftPosFive, perft_pos5)
         searcher.setBoardFromFen(posFive);
 
         // Make dubug move
-        // game::move::Move move = moveFromStrAndFlag("a2a3", 0);
+        // representation::move::Move move = moveFromStrAndFlag("a2a3", 0);
         // searcher.makeMove(move, true);
         int nDebugMoves = 0;
 

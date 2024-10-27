@@ -70,6 +70,7 @@
         "stop_token": "cpp",
         "cinttypes": "cpp",
         "regex": "cpp",
-        "shared_mutex": "cpp"
+        "shared_mutex": "cpp",
+        "cassert": "cpp"
     }
 }

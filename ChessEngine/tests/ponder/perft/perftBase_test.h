@@ -84,7 +84,7 @@ protected:
         }
     }
 
-    std::string translateMoveToStr(game::move::Move move, bool whiteStarted) 
+    std::string translateMoveToStr(representation::move::Move move, bool whiteStarted) 
     {
         if (move.isAnyCastle()) {
             return move.isKingCastle() ? (whiteStarted ? "e1g1" : "e8g8") 
@@ -111,30 +111,30 @@ protected:
 
         if (move.isAnyPromo()) {
             switch (move.getFlag()) {
-                case game::move::Move::KNIGHT_PROMO_FLAG:
+                case representation::move::Move::KNIGHT_PROMO_FLAG:
                     moveStr += (whiteStarted) ? "n" : "N";
                     break;
-                case game::move::Move::BISHOP_PROMO_FLAG:
+                case representation::move::Move::BISHOP_PROMO_FLAG:
                     moveStr += (whiteStarted) ? "b" : "B";
                     break;
-                case game::move::Move::ROOK_PROMO_FLAG:
+                case representation::move::Move::ROOK_PROMO_FLAG:
                     moveStr += (whiteStarted) ? "r" : "R";
                     break;
-                case game::move::Move::QUEEN_PROMO_FLAG:
+                case representation::move::Move::QUEEN_PROMO_FLAG:
                     moveStr += (whiteStarted) ? "q" : "Q";
                     break;
                 default:
                     break;
-                case game::move::Move::KNIGHT_PROMO_CAPTURE_FLAG:
+                case representation::move::Move::KNIGHT_PROMO_CAPTURE_FLAG:
                     moveStr += (whiteStarted) ? "n" : "N";
                     break;
-                case game::move::Move::BISHOP_PROMO_CAPTURE_FLAG:
+                case representation::move::Move::BISHOP_PROMO_CAPTURE_FLAG:
                     moveStr += (whiteStarted) ? "b" : "B";
                     break;
-                case game::move::Move::ROOK_PROMO_CAPTURE_FLAG:
+                case representation::move::Move::ROOK_PROMO_CAPTURE_FLAG:
                     moveStr += (whiteStarted) ? "r" : "R";
                     break;
-                case game::move::Move::QUEEN_PROMO_CAPTURE_FLAG:
+                case representation::move::Move::QUEEN_PROMO_CAPTURE_FLAG:
                     moveStr += (whiteStarted) ? "q" : "Q";
                     break;
             }
@@ -158,10 +158,10 @@ protected:
         return fromTo;
     }
 
-    game::move::Move moveFromStrAndFlag(std::string moveStr, int flag) 
+    representation::move::Move moveFromStrAndFlag(std::string moveStr, int flag) 
     {
         fromToBitIndices fromTo = translateStrToFromTo(moveStr);
-        return game::move::Move(fromTo.from, fromTo.to, flag);
+        return representation::move::Move(fromTo.from, fromTo.to, flag);
     }
 
     std::unordered_map<std::string, long> nodeCountPerFirstMoveAsMap(bool whiteStarted) 

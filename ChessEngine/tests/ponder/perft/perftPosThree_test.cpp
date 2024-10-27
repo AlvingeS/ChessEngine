@@ -28,7 +28,7 @@ TEST_F(perftPosThree, perft_pos3)
     if (enablePos3Test) {
         searcher.setBoardFromFen(posThree);
 
-        // game::move::Move move = moveFromStrAndFlag("a5a4", 0);
+        // representation::move::Move move = moveFromStrAndFlag("a5a4", 0);
         // searcher.makeMove(move, true);
         // move = moveFromStrAndFlag("h4g4", 0);
         // searcher.makeMove(move, false);

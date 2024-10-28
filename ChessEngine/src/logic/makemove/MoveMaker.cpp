@@ -2,16 +2,15 @@
 
 #include "ChessEngine/src/logic/makemove/MoveUtils.h"
 
-#include "ChessEngine/src/representation/move/Move.h"
+#include "ChessEngine/src/model/move/Move.h"
 
 namespace logic {
-namespace makemove {
 
 MoveMaker::MoveMaker(
-    representation::board::Bitboards& bitBoards, 
-    representation::board::GameStateBitmasks& gameStateBitmasks, 
-    representation::board::SquaresLookup& squaresLookup, 
-    representation::board::ZHasher& zHasher,
+    model::Bitboards& bitBoards, 
+    model::GameStateBitmasks& gameStateBitmasks, 
+    model::SquaresLookup& squaresLookup, 
+    model::ZHasher& zHasher,
     engine::search::SearchMemory& searchMemory
 ) : _bitboardsRef(bitBoards), 
     _gameStateBitmasksRef(gameStateBitmasks), 
@@ -21,7 +20,7 @@ MoveMaker::MoveMaker(
 {}
 
 void MoveMaker::makeMove(
-    const representation::move::Move& move, 
+    const model::Move& move, 
     bool isWhite, 
     int currentDepth) 
 {
@@ -38,13 +37,13 @@ void MoveMaker::makeMove(
     //assert(fromIndex != toIndex);
 
     // Pick up the piece from the from square and get the moved piece type
-    representation::board::PieceType  movedPieceType = removeMovedPieceFromBoard(isWhite, fromIndex);
+    model::PieceType  movedPieceType = removeMovedPieceFromBoard(isWhite, fromIndex);
 
     // If the move is a capture, handle memory and remove the captured piece
     if (move.isAnyCapture()) {
         // Calculate index of captured piece, might be EP
         int captureIndex = determineCaptureIndex(move, isWhite, toIndex);
-        representation::board::PieceType  capturedPieceType = _squaresLookupRef.getPieceTypeAtIndex(captureIndex);
+        model::PieceType  capturedPieceType = _squaresLookupRef.getPieceTypeAtIndex(captureIndex);
         
         _searchMemoryRef.setLastCapturedPieceAtDepth(currentDepth, capturedPieceType);
         
@@ -87,10 +86,10 @@ void MoveMaker::makeCastleMove(bool isWhite,bool isKingSide)
         _gameStateBitmasksRef.clearWhitePiecesBit(fromRookInd);
         _gameStateBitmasksRef.setWhitePiecesBit(toRookInd);
 
-        _squaresLookupRef.setPieceTypeAtIndex(fromKingInd,representation::board::PieceType::EMPTY);
-        _squaresLookupRef.setPieceTypeAtIndex(toKingInd,representation::board::PieceType::W_KING);
-        _squaresLookupRef.setPieceTypeAtIndex(fromRookInd,representation::board::PieceType::EMPTY);
-        _squaresLookupRef.setPieceTypeAtIndex(toRookInd,representation::board::PieceType::W_ROOK);
+        _squaresLookupRef.setPieceTypeAtIndex(fromKingInd,model::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(toKingInd,model::PieceType::W_KING);
+        _squaresLookupRef.setPieceTypeAtIndex(fromRookInd,model::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(toRookInd,model::PieceType::W_ROOK);
     } else {
         fromKingInd = 59;
         toKingInd = isKingSide ? 57 : 61;
@@ -107,10 +106,10 @@ void MoveMaker::makeCastleMove(bool isWhite,bool isKingSide)
         _gameStateBitmasksRef.clearBlackPiecesBit(fromRookInd);
         _gameStateBitmasksRef.setBlackPiecesBit(toRookInd);
 
-        _squaresLookupRef.setPieceTypeAtIndex(fromKingInd,representation::board::PieceType::EMPTY);
-        _squaresLookupRef.setPieceTypeAtIndex(toKingInd,representation::board::PieceType::B_KING);
-        _squaresLookupRef.setPieceTypeAtIndex(fromRookInd,representation::board::PieceType::EMPTY);
-        _squaresLookupRef.setPieceTypeAtIndex(toRookInd,representation::board::PieceType::B_ROOK);
+        _squaresLookupRef.setPieceTypeAtIndex(fromKingInd,model::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(toKingInd,model::PieceType::B_KING);
+        _squaresLookupRef.setPieceTypeAtIndex(fromRookInd,model::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(toRookInd,model::PieceType::B_ROOK);
     }
 
     _gameStateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
@@ -133,14 +132,14 @@ void MoveMaker::makeTemporaryKingMove(bool isWhite, bool isKingSide)
 }
 
 
-representation::board::PieceType MoveMaker::removeMovedPieceFromBoard(bool isWhite, int fromIndex) 
+model::PieceType MoveMaker::removeMovedPieceFromBoard(bool isWhite, int fromIndex) 
 {
     // Determine the piece type of the piece being moved
-   representation::board::PieceType  movedPieceType = _squaresLookupRef.getPieceTypeAtIndex(fromIndex);
-    //assert(movedPieceType !=representation::board::PieceType::EMPTY);
+   model::PieceType  movedPieceType = _squaresLookupRef.getPieceTypeAtIndex(fromIndex);
+    //assert(movedPieceType !=model::PieceType::EMPTY);
     
     // Clear the piece from bitboards, squarelookup and gamestate bitmasks
-    _squaresLookupRef.setPieceTypeAtIndex(fromIndex,representation::board::PieceType::EMPTY);
+    _squaresLookupRef.setPieceTypeAtIndex(fromIndex,model::PieceType::EMPTY);
     _bitboardsRef.clearPieceTypeBit(fromIndex, movedPieceType);
 
     if (isWhite) {
@@ -155,7 +154,7 @@ representation::board::PieceType MoveMaker::removeMovedPieceFromBoard(bool isWhi
 void MoveMaker::placeMovedPieceOnBoard(
     bool isWhite, 
     int toIndex, 
-   representation::board::PieceType  movedPieceType) 
+   model::PieceType  movedPieceType) 
 {
     _bitboardsRef.setPieceTypeBit(toIndex, movedPieceType);
     _squaresLookupRef.setPieceTypeAtIndex(toIndex, movedPieceType);
@@ -168,11 +167,11 @@ void MoveMaker::placeMovedPieceOnBoard(
 }
 
 void MoveMaker::handleNoCaptureCount(
-    const representation::move::Move& move, 
+    const model::Move& move, 
     int currentDepth, 
-   representation::board::PieceType  movedPieceType)
+   model::PieceType  movedPieceType)
 {
-    if (not move.isAnyCapture() && (movedPieceType !=representation::board::PieceType::W_PAWN && movedPieceType !=representation::board::PieceType::B_PAWN)) {
+    if (not move.isAnyCapture() && (movedPieceType !=model::PieceType::W_PAWN && movedPieceType !=model::PieceType::B_PAWN)) {
         _searchMemoryRef.incrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
     } else {
         _searchMemoryRef.resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
@@ -180,7 +179,7 @@ void MoveMaker::handleNoCaptureCount(
 }
 
 void MoveMaker::handleEnPessantMemory(
-    const representation::move::Move& move, 
+    const model::Move& move, 
     bool isWhite, 
     int currentDepth, 
     int toIndex) 
@@ -192,8 +191,8 @@ void MoveMaker::handleEnPessantMemory(
     }
 }
 
-void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captureIndex,representation::board::PieceType  capturedPieceType) {
-    // Remove captured piece from board representations
+void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captureIndex,model::PieceType  capturedPieceType) {
+    // Remove captured piece from board models
     _bitboardsRef.clearPieceTypeBit(captureIndex, capturedPieceType);
 
     if (isWhite) {
@@ -206,9 +205,8 @@ void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captur
     // because the capture index points to the square where the pawn was
     // and is now empty, the square we moved to will have been updated
     if (isEP) {
-        _squaresLookupRef.setPieceTypeAtIndex(captureIndex,representation::board::PieceType::EMPTY);
+        _squaresLookupRef.setPieceTypeAtIndex(captureIndex,model::PieceType::EMPTY);
     }
 }
 
-} // namespace makemove
 } // namespace logic

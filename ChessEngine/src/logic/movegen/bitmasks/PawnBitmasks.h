@@ -3,7 +3,6 @@
 #include "ChessEngine/src/common.h"
 
 namespace logic {
-namespace movegen {
 namespace bitmasks {
 
 struct MoveType {
@@ -19,5 +18,4 @@ std::vector<bitmask> getAllStraightPawnMoveBitmasks(bool isWhite);
 std::vector<bitmask> getAllCapturePawnMoveBitmasks(bool isWhite);
 
 } // namespace bitmasks
-} // namespace movegen
 } // namespace logic

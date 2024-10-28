@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ChessEngine/src/representation/move/Move.h"
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/move/Move.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 namespace engine {
 namespace search {
@@ -23,23 +23,23 @@ public:
         return _castlingRights[depth];
     }
 
-    representation::board::PieceType getLastCapturedPieceAtDepth(int depth) const
+    model::PieceType getLastCapturedPieceAtDepth(int depth) const
     {
         return _lastCapturedPieces[depth];
     }
 
     void setLastCapturedPieceAtDepth(
         int currentDepth,
-        representation::board::PieceType pieceType) 
+        model::PieceType pieceType) 
     {
         _lastCapturedPieces[currentDepth] = pieceType;
     }
 
     void setCastlingRights(
         int currentDepth, 
-        const representation::move::Move& move, 
+        const model::Move& move, 
         bool isWhite, 
-        representation::board::PieceType movedPieceType
+        model::PieceType movedPieceType
     );
 
     void unsetCastlingRights(int currentDepth);
@@ -77,7 +77,7 @@ public:
 private:
     int _maxDepth;
     std::vector<unsigned char> _castlingRights;
-    std::vector<representation::board::PieceType> _lastCapturedPieces;
+    std::vector<model::PieceType> _lastCapturedPieces;
     std::vector<bitmask> _enPessantTargets;
     std::vector<int> _noCapturedOrPawnMoveCounts;
 

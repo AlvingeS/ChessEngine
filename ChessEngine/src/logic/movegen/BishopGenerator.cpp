@@ -2,16 +2,15 @@
 
 #include "ChessEngine/src/logic/movegen/RayLogic.h"
 
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 #include "ChessEngine/src/logic/movegen/utils/Containers.h"
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
-namespace movegen {
 
-BishopGenerator::BishopGenerator(const representation::board::Bitboards& bitboards, const representation::board::GameStateBitmasks& gameStateBitmasks) 
+BishopGenerator::BishopGenerator(const model::Bitboards& bitboards, const model::GameStateBitmasks& gameStateBitmasks) 
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
@@ -20,7 +19,7 @@ BishopGenerator::BishopGenerator(const representation::board::Bitboards& bitboar
 
 void BishopGenerator::generate(
     bool isWhite,
-    representation::move::Movelist& moveListRef)
+    model::Movelist& moveListRef)
 {
     std::vector<int>& bishopIndices = utils::Containers::getPiecePositionIndices();
 
@@ -39,5 +38,4 @@ void BishopGenerator::generate(
     }
 }
 
-} // namespace movegen
 } // namespace logic

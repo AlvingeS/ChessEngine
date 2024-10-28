@@ -9,15 +9,14 @@
 #include "ChessEngine/src/logic/movegen/KingGenerator.h"
 #include "ChessEngine/src/logic/movegen/PawnGenerator.h"
 #include "ChessEngine/src/logic/movegen/CastlingGenerator.h"
-#include "ChessEngine/src/representation/move/Movelist.h"
+#include "ChessEngine/src/model/move/Movelist.h"
 
-#include "ChessEngine/src/representation/move/Move.h"
+#include "ChessEngine/src/model/move/Move.h"
 #include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
 
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
 
 namespace logic {
-namespace movegen {
 
 class MoveGenerator {
 
@@ -27,35 +26,35 @@ public:
 
     // Public member functions
     MoveGenerator(
-        const representation::board::Bitboards& bitboards,
-        const representation::board::GameStateBitmasks& gameStateBitmasks,
-        logic::makemove::MoveMaker& moveMaker,
-        logic::makemove::MoveRetractor& moveRetractor
+        const model::Bitboards& bitboards,
+        const model::GameStateBitmasks& gameStateBitmasks,
+        logic::MoveMaker& moveMaker,
+        logic::MoveRetractor& moveRetractor
     );
 
     void genMoves(
         bool isWhite,
-        representation::move::Movelist& moveListRef,
+        model::Movelist& moveListRef,
         int currentDepth,
         unsigned char castlingRight
     );
     
-    void genRookMoves(bool isWhite, representation::move::Movelist& moveListRef);
-    void genBishopMoves(bool isWhite, representation::move::Movelist& moveListRef);
-    void genQueenMoves(bool isWhite, representation::move::Movelist& moveListRef);
-    void genKnightMoves(bool isWite, representation::move::Movelist& moveListRef);
-    void genKingMoves(bool isWhite, representation::move::Movelist& moveListRef);
+    void genRookMoves(bool isWhite, model::Movelist& moveListRef);
+    void genBishopMoves(bool isWhite, model::Movelist& moveListRef);
+    void genQueenMoves(bool isWhite, model::Movelist& moveListRef);
+    void genKnightMoves(bool isWite, model::Movelist& moveListRef);
+    void genKingMoves(bool isWhite, model::Movelist& moveListRef);
     
     void genPawnMoves(
         bool isWhite,
-        representation::move::Movelist& moveListRef,
+        model::Movelist& moveListRef,
         int currentDepth,
         engine::search::SearchMemory& searchMemory
     );
 
     void genCastlingMoves(
         bool isWhite,
-        representation::move::Movelist& moveListRef,
+        model::Movelist& moveListRef,
         unsigned char castlingRights
     );
     
@@ -63,11 +62,11 @@ public:
 
 private:
     // Private member variables
-    const representation::board::Bitboards& _bitboardsRef;
-    const representation::board::GameStateBitmasks& _gameStateBitmasksRef;
+    const model::Bitboards& _bitboardsRef;
+    const model::GameStateBitmasks& _gameStateBitmasksRef;
     
-    logic::makemove::MoveMaker& _moveMakerRef;
-    logic::makemove::MoveRetractor& _moveRetractorRef;
+    logic::MoveMaker& _moveMakerRef;
+    logic::MoveRetractor& _moveRetractorRef;
     engine::search::SearchMemory& _searchMemoryRef;
     
     CheckDetection _checkDetection;
@@ -80,5 +79,4 @@ private:
     CastlingGenerator _castlingGenerator;
 };
 
-} // namespace movegen
 } // namespace logic

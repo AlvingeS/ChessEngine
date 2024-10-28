@@ -1,9 +1,8 @@
 #pragma once
 
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 namespace logic {
-namespace movegen {
 namespace utils {
 
 constexpr bitmask FILE_MASK[8] = {
@@ -80,5 +79,4 @@ inline int manhattanDistance(int i, int j)
 }
 
 } // namespace utils
-} // namespace movegen
 } // namespace logic

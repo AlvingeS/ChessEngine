@@ -6,19 +6,18 @@
 #include <iostream>
 
 namespace engine {
-namespace perft {
 
 perft::perft(
     int maxDepth,
-    representation::board::Bitboards& bitboards,
-    representation::board::SquaresLookup& squaresLookup,
-    representation::board::GameStateBitmasks& gameStateBitmasks,
-    representation::board::ZHasher& zHasher,
-    logic::makemove::MoveMaker& moveMaker,
-    logic::makemove::MoveRetractor& moveRetractor,
-    logic::movegen::MoveGenerator& moveGenerator,
+    model::Bitboards& bitboards,
+    model::SquaresLookup& squaresLookup,
+    model::GameStateBitmasks& gameStateBitmasks,
+    model::ZHasher& zHasher,
+    logic::MoveMaker& moveMaker,
+    logic::MoveRetractor& moveRetractor,
+    logic::MoveGenerator& moveGenerator,
     engine::search::SearchMemory& searchMemory,
-    logic::evaluation::Evaluator& evaluator,
+    logic::Evaluator& evaluator,
     perftData& perftData) 
     : _bitboardsRef(bitboards)
     , _squaresLookupRef(squaresLookup)
@@ -40,8 +39,8 @@ perft::perft(
     _noCapturedOrPawnMoveCounts.resize(_maxDepth);
 
     for (int i = 0; i < _maxDepth; i++) {
-        _lastCapturedPieces[i] = representation::board::PieceType::EMPTY;
-        _movelists[i] = representation::move::Movelist();
+        _lastCapturedPieces[i] = model::PieceType::EMPTY;
+        _movelists[i] = model::Movelist();
         _noCapturedOrPawnMoveCounts[i] = 0;
     }
 }
@@ -55,7 +54,7 @@ void perft::genMoves(
 }
 
 void perft::makeMove(
-    representation::move::Move move,
+    model::Move move,
     bool isWhite,
     int currentdepth) 
 {
@@ -63,7 +62,7 @@ void perft::makeMove(
 }
 
 void perft::unmakeMove(
-    representation::move::Move move,
+    model::Move move,
     bool isWhite,
     int currentDepth)
 {
@@ -115,7 +114,7 @@ bool perft::tooManyPiecesOnBoard()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (_squaresLookupRef.getPieceTypeAtIndex(i) != representation::board::PieceType::EMPTY) {
+        if (_squaresLookupRef.getPieceTypeAtIndex(i) != model::PieceType::EMPTY) {
             count++;
         }
     }
@@ -127,8 +126,8 @@ bool perft::checkCondition(
     int currentDepth,
     bool isMaximizer,
     int firstMoveIndex, 
-    representation::move::Move currentMove, 
-    representation::move::Move lastMove, 
+    model::Move currentMove, 
+    model::Move lastMove, 
     bool verbose, 
     size_t i) const
 {
@@ -150,7 +149,7 @@ void perft::minimax(
     bool isMaximizer, 
     int firstMoveIndex, 
     bool recPerftStats, 
-    const representation::move::Move& lastMove, 
+    const model::Move& lastMove, 
     bool verbose)
 {        
     if (currentDepth == _maxDepth) {
@@ -167,8 +166,8 @@ void perft::minimax(
     
     size_t numIllegalMoves = 0;
 
-    for (size_t i = 0; i < logic::movegen::MoveGenerator::MAX_LEGAL_MOVES; i++) {
-        representation::move::Move currentMove = _movelists[currentDepth].getMoveAt(i);
+    for (size_t i = 0; i < logic::MoveGenerator::MAX_LEGAL_MOVES; i++) {
+        model::Move currentMove = _movelists[currentDepth].getMoveAt(i);
 
         if (currentMove.getMove() == 0) {
             break;
@@ -291,7 +290,7 @@ void perft::recordPerftStats(
     int currentDepth, 
     int &firstMoveIndex, 
     size_t i, 
-    const representation::move::Move& currentMove, 
+    const model::Move& currentMove, 
     bool &retFlag) 
 {
     retFlag = true;
@@ -333,5 +332,4 @@ void perft::recordPerftStats(
     retFlag = false;
 }
 
-} // namespace perft
 } // namespace engine

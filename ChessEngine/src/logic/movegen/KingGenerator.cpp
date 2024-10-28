@@ -1,23 +1,22 @@
 #include "ChessEngine/src/logic/movegen/KingGenerator.h"
 
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 #include "ChessEngine/src/logic/movegen/utils/Containers.h"
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
 
 namespace logic {
-namespace movegen {
 
 KingGenerator::KingGenerator(
-    const representation::board::Bitboards& bitboards,
-    const representation::board::GameStateBitmasks& gameStateBitmasks) 
+    const model::Bitboards& bitboards,
+    const model::GameStateBitmasks& gameStateBitmasks) 
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
     _kingBitmasks = bitmasks::getAllKingBitmasks();
 }
 
-void KingGenerator::generate(bool isWhite, representation::move::Movelist& moveListRef) 
+void KingGenerator::generate(bool isWhite, model::Movelist& moveListRef) 
 {
     std::vector<int>& kingIndices = utils::Containers::getPiecePositionIndices();
     std::vector<int>& freeMovesIndices = utils::Containers::getLeapingPiecefreeMovesIndices();
@@ -41,14 +40,13 @@ void KingGenerator::generate(bool isWhite, representation::move::Movelist& moveL
         utils::getBitIndices(capturableMovesIndices, capturableKingMoves);
 
         for (int freeKingMoveIndex : freeMovesIndices) {
-            moveListRef.addMove(representation::move::Move(currentKingIndex, freeKingMoveIndex, representation::move::Move::QUITE_FLAG));
+            moveListRef.addMove(model::Move(currentKingIndex, freeKingMoveIndex, model::Move::QUITE_FLAG));
         }
 
         for (int capturableKingMoveIndex : capturableMovesIndices) {
-            moveListRef.addMove(representation::move::Move(currentKingIndex, capturableKingMoveIndex, representation::move::Move::CAPTURE_FLAG));
+            moveListRef.addMove(model::Move(currentKingIndex, capturableKingMoveIndex, model::Move::CAPTURE_FLAG));
         }
     }
 }
 
-} // namespace movegen
 } // namespace logic

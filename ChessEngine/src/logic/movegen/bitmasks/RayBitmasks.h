@@ -3,7 +3,6 @@
 #include "ChessEngine/src/common.h"
 
 namespace logic {
-namespace movegen {
 namespace bitmasks {
 
 struct StraightRays {
@@ -36,5 +35,4 @@ std::vector<StraightRays> getAllStraightRayBitmasks();
 std::vector<DiagonalRays> getAllDiagonalRayBitmasks();
 
 } // namespace bitmasks
-} // namespace movegen
 } // namespace logic

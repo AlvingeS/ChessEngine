@@ -33,8 +33,8 @@
 //         moveGenerator.genCastlingMoves(true, movelist);
 
 //         Movelist moves = getMoves();
-//         std::unordered_set<move::Move> expectedMoves;
-//         insertExpectedMoves(expectedMoves, 0, {0, 0}, {move::Move::KING_CASTLE_FLAG, move::Move::QUEEN_CASTLE_FLAG});
+//         std::unordered_set<Move> expectedMoves;
+//         insertExpectedMoves(expectedMoves, 0, {0, 0}, {Move::KING_CASTLE_FLAG, Move::QUEEN_CASTLE_FLAG});
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             auto found = expectedMoves.find(movelist.getMoveAt(i));
@@ -50,8 +50,8 @@
 //         moveGenerator.genCastlingMoves(true, movelist);
 
 //         Movelist moves = getMoves();
-//         std::unordered_set<move::Move> expectedMoves;
-//         insertExpectedMoves(expectedMoves, 0, {0, 0}, {move::Move::KING_CASTLE_FLAG, move::Move::QUEEN_CASTLE_FLAG});
+//         std::unordered_set<Move> expectedMoves;
+//         insertExpectedMoves(expectedMoves, 0, {0, 0}, {Move::KING_CASTLE_FLAG, Move::QUEEN_CASTLE_FLAG});
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             auto found = expectedMoves.find(movelist.getMoveAt(i));
@@ -77,9 +77,9 @@
 //         moveGenerator.genCastlingMoves(true, movelist);
 
 //         Movelist moves = getMoves();
-//         std::unordered_set<move::Move> expectedMoves;
+//         std::unordered_set<Move> expectedMoves;
 
-//         insertExpectedMoves(expectedMoves, 0, {0}, {move::Move::QUEEN_CASTLE_FLAG});
+//         insertExpectedMoves(expectedMoves, 0, {0}, {Move::QUEEN_CASTLE_FLAG});
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             auto found = expectedMoves.find(movelist.getMoveAt(i));
@@ -96,9 +96,9 @@
 //         moveGenerator.genCastlingMoves(false, movelist);
 
 //         Movelist moves = getMoves();
-//         std::unordered_set<move::Move> expectedMoves;
+//         std::unordered_set<Move> expectedMoves;
 
-//         insertExpectedMoves(expectedMoves, 0, {0}, {move::Move::KING_CASTLE_FLAG});
+//         insertExpectedMoves(expectedMoves, 0, {0}, {Move::KING_CASTLE_FLAG});
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             auto found = expectedMoves.find(movelist.getMoveAt(i));
@@ -139,9 +139,9 @@
 //         moveGenerator.genCastlingMoves(true, movelist);
 
 //         Movelist moves = getMoves();
-//         std::unordered_set<move::Move> expectedMoves;
+//         std::unordered_set<Move> expectedMoves;
 
-//         insertExpectedMoves(expectedMoves, 0, {0}, {move::Move::KING_CASTLE_FLAG});
+//         insertExpectedMoves(expectedMoves, 0, {0}, {Move::KING_CASTLE_FLAG});
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             auto found = expectedMoves.find(movelist.getMoveAt(i));
@@ -158,9 +158,9 @@
 //         moveGenerator.genCastlingMoves(false, movelist);
 
 //         Movelist moves = getMoves();
-//         std::unordered_set<move::Move> expectedMoves;
+//         std::unordered_set<Move> expectedMoves;
 
-//         insertExpectedMoves(expectedMoves, 0, {0}, {move::Move::KING_CASTLE_FLAG});
+//         insertExpectedMoves(expectedMoves, 0, {0}, {Move::KING_CASTLE_FLAG});
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             auto found = expectedMoves.find(movelist.getMoveAt(i));
@@ -177,9 +177,9 @@
 //         moveGenerator.genCastlingMoves(true, movelist);
 
 //         Movelist moves = getMoves();
-//         std::unordered_set<move::Move> expectedMoves;
+//         std::unordered_set<Move> expectedMoves;
 
-//         insertExpectedMoves(expectedMoves, 0, {0}, {move::Move::QUEEN_CASTLE_FLAG});
+//         insertExpectedMoves(expectedMoves, 0, {0}, {Move::QUEEN_CASTLE_FLAG});
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             auto found = expectedMoves.find(movelist.getMoveAt(i));
@@ -196,9 +196,9 @@
 //         moveGenerator.genCastlingMoves(false, movelist);
 
 //         Movelist moves = getMoves();
-//         std::unordered_set<move::Move> expectedMoves;
+//         std::unordered_set<Move> expectedMoves;
 
-//         insertExpectedMoves(expectedMoves, 0, {0}, {move::Move::QUEEN_CASTLE_FLAG});
+//         insertExpectedMoves(expectedMoves, 0, {0}, {Move::QUEEN_CASTLE_FLAG});
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             auto found = expectedMoves.find(movelist.getMoveAt(i));

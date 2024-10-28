@@ -1,17 +1,16 @@
 #include "ChessEngine/src/logic/movegen/PawnGenerator.h"
 
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 #include "ChessEngine/src/logic/movegen/utils/Containers.h"
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
 
 namespace logic {
-namespace movegen {
 
 PawnGenerator::PawnGenerator(
-    const representation::board::Bitboards& bitboards,
-    const representation::board::GameStateBitmasks& gameStateBitmasks) 
+    const model::Bitboards& bitboards,
+    const model::GameStateBitmasks& gameStateBitmasks) 
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
@@ -23,7 +22,7 @@ PawnGenerator::PawnGenerator(
 
 void PawnGenerator::generate(
     bool isWhite,
-    representation::move::Movelist& moveListRef,
+    model::Movelist& moveListRef,
     int currentDepth,
     engine::search::SearchMemory& searchMemory)
 {
@@ -59,39 +58,38 @@ void PawnGenerator::generate(
         if (freeMovesIndices.size() == 2) {
             int singleStepIndex = (isWhite ? 0 : 1);
             int doubleStepIndex = (isWhite ? 1 : 0);
-
-            moveListRef.addMove(representation::move::Move(currentPawnIndex, freeMovesIndices[singleStepIndex], representation::move::Move::QUITE_FLAG));
-            moveListRef.addMove(representation::move::Move(currentPawnIndex, freeMovesIndices[doubleStepIndex], representation::move::Move::DOUBLE_PAWN_PUSH_FLAG));
+            
+            moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[singleStepIndex], model::Move::QUITE_FLAG));
+            moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[doubleStepIndex], model::Move::DOUBLE_PAWN_PUSH_FLAG));
 
         } else if (freeMovesIndices.size() == 1 && freeMovesIndices[0] == currentPawnIndex + offset) {
             // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces
             if (canPromote) {
-                moveListRef.addMove(representation::move::Move(currentPawnIndex, freeMovesIndices[0], representation::move::Move::KNIGHT_PROMO_FLAG));
-                moveListRef.addMove(representation::move::Move(currentPawnIndex, freeMovesIndices[0], representation::move::Move::BISHOP_PROMO_FLAG));
-                moveListRef.addMove(representation::move::Move(currentPawnIndex, freeMovesIndices[0], representation::move::Move::ROOK_PROMO_FLAG));
-                moveListRef.addMove(representation::move::Move(currentPawnIndex, freeMovesIndices[0], representation::move::Move::QUEEN_PROMO_FLAG));
+                moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::KNIGHT_PROMO_FLAG));
+                moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::BISHOP_PROMO_FLAG));
+                moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::ROOK_PROMO_FLAG));
+                moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::QUEEN_PROMO_FLAG));
             
             } else {
-                moveListRef.addMove(representation::move::Move(currentPawnIndex, freeMovesIndices[0], representation::move::Move::QUITE_FLAG));
+                moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::QUITE_FLAG));
             }
         }
 
         for (int capturablePawnMoveIndex : capturableMovesIndices) {
             if (canPromote) {
-                moveListRef.addMove(representation::move::Move(currentPawnIndex, capturablePawnMoveIndex, representation::move::Move::QUEEN_PROMO_CAPTURE_FLAG));
-                moveListRef.addMove(representation::move::Move(currentPawnIndex, capturablePawnMoveIndex, representation::move::Move::ROOK_PROMO_CAPTURE_FLAG));
-                moveListRef.addMove(representation::move::Move(currentPawnIndex, capturablePawnMoveIndex, representation::move::Move::BISHOP_PROMO_CAPTURE_FLAG));
-                moveListRef.addMove(representation::move::Move(currentPawnIndex, capturablePawnMoveIndex, representation::move::Move::KNIGHT_PROMO_CAPTURE_FLAG));
+                moveListRef.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::QUEEN_PROMO_CAPTURE_FLAG));
+                moveListRef.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::ROOK_PROMO_CAPTURE_FLAG));
+                moveListRef.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::BISHOP_PROMO_CAPTURE_FLAG));
+                moveListRef.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::KNIGHT_PROMO_CAPTURE_FLAG));
             } else {
-                moveListRef.addMove(representation::move::Move(currentPawnIndex, capturablePawnMoveIndex, representation::move::Move::CAPTURE_FLAG));
+                moveListRef.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::CAPTURE_FLAG));
             }
         }
 
         if ((capturePawnMoveBitmask & enPessantTarget) != 0) {
-            moveListRef.addMove(representation::move::Move(currentPawnIndex, utils::indexOfLSB(capturePawnMoveBitmask & enPessantTarget), representation::move::Move::EP_CAPTURE_FLAG));
+            moveListRef.addMove(model::Move(currentPawnIndex, utils::indexOfLSB(capturePawnMoveBitmask & enPessantTarget), model::Move::EP_CAPTURE_FLAG));
         }
     }
 }
 
-} // namespace movegen
 } // namespace logic

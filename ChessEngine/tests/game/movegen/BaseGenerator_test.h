@@ -25,8 +25,8 @@ protected:
     board::SquaresLookup squaresLookup;
     ponder::perft::SearchMemory searchMemory;
     board::ZHasher zHasher;
-    move::MoveMaker moveMaker;
-    move::MoveRetractor moveRetractor;
+    MoveMaker moveMaker;
+    MoveRetractor moveRetractor;
     MoveGenerator moveGenerator;
     std::string startingPos;
     Movelist movelist;
@@ -51,9 +51,9 @@ protected:
         bitboards.resetBitboards();
     }
 
-    void insertExpectedMoves(std::unordered_set<move::Move>& moves, int fromBitIndex, const std::vector<int>& toBitIndices, const std::vector<int>& flags) {
+    void insertExpectedMoves(std::unordered_set<Move>& moves, int fromBitIndex, const std::vector<int>& toBitIndices, const std::vector<int>& flags) {
         for (size_t i = 0; i < toBitIndices.size(); i++) {
-            moves.insert(move::Move(fromBitIndex, toBitIndices[i], flags[i]));
+            moves.insert(Move(fromBitIndex, toBitIndices[i], flags[i]));
         }
     }
 

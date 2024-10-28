@@ -1,18 +1,16 @@
 #pragma once
 
-#include "ChessEngine/src/representation/board/Bitboards.h"
+#include "ChessEngine/src/model/board/Bitboards.h"
 
 namespace logic {
-namespace evaluation {
 
 class Evaluator {
 
 public:
-    Evaluator(representation::board::Bitboards& bitboards);
+    Evaluator(model::Bitboards& bitboards);
     float evaluate();
 private:
-    representation::board::Bitboards& _bitboards;
+    model::Bitboards& _bitboards;
 };
 
-} // namespace evaluation
 } // namespace logic

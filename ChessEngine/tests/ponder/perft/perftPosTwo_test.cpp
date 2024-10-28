@@ -28,10 +28,10 @@ TEST_F(perftPosTwo, perft_pos2)
         searcher.setBoardFromFen(posTwo);
 
         // Make dubug move
-        // representation::move::Move move = moveFromStrAndFlag("a2a3", 0);
+        // model::Move move = moveFromStrAndFlag("a2a3", 0);
         // searcher.makeMove(move, true);
         // move = moveFromStrAndFlag("c7c6", 0);
-        // searcher.makeMove(representation::move::Move(0, 0, representation::move::Move::QUEEN_CASTLE_FLAG), false);
+        // searcher.makeMove(model::Move(0, 0, model::Move::QUEEN_CASTLE_FLAG), false);
 
         int nDebugMoves = 0;
 

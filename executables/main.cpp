@@ -76,7 +76,7 @@ int main()
     // Start clock
     auto start = std::chrono::high_resolution_clock::now();
 
-    logic::movegen::utils::Containers::init();
+    logic::utils::Containers::init();
 
     int const MAX_DEPTH = 4;
 
@@ -87,19 +87,19 @@ int main()
     
     bool recPerftStats = false;
 
-    engine::perft::perft searcherStartPos = engine::perft::perft(MAX_DEPTH);
+    engine::perft searcherStartPos = engine::perft(MAX_DEPTH);
     searcherStartPos.setBoardFromFen(startPos);
     searcherStartPos.minimax(0, true, 0, recPerftStats);
 
-    engine::perft::perft searcherPosTwo = engine::perft::perft(MAX_DEPTH);
+    engine::perft searcherPosTwo = engine::perft(MAX_DEPTH);
     searcherPosTwo.setBoardFromFen(posTwo);
     searcherPosTwo.minimax(0, true, 0, recPerftStats);
     
-    engine::perft::perft searcherPosThree = engine::perft::perft(MAX_DEPTH);
+    engine::perft searcherPosThree = engine::perft(MAX_DEPTH);
     searcherPosThree.setBoardFromFen(posThree);
     searcherPosThree.minimax(0, true, 0, recPerftStats);
 
-    engine::perft::perft searcherPosFive = engine::perft::perft(MAX_DEPTH);
+    engine::perft searcherPosFive = engine::perft(MAX_DEPTH);
     searcherPosFive.setBoardFromFen(posFive);
     searcherPosFive.minimax(0, true, 0, recPerftStats);
 

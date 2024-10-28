@@ -1,9 +1,8 @@
 #pragma once
 
-#include "ChessEngine/src/representation/move/Movelist.h"
+#include "ChessEngine/src/model/move/Movelist.h"
 
 namespace logic {
-namespace movegen {
 namespace RayLogic {
 
     void addMovesFromStraightRay(
@@ -14,7 +13,7 @@ namespace RayLogic {
         int pieceIndex,
         int pieceRank,
         int pieceFile,
-        representation::move::Movelist& moveListRef,
+        model::Movelist& moveListRef,
         bitmask whitePiecesBitmask,
         bitmask occupiedPiecesBitmask
     );
@@ -26,7 +25,7 @@ namespace RayLogic {
         int pieceIndex,
         int pieceRank,
         int pieceFile,
-        representation::move::Movelist& moveListRef,
+        model::Movelist& moveListRef,
         bitmask whitePiecesBitmask,
         bitmask occupiedPiecesBitmask
     );
@@ -46,5 +45,4 @@ namespace RayLogic {
     );
 
 } // namespace raylogic
-} // namespace movegen
 } // namespace logic

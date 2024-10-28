@@ -1,7 +1,6 @@
 #include "ChessEngine/src/logic/movegen/utils/Containers.h"
 
 namespace logic {
-namespace movegen {
 namespace utils {
 
 std::vector<int> Containers::_slidingPiecefreeMovesIndices;
@@ -21,5 +20,4 @@ void Containers::init() {
 }
 
 } // namespace utils
-} // namespace movegen
 } // namespace logic

@@ -1,9 +1,8 @@
 #pragma once
 
-#include "ChessEngine/src/representation/board/Bitboards.h"
+#include "ChessEngine/src/model/board/Bitboards.h"
 
-namespace representation {
-namespace board {
+namespace model {
 
 class GameStateBitmasks {
 
@@ -111,5 +110,4 @@ private:
     bitmask _emptySquaresBitmask;
 };
 
-} // namespace board
-} // namespace representation
+} // namespace model

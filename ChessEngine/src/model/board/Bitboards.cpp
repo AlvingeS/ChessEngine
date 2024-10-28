@@ -1,7 +1,6 @@
-#include "ChessEngine/src/representation/board/Bitboards.h"
+#include "ChessEngine/src/model/board/Bitboards.h"
 
-namespace representation {
-namespace board {
+namespace model {
 
 Bitboards::Bitboards() 
 {
@@ -36,5 +35,4 @@ Bitboards::Bitboards()
     _bitboards.push_back(&_blackKingBitboard);
 }
 
-} // namespace board
-} // namespace representation
+} // namespace model

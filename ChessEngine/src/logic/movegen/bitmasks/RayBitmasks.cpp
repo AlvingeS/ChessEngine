@@ -3,7 +3,6 @@
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
-namespace movegen {
 namespace bitmasks {
 
 bitmask getNorthRay(int ind) 
@@ -169,5 +168,4 @@ std::vector<DiagonalRays> getAllDiagonalRayBitmasks()
 }
 
 } // namespace bitmasks
-} // namespace movegen
 } // namespace logic

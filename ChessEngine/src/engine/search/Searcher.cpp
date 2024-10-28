@@ -9,14 +9,14 @@ namespace engine {
 namespace search {
 
 Searcher::Searcher(int maxDepth) 
-    : _bitboards(representation::board::Bitboards())
-    , _squaresLookup(representation::board::SquaresLookup(_bitboards))
-    , _gameStateBitmasks(representation::board::GameStateBitmasks(_bitboards))
+    : _bitboards(model::Bitboards())
+    , _squaresLookup(model::SquaresLookup(_bitboards))
+    , _gameStateBitmasks(model::GameStateBitmasks(_bitboards))
     , _searchMemory(SearchMemory(maxDepth))
-    , _zHasher(representation::board::ZHasher(_squaresLookup))
-    , _moveMaker(logic::makemove::MoverMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
-    , _moveRetractor(logic::makemove::MoveMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
-    , _moveGenerator(logic::movegen::MoveGenerator(_bitboards, _gameStateBitmasks, _moveMaker, _moveRetractor))
+    , _zHasher(model::ZHasher(_squaresLookup))
+    , _moveMaker(logic::MoverMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
+    , _moveRetractor(logic::MoveMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
+    , _moveGenerator(logic::MoveGenerator(_bitboards, _gameStateBitmasks, _moveMaker, _moveRetractor))
     , _evaluator(evaluation::Evaluator(_bitboards))
     , _maxDepth(maxDepth)
 {
@@ -28,7 +28,7 @@ Searcher::Searcher(int maxDepth)
 
     for (int i = 0; i < MAX_LEGAL_MOVES; i++) {
         _nodeCountPerFirstMove[i] = 0;
-        _firstMoves[i] = representation::move::Move();
+        _firstMoves[i] = model::Move();
     }
 
     _lastCapturedPieces.resize(_maxDepth);
@@ -36,8 +36,8 @@ Searcher::Searcher(int maxDepth)
     _noCapturedOrPawnMoveCounts.resize(_maxDepth);
 
     for (int i = 0; i < _maxDepth; i++) {
-        _lastCapturedPieces[i] = representation::board::PieceType::EMPTY;
-        _movelists[i] = representation::move::Movelist();
+        _lastCapturedPieces[i] = model::PieceType::EMPTY;
+        _movelists[i] = model::Movelist();
         _noCapturedOrPawnMoveCounts[i] = 0;
     }
 
@@ -79,7 +79,7 @@ void Searcher::genMoves(
 }
 
 void Searcher::makeMove(
-    representation::move::Move move,
+    model::Move move,
     bool isWhite,
     int currentdepth) 
 {
@@ -87,7 +87,7 @@ void Searcher::makeMove(
 }
 
 void Searcher::unmakeMove(
-    representation::move::Move move,
+    model::Move move,
     bool isWhite,
     int currentDepth)
 {
@@ -139,7 +139,7 @@ bool Searcher::tooManyPiecesOnBoard()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (_squaresLookup.getPieceTypeAtIndex(i) != representation::board::PieceType::EMPTY) {
+        if (_squaresLookup.getPieceTypeAtIndex(i) != model::PieceType::EMPTY) {
             count++;
         }
     }
@@ -151,8 +151,8 @@ bool Searcher::checkCondition(
     int currentDepth,
     bool isMaximizer,
     int firstMoveIndex, 
-    representation::move::Move currentMove, 
-    representation::move::Move lastMove, 
+    model::Move currentMove, 
+    model::Move lastMove, 
     bool verbose, 
     size_t i) const
 {
@@ -174,7 +174,7 @@ void Searcher::minimax(
     bool isMaximizer, 
     int firstMoveIndex, 
     bool recPerftStats, 
-    const representation::move::Move& lastMove, 
+    const model::Move& lastMove, 
     bool verbose)
 {        
     if (currentDepth == _maxDepth) {
@@ -192,7 +192,7 @@ void Searcher::minimax(
     size_t numIllegalMoves = 0;
 
     for (size_t i = 0; i < MAX_LEGAL_MOVES; i++) {
-        representation::move::Move currentMove = _movelists[currentDepth].getMoveAt(i);
+        model::Move currentMove = _movelists[currentDepth].getMoveAt(i);
 
         if (currentMove.getMove() == 0) {
             break;
@@ -315,7 +315,7 @@ void Searcher::recordPerftStats(
     int currentDepth, 
     int &firstMoveIndex, 
     size_t i, 
-    const representation::move::Move& currentMove, 
+    const model::Move& currentMove, 
     bool &retFlag) 
 {
     retFlag = true;

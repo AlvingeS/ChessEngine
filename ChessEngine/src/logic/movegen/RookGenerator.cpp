@@ -1,17 +1,16 @@
 #include "ChessEngine/src/logic/movegen/RookGenerator.h"
 
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 #include "ChessEngine/src/logic/movegen/utils/Containers.h"
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
 
 namespace logic {
-namespace movegen {
 
 RookGenerator::RookGenerator(
-    const representation::board::Bitboards& bitboards,
-    const representation::board::GameStateBitmasks& gameStateBitmasks)
+    const model::Bitboards& bitboards,
+    const model::GameStateBitmasks& gameStateBitmasks)
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
@@ -20,7 +19,7 @@ RookGenerator::RookGenerator(
 
 void RookGenerator::generate(
     bool isWhite,
-    representation::move::Movelist& moveListRef)
+    model::Movelist& moveListRef)
 {
     std::vector<int>& rookIndices = utils::Containers::getPiecePositionIndices();
 
@@ -89,5 +88,4 @@ void RookGenerator::generate(
     }
 }
 
-} // namespace movegen
 } // namespace logic

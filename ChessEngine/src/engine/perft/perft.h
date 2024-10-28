@@ -5,12 +5,12 @@
 
 #include "ChessEngine/src/io/Fen.h"
 
-#include "ChessEngine/src/representation/board/ZHasher.h"
-#include "ChessEngine/src/representation/board/Bitboards.h"
-#include "ChessEngine/src/representation/board/GameStateBitmasks.h"
-#include "ChessEngine/src/representation/move/Movelist.h"
-#include "ChessEngine/src/representation/move/Move.h"
-#include "ChessEngine/src/representation/board/SquaresLookup.h"
+#include "ChessEngine/src/model/board/ZHasher.h"
+#include "ChessEngine/src/model/board/Bitboards.h"
+#include "ChessEngine/src/model/board/GameStateBitmasks.h"
+#include "ChessEngine/src/model/move/Movelist.h"
+#include "ChessEngine/src/model/move/Move.h"
+#include "ChessEngine/src/model/board/SquaresLookup.h"
 
 #include "ChessEngine/src/logic/makemove/MoveMaker.h"
 #include "ChessEngine/src/logic/makemove/MoveRetractor.h"
@@ -18,22 +18,21 @@
 #include "ChessEngine/src/logic/evaluation/Evaluator.h"
 
 namespace engine {
-namespace perft {
 
 class perft {
 
 public:
     perft (
         int maxDepth,
-        representation::board::Bitboards& bitboards,
-        representation::board::SquaresLookup& squaresLookup,
-        representation::board::GameStateBitmasks& gameStateBitmasks,
-        representation::board::ZHasher& zHasher,
-        logic::makemove::MoveMaker& moveMaker,
-        logic::makemove::MoveRetractor& moveRetractor,
-        logic::movegen::MoveGenerator& moveGenerator,
+        model::Bitboards& bitboards,
+        model::SquaresLookup& squaresLookup,
+        model::GameStateBitmasks& gameStateBitmasks,
+        model::ZHasher& zHasher,
+        logic::MoveMaker& moveMaker,
+        logic::MoveRetractor& moveRetractor,
+        logic::MoveGenerator& moveGenerator,
         engine::search::SearchMemory& searchMemory,
-        logic::evaluation::Evaluator& evaluator,
+        logic::Evaluator& evaluator,
         perftData& perftData
     );
     
@@ -42,7 +41,7 @@ public:
         bool isMaximizer, 
         int firstMoveIndex,
         bool recPerftStats = true,
-        const representation::move::Move& lastMove = representation::move::Move(),
+        const model::Move& lastMove = model::Move(),
         bool verbose = true
     );
 
@@ -51,7 +50,7 @@ public:
         int currentDepth,
         int &firstMoveIndex,
         size_t i,
-        const representation::move::Move& currentMove,
+        const model::Move& currentMove,
         bool &retFlag
     );
 
@@ -61,8 +60,8 @@ public:
         unsigned char castlingRights
     );
 
-    void makeMove(representation::move::Move move, bool isWhite, int currentDepth);
-    void unmakeMove(representation::move::Move move, bool isWhite, int currentDepth);
+    void makeMove(model::Move move, bool isWhite, int currentDepth);
+    void unmakeMove(model::Move move, bool isWhite, int currentDepth);
     void undoMove();
     
     int _numMoveGenCalls;
@@ -74,8 +73,8 @@ public:
         int currentDepth,
         bool isMaximizer, 
         int firstMoveIndex, 
-        representation::move::Move currentMove, 
-        representation::move::Move lastMove, 
+        model::Move currentMove, 
+        model::Move lastMove, 
         bool verbose, 
         size_t i
     ) const;
@@ -89,7 +88,7 @@ public:
         return _maxDepth;
     }
 
-    const logic::movegen::MoveGenerator& getMoveGenerator() const
+    const logic::MoveGenerator& getMoveGenerator() const
     {
         return _moveGeneratorRef;
     }
@@ -112,26 +111,25 @@ public:
     
 private:
     int _maxDepth;
-    representation::board::Bitboards& _bitboardsRef;
-    representation::board::SquaresLookup& _squaresLookupRef;
-    representation::board::GameStateBitmasks& _gameStateBitmasksRef;
-    representation::board::ZHasher& _zHasherRef;
+    model::Bitboards& _bitboardsRef;
+    model::SquaresLookup& _squaresLookupRef;
+    model::GameStateBitmasks& _gameStateBitmasksRef;
+    model::ZHasher& _zHasherRef;
     
-    logic::makemove::MoveMaker& _moveMakerRef;
-    logic::makemove::MoveRetractor& _moveRetractorRef;
-    logic::movegen::MoveGenerator& _moveGeneratorRef;
-    logic::evaluation::Evaluator& _evaluatorRef;
+    logic::MoveMaker& _moveMakerRef;
+    logic::MoveRetractor& _moveRetractorRef;
+    logic::MoveGenerator& _moveGeneratorRef;
+    logic::Evaluator& _evaluatorRef;
     
     search::SearchMemory& _searchMemoryRef;
     perftData& _perftDataRef;
 
     int _pseudoLegalMovesCount;
-    std::vector<representation::move::Movelist> _movelists;
-    std::vector<representation::board::PieceType> _lastCapturedPieces;
+    std::vector<model::Movelist> _movelists;
+    std::vector<model::PieceType> _lastCapturedPieces;
     std::vector<int> _noCapturedOrPawnMoveCounts; 
 
     bool tooManyPiecesOnBoard();
 };
 
-} // namespace perft
 } // namespace engine

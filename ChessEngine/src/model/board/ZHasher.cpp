@@ -1,11 +1,10 @@
-#include "ChessEngine/src/representation/board/ZHasher.h"
-#include "ChessEngine/src/representation/board/SquaresLookup.h"
+#include "ChessEngine/src/model/board/ZHasher.h"
+#include "ChessEngine/src/model/board/SquaresLookup.h"
 
 #include <iostream>
 #include <random>
 
-namespace representation {
-namespace board {
+namespace model {
 
 ZHasher::ZHasher(SquaresLookup& squaresLookup) 
     : _squaresLookupRef(squaresLookup)
@@ -61,5 +60,4 @@ void ZHasher::computeInitialHash()
     _hash ^= _randIsWhiteNum;
 }
 
-} // namespace board
-} // namespace representation
+} // namespace model

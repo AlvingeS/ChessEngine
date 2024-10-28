@@ -1,6 +1,6 @@
 #include "ChessEngine/src/engine/search/SearchMemory.h"
 
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 namespace engine {
 namespace search {
@@ -14,7 +14,7 @@ SearchMemory::SearchMemory(int maxDepth) : _maxDepth(maxDepth)
 
     for (int i = 0; i <= _maxDepth; i++) {
         _castlingRights[i] = 0b1111;
-        _lastCapturedPieces[i] = representation::board::PieceType::EMPTY;
+        _lastCapturedPieces[i] = model::PieceType::EMPTY;
         _enPessantTargets[i] = 0ULL;
         _noCapturedOrPawnMoveCounts[i] = 0;
     }
@@ -38,9 +38,9 @@ void SearchMemory::restoreCastlingRightsForRemainingDepths(int currentDepth)
 
 void SearchMemory::setCastlingRights(
     int currentDepth, 
-    const representation::move::Move& move, 
+    const model::Move& move, 
     bool isWhite, 
-    representation::board::PieceType movedPieceType) 
+    model::PieceType movedPieceType) 
 {
     if (move.isAnyCastle()) {
         removeCastlingRightsForRemainingDepths(
@@ -49,7 +49,7 @@ void SearchMemory::setCastlingRights(
         );
     }
 
-    if (movedPieceType == representation::board::PieceType::W_KING || movedPieceType == representation::board::PieceType::B_KING) {
+    if (movedPieceType == model::PieceType::W_KING || movedPieceType == model::PieceType::B_KING) {
         if (isWhite) {
             if (_castlingRights[currentDepth] & whiteBoth)
                 removeCastlingRightsForRemainingDepths(currentDepth, whiteBoth);
@@ -59,7 +59,7 @@ void SearchMemory::setCastlingRights(
         }
     }
 
-    if (movedPieceType == representation::board::PieceType::W_ROOK || movedPieceType == representation::board::PieceType::B_ROOK) {
+    if (movedPieceType == model::PieceType::W_ROOK || movedPieceType == model::PieceType::B_ROOK) {
         if (isWhite) {
             if (move.getBitIndexFrom() == 0) {
                 if (_castlingRights[currentDepth] & whiteKingSide)

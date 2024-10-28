@@ -1,7 +1,6 @@
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
-namespace representation {
-namespace board {
+namespace model {
 
 PieceType CharToPieceType(char c) 
 {
@@ -51,5 +50,4 @@ PieceType intToPieceType(int i)
     return static_cast<PieceType>(i);
 }
 
-} // namespace board
-} // namespace representation
+} // namespace model

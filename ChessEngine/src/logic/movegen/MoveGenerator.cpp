@@ -11,13 +11,12 @@
 #include <iostream>
 
 namespace logic {
-namespace movegen {
 
 MoveGenerator::MoveGenerator(
-    const representation::board::Bitboards& bitboards,
-    const representation::board::GameStateBitmasks& gameStateBitmasks,
-    logic::makemove::MoveMaker& moveMaker,
-    logic::makemove::MoveRetractor& moveRetractor)
+    const model::Bitboards& bitboards,
+    const model::GameStateBitmasks& gameStateBitmasks,
+    logic::MoveMaker& moveMaker,
+    logic::MoveRetractor& moveRetractor)
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
     , _moveMakerRef(moveMaker)
@@ -36,7 +35,7 @@ MoveGenerator::MoveGenerator(
 
 void MoveGenerator::genMoves(
     bool isWhite,
-    representation::move::Movelist& moveListRef,
+    model::Movelist& moveListRef,
     int currentDepth,
     unsigned char castlingRights)
 {
@@ -53,42 +52,42 @@ void MoveGenerator::genMoves(
 
 void MoveGenerator::genRookMoves(
     bool isWhite,
-    representation::move::Movelist& moveListRef)
+    model::Movelist& moveListRef)
 {
     _rookGenerator.generate(isWhite, moveListRef);
 }
 
 void MoveGenerator::genBishopMoves(
     bool isWhite,
-    representation::move::Movelist& moveListRef)
+    model::Movelist& moveListRef)
 {
     _bishopGenerator.generate(isWhite, moveListRef);
 }
 
 void MoveGenerator::genQueenMoves(
     bool isWhite,
-    representation::move::Movelist& moveListRef)
+    model::Movelist& moveListRef)
 {
     _queenGenerator.generate(isWhite, moveListRef);;
 }
 
 void MoveGenerator::genKnightMoves(
     bool isWhite,
-    representation::move::Movelist& moveListRef)
+    model::Movelist& moveListRef)
 {
     _knightGenerator.generate(isWhite, moveListRef);
 }
 
 void MoveGenerator::genKingMoves(
     bool isWhite,
-    representation::move::Movelist& moveListRef)
+    model::Movelist& moveListRef)
 {
     _kingGenerator.generate(isWhite, moveListRef);
 }
 
 void MoveGenerator::genPawnMoves(
     bool isWhite,
-    representation::move::Movelist& moveListRef,
+    model::Movelist& moveListRef,
     int currentDepth,
     engine::search::SearchMemory& searchMemory)
 {
@@ -97,7 +96,7 @@ void MoveGenerator::genPawnMoves(
 
 void MoveGenerator::genCastlingMoves(
     bool isWhite,
-    representation::move::Movelist& moveListRef,
+    model::Movelist& moveListRef,
     unsigned char castlingRights)
 {
     _castlingGenerator.generate(isWhite, moveListRef, castlingRights);
@@ -107,5 +106,4 @@ bool MoveGenerator::isInCheck(bool isWhite) {
     return _checkDetection.isInCheck(isWhite);
 }
 
-} // namespace movegen
 } // namespace logic

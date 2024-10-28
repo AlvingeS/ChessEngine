@@ -3,7 +3,6 @@
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
-namespace movegen {
 namespace bitmasks {
 
 bitmask applyCapturePawnMoves(int ind, bool isWhite) 
@@ -82,5 +81,4 @@ std::vector<bitmask> getAllCapturePawnMoveBitmasks(bool isWhite)
 }
 
 } // namespace bitmasks
-} // namspace masks
 } // namespace logic

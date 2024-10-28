@@ -7,7 +7,7 @@
 #include "ChessEngine/src/utils/Fen.h"
 
 namespace game {
-namespace board {
+
 
 class BitboardsTest : public ::testing::Test 
 {

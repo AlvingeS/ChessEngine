@@ -1,17 +1,16 @@
 #include "ChessEngine/src/logic/movegen/CastlingGenerator.h"
 
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
-namespace movegen {
 
 CastlingGenerator::CastlingGenerator(
-    const representation::board::Bitboards& bitboards,
-    const representation::board::GameStateBitmasks& gameStateBitmasks,
-    logic::makemove::MoveMaker& moveMaker, 
-    logic::makemove::MoveRetractor& moveRetractor, 
+    const model::Bitboards& bitboards,
+    const model::GameStateBitmasks& gameStateBitmasks,
+    logic::MoveMaker& moveMaker, 
+    logic::MoveRetractor& moveRetractor, 
     CheckDetection* checkDetection)
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
@@ -27,7 +26,7 @@ CastlingGenerator::CastlingGenerator(
 
 void CastlingGenerator::generate(
     bool isWhite,
-    representation::move::Movelist& movelist,
+    model::Movelist& movelist,
     unsigned char castlingRights) 
 {
     if (castlingRights == 0) {
@@ -102,7 +101,7 @@ void CastlingGenerator::unmakeTemporaryKingMove(bool isWhite, bool isKingSide)
 void CastlingGenerator::genSingleCastleMove(
     bool isWhite,
     bool isKingSide,
-    representation::move::Movelist& moveListRef)
+    model::Movelist& moveListRef)
 {                                                  
     // Check that there are no pieces between the king and rook
     bitmask spaceBetweenCastlersBitmask = isWhite ? (isKingSide ? _whiteKingSideCastleBitmask 
@@ -131,11 +130,10 @@ void CastlingGenerator::genSingleCastleMove(
     
     unmakeTemporaryKingMove(isWhite, isKingSide);
 
-    int moveFlag = isKingSide ? representation::representation::move::Move::KING_CASTLE_FLAG 
-                              : representation::representation::move::Move::QUEEN_CASTLE_FLAG;    
+    int moveFlag = isKingSide ? model::Move::KING_CASTLE_FLAG 
+                              : model::Move::QUEEN_CASTLE_FLAG;    
 
-    moveListRef.addMove(representation::representation::move::Move(0, 0, moveFlag));
+    moveListRef.addMove(model::Move(0, 0, moveFlag));
 }
 
-} // namespace movegen
 } // namespace logic

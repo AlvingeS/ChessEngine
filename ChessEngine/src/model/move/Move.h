@@ -1,11 +1,10 @@
 #pragma once
 
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 #include <functional>
 
-namespace representation {
-namespace move {
+namespace model {
 
 class Move {
 
@@ -147,13 +146,12 @@ private:
     int _move;
 };
 
-} // namespace move
-} // namespace representation
+} // namespace model
 
 namespace std {
     template <>
-    struct hash<representation::move::Move> {
-        size_t operator()(const representation::move::Move& move) const {
+    struct hash<model::Move> {
+        size_t operator()(const model::Move& move) const {
             size_t h1 = std::hash<int>()(move.getBitIndexFrom());
             size_t h2 = std::hash<int>()(move.getBitIndexTo());
             size_t h3 = std::hash<int>()(move.getFlag());

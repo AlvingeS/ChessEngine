@@ -1,36 +1,35 @@
 #pragma once
 
-#include "ChessEngine/src/representation/move/Move.h"
+#include "ChessEngine/src/model/move/Move.h"
 
-#include "ChessEngine/src/representation/board/Bitboards.h"
-#include "ChessEngine/src/representation/board/PieceType.h"
-#include "ChessEngine/src/representation/board/GameStateBitmasks.h"
-#include "ChessEngine/src/representation/board/SquaresLookup.h"
-#include "ChessEngine/src/representation/board/ZHasher.h"
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/Bitboards.h"
+#include "ChessEngine/src/model/board/PieceType.h"
+#include "ChessEngine/src/model/board/GameStateBitmasks.h"
+#include "ChessEngine/src/model/board/SquaresLookup.h"
+#include "ChessEngine/src/model/board/ZHasher.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 // FIXME: We cant have a dependency to perft
 #include "ChessEngine/src/engine/search/SearchMemory.h"
 
 
 namespace logic {
-namespace makemove {
 
 class MoveMaker {
 
 public:
     // Constructor
     MoveMaker(
-        representation::board::Bitboards& bitBoards, 
-        representation::board::GameStateBitmasks& gameStateBitmasks, 
-        representation::board::SquaresLookup& squaresLookup, 
-        representation::board::ZHasher& zHasher,
+        model::Bitboards& bitBoards, 
+        model::GameStateBitmasks& gameStateBitmasks, 
+        model::SquaresLookup& squaresLookup, 
+        model::ZHasher& zHasher,
         engine::search::SearchMemory& searchMemory
     );
     
     // Public member functions
     void makeMove(
-        const representation::move::Move& move,
+        const model::Move& move,
         bool isWhite, 
         int currentDepth
     );
@@ -45,7 +44,7 @@ public:
 private:
     void makeCastleMove(bool isWhite, bool isKingSide);
     
-    representation::board::PieceType removeMovedPieceFromBoard(
+    model::PieceType removeMovedPieceFromBoard(
         bool isWhite, 
         int fromIndex
     );
@@ -54,34 +53,33 @@ private:
         bool isEP, 
         bool isWhite, 
         int captureIndex, 
-       representation::board::PieceType  capturedPieceType
+       model::PieceType  capturedPieceType
     );
 
     void placeMovedPieceOnBoard(
         bool isWhite, 
         int toIndex,
-       representation::board::PieceType  movedPieceType
+       model::PieceType  movedPieceType
     );
 
     void handleEnPessantMemory(
-        const representation::move::Move& move, 
+        const model::Move& move, 
         bool isWhite, 
         int currentDepth, 
         int toIndex
     );
 
     void handleNoCaptureCount(
-        const representation::move::Move& move, 
+        const model::Move& move, 
         int currentDepth,
-       representation::board::PieceType  movedPieceType 
+       model::PieceType  movedPieceType 
     );
 
-    representation::board::Bitboards& _bitboardsRef;
-    representation::board::GameStateBitmasks& _gameStateBitmasksRef;
-    representation::board::SquaresLookup& _squaresLookupRef;
-    const representation::board::ZHasher& _zHasherRef;
+    model::Bitboards& _bitboardsRef;
+    model::GameStateBitmasks& _gameStateBitmasksRef;
+    model::SquaresLookup& _squaresLookupRef;
+    const model::ZHasher& _zHasherRef;
     engine::search::SearchMemory& _searchMemoryRef;
 };
 
-} // namespace makemove
 } // namespace logic

@@ -1,10 +1,9 @@
 #pragma once
 
-#include "ChessEngine/src/representation/board/PieceType.h"
-#include "ChessEngine/src/representation/board/Bitboards.h"
+#include "ChessEngine/src/model/board/PieceType.h"
+#include "ChessEngine/src/model/board/Bitboards.h"
 
-namespace representation {
-namespace board {
+namespace model {
 
 class SquaresLookup {
 
@@ -32,5 +31,4 @@ private:
     std::vector<PieceType> _squaresLookup;
 };
 
-} // namespace board
-} // namespace representation
+} // namespace model

@@ -22,7 +22,7 @@ TEST_F(MoveGeneratorKingTest, genKingMoves_fenOneWhite_ShouldReturn4Moves)
     moveGenerator.genKingMoves(true, movelist);
 
     Movelist moves = getMoves();
-    std::unordered_set<move::Move> expectedMoves;
+    std::unordered_set<Move> expectedMoves;
     insertExpectedMoves(expectedMoves, 6, {14, 13, 5, 7}, {1, 0, 0, 0});
 
     for (int i = 0; i < movelist.getMoveIndex(); i++) {
@@ -40,7 +40,7 @@ TEST_F(MoveGeneratorKingTest, genKingMoves_fenOneBlack_ShouldReturn6Moves)
     moveGenerator.genKingMoves(false, movelist);
 
     Movelist moves = getMoves();
-    std::unordered_set<move::Move> expectedMoves;
+    std::unordered_set<Move> expectedMoves;
     insertExpectedMoves(expectedMoves, 51, {59, 50, 42, 43, 44, 60}, {0, 0, 0, 1, 0, 0});
 
     for (int i = 0; i < movelist.getMoveIndex(); i++) {

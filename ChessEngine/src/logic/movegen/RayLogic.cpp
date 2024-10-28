@@ -1,25 +1,24 @@
-#include "ChessEngine/src/representation/move/Movelist.h"
+#include "ChessEngine/src/model/move/Movelist.h"
 
-#include "ChessEngine/src/representation/move/Move.h"
+#include "ChessEngine/src/model/move/Move.h"
 
 #include "ChessEngine/src/logic/movegen/utils/Containers.h"
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
 
 namespace logic {
-namespace movegen {
 namespace RayLogic {
 
 void addMovesFromFreeRay(
     bitmask freeRay,
     int bitIndexFrom,
-    representation::move::Movelist& moveListRef)
+    model::Movelist& moveListRef)
 {
     std::vector<int>& freeRayIndices = utils::Containers::getSlidingPiecefreeMovesIndices();
     utils::getBitIndices(freeRayIndices, freeRay);
 
     for (int bitIndex : freeRayIndices) {
-        moveListRef.addMove(representation::move::Move(bitIndexFrom, bitIndex, representation::move::Move::QUITE_FLAG));
+        moveListRef.addMove(model::Move(bitIndexFrom, bitIndex, model::Move::QUITE_FLAG));
     }
 }
 
@@ -27,13 +26,13 @@ void addMoveIfBlockerIsEnemy(
     int blockerIndex,
     bool isWhite,
     int bitIndexFrom,
-    representation::move::Movelist& moveListRef,
+    model::Movelist& moveListRef,
     bitmask whitePiecesBitmask)
 {
     bool blockerIsWhite = utils::getBit(whitePiecesBitmask, blockerIndex);
 
     if (blockerIsWhite != isWhite) {
-        moveListRef.addMove(representation::move::Move(bitIndexFrom, blockerIndex, representation::move::Move::CAPTURE_FLAG));
+        moveListRef.addMove(model::Move(bitIndexFrom, blockerIndex, model::Move::CAPTURE_FLAG));
     }
 }
 
@@ -43,7 +42,7 @@ void addMovesBetweenBlockerAndPieceOnStraightRay(
     bool startFromBlocker, int rookRank, 
     int rookFile, 
     int bitIndexFrom,
-    representation::move::Movelist& moveListRef)
+    model::Movelist& moveListRef)
 {
     int start = startFromBlocker 
                 ? (alongFile ? utils::fileFromBitIndex(blockerIndex) 
@@ -60,7 +59,7 @@ void addMovesBetweenBlockerAndPieceOnStraightRay(
     for (int i = start - 1; i > stop; --i) {
         int rankOrFileIndex = alongFile ? rookRank * 8 + i : i * 8 + rookFile;
         
-        moveListRef.addMove(representation::move::Move(bitIndexFrom, rankOrFileIndex, representation::move::Move::QUITE_FLAG));
+        moveListRef.addMove(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
     }
 }
 
@@ -70,7 +69,7 @@ void addMovesBetweenBlockerAndPieceOnDiagonalRay(
     int bishopRank, 
     int bishopFile, 
     int bitIndexFrom,
-    representation::move::Movelist& moveListRef)
+    model::Movelist& moveListRef)
 {
     int startRank = startFromBlocker
                     ? utils::rankFromBitIndex(blockerIndex)
@@ -97,7 +96,7 @@ void addMovesBetweenBlockerAndPieceOnDiagonalRay(
     for (int i = startRank + rankIncrement, j = startFile + fileIncrement; i != stopRank; i += rankIncrement, j += fileIncrement) {
         int rankOrFileIndex = i * 8 + j;
 
-        moveListRef.addMove(representation::move::Move(bitIndexFrom, rankOrFileIndex, representation::move::Move::QUITE_FLAG));
+        moveListRef.addMove(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
     }
 }
 
@@ -109,7 +108,7 @@ void addMovesFromStraightRay(
     int pieceIndex, 
     int pieceRank, 
     int pieceFile, 
-    representation::move::Movelist& moveListRef,
+    model::Movelist& moveListRef,
     bitmask whitePiecesBitmask,
     bitmask occupiedPiecesBitmask) 
 {
@@ -150,7 +149,7 @@ void addMovesFromDiagonalRay(
     int pieceIndex, 
     int pieceRank, 
     int pieceFile, 
-    representation::move::Movelist& moveListRef,
+    model::Movelist& moveListRef,
     bitmask whitePiecesBitmask,
     bitmask occupiedPiecesBitmask)
 {
@@ -253,5 +252,4 @@ bool checkDiagonalRay(
 }
 
 } // namespace raylogic
-} // namespace movegen
 } // namespace logic

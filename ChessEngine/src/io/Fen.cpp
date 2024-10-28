@@ -1,14 +1,14 @@
 #include "ChessEngine/src/io/Fen.h"
 
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 namespace io {
 
 void setBoardFromFen(
     const std::string& fen, 
-    representation::board::Bitboards& bitboards, 
-    representation::board::GameStateBitmasks& gameStateBitmasks, 
-    representation::board::SquaresLookup& squaresLookup) 
+    model::Bitboards& bitboards, 
+    model::GameStateBitmasks& gameStateBitmasks, 
+    model::SquaresLookup& squaresLookup) 
 {
     bitboards.resetBitboards();
 
@@ -23,7 +23,7 @@ void setBoardFromFen(
         } else if (std::isdigit(c)) {
             file += c - '0';
         } else {
-            representation::board::PieceType type = representation::board::CharToPieceType(c);
+            model::PieceType type = model::CharToPieceType(c);
             bitboards.setPieceTypeBit(rank * 8 + 7 - file, type);
             file++;
         }
@@ -35,7 +35,7 @@ void setBoardFromFen(
     gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
 }
 
-std::string getFenFromBoard(const representation::board::SquaresLookup& squaresLookup)
+std::string getFenFromBoard(const model::SquaresLookup& squaresLookup)
 {
     std::string fen = "";
     int emptyCount = 0;
@@ -49,15 +49,15 @@ std::string getFenFromBoard(const representation::board::SquaresLookup& squaresL
             fen += "/";
         }
 
-        representation::board::PieceType type = squaresLookup.getPieceTypeAtIndex(i);
-        if (type == representation::board::PieceType::EMPTY) {
+        model::PieceType type = squaresLookup.getPieceTypeAtIndex(i);
+        if (type == model::PieceType::EMPTY) {
             emptyCount++;
         } else {
             if (emptyCount != 0) {
                 fen += std::to_string(emptyCount);
                 emptyCount = 0;
             }
-            fen += representation::board::pieceTypeToChar(type);
+            fen += model::pieceTypeToChar(type);
         }
     }
 

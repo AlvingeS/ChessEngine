@@ -1,7 +1,6 @@
-#include "ChessEngine/src/representation/board/SquaresLookup.h"
+#include "ChessEngine/src/model/board/SquaresLookup.h"
 
-namespace representation {
-namespace board {
+namespace model {
 
 SquaresLookup::SquaresLookup(const Bitboards& bitboards) 
 {
@@ -22,5 +21,4 @@ void SquaresLookup::fillSquaresLookupFromBitboards(const Bitboards& bitboards)
     }
 }
 
-} // namespace board
-} // namespace representation
+} // namespace model

@@ -6,40 +6,40 @@
 
 namespace io {
 
-BoardPrinter::BoardPrinter(const representation::board::Bitboards& bitboards) 
+BoardPrinter::BoardPrinter(const model::Bitboards& bitboards) 
 {
     fillBoard(bitboards);
 }
 
-bool BoardPrinter::isValidPiece(representation::board::PieceType piece_type) 
+bool BoardPrinter::isValidPiece(model::PieceType piece_type) 
 {
     switch(piece_type) {
-        case representation::board::PieceType::W_PAWN:
-        case representation::board::PieceType::W_KNIGHT:
-        case representation::board::PieceType::W_BISHOP:
-        case representation::board::PieceType::W_ROOK:
-        case representation::board::PieceType::W_QUEEN:
-        case representation::board::PieceType::W_KING:
-        case representation::board::PieceType::B_PAWN:
-        case representation::board::PieceType::B_KNIGHT:
-        case representation::board::PieceType::B_BISHOP:
-        case representation::board::PieceType::B_ROOK:
-        case representation::board::PieceType::B_QUEEN:
-        case representation::board::PieceType::B_KING:
+        case model::PieceType::W_PAWN:
+        case model::PieceType::W_KNIGHT:
+        case model::PieceType::W_BISHOP:
+        case model::PieceType::W_ROOK:
+        case model::PieceType::W_QUEEN:
+        case model::PieceType::W_KING:
+        case model::PieceType::B_PAWN:
+        case model::PieceType::B_KNIGHT:
+        case model::PieceType::B_BISHOP:
+        case model::PieceType::B_ROOK:
+        case model::PieceType::B_QUEEN:
+        case model::PieceType::B_KING:
             return true;
         default:
             return false;
     }
 }
 
-void BoardPrinter::fillBoard(const representation::board::Bitboards& bitboards) 
+void BoardPrinter::fillBoard(const model::Bitboards& bitboards) 
 {
     _board = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
     
     for (int i = 0; i < 12; i++) {
-        representation::board::PieceType pieceType = representation::board::intToPieceType(i);
+        model::PieceType pieceType = model::intToPieceType(i);
         bitmask bitboard = bitboards.getBitboardFromIndex(i);
-        char pieceChar = representation::board::pieceTypeToChar(pieceType);
+        char pieceChar = model::pieceTypeToChar(pieceType);
 
         for (int i = 0; i < 64; i++) {
             if ((bitboard >> i) & 1) {

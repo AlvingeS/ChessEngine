@@ -4,7 +4,6 @@
 #include <bitset>
 
 namespace logic {
-namespace movegen {
 namespace utils {
 
 void getBitIndices(std::vector<int>& indices, bitboard bitboard)
@@ -21,5 +20,4 @@ void getBitIndices(std::vector<int>& indices, bitboard bitboard)
 }
 
 } // namespace utils
-} // namespace movegen
 } // namespace logic

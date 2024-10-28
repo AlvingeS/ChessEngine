@@ -3,7 +3,6 @@
 #include "ChessEngine/src/common.h"
 
 namespace logic {
-namespace movegen {
 namespace utils {
 
 inline bool getBit(bitmask a, int i) 
@@ -30,5 +29,4 @@ void getBitIndices(std::vector<int>& indices, bitmask bitboard);
 void printbitmaskInBits(bitmask n);
 
 } // namespace utils
-} // namespace movegen
 } // namespace logic

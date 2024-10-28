@@ -4,16 +4,16 @@
 
 #include "ChessEngine/src/logic/evaluation/Evaluator.h"
 
-#include "ChessEngine/src/representation/board/ZHasher.h"
-#include "ChessEngine/src/representation/board/Bitboards.h"
-#include "ChessEngine/src/representation/board/GameStateBitmasks.h"
+#include "ChessEngine/src/model/board/ZHasher.h"
+#include "ChessEngine/src/model/board/Bitboards.h"
+#include "ChessEngine/src/model/board/GameStateBitmasks.h"
 
-#include "ChessEngine/src/representation/board/SquaresLookup.h"
+#include "ChessEngine/src/model/board/SquaresLookup.h"
 #include "ChessEngine/src/logic/movegen/MoveGenerator.h"
-#include "ChessEngine/src/representation/move/Movelist.h"
+#include "ChessEngine/src/model/move/Movelist.h"
 #include "ChessEngine/src/logic/makemove/MoveMaker.h"
 #include "ChessEngine/src/logic/makemove/MoveRetractor.h"
-#include "ChessEngine/src/representation/move/Move.h"
+#include "ChessEngine/src/model/move/Move.h"
 #include "ChessEngine/src/io/Fen.h"
 
 namespace engine {
@@ -31,7 +31,7 @@ public:
         bool isMaximizer, 
         int firstMoveIndex,
         bool recPerftStats = true,
-        const representation::move::Move& lastMove = representation::move::Move(),
+        const model::Move& lastMove = model::Move(),
         bool verbose = true
     );
 
@@ -40,7 +40,7 @@ public:
         int currentDepth,
         int &firstMoveIndex,
         size_t i,
-        const representation::move::Move& currentMove,
+        const model::Move& currentMove,
         bool &retFlag
     );
 
@@ -50,8 +50,8 @@ public:
         unsigned char castlingRights
     );
 
-    void makeMove(representation::move::Move move, bool isWhite, int currentDepth);
-    void unmakeMove(representation::move::Move move, bool isWhite, int currentDepth);
+    void makeMove(model::Move move, bool isWhite, int currentDepth);
+    void unmakeMove(model::Move move, bool isWhite, int currentDepth);
     void undoMove();
     
     int _numMoveGenCalls;
@@ -59,7 +59,7 @@ public:
 
     long sumNodesToDepth(int depth) const;
     std::vector<long> _nodeCountPerFirstMove;
-    std::vector<representation::move::Move> _firstMoves;
+    std::vector<model::Move> _firstMoves;
     std::vector<long> _nodeCount;
     std::vector<long> _captureCount;
     std::vector<long> _epCaptureCount;
@@ -74,8 +74,8 @@ public:
         int currentDepth,
         bool isMaximizer, 
         int firstMoveIndex, 
-        representation::move::Move currentMove, 
-        representation::move::Move lastMove, 
+        model::Move currentMove, 
+        model::Move lastMove, 
         bool verbose, 
         size_t i
     ) const;
@@ -89,7 +89,7 @@ public:
         return _maxDepth;
     }
 
-    const logic::movegen::MoveGenerator& getMoveGenerator() const
+    const logic::MoveGenerator& getMoveGenerator() const
     {
         return _moveGenerator;
     }
@@ -110,20 +110,20 @@ public:
     }
     
 private:
-    representation::board::Bitboards _bitboards;
-    representation::board::SquaresLookup _squaresLookup;
-    representation::board::GameStateBitmasks _gameStateBitmasks;
+    model::Bitboards _bitboards;
+    model::SquaresLookup _squaresLookup;
+    model::GameStateBitmasks _gameStateBitmasks;
     SearchMemory _searchMemory;
-    representation::board::ZHasher _zHasher;
-    logic::makemove::MoverMaker _moveMaker;
-    logic::makemove::MoveMaker _moveRetractor;
-    logic::movegen::MoveGenerator _moveGenerator;
-    logic::evaluation::Evaluator _evaluator;
+    model::ZHasher _zHasher;
+    logic::MoverMaker _moveMaker;
+    logic::MoveMaker _moveRetractor;
+    logic::MoveGenerator _moveGenerator;
+    logic::Evaluator _evaluator;
     int _maxDepth;
 
     int _pseudoLegalMovesCount;
-    std::vector<representation::move::Movelist> _movelists;
-    std::vector<representation::board::PieceType> _lastCapturedPieces;
+    std::vector<model::Movelist> _movelists;
+    std::vector<model::PieceType> _lastCapturedPieces;
     std::vector<int> _noCapturedOrPawnMoveCounts; 
 
     bool tooManyPiecesOnBoard();

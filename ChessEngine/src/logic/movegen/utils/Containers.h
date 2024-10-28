@@ -3,7 +3,6 @@
 #include "ChessEngine/src/common.h"
 
 namespace logic {
-namespace movegen {
 namespace utils {
 
 class Containers {
@@ -48,5 +47,4 @@ private:
 };
 
 } // namespace utils
-} // namespace movegen
 } // namespace logic

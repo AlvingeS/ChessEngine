@@ -1,9 +1,8 @@
 #pragma once
 
-#include "ChessEngine/src/representation/move/Move.h"
+#include "ChessEngine/src/model/move/Move.h"
 
 namespace engine {
-namespace perft {
 
 class perftData
 {
@@ -32,8 +31,8 @@ public:
     void increaseCheckCountAt(int depth) { _checkCount[depth]++; }
     void increaseCheckmateCountAt(int depth) { _checkmateCount[depth]++; }
 
-    representation::move::Move getFirstMoveAt(int firstMoveIndex) const { return _firstMoves[firstMoveIndex]; }
-    void setFirstMoveAt(int firstMoveIndex, representation::move::Move currentMove) 
+    model::Move getFirstMoveAt(int firstMoveIndex) const { return _firstMoves[firstMoveIndex]; }
+    void setFirstMoveAt(int firstMoveIndex, model::Move currentMove) 
     {
         _firstMoves[firstMoveIndex] = currentMove;
     }
@@ -47,7 +46,7 @@ private:
     int _maxDepth;
 
     std::vector<long> _nodeCountPerFirstMove;
-    std::vector<representation::move::Move> _firstMoves;
+    std::vector<model::Move> _firstMoves;
     std::vector<long> _nodeCount;
     std::vector<long> _captureCount;
     std::vector<long> _epCaptureCount;
@@ -57,5 +56,4 @@ private:
     std::vector<long> _checkmateCount;
 };
 
-} // namespace perft
 } // namespace engine

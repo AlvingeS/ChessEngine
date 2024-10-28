@@ -2,33 +2,32 @@
 
 #include "ChessEngine/src/common.h"
 
-#include "ChessEngine/src/representation/move/Move.h"
+#include "ChessEngine/src/model/move/Move.h"
 
-namespace representation {
-namespace move {
+namespace model {
 
 class Movelist {
 
 public:
     Movelist() {
-        movelist = std::vector<move::Move>(MAX_MOVES);
+        movelist = std::vector<Move>(MAX_MOVES);
         moveIndex = 0;
     }
 
-    inline void addMove(const move::Move& move) {
+    inline void addMove(const Move& move) {
         movelist[moveIndex] = move;
         moveIndex++;
     }
 
     inline void addNullMove() {
-        movelist[moveIndex] = move::Move();
+        movelist[moveIndex] = Move();
     }
 
     inline void reset() {
         moveIndex = 0;
     }
 
-    inline const move::Move& getMoveAt(int index) const {
+    inline const Move& getMoveAt(int index) const {
         return movelist[index];
     }
 
@@ -39,9 +38,8 @@ public:
 private:
     static constexpr int MAX_MOVES = 218;
 
-    std::vector<move::Move> movelist;
+    std::vector<Move> movelist;
     int moveIndex;
 };
 
-} // namespace move
-} // namespace representation
+} // namespace model

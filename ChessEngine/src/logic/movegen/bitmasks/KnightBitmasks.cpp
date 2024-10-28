@@ -3,7 +3,6 @@
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
-namespace movegen {
 namespace bitmasks {
 
 // Applies all knight moves without considering looping around the board
@@ -71,5 +70,4 @@ const std::vector<bitmask> getAllKnightBitmasks()
 }
 
 } // namespace bitmasks
-} // namespace movegen
 } // namespace logic

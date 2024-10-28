@@ -1,10 +1,9 @@
 #pragma once
 
-#include "ChessEngine/src/representation/board/SquaresLookup.h"
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/SquaresLookup.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
-namespace representation {
-namespace board {
+namespace model {
 
 class ZHasher {
 
@@ -30,5 +29,4 @@ private:
     SquaresLookup& _squaresLookupRef;
 };
 
-} // namespace board
-} // namespace representation
+} // namespace model

@@ -1,7 +1,6 @@
-#include "ChessEngine/src/representation/board/GameStateBitmasks.h"
+#include "ChessEngine/src/model/board/GameStateBitmasks.h"
 
-namespace representation {
-namespace board {
+namespace model {
 
 GameStateBitmasks::GameStateBitmasks(const Bitboards& bitboards) 
 {
@@ -30,5 +29,4 @@ void GameStateBitmasks::fillBlackPiecesBitmaskFromBitboards(const Bitboards& bit
     _blackPiecesBitmask = b_all;
 }
 
-} // namespace board
-} // namespace representation
+} // namespace model

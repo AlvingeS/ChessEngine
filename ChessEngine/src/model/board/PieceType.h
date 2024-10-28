@@ -1,9 +1,8 @@
-#pragma once
 
+#pragma once
 #include "ChessEngine/src/common.h"
 
-namespace representation {
-namespace board {
+namespace model {
 
 enum class PieceType : int {
     W_PAWN,
@@ -34,5 +33,4 @@ int pieceTypeToInt(PieceType piece_type);
 /// @brief Converts an integer to a PieceType for indexing purposes
 PieceType intToPieceType(int i); 
 
-} // namespace board
-} // namespace representation
+} // namespace model

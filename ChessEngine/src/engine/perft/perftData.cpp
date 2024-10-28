@@ -8,12 +8,12 @@ namespace perft {
 perftData::perftData(int maxDepth)
     : _maxDepth(maxDepth)
 {
-    _nodeCountPerFirstMove.resize(logic::movegen::MoveGenerator::MAX_LEGAL_MOVES);
-    _firstMoves.resize(logic::movegen::MoveGenerator::MAX_LEGAL_MOVES);
+    _nodeCountPerFirstMove.resize(logic::MoveGenerator::MAX_LEGAL_MOVES);
+    _firstMoves.resize(logic::MoveGenerator::MAX_LEGAL_MOVES);
 
-    for (int i = 0; i < logic::movegen::MoveGenerator::MAX_LEGAL_MOVES; i++) {
+    for (int i = 0; i < logic::MoveGenerator::MAX_LEGAL_MOVES; i++) {
         _nodeCountPerFirstMove[i] = 0;
-        _firstMoves[i] = representation::move::Move();
+        _firstMoves[i] = model::Move();
     }
 
     _nodeCount.resize(_maxDepth + 1);

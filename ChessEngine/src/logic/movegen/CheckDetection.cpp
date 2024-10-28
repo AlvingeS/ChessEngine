@@ -1,16 +1,15 @@
 #include "ChessEngine/src/logic/movegen/CheckDetection.h"
 
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
 
 namespace logic {
-namespace movegen {
 
 CheckDetection::CheckDetection(
-    const representation::board::Bitboards& bitboards,
-    const representation::board::GameStateBitmasks& gameStateBitmasks)
+    const model::Bitboards& bitboards,
+    const model::GameStateBitmasks& gameStateBitmasks)
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
@@ -103,5 +102,4 @@ bool CheckDetection::isInCheck(bool isWhite) const
     return false;
 }
 
-} // namespace movegen
 } // namespace logic

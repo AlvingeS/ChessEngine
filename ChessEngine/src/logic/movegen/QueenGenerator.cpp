@@ -1,17 +1,16 @@
 #include "ChessEngine/src/logic/movegen/QueenGenerator.h"
 
-#include "ChessEngine/src/representation/board/PieceType.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 #include "ChessEngine/src/logic/movegen/utils/Containers.h"
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
-namespace movegen {
 
 QueenGenerator::QueenGenerator(
-    const representation::board::Bitboards& bitboards,
-    const representation::board::GameStateBitmasks& gameStateBitmasks) 
+    const model::Bitboards& bitboards,
+    const model::GameStateBitmasks& gameStateBitmasks) 
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
@@ -21,7 +20,7 @@ QueenGenerator::QueenGenerator(
 
 void QueenGenerator::generate(
     bool isWhite,
-    representation::move::Movelist& moveListRef)
+    model::Movelist& moveListRef)
 {
     std::vector<int>& queenIndices = utils::Containers::getPiecePositionIndices();
 
@@ -137,5 +136,4 @@ void QueenGenerator::generate(
     }
 }
 
-} // namespace movegen
 } // namespace logic

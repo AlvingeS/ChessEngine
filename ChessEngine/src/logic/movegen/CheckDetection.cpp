@@ -9,16 +9,16 @@ namespace logic {
 namespace movegen {
 
 CheckDetection::CheckDetection(
-    const board::Bitboards& bitboards,
-    const board::GameStateBitmasks& gameStateBitmasks)
+    const representation::board::Bitboards& bitboards,
+    const representation::board::GameStateBitmasks& gameStateBitmasks)
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
-    _straightRayBitmasks = masks::getAllStraightRayBitmasks();
-    _diagonalRayBitmasks = masks::getAllDiagonalRayBitmasks();
-    _knightBitmasks = masks::getAllKnightBitmasks();
-    _whitePawnCaptureMoveBitmasks = masks::getAllCapturePawnMoveBitmasks(true);
-    _blackPawnCaptureMoveBitmasks = masks::getAllCapturePawnMoveBitmasks(false);
+    _straightRayBitmasks = bitmasks::getAllStraightRayBitmasks();
+    _diagonalRayBitmasks = bitmasks::getAllDiagonalRayBitmasks();
+    _knightBitmasks = bitmasks::getAllKnightBitmasks();
+    _whitePawnCaptureMoveBitmasks = bitmasks::getAllCapturePawnMoveBitmasks(true);
+    _blackPawnCaptureMoveBitmasks = bitmasks::getAllCapturePawnMoveBitmasks(false);
 }
 
 bool CheckDetection::isInCheck(bool isWhite) const
@@ -52,8 +52,8 @@ bool CheckDetection::isInCheck(bool isWhite) const
         }
     }
 
-    masks::StraightRays straightRays = _straightRayBitmasks[kingIndex];
-    masks::DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
+    bitmasks::StraightRays straightRays = _straightRayBitmasks[kingIndex];
+    bitmasks::DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
 
     bitmask knightMoves = _knightBitmasks[kingIndex];
 

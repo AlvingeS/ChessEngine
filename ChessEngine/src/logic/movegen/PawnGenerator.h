@@ -21,22 +21,22 @@ class PawnGenerator {
 public:
     // Constructor
     PawnGenerator(
-        const board::Bitboards& bitboards,
-        const board::GameStateBitmasks& gameStateBitmasks
+        const representation::board::Bitboards& bitboards,
+        const representation::board::GameStateBitmasks& gameStateBitmasks
     );
     
     // Public member functions
     void generate(
         bool isWhite,
-        Movelist& moveListRef,
+        representation::move::Movelist& moveListRef,
         int currentDepth,
-        ponder::perft::SearchMemory& searchMemory
+        engine::search::SearchMemory& searchMemory
     );
 
 private:
     // Private member functions
-    const board::Bitboards& _bitboardsRef;
-    const board::GameStateBitmasks& _gameStateBitmasksRef;
+    const representation::board::Bitboards& _bitboardsRef;
+    const representation::board::GameStateBitmasks& _gameStateBitmasksRef;
 
     // Memory
     std::vector<bitmask> _whitePawnStraightMoveBitmasks;

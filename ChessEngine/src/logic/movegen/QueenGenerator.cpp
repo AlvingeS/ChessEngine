@@ -10,18 +10,18 @@ namespace logic {
 namespace movegen {
 
 QueenGenerator::QueenGenerator(
-    const board::Bitboards& bitboards,
-    const board::GameStateBitmasks& gameStateBitmasks) 
+    const representation::board::Bitboards& bitboards,
+    const representation::board::GameStateBitmasks& gameStateBitmasks) 
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
-    _straightRayBitmasks = masks::getAllStraightRayBitmasks();
-    _diagonalRayBitmasks = masks::getAllDiagonalRayBitmasks();
+    _straightRayBitmasks = bitmasks::getAllStraightRayBitmasks();
+    _diagonalRayBitmasks = bitmasks::getAllDiagonalRayBitmasks();
 }
 
 void QueenGenerator::generate(
     bool isWhite,
-    Movelist& moveListRef)
+    representation::move::Movelist& moveListRef)
 {
     std::vector<int>& queenIndices = utils::Containers::getPiecePositionIndices();
 
@@ -29,8 +29,8 @@ void QueenGenerator::generate(
                                                : _bitboardsRef.getBlackQueensBitboard());
 
     for (int currentQueenIndex : queenIndices) {
-        masks::StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];
-        masks::DiagonalRays diagonalRays = _diagonalRayBitmasks[currentQueenIndex];
+        bitmasks::StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];
+        bitmasks::DiagonalRays diagonalRays = _diagonalRayBitmasks[currentQueenIndex];
         
         int queenRank = utils::rankFromBitIndex(currentQueenIndex);
         int queenFile = utils::fileFromBitIndex(currentQueenIndex);

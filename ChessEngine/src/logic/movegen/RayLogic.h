@@ -14,7 +14,7 @@ namespace RayLogic {
         int pieceIndex,
         int pieceRank,
         int pieceFile,
-        Movelist& moveListRef,
+        representation::move::Movelist& moveListRef,
         bitmask whitePiecesBitmask,
         bitmask occupiedPiecesBitmask
     );
@@ -26,7 +26,7 @@ namespace RayLogic {
         int pieceIndex,
         int pieceRank,
         int pieceFile,
-        Movelist& moveListRef,
+        representation::move::Movelist& moveListRef,
         bitmask whitePiecesBitmask,
         bitmask occupiedPiecesBitmask
     );

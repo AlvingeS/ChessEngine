@@ -1,8 +1,9 @@
-#include "ChessEngine/src/game/movegen/MoveGenerator.h"
-#include "ChessEngine/src/ponder/perft/Searcher.h"
-#include "ChessEngine/src/utils/BoardPrinter.h"
-#include "ChessEngine/src/utils/ChessUtils.h"
-#include "ChessEngine/src/utils/Containers.h"
+#include "ChessEngine/src/logic/movegen/MoveGenerator.h"
+#include "ChessEngine/src/engine/search/Searcher.h"
+#include "ChessEngine/src/engine/perft/perft.h"
+#include "ChessEngine/src/io/BoardPrinter.h"
+#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
+#include "ChessEngine/src/logic/movegen/utils/Containers.h"
 
 #include <iostream>
 #include <chrono>
@@ -75,7 +76,7 @@ int main()
     // Start clock
     auto start = std::chrono::high_resolution_clock::now();
 
-    utils::Containers::init();
+    logic::movegen::utils::Containers::init();
 
     int const MAX_DEPTH = 4;
 
@@ -86,19 +87,19 @@ int main()
     
     bool recPerftStats = false;
 
-    ponder::perft::Searcher searcherStartPos = ponder::perft::Searcher(MAX_DEPTH);
+    engine::perft::perft searcherStartPos = engine::perft::perft(MAX_DEPTH);
     searcherStartPos.setBoardFromFen(startPos);
     searcherStartPos.minimax(0, true, 0, recPerftStats);
 
-    ponder::perft::Searcher searcherPosTwo = ponder::perft::Searcher(MAX_DEPTH);
+    engine::perft::perft searcherPosTwo = engine::perft::perft(MAX_DEPTH);
     searcherPosTwo.setBoardFromFen(posTwo);
     searcherPosTwo.minimax(0, true, 0, recPerftStats);
-
-    ponder::perft::Searcher searcherPosThree = ponder::perft::Searcher(MAX_DEPTH);
+    
+    engine::perft::perft searcherPosThree = engine::perft::perft(MAX_DEPTH);
     searcherPosThree.setBoardFromFen(posThree);
     searcherPosThree.minimax(0, true, 0, recPerftStats);
 
-    ponder::perft::Searcher searcherPosFive = ponder::perft::Searcher(MAX_DEPTH);
+    engine::perft::perft searcherPosFive = engine::perft::perft(MAX_DEPTH);
     searcherPosFive.setBoardFromFen(posFive);
     searcherPosFive.minimax(0, true, 0, recPerftStats);
 

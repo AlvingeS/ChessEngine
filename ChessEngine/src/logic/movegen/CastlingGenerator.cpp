@@ -8,10 +8,10 @@ namespace logic {
 namespace movegen {
 
 CastlingGenerator::CastlingGenerator(
-    const board::Bitboards& bitboards,
-    const board::GameStateBitmasks& gameStateBitmasks,
-    move::MoveMaker& moveMaker, 
-    move::MoveRetractor& moveRetractor, 
+    const representation::board::Bitboards& bitboards,
+    const representation::board::GameStateBitmasks& gameStateBitmasks,
+    logic::makemove::MoveMaker& moveMaker, 
+    logic::makemove::MoveRetractor& moveRetractor, 
     CheckDetection* checkDetection)
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
@@ -27,7 +27,7 @@ CastlingGenerator::CastlingGenerator(
 
 void CastlingGenerator::generate(
     bool isWhite,
-    Movelist& movelist,
+    representation::move::Movelist& movelist,
     unsigned char castlingRights) 
 {
     if (castlingRights == 0) {
@@ -102,7 +102,7 @@ void CastlingGenerator::unmakeTemporaryKingMove(bool isWhite, bool isKingSide)
 void CastlingGenerator::genSingleCastleMove(
     bool isWhite,
     bool isKingSide,
-    Movelist& moveListRef)
+    representation::move::Movelist& moveListRef)
 {                                                  
     // Check that there are no pieces between the king and rook
     bitmask spaceBetweenCastlersBitmask = isWhite ? (isKingSide ? _whiteKingSideCastleBitmask 
@@ -131,10 +131,10 @@ void CastlingGenerator::genSingleCastleMove(
     
     unmakeTemporaryKingMove(isWhite, isKingSide);
 
-    int moveFlag = isKingSide ? move::Move::KING_CASTLE_FLAG 
-                              : move::Move::QUEEN_CASTLE_FLAG;    
+    int moveFlag = isKingSide ? representation::representation::move::Move::KING_CASTLE_FLAG 
+                              : representation::representation::move::Move::QUEEN_CASTLE_FLAG;    
 
-    moveListRef.addMove(move::Move(0, 0, moveFlag));
+    moveListRef.addMove(representation::representation::move::Move(0, 0, moveFlag));
 }
 
 } // namespace movegen

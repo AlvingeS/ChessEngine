@@ -11,16 +11,16 @@
 namespace logic {
 namespace movegen {
 
-BishopGenerator::BishopGenerator(const board::Bitboards& bitboards, const board::GameStateBitmasks& gameStateBitmasks) 
+BishopGenerator::BishopGenerator(const representation::board::Bitboards& bitboards, const representation::board::GameStateBitmasks& gameStateBitmasks) 
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
-    _diagonalRayBitmasks = masks::getAllDiagonalRayBitmasks();
+    _diagonalRayBitmasks = bitmasks::getAllDiagonalRayBitmasks();
 }
 
 void BishopGenerator::generate(
     bool isWhite,
-    Movelist& moveListRef)
+    representation::move::Movelist& moveListRef)
 {
     std::vector<int>& bishopIndices = utils::Containers::getPiecePositionIndices();
 
@@ -28,7 +28,7 @@ void BishopGenerator::generate(
                                                 : _bitboardsRef.getBlackBishopsBitboard());
 
     for (int currentBishopIndex : bishopIndices) {
-        masks::DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];
+        bitmasks::DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];
         int bishopRank = utils::rankFromBitIndex(currentBishopIndex);
         int bishopFile = utils::fileFromBitIndex(currentBishopIndex);
 

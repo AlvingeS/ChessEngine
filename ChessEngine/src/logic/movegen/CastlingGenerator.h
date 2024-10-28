@@ -23,25 +23,25 @@ class CastlingGenerator {
 
 public:
     CastlingGenerator(
-        const board::Bitboards& bitboards,
-        const board::GameStateBitmasks& gameStateBitmasks,
-        move::MoveMaker& moveMaker,
-        move::MoveRetractor& moveRetractor,
+        const representation::board::Bitboards& bitboards,
+        const representation::board::GameStateBitmasks& gameStateBitmasks,
+        logic::makemove::MoveMaker& moveMaker,
+        logic::makemove::MoveRetractor& moveRetractor,
         CheckDetection* checkDetection
     );
     
     void generate(
         bool isWhite, 
-        Movelist& movelist, 
+        representation::move::Movelist& movelist, 
         unsigned char castlingRights
     );
 
 private:
-    const board::Bitboards& _bitboardsRef;
-    const board::GameStateBitmasks& _gameStateBitmasksRef;
+    const representation::board::Bitboards& _bitboardsRef;
+    const representation::board::GameStateBitmasks& _gameStateBitmasksRef;
     
-    move::MoveMaker& _moveMakerRef;
-    move::MoveRetractor& _moveRetractorRef;
+    logic::makemove::MoveMaker& _moveMakerRef;
+    logic::makemove::MoveRetractor& _moveRetractorRef;
     
     CheckDetection* _checkDetection;
 
@@ -53,7 +53,7 @@ private:
     void genSingleCastleMove(
         bool isWhite,
         bool isKingSide,
-        Movelist& movelist
+        representation::move::Movelist& movelist
     );
 
     bool kingAndRookOnCastlingSquares(bool isWhite, bool isKingSide) const;

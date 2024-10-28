@@ -16,22 +16,22 @@ class QueenGenerator {
 
 public:
     // Constructor
-    QueenGenerator(const board::Bitboards& bitboards, const board::GameStateBitmasks& gameStateBitmasks);
+    QueenGenerator(const representation::board::Bitboards& bitboards, const representation::board::GameStateBitmasks& gameStateBitmasks);
     
     // Public member functions
     void generate(
         bool isWhite, 
-        Movelist& moveListRef
+        representation::move::Movelist& moveListRef
     );
 
 private:
     // Private member functions
-    const board::Bitboards& _bitboardsRef;
-    const board::GameStateBitmasks& _gameStateBitmasksRef;
+    const representation::board::Bitboards& _bitboardsRef;
+    const representation::board::GameStateBitmasks& _gameStateBitmasksRef;
 
     // Memory
-    std::vector<masks::StraightRays> _straightRayBitmasks;
-    std::vector<masks::DiagonalRays> _diagonalRayBitmasks;
+    std::vector<bitmasks::StraightRays> _straightRayBitmasks;
+    std::vector<bitmasks::DiagonalRays> _diagonalRayBitmasks;
 };
 
 } // namespace movegen

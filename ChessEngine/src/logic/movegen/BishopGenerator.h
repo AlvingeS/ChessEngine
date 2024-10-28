@@ -16,21 +16,21 @@ class BishopGenerator {
 
 public:
     // Constructor
-    BishopGenerator(const board::Bitboards& bitboards, const board::GameStateBitmasks& gameStateBitmasks);
+    BishopGenerator(const representation::board::Bitboards& bitboards, const representation::board::GameStateBitmasks& gameStateBitmasks);
     
     // Public member functions
     void generate(
         bool isWhite, 
-        Movelist& movelist
+        representation::move::Movelist& movelist
     );
 
 private:
     // Private member functions
-    const board::Bitboards& _bitboardsRef;
-    const board::GameStateBitmasks& _gameStateBitmasksRef;
+    const representation::board::Bitboards& _bitboardsRef;
+    const representation::board::GameStateBitmasks& _gameStateBitmasksRef;
 
     // Memory
-    std::vector<masks::DiagonalRays> _diagonalRayBitmasks;
+    std::vector<bitmasks::DiagonalRays> _diagonalRayBitmasks;
 };
 
 } // namespace movegen

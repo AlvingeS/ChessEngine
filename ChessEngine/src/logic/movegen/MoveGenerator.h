@@ -27,35 +27,35 @@ public:
 
     // Public member functions
     MoveGenerator(
-        const board::Bitboards& bitboards,
-        const board::GameStateBitmasks& gameStateBitmasks,
-        move::MoveMaker& moveMaker,
-        move::MoveRetractor& moveRetractor
+        const representation::board::Bitboards& bitboards,
+        const representation::board::GameStateBitmasks& gameStateBitmasks,
+        logic::makemove::MoveMaker& moveMaker,
+        logic::makemove::MoveRetractor& moveRetractor
     );
 
     void genMoves(
         bool isWhite,
-        Movelist& moveListRef,
+        representation::move::Movelist& moveListRef,
         int currentDepth,
         unsigned char castlingRight
     );
     
-    void genRookMoves(bool isWhite, Movelist& moveListRef);
-    void genBishopMoves(bool isWhite, Movelist& moveListRef);
-    void genQueenMoves(bool isWhite, Movelist& moveListRef);
-    void genKnightMoves(bool isWite, Movelist& moveListRef);
-    void genKingMoves(bool isWhite, Movelist& moveListRef);
+    void genRookMoves(bool isWhite, representation::move::Movelist& moveListRef);
+    void genBishopMoves(bool isWhite, representation::move::Movelist& moveListRef);
+    void genQueenMoves(bool isWhite, representation::move::Movelist& moveListRef);
+    void genKnightMoves(bool isWite, representation::move::Movelist& moveListRef);
+    void genKingMoves(bool isWhite, representation::move::Movelist& moveListRef);
     
     void genPawnMoves(
         bool isWhite,
-        Movelist& moveListRef,
+        representation::move::Movelist& moveListRef,
         int currentDepth,
-        ponder::perft::SearchMemory& searchMemory
+        engine::search::SearchMemory& searchMemory
     );
 
     void genCastlingMoves(
         bool isWhite,
-        Movelist& moveListRef,
+        representation::move::Movelist& moveListRef,
         unsigned char castlingRights
     );
     
@@ -63,12 +63,12 @@ public:
 
 private:
     // Private member variables
-    const board::Bitboards& _bitboardsRef;
-    const board::GameStateBitmasks& _gameStateBitmasksRef;
+    const representation::board::Bitboards& _bitboardsRef;
+    const representation::board::GameStateBitmasks& _gameStateBitmasksRef;
     
-    move::MoveMaker& _moveMakerRef;
-    move::MoveRetractor& _moveRetractorRef;
-    ponder::perft::SearchMemory& _searchMemoryRef;
+    logic::makemove::MoveMaker& _moveMakerRef;
+    logic::makemove::MoveRetractor& _moveRetractorRef;
+    engine::search::SearchMemory& _searchMemoryRef;
     
     CheckDetection _checkDetection;
     RookGenerator _rookGenerator;

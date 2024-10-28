@@ -14,11 +14,11 @@ perft::perft(
     representation::board::SquaresLookup& squaresLookup,
     representation::board::GameStateBitmasks& gameStateBitmasks,
     representation::board::ZHasher& zHasher,
-    logic::makemove::MoverMaker& moveMaker,
-    logic::makemove::MoveMaker& moveRetractor,
+    logic::makemove::MoveMaker& moveMaker,
+    logic::makemove::MoveRetractor& moveRetractor,
     logic::movegen::MoveGenerator& moveGenerator,
-    memory::SearchMemory& searchMemory,
-    evaluation::Evaluator& evaluator,
+    engine::search::SearchMemory& searchMemory,
+    logic::evaluation::Evaluator& evaluator,
     perftData& perftData) 
     : _bitboardsRef(bitboards)
     , _squaresLookupRef(squaresLookup)
@@ -73,7 +73,7 @@ void perft::unmakeMove(
 void perft::debugPrint(bool verbose) const
 {
     if (verbose) {
-        utils::BoardPrinter boardPrinter = utils::BoardPrinter(_bitboardsRef);
+        io::BoardPrinter boardPrinter = io::BoardPrinter(_bitboardsRef);
         boardPrinter.printBoard();
     }
 }
@@ -167,7 +167,7 @@ void perft::minimax(
     
     size_t numIllegalMoves = 0;
 
-    for (size_t i = 0; i < MAX_LEGAL_MOVES; i++) {
+    for (size_t i = 0; i < logic::movegen::MoveGenerator::MAX_LEGAL_MOVES; i++) {
         representation::move::Move currentMove = _movelists[currentDepth].getMoveAt(i);
 
         if (currentMove.getMove() == 0) {

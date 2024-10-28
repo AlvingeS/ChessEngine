@@ -9,16 +9,16 @@ namespace logic {
 namespace movegen {
 
 KnightGenerator::KnightGenerator(
-    const board::Bitboards& bitboards,
-    const board::GameStateBitmasks& gameStateBitmasks) 
+    const representation::board::Bitboards& bitboards,
+    const representation::board::GameStateBitmasks& gameStateBitmasks) 
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks) {
-    _knightBitmasks = masks::getAllKnightBitmasks();
+    _knightBitmasks = bitmasks::getAllKnightBitmasks();
 }
 
 void KnightGenerator::generate(
     bool isWhite,
-    Movelist& movelist) 
+    representation::move::Movelist& movelist) 
 {
     std::vector<int>& knightIndices = utils::Containers::getPiecePositionIndices();
     std::vector<int>& freeMovesIndices = utils::Containers::getLeapingPiecefreeMovesIndices();
@@ -41,11 +41,11 @@ void KnightGenerator::generate(
         utils::getBitIndices(capturableMovesIndices, capturableKnightMoves);
 
         for (int freeKnightMoveIndex : freeMovesIndices) {
-            movelist.addMove(move::Move(currentKnightIndex, freeKnightMoveIndex, move::Move::QUITE_FLAG));
+            movelist.addMove(representation::move::Move(currentKnightIndex, freeKnightMoveIndex, representation::move::Move::QUITE_FLAG));
         }
 
         for (int capturableKnightMoveIndex : capturableMovesIndices) {
-            movelist.addMove(move::Move(currentKnightIndex, capturableKnightMoveIndex, move::Move::CAPTURE_FLAG));
+            movelist.addMove(representation::move::Move(currentKnightIndex, capturableKnightMoveIndex, representation::move::Move::CAPTURE_FLAG));
         }
     }
 }

@@ -10,21 +10,21 @@ namespace logic {
 namespace movegen {
 
 RookGenerator::RookGenerator(
-    const board::Bitboards& bitboards,
-    const board::GameStateBitmasks& gameStateBitmasks)
+    const representation::board::Bitboards& bitboards,
+    const representation::board::GameStateBitmasks& gameStateBitmasks)
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
-    _straightRayBitmasks = masks::getAllStraightRayBitmasks();
+    _straightRayBitmasks = bitmasks::getAllStraightRayBitmasks();
 }
 
 void RookGenerator::generate(
     bool isWhite,
-    Movelist& moveListRef)
+    representation::move::Movelist& moveListRef)
 {
     std::vector<int>& rookIndices = utils::Containers::getPiecePositionIndices();
 
-    masks::StraightRays rays;
+    bitmasks::StraightRays rays;
 
     utils::getBitIndices(rookIndices, isWhite ? _bitboardsRef.getWhiteRooksBitboard()
                                               : _bitboardsRef.getBlackRooksBitboard());

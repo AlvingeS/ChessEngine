@@ -57,7 +57,7 @@ std::string getFenFromBoard(const representation::board::SquaresLookup& squaresL
                 fen += std::to_string(emptyCount);
                 emptyCount = 0;
             }
-            fen += representation::board::PieceTypeToChar(type);
+            fen += representation::board::pieceTypeToChar(type);
         }
     }
 

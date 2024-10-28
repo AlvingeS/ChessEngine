@@ -2,19 +2,20 @@
 
 #include "ChessEngine/src/engine/perft/perftData.h"
 #include "ChessEngine/src/engine/search/SearchMemory.h"
-#include "ChessEngine/src/logic/evaluation/Evaluator.h"
+
+#include "ChessEngine/src/io/Fen.h"
 
 #include "ChessEngine/src/representation/board/ZHasher.h"
 #include "ChessEngine/src/representation/board/Bitboards.h"
 #include "ChessEngine/src/representation/board/GameStateBitmasks.h"
-
-#include "ChessEngine/src/representation/board/SquaresLookup.h"
-#include "ChessEngine/src/logic/movegen/MoveGenerator.h"
 #include "ChessEngine/src/representation/move/Movelist.h"
+#include "ChessEngine/src/representation/move/Move.h"
+#include "ChessEngine/src/representation/board/SquaresLookup.h"
+
 #include "ChessEngine/src/logic/makemove/MoveMaker.h"
 #include "ChessEngine/src/logic/makemove/MoveRetractor.h"
-#include "ChessEngine/src/representation/move/Move.h"
-#include "ChessEngine/src/io/Fen.h"
+#include "ChessEngine/src/logic/movegen/MoveGenerator.h"
+#include "ChessEngine/src/logic/evaluation/Evaluator.h"
 
 namespace engine {
 namespace perft {
@@ -28,11 +29,11 @@ public:
         representation::board::SquaresLookup& squaresLookup,
         representation::board::GameStateBitmasks& gameStateBitmasks,
         representation::board::ZHasher& zHasher,
-        logic::makemove::MoverMaker& moveMaker,
-        logic::makemove::MoveMaker& moveRetractor,
+        logic::makemove::MoveMaker& moveMaker,
+        logic::makemove::MoveRetractor& moveRetractor,
         logic::movegen::MoveGenerator& moveGenerator,
-        memory::SearchMemory& searchMemory,
-        evaluation::Evaluator& evaluator,
+        engine::search::SearchMemory& searchMemory,
+        logic::evaluation::Evaluator& evaluator,
         perftData& perftData
     );
     
@@ -95,12 +96,12 @@ public:
 
     void setBoardFromFen(const std::string& fen)
     {
-        utils::setBoardFromFen(fen, _bitboardsRef, _gameStateBitmasksRef, _squaresLookupRef);
+        io::setBoardFromFen(fen, _bitboardsRef, _gameStateBitmasksRef, _squaresLookupRef);
     }
 
     std::string getFenFromBoard() const
     {
-        return utils::getFenFromBoard(_squaresLookupRef);
+        return io::getFenFromBoard(_squaresLookupRef);
     }
 
     bool diffBetweenGameStateBitmasks() const
@@ -116,7 +117,7 @@ private:
     representation::board::GameStateBitmasks& _gameStateBitmasksRef;
     representation::board::ZHasher& _zHasherRef;
     
-    logic::makemove::MoverMaker& _moveMakerRef;
+    logic::makemove::MoveMaker& _moveMakerRef;
     logic::makemove::MoveRetractor& _moveRetractorRef;
     logic::movegen::MoveGenerator& _moveGeneratorRef;
     logic::evaluation::Evaluator& _evaluatorRef;

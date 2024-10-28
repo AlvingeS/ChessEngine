@@ -39,7 +39,7 @@ void BoardPrinter::fillBoard(const representation::board::Bitboards& bitboards)
     for (int i = 0; i < 12; i++) {
         representation::board::PieceType pieceType = representation::board::intToPieceType(i);
         bitmask bitboard = bitboards.getBitboardFromIndex(i);
-        char pieceChar = representation::board::PieceTypeToChar(pieceType);
+        char pieceChar = representation::board::pieceTypeToChar(pieceType);
 
         for (int i = 0; i < 64; i++) {
             if ((bitboard >> i) & 1) {

@@ -3,7 +3,6 @@
 #include "ChessEngine/src/common.h"
 
 namespace logic {
-namespace utils {
 
 inline bool getBit(bitmask a, int i) 
 {
@@ -28,5 +27,4 @@ inline int popCount(bitmask a)
 void getBitIndices(std::vector<int>& indices, bitmask bitboard);
 void printbitmaskInBits(bitmask n);
 
-} // namespace utils
 } // namespace logic

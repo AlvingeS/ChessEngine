@@ -7,15 +7,14 @@
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
 
 namespace logic {
-namespace RayLogic {
 
 void addMovesFromFreeRay(
     bitmask freeRay,
     int bitIndexFrom,
     model::Movelist& moveListRef)
 {
-    std::vector<int>& freeRayIndices = utils::Containers::getSlidingPiecefreeMovesIndices();
-    utils::getBitIndices(freeRayIndices, freeRay);
+    std::vector<int>& freeRayIndices = Containers::getSlidingPiecefreeMovesIndices();
+    getBitIndices(freeRayIndices, freeRay);
 
     for (int bitIndex : freeRayIndices) {
         moveListRef.addMove(model::Move(bitIndexFrom, bitIndex, model::Move::QUITE_FLAG));
@@ -29,7 +28,7 @@ void addMoveIfBlockerIsEnemy(
     model::Movelist& moveListRef,
     bitmask whitePiecesBitmask)
 {
-    bool blockerIsWhite = utils::getBit(whitePiecesBitmask, blockerIndex);
+    bool blockerIsWhite = getBit(whitePiecesBitmask, blockerIndex);
 
     if (blockerIsWhite != isWhite) {
         moveListRef.addMove(model::Move(bitIndexFrom, blockerIndex, model::Move::CAPTURE_FLAG));
@@ -45,16 +44,16 @@ void addMovesBetweenBlockerAndPieceOnStraightRay(
     model::Movelist& moveListRef)
 {
     int start = startFromBlocker 
-                ? (alongFile ? utils::fileFromBitIndex(blockerIndex) 
-                             : utils::rankFromBitIndex(blockerIndex)) 
+                ? (alongFile ? fileFromBitIndex(blockerIndex) 
+                             : rankFromBitIndex(blockerIndex)) 
                 : (alongFile ? rookFile 
                              : rookRank);
                             
     int stop = startFromBlocker 
                ? (alongFile ? rookFile 
                             : rookRank) 
-               : (alongFile ? utils::fileFromBitIndex(blockerIndex) 
-                            : utils::rankFromBitIndex(blockerIndex));
+               : (alongFile ? fileFromBitIndex(blockerIndex) 
+                            : rankFromBitIndex(blockerIndex));
 
     for (int i = start - 1; i > stop; --i) {
         int rankOrFileIndex = alongFile ? rookRank * 8 + i : i * 8 + rookFile;
@@ -72,20 +71,20 @@ void addMovesBetweenBlockerAndPieceOnDiagonalRay(
     model::Movelist& moveListRef)
 {
     int startRank = startFromBlocker
-                    ? utils::rankFromBitIndex(blockerIndex)
+                    ? rankFromBitIndex(blockerIndex)
                     : bishopRank;
 
     int startFile = startFromBlocker
-                    ? utils::fileFromBitIndex(blockerIndex)
+                    ? fileFromBitIndex(blockerIndex)
                     : bishopFile;
 
     int stopRank = startFromBlocker
                    ? bishopRank
-                   : utils::rankFromBitIndex(blockerIndex);
+                   : rankFromBitIndex(blockerIndex);
 
     int stopFile = startFromBlocker 
                    ? bishopFile
-                   : utils::fileFromBitIndex(blockerIndex);
+                   : fileFromBitIndex(blockerIndex);
 
     int rankDiff = startRank - stopRank;
     int fileDiff = startFile - stopFile;
@@ -116,8 +115,8 @@ void addMovesFromStraightRay(
 
         if (blockerBitmask != 0) {
             int blockerIndex = blockerOnLSB
-                               ? utils::indexOfLSB(blockerBitmask)
-                               : utils::indexOfMSB(blockerBitmask);
+                               ? indexOfLSB(blockerBitmask)
+                               : indexOfMSB(blockerBitmask);
                                
             addMoveIfBlockerIsEnemy(
                 blockerIndex,
@@ -157,8 +156,8 @@ void addMovesFromDiagonalRay(
 
     if (blockerBitmask != 0) {
         int blockerIndex = blockerOnLSB
-                           ? utils::indexOfLSB(blockerBitmask) 
-                           : utils::indexOfMSB(blockerBitmask);
+                           ? indexOfLSB(blockerBitmask) 
+                           : indexOfMSB(blockerBitmask);
 
         addMoveIfBlockerIsEnemy(
             blockerIndex, 
@@ -195,16 +194,16 @@ bool checkStraightRay(
         bitmask occupiedBlockerBitmask = straightRay & occupiedPiecesBitmask;
 
         // If there is only one blocker out of all pieces, then it must be a rook or a queen thus the king is in check
-        if (utils::popCount(occupiedBlockerBitmask) == 1) {
+        if (popCount(occupiedBlockerBitmask) == 1) {
             return true;
         } else {
             int occupiedBlockerIndex = firstBlockerOnLSB
-                                       ? utils::indexOfLSB(occupiedBlockerBitmask)
-                                       : utils::indexOfMSB(occupiedBlockerBitmask);
+                                       ? indexOfLSB(occupiedBlockerBitmask)
+                                       : indexOfMSB(occupiedBlockerBitmask);
 
             int rooksAndQueensBlockerIndex = firstBlockerOnLSB 
-                                             ? utils::indexOfLSB(rooksAndQueensBlockerBitmask)
-                                             : utils::indexOfMSB(rooksAndQueensBlockerBitmask);
+                                             ? indexOfLSB(rooksAndQueensBlockerBitmask)
+                                             : indexOfMSB(rooksAndQueensBlockerBitmask);
 
             // If the the first blocker of any piece is the same as the first blocker of a rook or queen, then the king is in check
             if (occupiedBlockerIndex == rooksAndQueensBlockerIndex) {
@@ -229,16 +228,16 @@ bool checkDiagonalRay(
     if ((bishopsAndQueensBlockerBitmask) != 0) {
         bitmask occupiedBlockerBitmask = diagonalRay & occupiedPiecesBitmask;
 
-        if (utils::popCount(occupiedBlockerBitmask) == 1) {
+        if (popCount(occupiedBlockerBitmask) == 1) {
             return true;
         } else {
             int occupiedBlockerIndex = firstBlockerOnLSB
-                                       ? utils::indexOfLSB(occupiedBlockerBitmask)
-                                       : utils::indexOfMSB(occupiedBlockerBitmask);
+                                       ? indexOfLSB(occupiedBlockerBitmask)
+                                       : indexOfMSB(occupiedBlockerBitmask);
 
             int bishopsAndQueensBlockerIndex = firstBlockerOnLSB
-                                               ? utils::indexOfLSB(bishopsAndQueensBlockerBitmask)
-                                               : utils::indexOfMSB(bishopsAndQueensBlockerBitmask);
+                                               ? indexOfLSB(bishopsAndQueensBlockerBitmask)
+                                               : indexOfMSB(bishopsAndQueensBlockerBitmask);
 
             if (occupiedBlockerIndex == bishopsAndQueensBlockerIndex) {
                 return true;
@@ -251,5 +250,4 @@ bool checkDiagonalRay(
     return false;
 }
 
-} // namespace raylogic
 } // namespace logic

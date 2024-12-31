@@ -29,7 +29,7 @@ public:
         bool isWhite,
         model::Movelist& moveListRef,
         int currentDepth,
-        engine::search::SearchMemory& searchMemory
+        engine::SearchMemory& searchMemory
     );
 
 private:

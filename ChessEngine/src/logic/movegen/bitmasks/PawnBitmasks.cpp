@@ -3,7 +3,6 @@
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
-namespace bitmasks {
 
 bitmask applyCapturePawnMoves(int ind, bool isWhite) 
 {
@@ -20,10 +19,10 @@ bitmask applyCapturePawnMoves(int ind, bool isWhite)
 
 bitmask removeWrapAroundPawnMoves(bitmask captureMoves, int ind) 
 {
-    bitmask notAFile = ~utils::getFileMask(7);
-    bitmask notHFile = ~utils::getFileMask(0);
+    bitmask notAFile = ~getFileMask(7);
+    bitmask notHFile = ~getFileMask(0);
 
-    switch (utils::fileFromBitIndex(ind)) {
+    switch (fileFromBitIndex(ind)) {
         case 0:
             captureMoves &= notAFile;
             break;
@@ -80,5 +79,4 @@ std::vector<bitmask> getAllCapturePawnMoveBitmasks(bool isWhite)
     return capturePawnMoveBitmasks;
 }
 
-} // namespace bitmasks
 } // namespace logic

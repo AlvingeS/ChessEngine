@@ -1,6 +1,9 @@
+add_library(movegen)
+
 add_subdirectory(utils)
 add_subdirectory(bitmasks)
-add_library(movegen
+
+target_sources(movegen PRIVATE
     MoveGenerator.cpp
     RookGenerator.cpp
     BishopGenerator.cpp
@@ -12,4 +15,5 @@ add_library(movegen
     RayLogic.cpp
     CheckDetection.cpp
 )
+
 target_link_libraries(movegen PUBLIC search move board cxx_setup)

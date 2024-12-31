@@ -13,25 +13,25 @@ CheckDetection::CheckDetection(
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
-    _straightRayBitmasks = bitmasks::getAllStraightRayBitmasks();
-    _diagonalRayBitmasks = bitmasks::getAllDiagonalRayBitmasks();
-    _knightBitmasks = bitmasks::getAllKnightBitmasks();
-    _whitePawnCaptureMoveBitmasks = bitmasks::getAllCapturePawnMoveBitmasks(true);
-    _blackPawnCaptureMoveBitmasks = bitmasks::getAllCapturePawnMoveBitmasks(false);
+    _straightRayBitmasks = getAllStraightRayBitmasks();
+    _diagonalRayBitmasks = getAllDiagonalRayBitmasks();
+    _knightBitmasks = getAllKnightBitmasks();
+    _whitePawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(true);
+    _blackPawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(false);
 }
 
 bool CheckDetection::isInCheck(bool isWhite) const
 {
     int kingIndex, opponentKingIndex, kingRankDiff, kingFileDiff;
 
-    kingIndex = utils::indexOfLSB(isWhite ? _bitboardsRef.getWhiteKingBitboard()
+    kingIndex = indexOfLSB(isWhite ? _bitboardsRef.getWhiteKingBitboard()
                                           : _bitboardsRef.getBlackKingBitboard());
 
-    opponentKingIndex = utils::indexOfLSB(isWhite ? _bitboardsRef.getBlackKingBitboard()
+    opponentKingIndex = indexOfLSB(isWhite ? _bitboardsRef.getBlackKingBitboard()
                                                   : _bitboardsRef.getWhiteKingBitboard());
 
-    kingRankDiff = utils::rankFromBitIndex(kingIndex) - utils::rankFromBitIndex(opponentKingIndex);
-    kingFileDiff = utils::fileFromBitIndex(kingIndex) - utils::fileFromBitIndex(opponentKingIndex);
+    kingRankDiff = rankFromBitIndex(kingIndex) - rankFromBitIndex(opponentKingIndex);
+    kingFileDiff = fileFromBitIndex(kingIndex) - fileFromBitIndex(opponentKingIndex);
 
     kingRankDiff = kingRankDiff < 0 ? -kingRankDiff 
                                     : kingRankDiff;
@@ -51,8 +51,8 @@ bool CheckDetection::isInCheck(bool isWhite) const
         }
     }
 
-    bitmasks::StraightRays straightRays = _straightRayBitmasks[kingIndex];
-    bitmasks::DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
+    StraightRays straightRays = _straightRayBitmasks[kingIndex];
+    DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
 
     bitmask knightMoves = _knightBitmasks[kingIndex];
 
@@ -75,28 +75,28 @@ bool CheckDetection::isInCheck(bool isWhite) const
     if ((knightMoves & opponentKnights) != 0)
         return true;
 
-    if (RayLogic::checkStraightRay(straightRays.north, true, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkStraightRay(straightRays.north, true, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (RayLogic::checkStraightRay(straightRays.east, false, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkStraightRay(straightRays.east, false, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (RayLogic::checkStraightRay(straightRays.south, false, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkStraightRay(straightRays.south, false, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (RayLogic::checkStraightRay(straightRays.west, true, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkStraightRay(straightRays.west, true, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (RayLogic::checkDiagonalRay(diagonalRays.northEast, true, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkDiagonalRay(diagonalRays.northEast, true, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (RayLogic::checkDiagonalRay(diagonalRays.southEast, false, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkDiagonalRay(diagonalRays.southEast, false, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (RayLogic::checkDiagonalRay(diagonalRays.southWest, false, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkDiagonalRay(diagonalRays.southWest, false, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (RayLogic::checkDiagonalRay(diagonalRays.northWest, true, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkDiagonalRay(diagonalRays.northWest, true, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
     return false;

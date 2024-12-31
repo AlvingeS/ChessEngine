@@ -22,19 +22,7 @@ namespace engine {
 class perft {
 
 public:
-    perft (
-        int maxDepth,
-        model::Bitboards& bitboards,
-        model::SquaresLookup& squaresLookup,
-        model::GameStateBitmasks& gameStateBitmasks,
-        model::ZHasher& zHasher,
-        logic::MoveMaker& moveMaker,
-        logic::MoveRetractor& moveRetractor,
-        logic::MoveGenerator& moveGenerator,
-        engine::search::SearchMemory& searchMemory,
-        logic::Evaluator& evaluator,
-        perftData& perftData
-    );
+    perft(int maxDepth);
     
     void minimax(
         int current_depth,
@@ -68,7 +56,7 @@ public:
     int _totalNodes;
 
     void debugPrint(bool verbose) const;
-    
+
     bool checkCondition(
         int currentDepth,
         bool isMaximizer, 
@@ -90,39 +78,39 @@ public:
 
     const logic::MoveGenerator& getMoveGenerator() const
     {
-        return _moveGeneratorRef;
+        return _moveGenerator;
     }
 
     void setBoardFromFen(const std::string& fen)
     {
-        io::setBoardFromFen(fen, _bitboardsRef, _gameStateBitmasksRef, _squaresLookupRef);
+        io::setBoardFromFen(fen, _bitboards, _gameStateBitmasks, _squaresLookup);
     }
 
     std::string getFenFromBoard() const
     {
-        return io::getFenFromBoard(_squaresLookupRef);
+        return io::getFenFromBoard(_squaresLookup);
     }
 
     bool diffBetweenGameStateBitmasks() const
     {
-        return (_gameStateBitmasksRef.getBlackPiecesBitmask() | _gameStateBitmasksRef.getWhitePiecesBitmask()) != _gameStateBitmasksRef.getOccupiedPiecesBitmask();
+        return (_gameStateBitmasks.getBlackPiecesBitmask() | _gameStateBitmasks.getWhitePiecesBitmask()) != _gameStateBitmasks.getOccupiedPiecesBitmask();
     }
 
     
 private:
     int _maxDepth;
-    model::Bitboards& _bitboardsRef;
-    model::SquaresLookup& _squaresLookupRef;
-    model::GameStateBitmasks& _gameStateBitmasksRef;
-    model::ZHasher& _zHasherRef;
+    model::Bitboards _bitboards;
+    model::SquaresLookup _squaresLookup;
+    model::GameStateBitmasks _gameStateBitmasks;
+    model::ZHasher _zHasher;
     
-    logic::MoveMaker& _moveMakerRef;
-    logic::MoveRetractor& _moveRetractorRef;
-    logic::MoveGenerator& _moveGeneratorRef;
-    logic::Evaluator& _evaluatorRef;
+    logic::MoveMaker _moveMaker;
+    logic::MoveRetractor _moveRetractor;
+    logic::MoveGenerator _moveGenerator;
+    logic::Evaluator _evaluator;
     
-    search::SearchMemory& _searchMemoryRef;
-    perftData& _perftDataRef;
+    SearchMemory _searchMemory;
+    perftData _perftData;
 
     int _pseudoLegalMovesCount;
     std::vector<model::Movelist> _movelists;

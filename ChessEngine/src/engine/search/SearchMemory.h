@@ -4,7 +4,6 @@
 #include "ChessEngine/src/model/board/PieceType.h"
 
 namespace engine {
-namespace search {
 
 constexpr unsigned char whiteKingSide = 0b0001;
 constexpr unsigned char whiteQueenSide = 0b0010;
@@ -91,5 +90,4 @@ private:
 
 };
 
-} // namespace search
 } // namespace engine

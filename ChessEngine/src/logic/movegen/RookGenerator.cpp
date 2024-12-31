@@ -14,27 +14,27 @@ RookGenerator::RookGenerator(
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
-    _straightRayBitmasks = bitmasks::getAllStraightRayBitmasks();
+    _straightRayBitmasks = getAllStraightRayBitmasks();
 }
 
 void RookGenerator::generate(
     bool isWhite,
     model::Movelist& moveListRef)
 {
-    std::vector<int>& rookIndices = utils::Containers::getPiecePositionIndices();
+    std::vector<int>& rookIndices = Containers::getPiecePositionIndices();
 
-    bitmasks::StraightRays rays;
+    StraightRays rays;
 
-    utils::getBitIndices(rookIndices, isWhite ? _bitboardsRef.getWhiteRooksBitboard()
+    getBitIndices(rookIndices, isWhite ? _bitboardsRef.getWhiteRooksBitboard()
                                               : _bitboardsRef.getBlackRooksBitboard());
 
     // Loop through all rooks and isolate them
     for (int currentRookIndex : rookIndices) {
         rays = _straightRayBitmasks[currentRookIndex];
-        int rookRank = utils::rankFromBitIndex(currentRookIndex);
-        int rookFile = utils::fileFromBitIndex(currentRookIndex);
+        int rookRank = rankFromBitIndex(currentRookIndex);
+        int rookFile = fileFromBitIndex(currentRookIndex);
 
-        RayLogic::addMovesFromStraightRay(
+        addMovesFromStraightRay(
             rays.north,
             true, 
             false, 
@@ -47,7 +47,7 @@ void RookGenerator::generate(
             _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
-        RayLogic::addMovesFromStraightRay(
+        addMovesFromStraightRay(
             rays.east,
             false, 
             true, 
@@ -60,7 +60,7 @@ void RookGenerator::generate(
             _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
-        RayLogic::addMovesFromStraightRay(
+        addMovesFromStraightRay(
             rays.south,
             false, 
             false, 
@@ -73,7 +73,7 @@ void RookGenerator::generate(
             _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
-        RayLogic::addMovesFromStraightRay(
+        addMovesFromStraightRay(
             rays.west,
             true, 
             true, 

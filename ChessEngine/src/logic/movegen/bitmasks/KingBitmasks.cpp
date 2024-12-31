@@ -3,7 +3,6 @@
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
-namespace bitmasks {
 
 // Applies all king moves without considering looping around the board
 bitmask applyKingMoves(int ind) 
@@ -25,10 +24,10 @@ bitmask applyKingMoves(int ind)
 // Applies file masks to king moves to prevent looping around the board
 bitmask removeWrapAroundKingMoves(bitmask kingMoves, int ind) 
 {
-    bitmask notAFile = ~utils::getFileMask(7);
-    bitmask notHFile = ~utils::getFileMask(0);
+    bitmask notAFile = ~getFileMask(7);
+    bitmask notHFile = ~getFileMask(0);
 
-    switch (utils::fileFromBitIndex(ind)) {
+    switch (fileFromBitIndex(ind)) {
         case 0:
             kingMoves &= notAFile;
             break;
@@ -58,5 +57,4 @@ const std::vector<bitmask> getAllKingBitmasks()
     return kingBitmasks;
 }
 
-} // namespace bitmasks
 } // namespace logic

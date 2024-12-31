@@ -4,7 +4,6 @@
 #include <bitset>
 
 namespace logic {
-namespace utils {
 
 void getBitIndices(std::vector<int>& indices, bitboard bitboard)
 { 
@@ -19,5 +18,4 @@ void getBitIndices(std::vector<int>& indices, bitboard bitboard)
     }
 }
 
-} // namespace utils
 } // namespace logic

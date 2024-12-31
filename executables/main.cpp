@@ -71,12 +71,15 @@ int main()
 
             Lot's of refactoring, killed performance a bit but a lot cleaner
             0.474s 14.86M nodes/s ~ 5.9% SF
+
+            Done with major refactoring into model/logic/engine/io
+            0.426s ~ 16.21 nodes/s ~ 6.5% SF
     */
 
     // Start clock
     auto start = std::chrono::high_resolution_clock::now();
 
-    logic::utils::Containers::init();
+    logic::Containers::init();
 
     int const MAX_DEPTH = 4;
 
@@ -87,19 +90,19 @@ int main()
     
     bool recPerftStats = false;
 
-    engine::perft searcherStartPos = engine::perft(MAX_DEPTH);
+    engine::Searcher searcherStartPos = engine::Searcher(MAX_DEPTH);
     searcherStartPos.setBoardFromFen(startPos);
     searcherStartPos.minimax(0, true, 0, recPerftStats);
 
-    engine::perft searcherPosTwo = engine::perft(MAX_DEPTH);
+    engine::Searcher searcherPosTwo = engine::Searcher(MAX_DEPTH);
     searcherPosTwo.setBoardFromFen(posTwo);
     searcherPosTwo.minimax(0, true, 0, recPerftStats);
     
-    engine::perft searcherPosThree = engine::perft(MAX_DEPTH);
+    engine::Searcher searcherPosThree = engine::Searcher(MAX_DEPTH);
     searcherPosThree.setBoardFromFen(posThree);
     searcherPosThree.minimax(0, true, 0, recPerftStats);
 
-    engine::perft searcherPosFive = engine::perft(MAX_DEPTH);
+    engine::Searcher searcherPosFive = engine::Searcher(MAX_DEPTH);
     searcherPosFive.setBoardFromFen(posFive);
     searcherPosFive.minimax(0, true, 0, recPerftStats);
 

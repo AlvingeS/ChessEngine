@@ -1,7 +1,6 @@
 #include "ChessEngine/src/logic/makemove/MoveUtils.h"
 
 namespace logic {
-namespace makemove {
 
 model::PieceType getPromotionPieceType(int promotionFlag, bool isWhite) 
 {
@@ -40,5 +39,4 @@ int determineCaptureIndex(const model::Move& move, bool isWhite, int toIndex)
     return move.isEpCapture() ? (isWhite ? toIndex - 8 : toIndex + 8) : toIndex;
 }
     
-} // namespace makemove
 } // namespace logic

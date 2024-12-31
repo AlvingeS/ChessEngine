@@ -28,8 +28,8 @@ private:
     const model::GameStateBitmasks& _gameStateBitmasksRef;
 
     // Memory
-    std::vector<bitmasks::StraightRays> _straightRayBitmasks;
-    std::vector<bitmasks::DiagonalRays> _diagonalRayBitmasks;
+    std::vector<StraightRays> _straightRayBitmasks;
+    std::vector<DiagonalRays> _diagonalRayBitmasks;
     std::vector<bitmask> _knightBitmasks;
     std::vector<bitmask> _whitePawnCaptureMoveBitmasks;
     std::vector<bitmask> _blackPawnCaptureMoveBitmasks;

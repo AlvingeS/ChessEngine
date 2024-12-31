@@ -14,27 +14,27 @@ BishopGenerator::BishopGenerator(const model::Bitboards& bitboards, const model:
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
-    _diagonalRayBitmasks = bitmasks::getAllDiagonalRayBitmasks();
+    _diagonalRayBitmasks = getAllDiagonalRayBitmasks();
 }
 
 void BishopGenerator::generate(
     bool isWhite,
     model::Movelist& moveListRef)
 {
-    std::vector<int>& bishopIndices = utils::Containers::getPiecePositionIndices();
+    std::vector<int>& bishopIndices = Containers::getPiecePositionIndices();
 
-    utils::getBitIndices(bishopIndices, isWhite ? _bitboardsRef.getWhiteBishopsBitboard()
+    getBitIndices(bishopIndices, isWhite ? _bitboardsRef.getWhiteBishopsBitboard()
                                                 : _bitboardsRef.getBlackBishopsBitboard());
 
     for (int currentBishopIndex : bishopIndices) {
-        bitmasks::DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];
-        int bishopRank = utils::rankFromBitIndex(currentBishopIndex);
-        int bishopFile = utils::fileFromBitIndex(currentBishopIndex);
+        DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];
+        int bishopRank = rankFromBitIndex(currentBishopIndex);
+        int bishopFile = fileFromBitIndex(currentBishopIndex);
 
-        RayLogic::addMovesFromDiagonalRay(rays.northEast, true, isWhite, currentBishopIndex, bishopRank, bishopFile, moveListRef, _gameStateBitmasksRef.getWhitePiecesBitmask(), _gameStateBitmasksRef.getOccupiedPiecesBitmask());
-        RayLogic::addMovesFromDiagonalRay(rays.southEast, false, isWhite, currentBishopIndex, bishopRank, bishopFile, moveListRef, _gameStateBitmasksRef.getWhitePiecesBitmask(), _gameStateBitmasksRef.getOccupiedPiecesBitmask());
-        RayLogic::addMovesFromDiagonalRay(rays.southWest, false, isWhite, currentBishopIndex, bishopRank, bishopFile, moveListRef, _gameStateBitmasksRef.getWhitePiecesBitmask(), _gameStateBitmasksRef.getOccupiedPiecesBitmask());
-        RayLogic::addMovesFromDiagonalRay(rays.northWest, true, isWhite, currentBishopIndex, bishopRank, bishopFile, moveListRef, _gameStateBitmasksRef.getWhitePiecesBitmask(), _gameStateBitmasksRef.getOccupiedPiecesBitmask());
+        addMovesFromDiagonalRay(rays.northEast, true, isWhite, currentBishopIndex, bishopRank, bishopFile, moveListRef, _gameStateBitmasksRef.getWhitePiecesBitmask(), _gameStateBitmasksRef.getOccupiedPiecesBitmask());
+        addMovesFromDiagonalRay(rays.southEast, false, isWhite, currentBishopIndex, bishopRank, bishopFile, moveListRef, _gameStateBitmasksRef.getWhitePiecesBitmask(), _gameStateBitmasksRef.getOccupiedPiecesBitmask());
+        addMovesFromDiagonalRay(rays.southWest, false, isWhite, currentBishopIndex, bishopRank, bishopFile, moveListRef, _gameStateBitmasksRef.getWhitePiecesBitmask(), _gameStateBitmasksRef.getOccupiedPiecesBitmask());
+        addMovesFromDiagonalRay(rays.northWest, true, isWhite, currentBishopIndex, bishopRank, bishopFile, moveListRef, _gameStateBitmasksRef.getWhitePiecesBitmask(), _gameStateBitmasksRef.getOccupiedPiecesBitmask());
     }
 }
 

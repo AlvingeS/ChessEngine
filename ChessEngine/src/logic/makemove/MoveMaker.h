@@ -24,7 +24,7 @@ public:
         model::GameStateBitmasks& gameStateBitmasks, 
         model::SquaresLookup& squaresLookup, 
         model::ZHasher& zHasher,
-        engine::search::SearchMemory& searchMemory
+        engine::SearchMemory& searchMemory
     );
     
     // Public member functions
@@ -36,7 +36,7 @@ public:
 
     void makeTemporaryKingMove(bool isWhite, bool isKingSide);
 
-    engine::search::SearchMemory& getSearchMemory() const
+    engine::SearchMemory& getSearchMemory() const
     {
         return _searchMemoryRef;
     }
@@ -79,7 +79,7 @@ private:
     model::GameStateBitmasks& _gameStateBitmasksRef;
     model::SquaresLookup& _squaresLookupRef;
     const model::ZHasher& _zHasherRef;
-    engine::search::SearchMemory& _searchMemoryRef;
+    engine::SearchMemory& _searchMemoryRef;
 };
 
 } // namespace logic

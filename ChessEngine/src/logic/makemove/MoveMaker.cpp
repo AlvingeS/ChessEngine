@@ -11,7 +11,7 @@ MoveMaker::MoveMaker(
     model::GameStateBitmasks& gameStateBitmasks, 
     model::SquaresLookup& squaresLookup, 
     model::ZHasher& zHasher,
-    engine::search::SearchMemory& searchMemory
+    engine::SearchMemory& searchMemory
 ) : _bitboardsRef(bitBoards), 
     _gameStateBitmasksRef(gameStateBitmasks), 
     _squaresLookupRef(squaresLookup), 

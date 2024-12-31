@@ -14,23 +14,23 @@ PawnGenerator::PawnGenerator(
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
-    _whitePawnStraightMoveBitmasks = bitmasks::getAllStraightPawnMoveBitmasks(true);
-    _whitePawnCaptureMoveBitmasks = bitmasks::getAllCapturePawnMoveBitmasks(true);
-    _blackPawnStraightMoveBitmasks = bitmasks::getAllStraightPawnMoveBitmasks(false);
-    _blackPawnCaptureMoveBitmasks = bitmasks::getAllCapturePawnMoveBitmasks(false);
+    _whitePawnStraightMoveBitmasks = getAllStraightPawnMoveBitmasks(true);
+    _whitePawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(true);
+    _blackPawnStraightMoveBitmasks = getAllStraightPawnMoveBitmasks(false);
+    _blackPawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(false);
 }
 
 void PawnGenerator::generate(
     bool isWhite,
     model::Movelist& moveListRef,
     int currentDepth,
-    engine::search::SearchMemory& searchMemory)
+    engine::SearchMemory& searchMemory)
 {
-    std::vector<int>& pawnIndices = utils::Containers::getPiecePositionIndices();
-    std::vector<int>& freeMovesIndices = utils::Containers::getLeapingPiecefreeMovesIndices();
-    std::vector<int>& capturableMovesIndices = utils::Containers::getLeapingPieceCapturableMovesIndices();
+    std::vector<int>& pawnIndices = Containers::getPiecePositionIndices();
+    std::vector<int>& freeMovesIndices = Containers::getLeapingPiecefreeMovesIndices();
+    std::vector<int>& capturableMovesIndices = Containers::getLeapingPieceCapturableMovesIndices();
 
-    utils::getBitIndices(pawnIndices, isWhite ? _bitboardsRef.getWhitePawnsBitboard()
+    getBitIndices(pawnIndices, isWhite ? _bitboardsRef.getWhitePawnsBitboard()
                                               : _bitboardsRef.getBlackPawnsBitboard());
 
     for (int currentPawnIndex : pawnIndices) {
@@ -49,11 +49,11 @@ void PawnGenerator::generate(
         bitmask enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
         bitmask capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
 
-        utils::getBitIndices(freeMovesIndices, freePawnMoves);
-        utils::getBitIndices(capturableMovesIndices, capturablePawnMoves);
+        getBitIndices(freeMovesIndices, freePawnMoves);
+        getBitIndices(capturableMovesIndices, capturablePawnMoves);
 
         int offset = isWhite ? 8 : -8;
-        bool canPromote = (isWhite && utils::rankFromBitIndex(currentPawnIndex) == 6) || (!isWhite && utils::rankFromBitIndex(currentPawnIndex) == 1);
+        bool canPromote = (isWhite && rankFromBitIndex(currentPawnIndex) == 6) || (!isWhite && rankFromBitIndex(currentPawnIndex) == 1);
 
         if (freeMovesIndices.size() == 2) {
             int singleStepIndex = (isWhite ? 0 : 1);
@@ -87,7 +87,7 @@ void PawnGenerator::generate(
         }
 
         if ((capturePawnMoveBitmask & enPessantTarget) != 0) {
-            moveListRef.addMove(model::Move(currentPawnIndex, utils::indexOfLSB(capturePawnMoveBitmask & enPessantTarget), model::Move::EP_CAPTURE_FLAG));
+            moveListRef.addMove(model::Move(currentPawnIndex, indexOfLSB(capturePawnMoveBitmask & enPessantTarget), model::Move::EP_CAPTURE_FLAG));
         }
     }
 }

@@ -3,7 +3,6 @@
 #include "ChessEngine/src/model/board/PieceType.h"
 
 namespace logic {
-namespace utils {
 
 constexpr bitmask FILE_MASK[8] = {
     0x0101010101010101ULL,
@@ -78,5 +77,4 @@ inline int manhattanDistance(int i, int j)
     return abs(rankDiff) + abs(fileDiff);
 }
 
-} // namespace utils
 } // namespace logic

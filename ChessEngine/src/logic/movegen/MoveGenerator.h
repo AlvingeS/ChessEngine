@@ -49,7 +49,7 @@ public:
         bool isWhite,
         model::Movelist& moveListRef,
         int currentDepth,
-        engine::search::SearchMemory& searchMemory
+        engine::SearchMemory& searchMemory
     );
 
     void genCastlingMoves(
@@ -67,7 +67,7 @@ private:
     
     logic::MoveMaker& _moveMakerRef;
     logic::MoveRetractor& _moveRetractorRef;
-    engine::search::SearchMemory& _searchMemoryRef;
+    engine::SearchMemory& _searchMemoryRef;
     
     CheckDetection _checkDetection;
     RookGenerator _rookGenerator;

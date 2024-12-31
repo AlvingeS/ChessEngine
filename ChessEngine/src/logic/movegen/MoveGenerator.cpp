@@ -89,7 +89,7 @@ void MoveGenerator::genPawnMoves(
     bool isWhite,
     model::Movelist& moveListRef,
     int currentDepth,
-    engine::search::SearchMemory& searchMemory)
+    engine::SearchMemory& searchMemory)
 {
     _pawnGenerator.generate(isWhite, moveListRef, currentDepth, searchMemory);
 }

@@ -17,7 +17,6 @@
 #include "ChessEngine/src/io/Fen.h"
 
 namespace engine {
-namespace search {
 
 class Searcher {
 
@@ -96,12 +95,12 @@ public:
 
     void setBoardFromFen(const std::string& fen)
     {
-        utils::setBoardFromFen(fen, _bitboards, _gameStateBitmasks, _squaresLookup);
+        io::setBoardFromFen(fen, _bitboards, _gameStateBitmasks, _squaresLookup);
     }
 
     std::string getFenFromBoard() const
     {
-        return utils::getFenFromBoard(_squaresLookup);
+        return io::getFenFromBoard(_squaresLookup);
     }
 
     bool diffBetweenGameStateBitmasks() const
@@ -115,8 +114,8 @@ private:
     model::GameStateBitmasks _gameStateBitmasks;
     SearchMemory _searchMemory;
     model::ZHasher _zHasher;
-    logic::MoverMaker _moveMaker;
-    logic::MoveMaker _moveRetractor;
+    logic::MoveMaker _moveMaker;
+    logic::MoveRetractor _moveRetractor;
     logic::MoveGenerator _moveGenerator;
     logic::Evaluator _evaluator;
     int _maxDepth;
@@ -129,5 +128,4 @@ private:
     bool tooManyPiecesOnBoard();
 };
 
-} // namespace search
 } // namespace engine

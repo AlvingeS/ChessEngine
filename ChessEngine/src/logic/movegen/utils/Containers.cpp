@@ -1,7 +1,6 @@
 #include "ChessEngine/src/logic/movegen/utils/Containers.h"
 
 namespace logic {
-namespace utils {
 
 std::vector<int> Containers::_slidingPiecefreeMovesIndices;
 std::vector<int> Containers::_leapingPiecefreeMovesIndices;
@@ -19,5 +18,4 @@ void Containers::init() {
     _piecePositionIndices = std::vector<int>(16, 0);
 }
 
-} // namespace utils
 } // namespace logic

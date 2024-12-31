@@ -3,7 +3,6 @@
 #include "ChessEngine/src/logic/movegen/MoveGenerator.h"
 
 namespace engine {
-namespace perft {
 
 perftData::perftData(int maxDepth)
     : _maxDepth(maxDepth)
@@ -59,5 +58,4 @@ void perftData::resetNodeCounts()
     }
 }
 
-} // namespace perft
 } // namespace engine

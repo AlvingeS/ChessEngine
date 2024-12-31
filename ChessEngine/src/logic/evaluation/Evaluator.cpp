@@ -14,20 +14,20 @@ float Evaluator::evaluate() {
     return 0.0f;
     // int score = 0;
 
-    // score += PAWN_VALUE * (utils::popCount(_board.getBitboardFromPieceType(model::PieceType::W_PAWN)));
-    // score -= PAWN_VALUE * (utils::popCount(_board.getBitboardFromPieceType(model::PieceType::B_PAWN)));
+    // score += PAWN_VALUE * (popCount(_board.getBitboardFromPieceType(model::PieceType::W_PAWN)));
+    // score -= PAWN_VALUE * (popCount(_board.getBitboardFromPieceType(model::PieceType::B_PAWN)));
 
-    // score += KNIGHT_VALUE * (utils::popCount(_board.getBitboardFromPieceType(model::PieceType::W_KNIGHT)));
-    // score -= KNIGHT_VALUE * (utils::popCount(_board.getBitboardFromPieceType(model::PieceType::B_KNIGHT)));
+    // score += KNIGHT_VALUE * (popCount(_board.getBitboardFromPieceType(model::PieceType::W_KNIGHT)));
+    // score -= KNIGHT_VALUE * (popCount(_board.getBitboardFromPieceType(model::PieceType::B_KNIGHT)));
 
-    // score += BISHOP_VALUE * (utils::popCount(_board.getBitboardFromPieceType(model::PieceType::W_BISHOP)));
-    // score -= BISHOP_VALUE * (utils::popCount(_board.getBitboardFromPieceType(model::PieceType::B_BISHOP)));
+    // score += BISHOP_VALUE * (popCount(_board.getBitboardFromPieceType(model::PieceType::W_BISHOP)));
+    // score -= BISHOP_VALUE * (popCount(_board.getBitboardFromPieceType(model::PieceType::B_BISHOP)));
 
-    // score += ROOK_VALUE * (utils::popCount(_board.getBitboardFromPieceType(model::PieceType::W_ROOK)));
-    // score -= ROOK_VALUE * (utils::popCount(_board.getBitboardFromPieceType(model::PieceType::B_ROOK)));
+    // score += ROOK_VALUE * (popCount(_board.getBitboardFromPieceType(model::PieceType::W_ROOK)));
+    // score -= ROOK_VALUE * (popCount(_board.getBitboardFromPieceType(model::PieceType::B_ROOK)));
 
-    // score += QUEEN_VALUE * (utils::popCount(_board.getBitboardFromPieceType(model::PieceType::W_QUEEN)));
-    // score -= QUEEN_VALUE * (utils::popCount(_board.getBitboardFromPieceType(model::PieceType::B_QUEEN)));
+    // score += QUEEN_VALUE * (popCount(_board.getBitboardFromPieceType(model::PieceType::W_QUEEN)));
+    // score -= QUEEN_VALUE * (popCount(_board.getBitboardFromPieceType(model::PieceType::B_QUEEN)));
 
     // return static_cast<float>(score);
 }

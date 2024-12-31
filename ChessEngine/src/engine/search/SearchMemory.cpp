@@ -3,8 +3,7 @@
 #include "ChessEngine/src/model/board/PieceType.h"
 
 namespace engine {
-namespace search {
-
+    
 SearchMemory::SearchMemory(int maxDepth) : _maxDepth(maxDepth) 
 {
     _castlingRights.resize(_maxDepth + 1);
@@ -94,5 +93,4 @@ void SearchMemory::overrideCastlingRights(unsigned char rights)
     }
 }
 
-} // namespace search
 } // namespace engine

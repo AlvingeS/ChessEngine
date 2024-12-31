@@ -6,7 +6,6 @@
 #include <iostream>
 
 namespace engine {
-namespace search {
 
 Searcher::Searcher(int maxDepth) 
     : _bitboards(model::Bitboards())
@@ -14,10 +13,10 @@ Searcher::Searcher(int maxDepth)
     , _gameStateBitmasks(model::GameStateBitmasks(_bitboards))
     , _searchMemory(SearchMemory(maxDepth))
     , _zHasher(model::ZHasher(_squaresLookup))
-    , _moveMaker(logic::MoverMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
-    , _moveRetractor(logic::MoveMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _searchMemory, _zHasher))
+    , _moveMaker(logic::MoveMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _zHasher, _searchMemory))
+    , _moveRetractor(logic::MoveRetractor(_bitboards, _gameStateBitmasks, _squaresLookup, _zHasher, _searchMemory))
     , _moveGenerator(logic::MoveGenerator(_bitboards, _gameStateBitmasks, _moveMaker, _moveRetractor))
-    , _evaluator(evaluation::Evaluator(_bitboards))
+    , _evaluator(logic::Evaluator(_bitboards))
     , _maxDepth(maxDepth)
 {
     _numMoveGenCalls = 0;
@@ -97,7 +96,7 @@ void Searcher::unmakeMove(
 void Searcher::debugPrint(bool verbose) const
 {
     if (verbose) {
-        utils::BoardPrinter boardPrinter = utils::BoardPrinter(_bitboards);
+        io::BoardPrinter boardPrinter = io::BoardPrinter(_bitboards);
         boardPrinter.printBoard();
     }
 }
@@ -360,5 +359,4 @@ void Searcher::recordPerftStats(
     retFlag = false;
 }
 
-} // namespace search
 } // namespace engine

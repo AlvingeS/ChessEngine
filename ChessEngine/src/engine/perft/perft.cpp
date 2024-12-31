@@ -7,50 +7,33 @@
 
 namespace engine {
 
-perft::perft(
-    int maxDepth,
-    model::Bitboards& bitboards,
-    model::SquaresLookup& squaresLookup,
-    model::GameStateBitmasks& gameStateBitmasks,
-    model::ZHasher& zHasher,
-    logic::MoveMaker& moveMaker,
-    logic::MoveRetractor& moveRetractor,
-    logic::MoveGenerator& moveGenerator,
-    engine::search::SearchMemory& searchMemory,
-    logic::Evaluator& evaluator,
-    perftData& perftData) 
-    : _bitboardsRef(bitboards)
-    , _squaresLookupRef(squaresLookup)
-    , _gameStateBitmasksRef(gameStateBitmasks)
-    , _searchMemoryRef(searchMemory) 
-    , _zHasherRef(zHasher)
-    , _moveMakerRef(moveMaker)
-    , _moveRetractorRef(moveRetractor)
-    , _moveGeneratorRef(moveGenerator)
-    , _evaluatorRef(evaluator)
-    , _perftDataRef(perftData)
-    , _maxDepth(maxDepth)
+perft::perft(int maxDepth)
+    : _bitboards(),
+      _squaresLookup(_bitboards),
+      _gameStateBitmasks(_bitboards),
+      _zHasher(_squaresLookup),
+      _searchMemory(maxDepth),
+      _moveMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _zHasher, _searchMemory),
+      _moveRetractor(_bitboards, _gameStateBitmasks, _squaresLookup, _zHasher, _searchMemory),
+      _moveGenerator(_bitboards, _gameStateBitmasks, _moveMaker, _moveRetractor),
+      _evaluator(_bitboards),
+      _perftData(maxDepth),
+      _numMoveGenCalls(0),
+      _totalNodes(0)
 {
-    _numMoveGenCalls = 0;
-    _totalNodes = 0;
-
-    _lastCapturedPieces.resize(_maxDepth);
+    // For any non-uniform initialization:
+    _lastCapturedPieces.resize(_maxDepth, model::PieceType::EMPTY);
     _movelists.resize(_maxDepth);
-    _noCapturedOrPawnMoveCounts.resize(_maxDepth);
-
-    for (int i = 0; i < _maxDepth; i++) {
-        _lastCapturedPieces[i] = model::PieceType::EMPTY;
-        _movelists[i] = model::Movelist();
-        _noCapturedOrPawnMoveCounts[i] = 0;
-    }
+    _noCapturedOrPawnMoveCounts.resize(_maxDepth, 0);
 }
+
 
 void perft::genMoves(
     bool isWhite,
     int currentDepth,
     unsigned char castlingRights) 
 {
-    _moveGeneratorRef.genMoves(isWhite, _movelists[currentDepth], currentDepth, castlingRights);
+    _moveGenerator.genMoves(isWhite, _movelists[currentDepth], currentDepth, castlingRights);
 }
 
 void perft::makeMove(
@@ -58,7 +41,7 @@ void perft::makeMove(
     bool isWhite,
     int currentdepth) 
 {
-    _moveMakerRef.makeMove(move, isWhite, currentdepth);
+    _moveMaker.makeMove(move, isWhite, currentdepth);
 }
 
 void perft::unmakeMove(
@@ -66,13 +49,13 @@ void perft::unmakeMove(
     bool isWhite,
     int currentDepth)
 {
-    _moveRetractorRef.unmakeMove(move, isWhite, currentDepth);
+    _moveRetractor.unmakeMove(move, isWhite, currentDepth);
 }
 
 void perft::debugPrint(bool verbose) const
 {
     if (verbose) {
-        io::BoardPrinter boardPrinter = io::BoardPrinter(_bitboardsRef);
+        io::BoardPrinter boardPrinter = io::BoardPrinter(_bitboards);
         boardPrinter.printBoard();
     }
 }
@@ -114,7 +97,7 @@ bool perft::tooManyPiecesOnBoard()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (_squaresLookupRef.getPieceTypeAtIndex(i) != model::PieceType::EMPTY) {
+        if (_squaresLookup.getPieceTypeAtIndex(i) != model::PieceType::EMPTY) {
             count++;
         }
     }
@@ -159,7 +142,7 @@ void perft::minimax(
     genMoves(
         isMaximizer, 
         currentDepth, 
-        _searchMemoryRef.getCastlingRightsAtDepth(currentDepth)
+        _searchMemory.getCastlingRightsAtDepth(currentDepth)
     );
 
     _numMoveGenCalls++;
@@ -202,7 +185,7 @@ void perft::minimax(
             int x = 4;
         }
 
-        if (_moveGeneratorRef.isInCheck(isMaximizer)) {
+        if (_moveGenerator.isInCheck(isMaximizer)) {
             numIllegalMoves++;
             unmakeMove(currentMove, isMaximizer, currentDepth);
 
@@ -220,10 +203,10 @@ void perft::minimax(
             }
 
             if (numIllegalMoves == i + 1 && _movelists[currentDepth].getMoveAt(i + 1).getMove() == 0) {
-                bool wasInCheckBeforeMove = _moveGeneratorRef.isInCheck(isMaximizer);
+                bool wasInCheckBeforeMove = _moveGenerator.isInCheck(isMaximizer);
 
                 if (wasInCheckBeforeMove) {
-                    _perftDataRef.increaseCheckmateCountAt(currentDepth);
+                    _perftData.increaseCheckmateCountAt(currentDepth);
                 }
 
                 return;
@@ -233,11 +216,11 @@ void perft::minimax(
         }
 
         // Move was legal, update castling rights
-        _searchMemoryRef.setCastlingRights(
+        _searchMemory.setCastlingRights(
             currentDepth,
             currentMove, 
             isMaximizer, 
-            _squaresLookupRef.getPieceTypeAtIndex(currentMove.getBitIndexTo())
+            _squaresLookup.getPieceTypeAtIndex(currentMove.getBitIndexTo())
         );
 
         if (recPerftStats) {
@@ -266,7 +249,7 @@ void perft::minimax(
         );
 
         unmakeMove(currentMove, isMaximizer, currentDepth);
-        _searchMemoryRef.unsetCastlingRights(currentDepth);
+        _searchMemory.unsetCastlingRights(currentDepth);
         
         if (checkCondition(
             currentDepth, 
@@ -294,33 +277,33 @@ void perft::recordPerftStats(
     bool &retFlag) 
 {
     retFlag = true;
-    if (_moveGeneratorRef.isInCheck(!isMaximizer)) {
-        _perftDataRef.increaseCheckCountAt(currentDepth + 1);
+    if (_moveGenerator.isInCheck(!isMaximizer)) {
+        _perftData.increaseCheckCountAt(currentDepth + 1);
     }
 
     if (currentDepth == 0) {
         firstMoveIndex = i;
-        _perftDataRef.setFirstMoveAt(firstMoveIndex, currentMove);
+        _perftData.setFirstMoveAt(firstMoveIndex, currentMove);
     } else if (currentDepth == _maxDepth - 1) {
-        _perftDataRef.increaseNodeCountPerFirstMoveAt(firstMoveIndex);
+        _perftData.increaseNodeCountPerFirstMoveAt(firstMoveIndex);
     }
 
-    _perftDataRef.increaseNodeCountAt(currentDepth + 1);
+    _perftData.increaseNodeCountAt(currentDepth + 1);
 
     if (currentMove.isAnyCapture()) {
-        _perftDataRef.increaseCaptureCountAt(currentDepth + 1);
+        _perftData.increaseCaptureCountAt(currentDepth + 1);
     }
 
     if (currentMove.isAnyPromo()) {
-        _perftDataRef.increasePromotionCountAt(currentDepth + 1);
+        _perftData.increasePromotionCountAt(currentDepth + 1);
     }
 
     if (currentMove.isAnyCastle()) {
-        _perftDataRef.increaseCastlingCountAt(currentDepth + 1);
+        _perftData.increaseCastlingCountAt(currentDepth + 1);
     }
 
     if (currentMove.isEpCapture()) {
-        _perftDataRef.increaseEpCaptureCountAt(currentDepth + 1);
+        _perftData.increaseEpCaptureCountAt(currentDepth + 1);
     }
 
     // FIXME: This is temporary

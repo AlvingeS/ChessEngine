@@ -3,12 +3,11 @@
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
-namespace bitmasks {
 
 bitmask getNorthRay(int ind) 
 {
-    int rank = utils::rankFromBitIndex(ind);
-    int file = utils::fileFromBitIndex(ind);
+    int rank = rankFromBitIndex(ind);
+    int file = fileFromBitIndex(ind);
 
     bitmask north_ray = 0ULL;
 
@@ -21,8 +20,8 @@ bitmask getNorthRay(int ind)
 
 bitmask getNorthEastRay(int ind) 
 {
-    int rank = utils::rankFromBitIndex(ind);
-    int file = utils::fileFromBitIndex(ind);
+    int rank = rankFromBitIndex(ind);
+    int file = fileFromBitIndex(ind);
 
     bitmask north_east_ray = 0ULL;
 
@@ -37,8 +36,8 @@ bitmask getNorthEastRay(int ind)
 
 bitmask getEastRay(int ind) 
 {
-    int rank = utils::rankFromBitIndex(ind);
-    int file = utils::fileFromBitIndex(ind);
+    int rank = rankFromBitIndex(ind);
+    int file = fileFromBitIndex(ind);
 
     bitmask east_ray = 0ULL;
 
@@ -51,8 +50,8 @@ bitmask getEastRay(int ind)
 
 bitmask getSouthEastRay(int ind) 
 {
-    int rank = utils::rankFromBitIndex(ind);
-    int file = utils::fileFromBitIndex(ind);
+    int rank = rankFromBitIndex(ind);
+    int file = fileFromBitIndex(ind);
 
     bitmask south_east_ray = 0ULL;
 
@@ -67,8 +66,8 @@ bitmask getSouthEastRay(int ind)
 
 bitmask getSouthRay(int ind) 
 {
-    int rank = utils::rankFromBitIndex(ind);
-    int file = utils::fileFromBitIndex(ind);
+    int rank = rankFromBitIndex(ind);
+    int file = fileFromBitIndex(ind);
 
     bitmask south_ray = 0ULL;
 
@@ -81,8 +80,8 @@ bitmask getSouthRay(int ind)
 
 bitmask getSouthWestRay(int ind) 
 {
-    int rank = utils::rankFromBitIndex(ind);
-    int file = utils::fileFromBitIndex(ind);
+    int rank = rankFromBitIndex(ind);
+    int file = fileFromBitIndex(ind);
 
     bitmask south_west_ray = 0ULL;
 
@@ -97,8 +96,8 @@ bitmask getSouthWestRay(int ind)
 
 bitmask getWestRay(int ind) 
 {
-    int rank = utils::rankFromBitIndex(ind);
-    int file = utils::fileFromBitIndex(ind);
+    int rank = rankFromBitIndex(ind);
+    int file = fileFromBitIndex(ind);
 
     bitmask west_ray = 0ULL;
 
@@ -111,8 +110,8 @@ bitmask getWestRay(int ind)
 
 bitmask getNorthWestRay(int ind) 
 {
-    int rank = utils::rankFromBitIndex(ind);
-    int file = utils::fileFromBitIndex(ind);
+    int rank = rankFromBitIndex(ind);
+    int file = fileFromBitIndex(ind);
 
     bitmask north_west_ray = 0ULL;
 
@@ -167,5 +166,4 @@ std::vector<DiagonalRays> getAllDiagonalRayBitmasks()
     return allDiagonalRayBitmasks;
 }
 
-} // namespace bitmasks
 } // namespace logic

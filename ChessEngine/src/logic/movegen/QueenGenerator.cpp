@@ -14,27 +14,27 @@ QueenGenerator::QueenGenerator(
     : _bitboardsRef(bitboards)
     , _gameStateBitmasksRef(gameStateBitmasks)
 {
-    _straightRayBitmasks = bitmasks::getAllStraightRayBitmasks();
-    _diagonalRayBitmasks = bitmasks::getAllDiagonalRayBitmasks();
+    _straightRayBitmasks = getAllStraightRayBitmasks();
+    _diagonalRayBitmasks = getAllDiagonalRayBitmasks();
 }
 
 void QueenGenerator::generate(
     bool isWhite,
     model::Movelist& moveListRef)
 {
-    std::vector<int>& queenIndices = utils::Containers::getPiecePositionIndices();
+    std::vector<int>& queenIndices = Containers::getPiecePositionIndices();
 
-    utils::getBitIndices(queenIndices, isWhite ? _bitboardsRef.getWhiteQueensBitboard()
+    getBitIndices(queenIndices, isWhite ? _bitboardsRef.getWhiteQueensBitboard()
                                                : _bitboardsRef.getBlackQueensBitboard());
 
     for (int currentQueenIndex : queenIndices) {
-        bitmasks::StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];
-        bitmasks::DiagonalRays diagonalRays = _diagonalRayBitmasks[currentQueenIndex];
+        StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];
+        DiagonalRays diagonalRays = _diagonalRayBitmasks[currentQueenIndex];
         
-        int queenRank = utils::rankFromBitIndex(currentQueenIndex);
-        int queenFile = utils::fileFromBitIndex(currentQueenIndex);
+        int queenRank = rankFromBitIndex(currentQueenIndex);
+        int queenFile = fileFromBitIndex(currentQueenIndex);
 
-        RayLogic::addMovesFromStraightRay(
+        addMovesFromStraightRay(
             straightRays.north,
             true,
             false,
@@ -47,7 +47,7 @@ void QueenGenerator::generate(
             _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
-        RayLogic::addMovesFromStraightRay(
+        addMovesFromStraightRay(
             straightRays.east,
             false,
             true,
@@ -60,7 +60,7 @@ void QueenGenerator::generate(
             _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
-        RayLogic::addMovesFromStraightRay(
+        addMovesFromStraightRay(
             straightRays.south,
             false,
             false,
@@ -73,7 +73,7 @@ void QueenGenerator::generate(
             _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
-        RayLogic::addMovesFromStraightRay(
+        addMovesFromStraightRay(
             straightRays.west,
             true,
             true,
@@ -86,7 +86,7 @@ void QueenGenerator::generate(
             _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
-        RayLogic::addMovesFromDiagonalRay(
+        addMovesFromDiagonalRay(
             diagonalRays.northEast,
             true,
             isWhite,
@@ -98,7 +98,7 @@ void QueenGenerator::generate(
             _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
-        RayLogic::addMovesFromDiagonalRay(
+        addMovesFromDiagonalRay(
             diagonalRays.southEast,
             false,
             isWhite,
@@ -110,7 +110,7 @@ void QueenGenerator::generate(
             _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
-        RayLogic::addMovesFromDiagonalRay(
+        addMovesFromDiagonalRay(
             diagonalRays.southWest,
             false,
             isWhite,
@@ -122,7 +122,7 @@ void QueenGenerator::generate(
             _gameStateBitmasksRef.getOccupiedPiecesBitmask()
         );
         
-        RayLogic::addMovesFromDiagonalRay(
+        addMovesFromDiagonalRay(
             diagonalRays.northWest,
             true,
             isWhite,

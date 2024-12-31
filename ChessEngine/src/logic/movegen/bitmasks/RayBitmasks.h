@@ -3,7 +3,6 @@
 #include "ChessEngine/src/common.h"
 
 namespace logic {
-namespace bitmasks {
 
 struct StraightRays {
     bitmask north;
@@ -34,5 +33,4 @@ DiagonalRays getDiagonalRays(int ind);
 std::vector<StraightRays> getAllStraightRayBitmasks();
 std::vector<DiagonalRays> getAllDiagonalRayBitmasks();
 
-} // namespace bitmasks
 } // namespace logic

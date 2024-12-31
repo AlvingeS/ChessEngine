@@ -29,7 +29,7 @@ private:
     const model::GameStateBitmasks& _gameStateBitmasksRef;
 
     // Memory
-    std::vector<bitmasks::StraightRays> _straightRayBitmasks;
+    std::vector<StraightRays> _straightRayBitmasks;
 };
 
 } // namespace logic

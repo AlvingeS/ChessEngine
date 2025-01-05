@@ -12,13 +12,11 @@ namespace logic {
 class MoveMaker {
 
 public:
-    // Constructor
     MoveMaker(
         model::Board& board,
         engine::SearchMemory& searchMemory
     );
     
-    // Public member functions
     void makeMove(
         const model::Move& move,
         bool isWhite, 
@@ -27,7 +25,7 @@ public:
 
     void makeTemporaryKingMove(bool isWhite, bool isKingSide);
 
-    engine::SearchMemory& getSearchMemory() const
+    inline engine::SearchMemory& getSearchMemory() const
     {
         return _searchMemory;
     }

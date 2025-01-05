@@ -9,3 +9,5 @@
 
 typedef uint64_t bitboard;
 typedef uint64_t bitmask;
+
+static constexpr int MAX_LEGAL_MOVES = 218;

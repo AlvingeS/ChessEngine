@@ -17,10 +17,8 @@ namespace logic {
 class PawnGenerator {
 
 public:
-    // Constructor
     PawnGenerator(model::Board& board);
     
-    // Public member functions
     void generate(
         bool isWhite,
         model::Movelist& moveList,
@@ -29,11 +27,9 @@ public:
     );
 
 private:
-    // Private member functions
     const model::Bitboards& _bitboards;
     const model::StateBitmasks& _stateBitmasks;
 
-    // Memory
     std::vector<bitmask> _whitePawnStraightMoveBitmasks;
     std::vector<bitmask> _blackPawnStraightMoveBitmasks;
     std::vector<bitmask> _whitePawnCaptureMoveBitmasks;

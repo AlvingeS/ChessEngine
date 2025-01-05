@@ -19,8 +19,6 @@ namespace engine {
 class Searcher {
 
 public:
-    static constexpr int MAX_LEGAL_MOVES = 218;
-
     Searcher(int maxDepth);
     
     void minimax(

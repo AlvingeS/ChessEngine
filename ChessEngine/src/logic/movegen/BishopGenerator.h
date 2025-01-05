@@ -12,21 +12,16 @@ namespace logic {
 class BishopGenerator {
 
 public:
-    // Constructor
     BishopGenerator(model::Board& board);
     
-    // Public member functions
     void generate(
         bool isWhite, 
         model::Movelist& movelist
     );
 
 private:
-    // Private member functions
     const model::Bitboards& _bitboards;
     const model::StateBitmasks& _stateBitmasks;
-
-    // Memory
     std::vector<DiagonalRays> _diagonalRayBitmasks;
 };
 

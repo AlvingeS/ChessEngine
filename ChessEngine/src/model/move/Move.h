@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ChessEngine/src/model/board/PieceType.h"
-
 #include <functional>
 
 namespace model {
@@ -26,37 +24,35 @@ public:
     static const int KING_CASTLE_FLAG = 14;
     static const int QUEEN_CASTLE_FLAG = 15;
     
-    Move() {
+    inline Move() {
         _move = 0;
     }
 
-    // Public member functions            
-    Move(int bitIndexFrom, int bitIndexTo, int flag) {
+    inline Move(int bitIndexFrom, int bitIndexTo, int flag) {
         _move = ((flag & 0xf) << 12 | (bitIndexTo & 0x3f) << 6 | (bitIndexFrom & 0x3f));
     }
 
-    // Copy constructor
-    Move(const Move& move) {
+    inline Move(const Move& move) {
         _move = move._move;
     }
 
-    int getMove() const {
+    inline int getMove() const {
         return _move;
     }
 
-    int getFlag() const {
+    inline int getFlag() const {
         return (_move >> 12) & 0xf;
     }
 
-    void operator=(const Move& move) {
+    inline void operator=(const Move& move) {
         _move = move._move;
     }
 
-    bool operator==(const Move& move) const {
+    inline bool operator==(const Move& move) const {
         return (_move & 0xffff) == (move._move & 0xffff);
     }
 
-    bool operator!=(const Move& move) const {
+    inline bool operator!=(const Move& move) const {
         return (_move & 0xffff) != (move._move & 0xffff);
     }
 
@@ -76,68 +72,68 @@ public:
         return ((_move >> 12) & 0xf) == DOUBLE_PAWN_PUSH_FLAG;
     }
 
-    bool isKingCastle() const {
+    inline bool isKingCastle() const {
         return ((_move >> 12) & 0xf) == KING_CASTLE_FLAG;
     }
 
-    bool isQueenCastle() const {
+    inline bool isQueenCastle() const {
         return ((_move >> 12) & 0xf) == QUEEN_CASTLE_FLAG;
     }
 
-    bool isNormalCapture() const {
+    inline bool isNormalCapture() const {
         return ((_move >> 12) & 0xf) == CAPTURE_FLAG;
     }
 
-    bool isEpCapture() const {
+    inline bool isEpCapture() const {
         return ((_move >> 12) & 0xf) == EP_CAPTURE_FLAG;
     }
 
-    bool isKnightPromo() const {
+    inline bool isKnightPromo() const {
         return ((_move >> 12) & 0xf) == KNIGHT_PROMO_FLAG;
     }
 
-    bool isBishopPromo() const {
+    inline bool isBishopPromo() const {
         return ((_move >> 12) & 0xf) == BISHOP_PROMO_FLAG;
     }
 
-    bool isRookPromo() const {
+    inline bool isRookPromo() const {
         return ((_move >> 12) & 0xf) == ROOK_PROMO_FLAG;
     }
 
-    bool isQueenPromo() const {
+    inline bool isQueenPromo() const {
         return ((_move >> 12) & 0xf) == QUEEN_PROMO_FLAG;
     }
 
-    bool isKnightPromoCapture() const {
+    inline bool isKnightPromoCapture() const {
         return ((_move >> 12) & 0xf) == KNIGHT_PROMO_CAPTURE_FLAG;
     }
 
-    bool isBishopPromoCapture() const {
+    inline bool isBishopPromoCapture() const {
         return ((_move >> 12) & 0xf) == BISHOP_PROMO_CAPTURE_FLAG;
     }
 
-    bool isRookPromoCapture() const {
+    inline bool isRookPromoCapture() const {
         return ((_move >> 12) & 0xf) == ROOK_PROMO_CAPTURE_FLAG;
     }
 
-    bool isQueenPromoCapture() const {
+    inline bool isQueenPromoCapture() const {
         return ((_move >> 12) & 0xf) == QUEEN_PROMO_CAPTURE_FLAG;
     }
 
     // Checks if the flag is any number between 1 and 6
-    bool isAnyCapture() const {
+    inline bool isAnyCapture() const {
         return getFlag() >= 1 && getFlag()  <= 6;
     }
 
-    bool isAnyPromo() const {
+    inline bool isAnyPromo() const {
         return getFlag() >= 3 && getFlag() <= 10;
     }
 
-    bool isAnyPromoCapture() const {
+    inline bool isAnyPromoCapture() const {
         return getFlag() >= 3 && getFlag() <= 6;
     }
 
-    bool isAnyCastle() const {
+    inline bool isAnyCastle() const {
         return getFlag() >= 14;
     }
 

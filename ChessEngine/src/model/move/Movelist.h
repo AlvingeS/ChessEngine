@@ -9,37 +9,29 @@ namespace model {
 class Movelist {
 
 public:
-    Movelist() {
-        movelist = std::vector<Move>(MAX_MOVES);
-        moveIndex = 0;
-    }
+    Movelist();
 
-    inline void addMove(const Move& move) {
-        movelist[moveIndex] = move;
-        moveIndex++;
-    }
+    void addMove(const Move& move);
 
     inline void addNullMove() {
-        movelist[moveIndex] = Move();
+        _movelist[_moveIndex] = Move();
     }
 
     inline void reset() {
-        moveIndex = 0;
+        _moveIndex = 0;
     }
 
     inline const Move& getMoveAt(int index) const {
-        return movelist[index];
+        return _movelist[index];
     }
 
     inline int getMoveIndex() const {
-        return moveIndex;
+        return _moveIndex;
     }
 
 private:
-    static constexpr int MAX_MOVES = 218;
-
-    std::vector<Move> movelist;
-    int moveIndex;
+    std::vector<Move> _movelist;
+    int _moveIndex;
 };
 
 } // namespace model

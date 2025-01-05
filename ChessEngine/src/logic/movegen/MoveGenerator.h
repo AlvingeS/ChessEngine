@@ -21,10 +21,6 @@ namespace logic {
 class MoveGenerator {
 
 public:
-    // Public  er variables
-    static constexpr int MAX_LEGAL_MOVES = 218;
-
-    // Public member functions
     MoveGenerator(
         model::Board& board,
         logic::MoveMaker& moveMaker,
@@ -60,7 +56,6 @@ public:
     bool isInCheck(bool isWhite);
 
 private:
-    // Private member variables
     const model::Bitboards& _bitboards;
     const model::StateBitmasks& _stateBitmasks;
     

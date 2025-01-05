@@ -150,7 +150,7 @@ void perft::minimax(
     
     size_t numIllegalMoves = 0;
 
-    for (size_t i = 0; i < logic::MoveGenerator::MAX_LEGAL_MOVES; i++) {
+    for (size_t i = 0; i < MAX_LEGAL_MOVES; i++) {
         model::Move currentMove = _movelists[currentDepth].getMoveAt(i);
 
         if (currentMove.getMove() == 0) {

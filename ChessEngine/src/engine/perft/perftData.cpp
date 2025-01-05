@@ -1,16 +1,14 @@
 #include "ChessEngine/src/engine/perft/perftData.h"
 
-#include "ChessEngine/src/logic/movegen/MoveGenerator.h"
-
 namespace engine {
 
 perftData::perftData(int maxDepth)
     : _maxDepth(maxDepth)
 {
-    _nodeCountPerFirstMove.resize(logic::MoveGenerator::MAX_LEGAL_MOVES);
-    _firstMoves.resize(logic::MoveGenerator::MAX_LEGAL_MOVES);
+    _nodeCountPerFirstMove.resize(MAX_LEGAL_MOVES);
+    _firstMoves.resize(MAX_LEGAL_MOVES);
 
-    for (int i = 0; i < logic::MoveGenerator::MAX_LEGAL_MOVES; i++) {
+    for (int i = 0; i < MAX_LEGAL_MOVES; i++) {
         _nodeCountPerFirstMove[i] = 0;
         _firstMoves[i] = model::Move();
     }

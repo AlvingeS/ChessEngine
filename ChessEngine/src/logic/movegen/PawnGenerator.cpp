@@ -11,8 +11,8 @@ namespace logic {
 PawnGenerator::PawnGenerator(
     const model::Bitboards& bitboards,
     const model::StateBitmasks& stateBitmasks) 
-    : _bitboardsRef(bitboards)
-    , _stateBitmasksRef(stateBitmasks)
+    : _bitboards(bitboards)
+    , _stateBitmasks(stateBitmasks)
 {
     _whitePawnStraightMoveBitmasks = getAllStraightPawnMoveBitmasks(true);
     _whitePawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(true);
@@ -22,7 +22,7 @@ PawnGenerator::PawnGenerator(
 
 void PawnGenerator::generate(
     bool isWhite,
-    model::Movelist& moveListRef,
+    model::Movelist& moveList,
     int currentDepth,
     engine::SearchMemory& searchMemory)
 {
@@ -30,8 +30,8 @@ void PawnGenerator::generate(
     std::vector<int>& freeMovesIndices = Containers::getLeapingPiecefreeMovesIndices();
     std::vector<int>& capturableMovesIndices = Containers::getLeapingPieceCapturableMovesIndices();
 
-    getBitIndices(pawnIndices, isWhite ? _bitboardsRef.getWhitePawnsBitboard()
-                                              : _bitboardsRef.getBlackPawnsBitboard());
+    getBitIndices(pawnIndices, isWhite ? _bitboards.getWhitePawnsBitboard()
+                                              : _bitboards.getBlackPawnsBitboard());
 
     for (int currentPawnIndex : pawnIndices) {
 
@@ -41,10 +41,10 @@ void PawnGenerator::generate(
         bitmask capturePawnMoveBitmask = isWhite ? _whitePawnCaptureMoveBitmasks[currentPawnIndex]
                                                  : _blackPawnCaptureMoveBitmasks[currentPawnIndex];
 
-        bitmask freePawnMoves = straightPawnMoveBitmask & _stateBitmasksRef.getEmptySquaresBitmask();
+        bitmask freePawnMoves = straightPawnMoveBitmask & _stateBitmasks.getEmptySquaresBitmask();
         
-        bitmask enemyPieces = isWhite ? _stateBitmasksRef.getBlackPiecesBitmask()
-                                      : _stateBitmasksRef.getWhitePiecesBitmask();
+        bitmask enemyPieces = isWhite ? _stateBitmasks.getBlackPiecesBitmask()
+                                      : _stateBitmasks.getWhitePiecesBitmask();
         
         bitmask enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
         bitmask capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
@@ -59,35 +59,35 @@ void PawnGenerator::generate(
             int singleStepIndex = (isWhite ? 0 : 1);
             int doubleStepIndex = (isWhite ? 1 : 0);
             
-            moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[singleStepIndex], model::Move::QUITE_FLAG));
-            moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[doubleStepIndex], model::Move::DOUBLE_PAWN_PUSH_FLAG));
+            moveList.addMove(model::Move(currentPawnIndex, freeMovesIndices[singleStepIndex], model::Move::QUITE_FLAG));
+            moveList.addMove(model::Move(currentPawnIndex, freeMovesIndices[doubleStepIndex], model::Move::DOUBLE_PAWN_PUSH_FLAG));
 
         } else if (freeMovesIndices.size() == 1 && freeMovesIndices[0] == currentPawnIndex + offset) {
             // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces
             if (canPromote) {
-                moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::KNIGHT_PROMO_FLAG));
-                moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::BISHOP_PROMO_FLAG));
-                moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::ROOK_PROMO_FLAG));
-                moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::QUEEN_PROMO_FLAG));
+                moveList.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::KNIGHT_PROMO_FLAG));
+                moveList.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::BISHOP_PROMO_FLAG));
+                moveList.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::ROOK_PROMO_FLAG));
+                moveList.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::QUEEN_PROMO_FLAG));
             
             } else {
-                moveListRef.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::QUITE_FLAG));
+                moveList.addMove(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::QUITE_FLAG));
             }
         }
 
         for (int capturablePawnMoveIndex : capturableMovesIndices) {
             if (canPromote) {
-                moveListRef.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::QUEEN_PROMO_CAPTURE_FLAG));
-                moveListRef.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::ROOK_PROMO_CAPTURE_FLAG));
-                moveListRef.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::BISHOP_PROMO_CAPTURE_FLAG));
-                moveListRef.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::KNIGHT_PROMO_CAPTURE_FLAG));
+                moveList.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::QUEEN_PROMO_CAPTURE_FLAG));
+                moveList.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::ROOK_PROMO_CAPTURE_FLAG));
+                moveList.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::BISHOP_PROMO_CAPTURE_FLAG));
+                moveList.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::KNIGHT_PROMO_CAPTURE_FLAG));
             } else {
-                moveListRef.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::CAPTURE_FLAG));
+                moveList.addMove(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::CAPTURE_FLAG));
             }
         }
 
         if ((capturePawnMoveBitmask & enPessantTarget) != 0) {
-            moveListRef.addMove(model::Move(currentPawnIndex, indexOfLSB(capturePawnMoveBitmask & enPessantTarget), model::Move::EP_CAPTURE_FLAG));
+            moveList.addMove(model::Move(currentPawnIndex, indexOfLSB(capturePawnMoveBitmask & enPessantTarget), model::Move::EP_CAPTURE_FLAG));
         }
     }
 }

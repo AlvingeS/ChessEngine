@@ -11,22 +11,22 @@ namespace logic {
 RookGenerator::RookGenerator(
     const model::Bitboards& bitboards,
     const model::StateBitmasks& stateBitmasks)
-    : _bitboardsRef(bitboards)
-    , _stateBitmasksRef(stateBitmasks)
+    : _bitboards(bitboards)
+    , _stateBitmasks(stateBitmasks)
 {
     _straightRayBitmasks = getAllStraightRayBitmasks();
 }
 
 void RookGenerator::generate(
     bool isWhite,
-    model::Movelist& moveListRef)
+    model::Movelist& moveList)
 {
     std::vector<int>& rookIndices = Containers::getPiecePositionIndices();
 
     StraightRays rays;
 
-    getBitIndices(rookIndices, isWhite ? _bitboardsRef.getWhiteRooksBitboard()
-                                              : _bitboardsRef.getBlackRooksBitboard());
+    getBitIndices(rookIndices, isWhite ? _bitboards.getWhiteRooksBitboard()
+                                              : _bitboards.getBlackRooksBitboard());
 
     // Loop through all rooks and isolate them
     for (int currentRookIndex : rookIndices) {
@@ -42,9 +42,9 @@ void RookGenerator::generate(
             currentRookIndex, 
             rookRank, 
             rookFile, 
-            moveListRef,
-            _stateBitmasksRef.getWhitePiecesBitmask(),
-            _stateBitmasksRef.getOccupiedPiecesBitmask()
+            moveList,
+            _stateBitmasks.getWhitePiecesBitmask(),
+            _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
         addMovesFromStraightRay(
@@ -55,9 +55,9 @@ void RookGenerator::generate(
             currentRookIndex, 
             rookRank, 
             rookFile, 
-            moveListRef,
-            _stateBitmasksRef.getWhitePiecesBitmask(),
-            _stateBitmasksRef.getOccupiedPiecesBitmask()
+            moveList,
+            _stateBitmasks.getWhitePiecesBitmask(),
+            _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
         addMovesFromStraightRay(
@@ -68,9 +68,9 @@ void RookGenerator::generate(
             currentRookIndex, 
             rookRank, 
             rookFile, 
-            moveListRef,
-            _stateBitmasksRef.getWhitePiecesBitmask(),
-            _stateBitmasksRef.getOccupiedPiecesBitmask()
+            moveList,
+            _stateBitmasks.getWhitePiecesBitmask(),
+            _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
         addMovesFromStraightRay(
@@ -81,9 +81,9 @@ void RookGenerator::generate(
             currentRookIndex, 
             rookRank, 
             rookFile, 
-            moveListRef,
-            _stateBitmasksRef.getWhitePiecesBitmask(),
-            _stateBitmasksRef.getOccupiedPiecesBitmask()
+            moveList,
+            _stateBitmasks.getWhitePiecesBitmask(),
+            _stateBitmasks.getOccupiedPiecesBitmask()
         );
     }
 }

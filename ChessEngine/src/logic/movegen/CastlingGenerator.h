@@ -36,11 +36,11 @@ public:
     );
 
 private:
-    const model::Bitboards& _bitboardsRef;
-    const model::StateBitmasks& _stateBitmasksRef;
+    const model::Bitboards& _bitboards;
+    const model::StateBitmasks& _stateBitmasks;
     
-    logic::MoveMaker& _moveMakerRef;
-    logic::MoveRetractor& _moveRetractorRef;
+    logic::MoveMaker& _moveMaker;
+    logic::MoveRetractor& _moveRetractor;
     
     CheckDetection* _checkDetection;
 

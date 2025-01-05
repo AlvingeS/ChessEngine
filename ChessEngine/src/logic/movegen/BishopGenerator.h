@@ -24,8 +24,8 @@ public:
 
 private:
     // Private member functions
-    const model::Bitboards& _bitboardsRef;
-    const model::StateBitmasks& _stateBitmasksRef;
+    const model::Bitboards& _bitboards;
+    const model::StateBitmasks& _stateBitmasks;
 
     // Memory
     std::vector<DiagonalRays> _diagonalRayBitmasks;

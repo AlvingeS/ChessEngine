@@ -10,8 +10,8 @@ namespace logic {
 CheckDetection::CheckDetection(
     const model::Bitboards& bitboards,
     const model::StateBitmasks& stateBitmasks)
-    : _bitboardsRef(bitboards)
-    , _stateBitmasksRef(stateBitmasks)
+    : _bitboards(bitboards)
+    , _stateBitmasks(stateBitmasks)
 {
     _straightRayBitmasks = getAllStraightRayBitmasks();
     _diagonalRayBitmasks = getAllDiagonalRayBitmasks();
@@ -24,11 +24,11 @@ bool CheckDetection::isInCheck(bool isWhite) const
 {
     int kingIndex, opponentKingIndex, kingRankDiff, kingFileDiff;
 
-    kingIndex = indexOfLSB(isWhite ? _bitboardsRef.getWhiteKingBitboard()
-                                          : _bitboardsRef.getBlackKingBitboard());
+    kingIndex = indexOfLSB(isWhite ? _bitboards.getWhiteKingBitboard()
+                                          : _bitboards.getBlackKingBitboard());
 
-    opponentKingIndex = indexOfLSB(isWhite ? _bitboardsRef.getBlackKingBitboard()
-                                                  : _bitboardsRef.getWhiteKingBitboard());
+    opponentKingIndex = indexOfLSB(isWhite ? _bitboards.getBlackKingBitboard()
+                                                  : _bitboards.getWhiteKingBitboard());
 
     kingRankDiff = rankFromBitIndex(kingIndex) - rankFromBitIndex(opponentKingIndex);
     kingFileDiff = fileFromBitIndex(kingIndex) - fileFromBitIndex(opponentKingIndex);
@@ -58,45 +58,45 @@ bool CheckDetection::isInCheck(bool isWhite) const
 
     bitmask pawnAttackingMoves = isWhite ? _whitePawnCaptureMoveBitmasks[kingIndex] 
                                      : _blackPawnCaptureMoveBitmasks[kingIndex];
-    bitmask opponentRooksAndQueens = isWhite ? _bitboardsRef.getBlackRooksBitboard() | _bitboardsRef.getBlackQueensBitboard()
-                                         : _bitboardsRef.getWhiteRooksBitboard() | _bitboardsRef.getWhiteQueensBitboard();
+    bitmask opponentRooksAndQueens = isWhite ? _bitboards.getBlackRooksBitboard() | _bitboards.getBlackQueensBitboard()
+                                         : _bitboards.getWhiteRooksBitboard() | _bitboards.getWhiteQueensBitboard();
 
-    bitmask opponentBishopsAndQueens = isWhite ? _bitboardsRef.getBlackBishopsBitboard() | _bitboardsRef.getBlackQueensBitboard() 
-                                           : _bitboardsRef.getWhiteBishopsBitboard() | _bitboardsRef.getWhiteQueensBitboard();
+    bitmask opponentBishopsAndQueens = isWhite ? _bitboards.getBlackBishopsBitboard() | _bitboards.getBlackQueensBitboard() 
+                                           : _bitboards.getWhiteBishopsBitboard() | _bitboards.getWhiteQueensBitboard();
 
-    bitmask opponentPawns = isWhite ? _bitboardsRef.getBlackPawnsBitboard() : _bitboardsRef.getWhitePawnsBitboard();
+    bitmask opponentPawns = isWhite ? _bitboards.getBlackPawnsBitboard() : _bitboards.getWhitePawnsBitboard();
 
     if ((pawnAttackingMoves & opponentPawns) != 0)
         return true;
 
-    bitmask opponentKnights = isWhite ? _bitboardsRef.getBlackKnightsBitboard() 
-                                  : _bitboardsRef.getWhiteKnightsBitboard();
+    bitmask opponentKnights = isWhite ? _bitboards.getBlackKnightsBitboard() 
+                                  : _bitboards.getWhiteKnightsBitboard();
 
     if ((knightMoves & opponentKnights) != 0)
         return true;
 
-    if (checkStraightRay(straightRays.north, true, opponentRooksAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkStraightRay(straightRays.north, true, opponentRooksAndQueens, _stateBitmasks.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkStraightRay(straightRays.east, false, opponentRooksAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkStraightRay(straightRays.east, false, opponentRooksAndQueens, _stateBitmasks.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkStraightRay(straightRays.south, false, opponentRooksAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkStraightRay(straightRays.south, false, opponentRooksAndQueens, _stateBitmasks.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkStraightRay(straightRays.west, true, opponentRooksAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkStraightRay(straightRays.west, true, opponentRooksAndQueens, _stateBitmasks.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkDiagonalRay(diagonalRays.northEast, true, opponentBishopsAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkDiagonalRay(diagonalRays.northEast, true, opponentBishopsAndQueens, _stateBitmasks.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkDiagonalRay(diagonalRays.southEast, false, opponentBishopsAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkDiagonalRay(diagonalRays.southEast, false, opponentBishopsAndQueens, _stateBitmasks.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkDiagonalRay(diagonalRays.southWest, false, opponentBishopsAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkDiagonalRay(diagonalRays.southWest, false, opponentBishopsAndQueens, _stateBitmasks.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkDiagonalRay(diagonalRays.northWest, true, opponentBishopsAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkDiagonalRay(diagonalRays.northWest, true, opponentBishopsAndQueens, _stateBitmasks.getOccupiedPiecesBitmask()))
         return true;
 
     return false;

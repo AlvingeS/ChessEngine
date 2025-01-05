@@ -7,7 +7,7 @@
 namespace model {
 
 ZHasher::ZHasher(PieceMap& pieceMap) 
-    : _pieceMapRef(pieceMap)
+    : _pieceMap(pieceMap)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -42,7 +42,7 @@ void ZHasher::computeInitialHash()
     _hash = 0;
 
     for (size_t i = 0; i < 64; i++) {
-        PieceType pieceType = _pieceMapRef.getPieceTypeAtIndex(i);
+        PieceType pieceType = _pieceMap.getPieceTypeAtIndex(i);
 
         if (pieceType != PieceType::EMPTY) {
             _hash ^= _randBoardPieceTypeNums[i][static_cast<int>(pieceType)];

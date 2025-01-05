@@ -11,13 +11,13 @@ namespace logic {
 void addMovesFromFreeRay(
     bitmask freeRay,
     int bitIndexFrom,
-    model::Movelist& moveListRef)
+    model::Movelist& moveList)
 {
     std::vector<int>& freeRayIndices = Containers::getSlidingPiecefreeMovesIndices();
     getBitIndices(freeRayIndices, freeRay);
 
     for (int bitIndex : freeRayIndices) {
-        moveListRef.addMove(model::Move(bitIndexFrom, bitIndex, model::Move::QUITE_FLAG));
+        moveList.addMove(model::Move(bitIndexFrom, bitIndex, model::Move::QUITE_FLAG));
     }
 }
 
@@ -25,13 +25,13 @@ void addMoveIfBlockerIsEnemy(
     int blockerIndex,
     bool isWhite,
     int bitIndexFrom,
-    model::Movelist& moveListRef,
+    model::Movelist& moveList,
     bitmask whitePiecesBitmask)
 {
     bool blockerIsWhite = getBit(whitePiecesBitmask, blockerIndex);
 
     if (blockerIsWhite != isWhite) {
-        moveListRef.addMove(model::Move(bitIndexFrom, blockerIndex, model::Move::CAPTURE_FLAG));
+        moveList.addMove(model::Move(bitIndexFrom, blockerIndex, model::Move::CAPTURE_FLAG));
     }
 }
 
@@ -41,7 +41,7 @@ void addMovesBetweenBlockerAndPieceOnStraightRay(
     bool startFromBlocker, int rookRank, 
     int rookFile, 
     int bitIndexFrom,
-    model::Movelist& moveListRef)
+    model::Movelist& moveList)
 {
     int start = startFromBlocker 
                 ? (alongFile ? fileFromBitIndex(blockerIndex) 
@@ -58,7 +58,7 @@ void addMovesBetweenBlockerAndPieceOnStraightRay(
     for (int i = start - 1; i > stop; --i) {
         int rankOrFileIndex = alongFile ? rookRank * 8 + i : i * 8 + rookFile;
         
-        moveListRef.addMove(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
+        moveList.addMove(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
     }
 }
 
@@ -68,7 +68,7 @@ void addMovesBetweenBlockerAndPieceOnDiagonalRay(
     int bishopRank, 
     int bishopFile, 
     int bitIndexFrom,
-    model::Movelist& moveListRef)
+    model::Movelist& moveList)
 {
     int startRank = startFromBlocker
                     ? rankFromBitIndex(blockerIndex)
@@ -95,7 +95,7 @@ void addMovesBetweenBlockerAndPieceOnDiagonalRay(
     for (int i = startRank + rankIncrement, j = startFile + fileIncrement; i != stopRank; i += rankIncrement, j += fileIncrement) {
         int rankOrFileIndex = i * 8 + j;
 
-        moveListRef.addMove(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
+        moveList.addMove(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
     }
 }
 
@@ -107,7 +107,7 @@ void addMovesFromStraightRay(
     int pieceIndex, 
     int pieceRank, 
     int pieceFile, 
-    model::Movelist& moveListRef,
+    model::Movelist& moveList,
     bitmask whitePiecesBitmask,
     bitmask occupiedPiecesBitmask) 
 {
@@ -122,7 +122,7 @@ void addMovesFromStraightRay(
                 blockerIndex,
                 isWhite,
                 pieceIndex, 
-                moveListRef,
+                moveList,
                 whitePiecesBitmask
             );
 
@@ -133,11 +133,11 @@ void addMovesFromStraightRay(
                 pieceRank, 
                 pieceFile, 
                 pieceIndex, 
-                moveListRef
+                moveList
             );
 
         } else {
-            addMovesFromFreeRay(ray, pieceIndex, moveListRef);
+            addMovesFromFreeRay(ray, pieceIndex, moveList);
         }
 }
 
@@ -148,7 +148,7 @@ void addMovesFromDiagonalRay(
     int pieceIndex, 
     int pieceRank, 
     int pieceFile, 
-    model::Movelist& moveListRef,
+    model::Movelist& moveList,
     bitmask whitePiecesBitmask,
     bitmask occupiedPiecesBitmask)
 {
@@ -163,7 +163,7 @@ void addMovesFromDiagonalRay(
             blockerIndex, 
             isWhite, 
             pieceIndex, 
-            moveListRef,
+            moveList,
             whitePiecesBitmask
         );
 
@@ -173,11 +173,11 @@ void addMovesFromDiagonalRay(
             pieceRank, 
             pieceFile, 
             pieceIndex, 
-            moveListRef
+            moveList
         );
 
     } else {
-        addMovesFromFreeRay(ray, pieceIndex, moveListRef);
+        addMovesFromFreeRay(ray, pieceIndex, moveList);
     }
 }
 

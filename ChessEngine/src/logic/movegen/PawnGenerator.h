@@ -27,15 +27,15 @@ public:
     // Public member functions
     void generate(
         bool isWhite,
-        model::Movelist& moveListRef,
+        model::Movelist& moveList,
         int currentDepth,
         engine::SearchMemory& searchMemory
     );
 
 private:
     // Private member functions
-    const model::Bitboards& _bitboardsRef;
-    const model::StateBitmasks& _stateBitmasksRef;
+    const model::Bitboards& _bitboards;
+    const model::StateBitmasks& _stateBitmasks;
 
     // Memory
     std::vector<bitmask> _whitePawnStraightMoveBitmasks;

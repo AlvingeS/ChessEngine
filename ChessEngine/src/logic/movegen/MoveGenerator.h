@@ -34,27 +34,27 @@ public:
 
     void genMoves(
         bool isWhite,
-        model::Movelist& moveListRef,
+        model::Movelist& moveList,
         int currentDepth,
         unsigned char castlingRight
     );
     
-    void genRookMoves(bool isWhite, model::Movelist& moveListRef);
-    void genBishopMoves(bool isWhite, model::Movelist& moveListRef);
-    void genQueenMoves(bool isWhite, model::Movelist& moveListRef);
-    void genKnightMoves(bool isWite, model::Movelist& moveListRef);
-    void genKingMoves(bool isWhite, model::Movelist& moveListRef);
+    void genRookMoves(bool isWhite, model::Movelist& moveList);
+    void genBishopMoves(bool isWhite, model::Movelist& moveList);
+    void genQueenMoves(bool isWhite, model::Movelist& moveList);
+    void genKnightMoves(bool isWite, model::Movelist& moveList);
+    void genKingMoves(bool isWhite, model::Movelist& moveList);
     
     void genPawnMoves(
         bool isWhite,
-        model::Movelist& moveListRef,
+        model::Movelist& moveList,
         int currentDepth,
         engine::SearchMemory& searchMemory
     );
 
     void genCastlingMoves(
         bool isWhite,
-        model::Movelist& moveListRef,
+        model::Movelist& moveList,
         unsigned char castlingRights
     );
     
@@ -62,12 +62,12 @@ public:
 
 private:
     // Private member variables
-    const model::Bitboards& _bitboardsRef;
-    const model::StateBitmasks& _stateBitmasksRef;
+    const model::Bitboards& _bitboards;
+    const model::StateBitmasks& _stateBitmasks;
     
-    logic::MoveMaker& _moveMakerRef;
-    logic::MoveRetractor& _moveRetractorRef;
-    engine::SearchMemory& _searchMemoryRef;
+    logic::MoveMaker& _moveMaker;
+    logic::MoveRetractor& _moveRetractor;
+    engine::SearchMemory& _searchMemory;
     
     CheckDetection _checkDetection;
     RookGenerator _rookGenerator;

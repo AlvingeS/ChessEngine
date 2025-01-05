@@ -12,7 +12,7 @@ void addMovesFromStraightRay(
     int pieceIndex,
     int pieceRank,
     int pieceFile,
-    model::Movelist& moveListRef,
+    model::Movelist& moveList,
     bitmask whitePiecesBitmask,
     bitmask occupiedPiecesBitmask
 );
@@ -24,7 +24,7 @@ void addMovesFromDiagonalRay(
     int pieceIndex,
     int pieceRank,
     int pieceFile,
-    model::Movelist& moveListRef,
+    model::Movelist& moveList,
     bitmask whitePiecesBitmask,
     bitmask occupiedPiecesBitmask
 );

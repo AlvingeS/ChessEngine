@@ -26,7 +26,7 @@ private:
     uint64_t _randIsWhiteNum;
     uint64_t _hash;
 
-    PieceMap& _pieceMapRef;
+    PieceMap& _pieceMap;
 };
 
 } // namespace model

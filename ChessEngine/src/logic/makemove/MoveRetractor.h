@@ -35,7 +35,7 @@ public:
 
     engine::SearchMemory& getSearchMemory() const
     {
-        return _searchMemoryRef;
+        return _searchMemory;
     }
 
 private:
@@ -50,11 +50,11 @@ private:
     void placeBackCapturedPieceOnBoard(bool isEP, int captureIndex, int toIndex, bool wasWhite, model::PieceType  previouslyCapturedPieceType);
     void placeBackMovedPieceOnBoard(bool wasWhite, int fromIndex, model::PieceType  movedPieceType);
 
-    model::Bitboards& _bitboardsRef;
-    model::StateBitmasks& _stateBitmasksRef;
-    model::PieceMap& _pieceMapRef;
-    const model::ZHasher& _zHasherRef;
-    engine::SearchMemory& _searchMemoryRef;
+    model::Bitboards& _bitboards;
+    model::StateBitmasks& _stateBitmasks;
+    model::PieceMap& _pieceMap;
+    const model::ZHasher& _zHasher;
+    engine::SearchMemory& _searchMemory;
 };
 
 } // namespace logic

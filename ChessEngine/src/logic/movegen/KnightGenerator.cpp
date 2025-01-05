@@ -10,8 +10,8 @@ namespace logic {
 KnightGenerator::KnightGenerator(
     const model::Bitboards& bitboards,
     const model::StateBitmasks& stateBitmasks) 
-    : _bitboardsRef(bitboards)
-    , _stateBitmasksRef(stateBitmasks) {
+    : _bitboards(bitboards)
+    , _stateBitmasks(stateBitmasks) {
     _knightBitmasks = getAllKnightBitmasks();
 }
 
@@ -23,16 +23,16 @@ void KnightGenerator::generate(
     std::vector<int>& freeMovesIndices = Containers::getLeapingPiecefreeMovesIndices();
     std::vector<int>& capturableMovesIndices = Containers::getLeapingPieceCapturableMovesIndices();
 
-    getBitIndices(knightIndices, isWhite ? _bitboardsRef.getWhiteKnightsBitboard()
-                                                    : _bitboardsRef.getBlackKnightsBitboard());
+    getBitIndices(knightIndices, isWhite ? _bitboards.getWhiteKnightsBitboard()
+                                                    : _bitboards.getBlackKnightsBitboard());
 
     for (int currentKnightIndex : knightIndices) {
         bitmask knightBitmask = _knightBitmasks[currentKnightIndex];
 
-        bitmask freeKnightMoves = knightBitmask & _stateBitmasksRef.getEmptySquaresBitmask();
+        bitmask freeKnightMoves = knightBitmask & _stateBitmasks.getEmptySquaresBitmask();
         
-        bitmask enemyPieces = isWhite ? _stateBitmasksRef.getBlackPiecesBitmask()
-                                    : _stateBitmasksRef.getWhitePiecesBitmask();
+        bitmask enemyPieces = isWhite ? _stateBitmasks.getBlackPiecesBitmask()
+                                    : _stateBitmasks.getWhitePiecesBitmask();
         
         bitmask capturableKnightMoves = knightBitmask & enemyPieces;
 

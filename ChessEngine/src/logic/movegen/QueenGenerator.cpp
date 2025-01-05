@@ -11,8 +11,8 @@ namespace logic {
 QueenGenerator::QueenGenerator(
     const model::Bitboards& bitboards,
     const model::StateBitmasks& stateBitmasks) 
-    : _bitboardsRef(bitboards)
-    , _stateBitmasksRef(stateBitmasks)
+    : _bitboards(bitboards)
+    , _stateBitmasks(stateBitmasks)
 {
     _straightRayBitmasks = getAllStraightRayBitmasks();
     _diagonalRayBitmasks = getAllDiagonalRayBitmasks();
@@ -20,12 +20,12 @@ QueenGenerator::QueenGenerator(
 
 void QueenGenerator::generate(
     bool isWhite,
-    model::Movelist& moveListRef)
+    model::Movelist& moveList)
 {
     std::vector<int>& queenIndices = Containers::getPiecePositionIndices();
 
-    getBitIndices(queenIndices, isWhite ? _bitboardsRef.getWhiteQueensBitboard()
-                                               : _bitboardsRef.getBlackQueensBitboard());
+    getBitIndices(queenIndices, isWhite ? _bitboards.getWhiteQueensBitboard()
+                                               : _bitboards.getBlackQueensBitboard());
 
     for (int currentQueenIndex : queenIndices) {
         StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];
@@ -42,9 +42,9 @@ void QueenGenerator::generate(
             currentQueenIndex,
             queenRank,
             queenFile,
-            moveListRef,
-            _stateBitmasksRef.getWhitePiecesBitmask(),
-            _stateBitmasksRef.getOccupiedPiecesBitmask()
+            moveList,
+            _stateBitmasks.getWhitePiecesBitmask(),
+            _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
         addMovesFromStraightRay(
@@ -55,9 +55,9 @@ void QueenGenerator::generate(
             currentQueenIndex,
             queenRank,
             queenFile,
-            moveListRef,
-            _stateBitmasksRef.getWhitePiecesBitmask(),
-            _stateBitmasksRef.getOccupiedPiecesBitmask()
+            moveList,
+            _stateBitmasks.getWhitePiecesBitmask(),
+            _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
         addMovesFromStraightRay(
@@ -68,9 +68,9 @@ void QueenGenerator::generate(
             currentQueenIndex,
             queenRank,
             queenFile,
-            moveListRef,
-            _stateBitmasksRef.getWhitePiecesBitmask(),
-            _stateBitmasksRef.getOccupiedPiecesBitmask()
+            moveList,
+            _stateBitmasks.getWhitePiecesBitmask(),
+            _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
         addMovesFromStraightRay(
@@ -81,9 +81,9 @@ void QueenGenerator::generate(
             currentQueenIndex,
             queenRank,
             queenFile,
-            moveListRef,
-            _stateBitmasksRef.getWhitePiecesBitmask(),
-            _stateBitmasksRef.getOccupiedPiecesBitmask()
+            moveList,
+            _stateBitmasks.getWhitePiecesBitmask(),
+            _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
         addMovesFromDiagonalRay(
@@ -93,9 +93,9 @@ void QueenGenerator::generate(
             currentQueenIndex,
             queenRank,
             queenFile,
-            moveListRef,
-            _stateBitmasksRef.getWhitePiecesBitmask(),
-            _stateBitmasksRef.getOccupiedPiecesBitmask()
+            moveList,
+            _stateBitmasks.getWhitePiecesBitmask(),
+            _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
         addMovesFromDiagonalRay(
@@ -105,9 +105,9 @@ void QueenGenerator::generate(
             currentQueenIndex,
             queenRank,
             queenFile,
-            moveListRef,
-            _stateBitmasksRef.getWhitePiecesBitmask(),
-            _stateBitmasksRef.getOccupiedPiecesBitmask()
+            moveList,
+            _stateBitmasks.getWhitePiecesBitmask(),
+            _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
         addMovesFromDiagonalRay(
@@ -117,9 +117,9 @@ void QueenGenerator::generate(
             currentQueenIndex,
             queenRank,
             queenFile,
-            moveListRef,
-            _stateBitmasksRef.getWhitePiecesBitmask(),
-            _stateBitmasksRef.getOccupiedPiecesBitmask()
+            moveList,
+            _stateBitmasks.getWhitePiecesBitmask(),
+            _stateBitmasks.getOccupiedPiecesBitmask()
         );
         
         addMovesFromDiagonalRay(
@@ -129,9 +129,9 @@ void QueenGenerator::generate(
             currentQueenIndex,
             queenRank,
             queenFile,
-            moveListRef,
-            _stateBitmasksRef.getWhitePiecesBitmask(),
-            _stateBitmasksRef.getOccupiedPiecesBitmask()
+            moveList,
+            _stateBitmasks.getWhitePiecesBitmask(),
+            _stateBitmasks.getOccupiedPiecesBitmask()
         );
     }
 }

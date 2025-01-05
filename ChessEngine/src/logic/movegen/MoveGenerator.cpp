@@ -17,89 +17,89 @@ MoveGenerator::MoveGenerator(
     const model::StateBitmasks& stateBitmasks,
     logic::MoveMaker& moveMaker,
     logic::MoveRetractor& moveRetractor)
-    : _bitboardsRef(bitboards)
-    , _stateBitmasksRef(stateBitmasks)
-    , _moveMakerRef(moveMaker)
-    , _moveRetractorRef(moveRetractor)
-    , _searchMemoryRef(moveMaker.getSearchMemory())
-    , _checkDetection(_bitboardsRef, _stateBitmasksRef)
-    , _rookGenerator(_bitboardsRef, _stateBitmasksRef)
-    , _bishopGenerator(_bitboardsRef, _stateBitmasksRef)
-    , _queenGenerator(_bitboardsRef, _stateBitmasksRef)
-    , _knightGenerator(_bitboardsRef, _stateBitmasksRef)
-    , _kingGenerator(_bitboardsRef, _stateBitmasksRef)
-    , _pawnGenerator(_bitboardsRef, _stateBitmasksRef)
-    , _castlingGenerator(_bitboardsRef, _stateBitmasksRef, moveMaker, moveRetractor, &_checkDetection)
+    : _bitboards(bitboards)
+    , _stateBitmasks(stateBitmasks)
+    , _moveMaker(moveMaker)
+    , _moveRetractor(moveRetractor)
+    , _searchMemory(moveMaker.getSearchMemory())
+    , _checkDetection(_bitboards, _stateBitmasks)
+    , _rookGenerator(_bitboards, _stateBitmasks)
+    , _bishopGenerator(_bitboards, _stateBitmasks)
+    , _queenGenerator(_bitboards, _stateBitmasks)
+    , _knightGenerator(_bitboards, _stateBitmasks)
+    , _kingGenerator(_bitboards, _stateBitmasks)
+    , _pawnGenerator(_bitboards, _stateBitmasks)
+    , _castlingGenerator(_bitboards, _stateBitmasks, moveMaker, moveRetractor, &_checkDetection)
 {
 }
 
 void MoveGenerator::genMoves(
     bool isWhite,
-    model::Movelist& moveListRef,
+    model::Movelist& moveList,
     int currentDepth,
     unsigned char castlingRights)
 {
-    moveListRef.reset();
-    genRookMoves(isWhite, moveListRef);
-    genBishopMoves(isWhite, moveListRef);
-    genQueenMoves(isWhite, moveListRef);
-    genKnightMoves(isWhite, moveListRef);
-    genKingMoves(isWhite, moveListRef);
-    genPawnMoves(isWhite, moveListRef, currentDepth, _searchMemoryRef);
-    genCastlingMoves(isWhite, moveListRef, castlingRights);
-    moveListRef.addNullMove(); // Add a null move to the end of the move list
+    moveList.reset();
+    genRookMoves(isWhite, moveList);
+    genBishopMoves(isWhite, moveList);
+    genQueenMoves(isWhite, moveList);
+    genKnightMoves(isWhite, moveList);
+    genKingMoves(isWhite, moveList);
+    genPawnMoves(isWhite, moveList, currentDepth, _searchMemory);
+    genCastlingMoves(isWhite, moveList, castlingRights);
+    moveList.addNullMove(); // Add a null move to the end of the move list
 }
 
 void MoveGenerator::genRookMoves(
     bool isWhite,
-    model::Movelist& moveListRef)
+    model::Movelist& moveList)
 {
-    _rookGenerator.generate(isWhite, moveListRef);
+    _rookGenerator.generate(isWhite, moveList);
 }
 
 void MoveGenerator::genBishopMoves(
     bool isWhite,
-    model::Movelist& moveListRef)
+    model::Movelist& moveList)
 {
-    _bishopGenerator.generate(isWhite, moveListRef);
+    _bishopGenerator.generate(isWhite, moveList);
 }
 
 void MoveGenerator::genQueenMoves(
     bool isWhite,
-    model::Movelist& moveListRef)
+    model::Movelist& moveList)
 {
-    _queenGenerator.generate(isWhite, moveListRef);;
+    _queenGenerator.generate(isWhite, moveList);;
 }
 
 void MoveGenerator::genKnightMoves(
     bool isWhite,
-    model::Movelist& moveListRef)
+    model::Movelist& moveList)
 {
-    _knightGenerator.generate(isWhite, moveListRef);
+    _knightGenerator.generate(isWhite, moveList);
 }
 
 void MoveGenerator::genKingMoves(
     bool isWhite,
-    model::Movelist& moveListRef)
+    model::Movelist& moveList)
 {
-    _kingGenerator.generate(isWhite, moveListRef);
+    _kingGenerator.generate(isWhite, moveList);
 }
 
 void MoveGenerator::genPawnMoves(
     bool isWhite,
-    model::Movelist& moveListRef,
+    model::Movelist& moveList,
     int currentDepth,
     engine::SearchMemory& searchMemory)
 {
-    _pawnGenerator.generate(isWhite, moveListRef, currentDepth, searchMemory);
+    _pawnGenerator.generate(isWhite, moveList, currentDepth, searchMemory);
 }
 
 void MoveGenerator::genCastlingMoves(
     bool isWhite,
-    model::Movelist& moveListRef,
+    model::Movelist& moveList,
     unsigned char castlingRights)
 {
-    _castlingGenerator.generate(isWhite, moveListRef, castlingRights);
+    _castlingGenerator.generate(isWhite, moveList, castlingRights);
 }
 
 bool MoveGenerator::isInCheck(bool isWhite) {

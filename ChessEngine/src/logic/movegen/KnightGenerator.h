@@ -21,12 +21,12 @@ public:
     );
     
     // Public member functions
-    void generate(bool isWhite, model::Movelist& moveListRef);
+    void generate(bool isWhite, model::Movelist& moveList);
 
 private:
     // Private member functions
-    const model::Bitboards& _bitboardsRef;
-    const model::StateBitmasks& _stateBitmasksRef;
+    const model::Bitboards& _bitboards;
+    const model::StateBitmasks& _stateBitmasks;
 
     // Memory
     std::vector<bitmask> _knightBitmasks;

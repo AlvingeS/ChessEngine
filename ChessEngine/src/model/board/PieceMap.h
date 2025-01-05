@@ -1,8 +1,11 @@
 #pragma once
+#include "ChessEngine/src/common.h"
 
-#include "ChessEngine/src/model/board/Bitboards.h"
+#include "ChessEngine/src/model/board/PieceType.h"
 
 namespace model {
+
+class Bitboards;
 
 class PieceMap {
 

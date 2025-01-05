@@ -1,5 +1,7 @@
 #include "ChessEngine/src/model/board/StateBitmasks.h"
 
+#include "ChessEngine/src/model/board/Bitboards.h"
+
 namespace model {
 
 StateBitmasks::StateBitmasks(const Bitboards& bitboards) 

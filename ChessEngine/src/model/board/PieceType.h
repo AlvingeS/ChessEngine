@@ -1,4 +1,3 @@
-
 #pragma once
 #include "ChessEngine/src/common.h"
 

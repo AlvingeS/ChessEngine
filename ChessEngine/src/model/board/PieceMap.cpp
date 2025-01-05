@@ -1,5 +1,7 @@
 #include "ChessEngine/src/model/board/PieceMap.h"
 
+#include "ChessEngine/src/model/board/Bitboards.h"
+
 namespace model {
 
 PieceMap::PieceMap(const Bitboards& bitboards) 

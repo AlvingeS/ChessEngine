@@ -1,9 +1,9 @@
 #pragma once
-
-#include "ChessEngine/src/model/board/PieceMap.h"
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "ChessEngine/src/common.h"
 
 namespace model {
+
+class PieceMap;
 
 class ZHasher {
 

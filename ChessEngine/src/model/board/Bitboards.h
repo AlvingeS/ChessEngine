@@ -2,8 +2,6 @@
 
 #include "ChessEngine/src/model/board/PieceType.h"
 
-#include <cassert>
-
 namespace model {
 
 class Bitboards {

@@ -1,8 +1,9 @@
 #pragma once
-
-#include "ChessEngine/src/model/board/Bitboards.h"
+#include "ChessEngine/src/common.h"
 
 namespace model {
+
+class Bitboards;
 
 class StateBitmasks {
 

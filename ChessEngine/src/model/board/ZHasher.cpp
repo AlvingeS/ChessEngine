@@ -1,4 +1,5 @@
 #include "ChessEngine/src/model/board/ZHasher.h"
+
 #include "ChessEngine/src/model/board/PieceMap.h"
 
 #include <iostream>

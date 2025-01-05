@@ -9,9 +9,9 @@ namespace logic {
 
 CheckDetection::CheckDetection(
     const model::Bitboards& bitboards,
-    const model::GameStateBitmasks& gameStateBitmasks)
+    const model::StateBitmasks& stateBitmasks)
     : _bitboardsRef(bitboards)
-    , _gameStateBitmasksRef(gameStateBitmasks)
+    , _stateBitmasksRef(stateBitmasks)
 {
     _straightRayBitmasks = getAllStraightRayBitmasks();
     _diagonalRayBitmasks = getAllDiagonalRayBitmasks();
@@ -75,28 +75,28 @@ bool CheckDetection::isInCheck(bool isWhite) const
     if ((knightMoves & opponentKnights) != 0)
         return true;
 
-    if (checkStraightRay(straightRays.north, true, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkStraightRay(straightRays.north, true, opponentRooksAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkStraightRay(straightRays.east, false, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkStraightRay(straightRays.east, false, opponentRooksAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkStraightRay(straightRays.south, false, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkStraightRay(straightRays.south, false, opponentRooksAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkStraightRay(straightRays.west, true, opponentRooksAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkStraightRay(straightRays.west, true, opponentRooksAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkDiagonalRay(diagonalRays.northEast, true, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkDiagonalRay(diagonalRays.northEast, true, opponentBishopsAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkDiagonalRay(diagonalRays.southEast, false, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkDiagonalRay(diagonalRays.southEast, false, opponentBishopsAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkDiagonalRay(diagonalRays.southWest, false, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkDiagonalRay(diagonalRays.southWest, false, opponentBishopsAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
-    if (checkDiagonalRay(diagonalRays.northWest, true, opponentBishopsAndQueens, _gameStateBitmasksRef.getOccupiedPiecesBitmask()))
+    if (checkDiagonalRay(diagonalRays.northWest, true, opponentBishopsAndQueens, _stateBitmasksRef.getOccupiedPiecesBitmask()))
         return true;
 
     return false;

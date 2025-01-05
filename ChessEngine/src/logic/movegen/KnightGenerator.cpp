@@ -9,9 +9,9 @@ namespace logic {
 
 KnightGenerator::KnightGenerator(
     const model::Bitboards& bitboards,
-    const model::GameStateBitmasks& gameStateBitmasks) 
+    const model::StateBitmasks& stateBitmasks) 
     : _bitboardsRef(bitboards)
-    , _gameStateBitmasksRef(gameStateBitmasks) {
+    , _stateBitmasksRef(stateBitmasks) {
     _knightBitmasks = getAllKnightBitmasks();
 }
 
@@ -29,10 +29,10 @@ void KnightGenerator::generate(
     for (int currentKnightIndex : knightIndices) {
         bitmask knightBitmask = _knightBitmasks[currentKnightIndex];
 
-        bitmask freeKnightMoves = knightBitmask & _gameStateBitmasksRef.getEmptySquaresBitmask();
+        bitmask freeKnightMoves = knightBitmask & _stateBitmasksRef.getEmptySquaresBitmask();
         
-        bitmask enemyPieces = isWhite ? _gameStateBitmasksRef.getBlackPiecesBitmask()
-                                    : _gameStateBitmasksRef.getWhitePiecesBitmask();
+        bitmask enemyPieces = isWhite ? _stateBitmasksRef.getBlackPiecesBitmask()
+                                    : _stateBitmasksRef.getWhitePiecesBitmask();
         
         bitmask capturableKnightMoves = knightBitmask & enemyPieces;
 

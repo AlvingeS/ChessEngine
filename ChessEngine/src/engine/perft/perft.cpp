@@ -9,13 +9,13 @@ namespace engine {
 
 perft::perft(int maxDepth)
     : _bitboards(),
-      _squaresLookup(_bitboards),
-      _gameStateBitmasks(_bitboards),
-      _zHasher(_squaresLookup),
+      _pieceMap(_bitboards),
+      _stateBitmasks(_bitboards),
+      _zHasher(_pieceMap),
       _searchMemory(maxDepth),
-      _moveMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _zHasher, _searchMemory),
-      _moveRetractor(_bitboards, _gameStateBitmasks, _squaresLookup, _zHasher, _searchMemory),
-      _moveGenerator(_bitboards, _gameStateBitmasks, _moveMaker, _moveRetractor),
+      _moveMaker(_bitboards, _stateBitmasks, _pieceMap, _zHasher, _searchMemory),
+      _moveRetractor(_bitboards, _stateBitmasks, _pieceMap, _zHasher, _searchMemory),
+      _moveGenerator(_bitboards, _stateBitmasks, _moveMaker, _moveRetractor),
       _evaluator(_bitboards),
       _perftData(maxDepth),
       _numMoveGenCalls(0),
@@ -97,7 +97,7 @@ bool perft::tooManyPiecesOnBoard()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (_squaresLookup.getPieceTypeAtIndex(i) != model::PieceType::EMPTY) {
+        if (_pieceMap.getPieceTypeAtIndex(i) != model::PieceType::EMPTY) {
             count++;
         }
     }
@@ -122,7 +122,7 @@ bool perft::checkCondition(
     // return currentMove.isAnyCapture();
     // return true;
     return false;
-    // return diffBetweenGameStateBitmasks();
+    // return diffBetweenStateBitmasks();
     // return currentDepth == 2 && firstMoveIndex == 0 && isMaximizer == true && currentMove.getMove() == 66;
 }
 
@@ -220,7 +220,7 @@ void perft::minimax(
             currentDepth,
             currentMove, 
             isMaximizer, 
-            _squaresLookup.getPieceTypeAtIndex(currentMove.getBitIndexTo())
+            _pieceMap.getPieceTypeAtIndex(currentMove.getBitIndexTo())
         );
 
         if (recPerftStats) {

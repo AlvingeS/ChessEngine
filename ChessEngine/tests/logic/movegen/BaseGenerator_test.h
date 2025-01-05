@@ -3,8 +3,8 @@
 #include <gtest/gtest.h>
 
 #include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/GameStateBitmasks.h"
-#include "ChessEngine/src/model/board/SquaresLookup.h"
+#include "ChessEngine/src/model/board/StateBitmasks.h"
+#include "ChessEngine/src/model/board/PieceMap.h"
 #include "ChessEngine/src/model/board/ZHasher.h"
 #include "ChessEngine/src/model/move/Move.h"
 #include "ChessEngine/src/model/move/Movelist.h"
@@ -22,8 +22,8 @@ class BaseGenerator : public ::testing::Test
 {
 protected:
     model::Bitboards bitboards;
-    model::GameStateBitmasks gameStateBitmasks;
-    model::SquaresLookup squaresLookup;
+    model::StateBitmasks stateBitmasks;
+    model::PieceMap pieceMap;
     engine::SearchMemory searchMemory;
     model::ZHasher zHasher;
     MoveMaker moveMaker;
@@ -33,13 +33,13 @@ protected:
     model::Movelist movelist;
 
     BaseGenerator() : bitboards(model::Bitboards()),
-                        gameStateBitmasks(model::GameStateBitmasks(bitboards)),
-                        squaresLookup(model::SquaresLookup(bitboards)),
+                        stateBitmasks(model::StateBitmasks(bitboards)),
+                        pieceMap(model::PieceMap(bitboards)),
                         searchMemory(engine::SearchMemory(0)),
-                        zHasher(model::ZHasher(squaresLookup)),
-                        moveMaker(bitboards, gameStateBitmasks, squaresLookup, zHasher, searchMemory),
-                        moveRetractor(bitboards, gameStateBitmasks, squaresLookup, zHasher, searchMemory),
-                        moveGenerator(MoveGenerator(bitboards, gameStateBitmasks, moveMaker, moveRetractor)),
+                        zHasher(model::ZHasher(pieceMap)),
+                        moveMaker(bitboards, stateBitmasks, pieceMap, zHasher, searchMemory),
+                        moveRetractor(bitboards, stateBitmasks, pieceMap, zHasher, searchMemory),
+                        moveGenerator(MoveGenerator(bitboards, stateBitmasks, moveMaker, moveRetractor)),
                         movelist(model::Movelist()) {}
 
     virtual void SetUp() override {

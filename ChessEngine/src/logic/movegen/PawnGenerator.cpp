@@ -10,9 +10,9 @@ namespace logic {
 
 PawnGenerator::PawnGenerator(
     const model::Bitboards& bitboards,
-    const model::GameStateBitmasks& gameStateBitmasks) 
+    const model::StateBitmasks& stateBitmasks) 
     : _bitboardsRef(bitboards)
-    , _gameStateBitmasksRef(gameStateBitmasks)
+    , _stateBitmasksRef(stateBitmasks)
 {
     _whitePawnStraightMoveBitmasks = getAllStraightPawnMoveBitmasks(true);
     _whitePawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(true);
@@ -41,10 +41,10 @@ void PawnGenerator::generate(
         bitmask capturePawnMoveBitmask = isWhite ? _whitePawnCaptureMoveBitmasks[currentPawnIndex]
                                                  : _blackPawnCaptureMoveBitmasks[currentPawnIndex];
 
-        bitmask freePawnMoves = straightPawnMoveBitmask & _gameStateBitmasksRef.getEmptySquaresBitmask();
+        bitmask freePawnMoves = straightPawnMoveBitmask & _stateBitmasksRef.getEmptySquaresBitmask();
         
-        bitmask enemyPieces = isWhite ? _gameStateBitmasksRef.getBlackPiecesBitmask()
-                                      : _gameStateBitmasksRef.getWhitePiecesBitmask();
+        bitmask enemyPieces = isWhite ? _stateBitmasksRef.getBlackPiecesBitmask()
+                                      : _stateBitmasksRef.getWhitePiecesBitmask();
         
         bitmask enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
         bitmask capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;

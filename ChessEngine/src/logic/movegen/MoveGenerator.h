@@ -27,7 +27,7 @@ public:
     // Public member functions
     MoveGenerator(
         const model::Bitboards& bitboards,
-        const model::GameStateBitmasks& gameStateBitmasks,
+        const model::StateBitmasks& stateBitmasks,
         logic::MoveMaker& moveMaker,
         logic::MoveRetractor& moveRetractor
     );
@@ -63,7 +63,7 @@ public:
 private:
     // Private member variables
     const model::Bitboards& _bitboardsRef;
-    const model::GameStateBitmasks& _gameStateBitmasksRef;
+    const model::StateBitmasks& _stateBitmasksRef;
     
     logic::MoveMaker& _moveMakerRef;
     logic::MoveRetractor& _moveRetractorRef;

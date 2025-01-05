@@ -8,7 +8,7 @@
 #include "ChessEngine/src/logic/movegen/bitmasks/KnightBitmasks.h"
 #include "ChessEngine/src/logic/movegen/bitmasks/PawnBitmasks.h"
 #include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/GameStateBitmasks.h"
+#include "ChessEngine/src/model/board/StateBitmasks.h"
 
 
 namespace logic {
@@ -17,7 +17,7 @@ class CheckDetection {
 
 public:
     // Constructor
-    CheckDetection(const model::Bitboards& bitboards, const model::GameStateBitmasks& gameStateBitmasks);
+    CheckDetection(const model::Bitboards& bitboards, const model::StateBitmasks& stateBitmasks);
     
     // Public member functions
     bool isInCheck(bool isWhite) const;
@@ -25,7 +25,7 @@ public:
 private:
     // Private member functions
     const model::Bitboards& _bitboardsRef;
-    const model::GameStateBitmasks& _gameStateBitmasksRef;
+    const model::StateBitmasks& _stateBitmasksRef;
 
     // Memory
     std::vector<StraightRays> _straightRayBitmasks;

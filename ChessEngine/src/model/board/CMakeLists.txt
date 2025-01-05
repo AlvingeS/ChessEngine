@@ -1,7 +1,7 @@
 add_library(board 
     Bitboards.cpp
-    GameStateBitmasks.cpp
-    SquaresLookup.cpp
+    StateBitmasks.cpp
+    PieceMap.cpp
     ZHasher.cpp
     PieceType.cpp
 )

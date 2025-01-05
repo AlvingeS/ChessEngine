@@ -9,13 +9,13 @@ namespace engine {
 
 Searcher::Searcher(int maxDepth) 
     : _bitboards(model::Bitboards())
-    , _squaresLookup(model::SquaresLookup(_bitboards))
-    , _gameStateBitmasks(model::GameStateBitmasks(_bitboards))
+    , _pieceMap(model::PieceMap(_bitboards))
+    , _stateBitmasks(model::StateBitmasks(_bitboards))
     , _searchMemory(SearchMemory(maxDepth))
-    , _zHasher(model::ZHasher(_squaresLookup))
-    , _moveMaker(logic::MoveMaker(_bitboards, _gameStateBitmasks, _squaresLookup, _zHasher, _searchMemory))
-    , _moveRetractor(logic::MoveRetractor(_bitboards, _gameStateBitmasks, _squaresLookup, _zHasher, _searchMemory))
-    , _moveGenerator(logic::MoveGenerator(_bitboards, _gameStateBitmasks, _moveMaker, _moveRetractor))
+    , _zHasher(model::ZHasher(_pieceMap))
+    , _moveMaker(logic::MoveMaker(_bitboards, _stateBitmasks, _pieceMap, _zHasher, _searchMemory))
+    , _moveRetractor(logic::MoveRetractor(_bitboards, _stateBitmasks, _pieceMap, _zHasher, _searchMemory))
+    , _moveGenerator(logic::MoveGenerator(_bitboards, _stateBitmasks, _moveMaker, _moveRetractor))
     , _evaluator(logic::Evaluator(_bitboards))
     , _maxDepth(maxDepth)
 {
@@ -138,7 +138,7 @@ bool Searcher::tooManyPiecesOnBoard()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (_squaresLookup.getPieceTypeAtIndex(i) != model::PieceType::EMPTY) {
+        if (_pieceMap.getPieceTypeAtIndex(i) != model::PieceType::EMPTY) {
             count++;
         }
     }
@@ -163,7 +163,7 @@ bool Searcher::checkCondition(
     // return currentMove.isAnyCapture();
     // return true;
     return false;
-    // return diffBetweenGameStateBitmasks();
+    // return diffBetweenStateBitmasks();
     // return currentDepth == 2 && firstMoveIndex == 0 && isMaximizer == true && currentMove.getMove() == 66;
 }
 
@@ -261,7 +261,7 @@ void Searcher::minimax(
             currentDepth,
             currentMove, 
             isMaximizer, 
-            _squaresLookup.getPieceTypeAtIndex(currentMove.getBitIndexTo())
+            _pieceMap.getPieceTypeAtIndex(currentMove.getBitIndexTo())
         );
 
         if (recPerftStats) {

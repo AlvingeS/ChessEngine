@@ -8,12 +8,12 @@ namespace logic {
 
 CastlingGenerator::CastlingGenerator(
     const model::Bitboards& bitboards,
-    const model::GameStateBitmasks& gameStateBitmasks,
+    const model::StateBitmasks& stateBitmasks,
     logic::MoveMaker& moveMaker, 
     logic::MoveRetractor& moveRetractor, 
     CheckDetection* checkDetection)
     : _bitboardsRef(bitboards)
-    , _gameStateBitmasksRef(gameStateBitmasks)
+    , _stateBitmasksRef(stateBitmasks)
     , _moveMakerRef(moveMaker)
     , _moveRetractorRef(moveRetractor)
     , _checkDetection(checkDetection) 
@@ -109,7 +109,7 @@ void CastlingGenerator::genSingleCastleMove(
                                               : (isKingSide ? _blackKingSideCastleBitmask
                                                             : _blackQueenSideCastleBitmask);
     
-    if ((spaceBetweenCastlersBitmask & _gameStateBitmasksRef.getOccupiedPiecesBitmask()) != 0)
+    if ((spaceBetweenCastlersBitmask & _stateBitmasksRef.getOccupiedPiecesBitmask()) != 0)
         return;
 
     // Check that the king and rook are on the correct squares

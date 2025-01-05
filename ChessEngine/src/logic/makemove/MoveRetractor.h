@@ -3,8 +3,8 @@
 #include "ChessEngine/src/model/move/Move.h"
 #include "ChessEngine/src/model/board/PieceType.h"
 #include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/GameStateBitmasks.h"
-#include "ChessEngine/src/model/board/SquaresLookup.h"
+#include "ChessEngine/src/model/board/StateBitmasks.h"
+#include "ChessEngine/src/model/board/PieceMap.h"
 #include "ChessEngine/src/model/board/ZHasher.h"
 #include "ChessEngine/src/model/board/PieceType.h"
 
@@ -19,8 +19,8 @@ public:
     // Constructor
     MoveRetractor(
         model::Bitboards& bitBoards, 
-        model::GameStateBitmasks& gameStateBitmasks, 
-        model::SquaresLookup& squaresLookup, 
+        model::StateBitmasks& stateBitmasks, 
+        model::PieceMap& pieceMap, 
         model::ZHasher& zHasher,
         engine::SearchMemory& searchMemory 
     );
@@ -51,8 +51,8 @@ private:
     void placeBackMovedPieceOnBoard(bool wasWhite, int fromIndex,model::PieceType  movedPieceType);
 
     model::Bitboards& _bitboardsRef;
-    model::GameStateBitmasks& _gameStateBitmasksRef;
-    model::SquaresLookup& _squaresLookupRef;
+    model::StateBitmasks& _stateBitmasksRef;
+    model::PieceMap& _pieceMapRef;
     const model::ZHasher& _zHasherRef;
     engine::SearchMemory& _searchMemoryRef;
 };

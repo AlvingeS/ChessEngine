@@ -9,9 +9,9 @@ namespace logic {
 
 KingGenerator::KingGenerator(
     const model::Bitboards& bitboards,
-    const model::GameStateBitmasks& gameStateBitmasks) 
+    const model::StateBitmasks& stateBitmasks) 
     : _bitboardsRef(bitboards)
-    , _gameStateBitmasksRef(gameStateBitmasks)
+    , _stateBitmasksRef(stateBitmasks)
 {
     _kingBitmasks = getAllKingBitmasks();
 }
@@ -29,10 +29,10 @@ void KingGenerator::generate(bool isWhite, model::Movelist& moveListRef)
     for (int currentKingIndex : kingIndices) {
         bitmask kingBitmask = _kingBitmasks[currentKingIndex];
 
-        bitmask freeKingMoves = kingBitmask & _gameStateBitmasksRef.getEmptySquaresBitmask();
+        bitmask freeKingMoves = kingBitmask & _stateBitmasksRef.getEmptySquaresBitmask();
         
-        bitmask enemyPieces = isWhite ? _gameStateBitmasksRef.getBlackPiecesBitmask() 
-                                      : _gameStateBitmasksRef.getWhitePiecesBitmask();
+        bitmask enemyPieces = isWhite ? _stateBitmasksRef.getBlackPiecesBitmask() 
+                                      : _stateBitmasksRef.getWhitePiecesBitmask();
 
         bitmask capturableKingMoves = kingBitmask & enemyPieces;
 

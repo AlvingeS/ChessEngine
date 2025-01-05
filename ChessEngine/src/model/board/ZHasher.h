@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChessEngine/src/model/board/SquaresLookup.h"
+#include "ChessEngine/src/model/board/PieceMap.h"
 #include "ChessEngine/src/model/board/PieceType.h"
 
 namespace model {
@@ -8,7 +8,7 @@ namespace model {
 class ZHasher {
 
 public:
-    ZHasher(SquaresLookup& squaresLookup);
+    ZHasher(PieceMap& pieceMap);
 
 private:
     void computeInitialHash();
@@ -26,7 +26,7 @@ private:
     uint64_t _randIsWhiteNum;
     uint64_t _hash;
 
-    SquaresLookup& _squaresLookupRef;
+    PieceMap& _pieceMapRef;
 };
 
 } // namespace model

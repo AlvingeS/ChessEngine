@@ -10,9 +10,9 @@ namespace logic {
 
 RookGenerator::RookGenerator(
     const model::Bitboards& bitboards,
-    const model::GameStateBitmasks& gameStateBitmasks)
+    const model::StateBitmasks& stateBitmasks)
     : _bitboardsRef(bitboards)
-    , _gameStateBitmasksRef(gameStateBitmasks)
+    , _stateBitmasksRef(stateBitmasks)
 {
     _straightRayBitmasks = getAllStraightRayBitmasks();
 }
@@ -43,8 +43,8 @@ void RookGenerator::generate(
             rookRank, 
             rookFile, 
             moveListRef,
-            _gameStateBitmasksRef.getWhitePiecesBitmask(),
-            _gameStateBitmasksRef.getOccupiedPiecesBitmask()
+            _stateBitmasksRef.getWhitePiecesBitmask(),
+            _stateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
         addMovesFromStraightRay(
@@ -56,8 +56,8 @@ void RookGenerator::generate(
             rookRank, 
             rookFile, 
             moveListRef,
-            _gameStateBitmasksRef.getWhitePiecesBitmask(),
-            _gameStateBitmasksRef.getOccupiedPiecesBitmask()
+            _stateBitmasksRef.getWhitePiecesBitmask(),
+            _stateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
         addMovesFromStraightRay(
@@ -69,8 +69,8 @@ void RookGenerator::generate(
             rookRank, 
             rookFile, 
             moveListRef,
-            _gameStateBitmasksRef.getWhitePiecesBitmask(),
-            _gameStateBitmasksRef.getOccupiedPiecesBitmask()
+            _stateBitmasksRef.getWhitePiecesBitmask(),
+            _stateBitmasksRef.getOccupiedPiecesBitmask()
         );
 
         addMovesFromStraightRay(
@@ -82,8 +82,8 @@ void RookGenerator::generate(
             rookRank, 
             rookFile, 
             moveListRef,
-            _gameStateBitmasksRef.getWhitePiecesBitmask(),
-            _gameStateBitmasksRef.getOccupiedPiecesBitmask()
+            _stateBitmasksRef.getWhitePiecesBitmask(),
+            _stateBitmasksRef.getOccupiedPiecesBitmask()
         );
     }
 }

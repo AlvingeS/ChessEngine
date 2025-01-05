@@ -4,12 +4,12 @@
 
 namespace model {
 
-class GameStateBitmasks {
+class StateBitmasks {
 
 public:
 /// @brief Constructor
 /// @param bitboards The bitboards to fill the bitmasks from
-GameStateBitmasks(const Bitboards& bitboards);
+StateBitmasks(const Bitboards& bitboards);
 
 /// @brief Returns true if the bit at the given index is set 
 /// in the white pieces bitmask

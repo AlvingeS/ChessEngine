@@ -7,8 +7,8 @@ namespace io {
 void setBoardFromFen(
     const std::string& fen, 
     model::Bitboards& bitboards, 
-    model::GameStateBitmasks& gameStateBitmasks, 
-    model::SquaresLookup& squaresLookup) 
+    model::StateBitmasks& stateBitmasks, 
+    model::PieceMap& pieceMap) 
 {
     bitboards.resetBitboards();
 
@@ -29,13 +29,13 @@ void setBoardFromFen(
         }
     }
 
-    squaresLookup.fillSquaresLookupFromBitboards(bitboards);
-    gameStateBitmasks.fillBlackPiecesBitmaskFromBitboards(bitboards);
-    gameStateBitmasks.fillWhitePiecesBitmaskFromBitboards(bitboards);
-    gameStateBitmasks.updOccupiedAndEmptySquaresBitmasks();
+    pieceMap.fillPieceMapFromBitboards(bitboards);
+    stateBitmasks.fillBlackPiecesBitmaskFromBitboards(bitboards);
+    stateBitmasks.fillWhitePiecesBitmaskFromBitboards(bitboards);
+    stateBitmasks.updOccupiedAndEmptySquaresBitmasks();
 }
 
-std::string getFenFromBoard(const model::SquaresLookup& squaresLookup)
+std::string getFenFromBoard(const model::PieceMap& pieceMap)
 {
     std::string fen = "";
     int emptyCount = 0;
@@ -49,7 +49,7 @@ std::string getFenFromBoard(const model::SquaresLookup& squaresLookup)
             fen += "/";
         }
 
-        model::PieceType type = squaresLookup.getPieceTypeAtIndex(i);
+        model::PieceType type = pieceMap.getPieceTypeAtIndex(i);
         if (type == model::PieceType::EMPTY) {
             emptyCount++;
         } else {

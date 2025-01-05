@@ -5,8 +5,8 @@
 #include "ChessEngine/src/io/Fen.h"
 
 #include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/GameStateBitmasks.h"
-#include "ChessEngine/src/model/board/SquaresLookup.h"
+#include "ChessEngine/src/model/board/StateBitmasks.h"
+#include "ChessEngine/src/model/board/PieceMap.h"
 
 #include <gtest/gtest.h>
 #include <unordered_map>

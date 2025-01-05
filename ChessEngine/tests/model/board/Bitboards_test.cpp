@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/GameStateBitmasks.h"
-#include "ChessEngine/src/model/board/SquaresLookup.h"
+#include "ChessEngine/src/model/board/StateBitmasks.h"
+#include "ChessEngine/src/model/board/PieceMap.h"
 
 #include "ChessEngine/src/io/Fen.h"
 
@@ -12,15 +12,15 @@ class BitboardsTest : public ::testing::Test
 {
 protected:
     Bitboards bitboards;
-    GameStateBitmasks gameStateBitmasks;
-    SquaresLookup squaresLookup;
+    StateBitmasks stateBitmasks;
+    PieceMap pieceMap;
 
     std::string fenOne;
 
     BitboardsTest()
         : bitboards(), 
-        gameStateBitmasks(bitboards), 
-        squaresLookup(bitboards), 
+        stateBitmasks(bitboards), 
+        pieceMap(bitboards), 
         fenOne("8/8/8/8/3Pp3/8/8/8") 
     {
         // Constructor body if needed
@@ -132,7 +132,7 @@ TEST_F(BitboardsTest, ConstructorInit_BlackKing)
 TEST_F(BitboardsTest, getWhitePiecesbitboard_ShouldReturn0x000000000000FFFF) 
 {
     bitboard expected = 0x000000000000FFFFULL;
-    bitboard actual = gameStateBitmasks.getWhitePiecesBitmask();
+    bitboard actual = stateBitmasks.getWhitePiecesBitmask();
 
     ASSERT_EQ(expected, actual);
 }
@@ -140,55 +140,55 @@ TEST_F(BitboardsTest, getWhitePiecesbitboard_ShouldReturn0x000000000000FFFF)
 TEST_F(BitboardsTest, getBlackPiecesbitboard_ShouldReturn0xFFFF000000000000) 
 {
     bitboard expected = 0xFFFF000000000000ULL;
-    bitboard actual = gameStateBitmasks.getBlackPiecesBitmask();
+    bitboard actual = stateBitmasks.getBlackPiecesBitmask();
 
     ASSERT_EQ(expected, actual);
 }
 
-TEST_F(BitboardsTest, fillSquaresLookupTest_ShouldReturnStartingPos) 
+TEST_F(BitboardsTest, fillPieceMapTest_ShouldReturnStartingPos) 
 {
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(0), PieceType::W_ROOK);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(1), PieceType::W_KNIGHT);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(2), PieceType::W_BISHOP);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(3), PieceType::W_KING);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(4), PieceType::W_QUEEN);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(5), PieceType::W_BISHOP);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(6), PieceType::W_KNIGHT);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(7), PieceType::W_ROOK);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(0), PieceType::W_ROOK);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(1), PieceType::W_KNIGHT);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(2), PieceType::W_BISHOP);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(3), PieceType::W_KING);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(4), PieceType::W_QUEEN);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(5), PieceType::W_BISHOP);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(6), PieceType::W_KNIGHT);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(7), PieceType::W_ROOK);
 
     for (int i = 8; i < 16; i++) {
-        ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(i), PieceType::W_PAWN);
+        ASSERT_EQ(pieceMap.getPieceTypeAtIndex(i), PieceType::W_PAWN);
     }
 
     for (int i = 16; i < 48; i++) {
-        ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(i), PieceType::EMPTY);
+        ASSERT_EQ(pieceMap.getPieceTypeAtIndex(i), PieceType::EMPTY);
     }
 
     for (int i = 48; i < 56; i++) {
-        ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(i), PieceType::B_PAWN);
+        ASSERT_EQ(pieceMap.getPieceTypeAtIndex(i), PieceType::B_PAWN);
     }
 
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(56), PieceType::B_ROOK);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(57), PieceType::B_KNIGHT);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(58), PieceType::B_BISHOP);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(59), PieceType::B_KING);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(60), PieceType::B_QUEEN);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(61), PieceType::B_BISHOP);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(62), PieceType::B_KNIGHT);
-    ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(63), PieceType::B_ROOK);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(56), PieceType::B_ROOK);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(57), PieceType::B_KNIGHT);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(58), PieceType::B_BISHOP);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(59), PieceType::B_KING);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(60), PieceType::B_QUEEN);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(61), PieceType::B_BISHOP);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(62), PieceType::B_KNIGHT);
+    ASSERT_EQ(pieceMap.getPieceTypeAtIndex(63), PieceType::B_ROOK);
 }
 
-TEST_F(BitboardsTest, fillSquaresLookupFenOneTest_ShouldReturnTwoPieces) 
+TEST_F(BitboardsTest, fillPieceMapFenOneTest_ShouldReturnTwoPieces) 
 {
-    io::setBoardFromFen(fenOne, bitboards, gameStateBitmasks, squaresLookup);
+    io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
 
     for (int i = 0; i < 64; i++) {
         if (i == 27) {
-            ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(i), PieceType::B_PAWN);
+            ASSERT_EQ(pieceMap.getPieceTypeAtIndex(i), PieceType::B_PAWN);
         } else if (i == 28) {
-            ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(i), PieceType::W_PAWN);
+            ASSERT_EQ(pieceMap.getPieceTypeAtIndex(i), PieceType::W_PAWN);
         } else {
-            ASSERT_EQ(squaresLookup.getPieceTypeAtIndex(i), PieceType::EMPTY);
+            ASSERT_EQ(pieceMap.getPieceTypeAtIndex(i), PieceType::EMPTY);
         }
     }
 }

@@ -5,7 +5,7 @@
 #include "ChessEngine/src/logic/movegen/CheckDetection.h"
 
 #include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/GameStateBitmasks.h"
+#include "ChessEngine/src/model/board/StateBitmasks.h"
 
 #include "ChessEngine/src/model/move/Move.h"
 #include "ChessEngine/src/logic/makemove/MoveMaker.h"
@@ -23,7 +23,7 @@ class CastlingGenerator {
 public:
     CastlingGenerator(
         const model::Bitboards& bitboards,
-        const model::GameStateBitmasks& gameStateBitmasks,
+        const model::StateBitmasks& stateBitmasks,
         logic::MoveMaker& moveMaker,
         logic::MoveRetractor& moveRetractor,
         CheckDetection* checkDetection
@@ -37,7 +37,7 @@ public:
 
 private:
     const model::Bitboards& _bitboardsRef;
-    const model::GameStateBitmasks& _gameStateBitmasksRef;
+    const model::StateBitmasks& _stateBitmasksRef;
     
     logic::MoveMaker& _moveMakerRef;
     logic::MoveRetractor& _moveRetractorRef;

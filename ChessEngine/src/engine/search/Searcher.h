@@ -6,9 +6,9 @@
 
 #include "ChessEngine/src/model/board/ZHasher.h"
 #include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/GameStateBitmasks.h"
+#include "ChessEngine/src/model/board/StateBitmasks.h"
 
-#include "ChessEngine/src/model/board/SquaresLookup.h"
+#include "ChessEngine/src/model/board/PieceMap.h"
 #include "ChessEngine/src/logic/movegen/MoveGenerator.h"
 #include "ChessEngine/src/model/move/Movelist.h"
 #include "ChessEngine/src/logic/makemove/MoveMaker.h"
@@ -95,23 +95,23 @@ public:
 
     void setBoardFromFen(const std::string& fen)
     {
-        io::setBoardFromFen(fen, _bitboards, _gameStateBitmasks, _squaresLookup);
+        io::setBoardFromFen(fen, _bitboards, _stateBitmasks, _pieceMap);
     }
 
     std::string getFenFromBoard() const
     {
-        return io::getFenFromBoard(_squaresLookup);
+        return io::getFenFromBoard(_pieceMap);
     }
 
-    bool diffBetweenGameStateBitmasks() const
+    bool diffBetweenStateBitmasks() const
     {
-        return (_gameStateBitmasks.getBlackPiecesBitmask() | _gameStateBitmasks.getWhitePiecesBitmask()) != _gameStateBitmasks.getOccupiedPiecesBitmask();
+        return (_stateBitmasks.getBlackPiecesBitmask() | _stateBitmasks.getWhitePiecesBitmask()) != _stateBitmasks.getOccupiedPiecesBitmask();
     }
     
 private:
     model::Bitboards _bitboards;
-    model::SquaresLookup _squaresLookup;
-    model::GameStateBitmasks _gameStateBitmasks;
+    model::PieceMap _pieceMap;
+    model::StateBitmasks _stateBitmasks;
     SearchMemory _searchMemory;
     model::ZHasher _zHasher;
     logic::MoveMaker _moveMaker;

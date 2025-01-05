@@ -8,13 +8,13 @@ namespace logic {
 
 MoveMaker::MoveMaker(
     model::Bitboards& bitBoards, 
-    model::GameStateBitmasks& gameStateBitmasks, 
-    model::SquaresLookup& squaresLookup, 
+    model::StateBitmasks& stateBitmasks, 
+    model::PieceMap& pieceMap, 
     model::ZHasher& zHasher,
     engine::SearchMemory& searchMemory
 ) : _bitboardsRef(bitBoards), 
-    _gameStateBitmasksRef(gameStateBitmasks), 
-    _squaresLookupRef(squaresLookup), 
+    _stateBitmasksRef(stateBitmasks), 
+    _pieceMapRef(pieceMap), 
     _searchMemoryRef(searchMemory), 
     _zHasherRef(zHasher)
 {}
@@ -43,7 +43,7 @@ void MoveMaker::makeMove(
     if (move.isAnyCapture()) {
         // Calculate index of captured piece, might be EP
         int captureIndex = determineCaptureIndex(move, isWhite, toIndex);
-        model::PieceType  capturedPieceType = _squaresLookupRef.getPieceTypeAtIndex(captureIndex);
+        model::PieceType  capturedPieceType = _pieceMapRef.getPieceTypeAtIndex(captureIndex);
         
         _searchMemoryRef.setLastCapturedPieceAtDepth(currentDepth, capturedPieceType);
         
@@ -63,7 +63,7 @@ void MoveMaker::makeMove(
     handleNoCaptureCount(move, currentDepth, movedPieceType);
 
     // Update occupied and empty squares bitmasks
-    _gameStateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
+    _stateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
 }
 
 void MoveMaker::makeCastleMove(bool isWhite,bool isKingSide)
@@ -81,15 +81,15 @@ void MoveMaker::makeCastleMove(bool isWhite,bool isKingSide)
         _bitboardsRef.clearWhiteRooksBit(fromRookInd);
         _bitboardsRef.setWhiteRooksBit(toRookInd);
 
-        _gameStateBitmasksRef.clearWhitePiecesBit(fromKingInd);
-        _gameStateBitmasksRef.setWhitePiecesBit(toKingInd);
-        _gameStateBitmasksRef.clearWhitePiecesBit(fromRookInd);
-        _gameStateBitmasksRef.setWhitePiecesBit(toRookInd);
+        _stateBitmasksRef.clearWhitePiecesBit(fromKingInd);
+        _stateBitmasksRef.setWhitePiecesBit(toKingInd);
+        _stateBitmasksRef.clearWhitePiecesBit(fromRookInd);
+        _stateBitmasksRef.setWhitePiecesBit(toRookInd);
 
-        _squaresLookupRef.setPieceTypeAtIndex(fromKingInd,model::PieceType::EMPTY);
-        _squaresLookupRef.setPieceTypeAtIndex(toKingInd,model::PieceType::W_KING);
-        _squaresLookupRef.setPieceTypeAtIndex(fromRookInd,model::PieceType::EMPTY);
-        _squaresLookupRef.setPieceTypeAtIndex(toRookInd,model::PieceType::W_ROOK);
+        _pieceMapRef.setPieceTypeAtIndex(fromKingInd,model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(toKingInd,model::PieceType::W_KING);
+        _pieceMapRef.setPieceTypeAtIndex(fromRookInd,model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(toRookInd,model::PieceType::W_ROOK);
     } else {
         fromKingInd = 59;
         toKingInd = isKingSide ? 57 : 61;
@@ -101,18 +101,18 @@ void MoveMaker::makeCastleMove(bool isWhite,bool isKingSide)
         _bitboardsRef.clearBlackRooksBit(fromRookInd);
         _bitboardsRef.setBlackRooksBit(toRookInd);
 
-        _gameStateBitmasksRef.clearBlackPiecesBit(fromKingInd);
-        _gameStateBitmasksRef.setBlackPiecesBit(toKingInd);
-        _gameStateBitmasksRef.clearBlackPiecesBit(fromRookInd);
-        _gameStateBitmasksRef.setBlackPiecesBit(toRookInd);
+        _stateBitmasksRef.clearBlackPiecesBit(fromKingInd);
+        _stateBitmasksRef.setBlackPiecesBit(toKingInd);
+        _stateBitmasksRef.clearBlackPiecesBit(fromRookInd);
+        _stateBitmasksRef.setBlackPiecesBit(toRookInd);
 
-        _squaresLookupRef.setPieceTypeAtIndex(fromKingInd,model::PieceType::EMPTY);
-        _squaresLookupRef.setPieceTypeAtIndex(toKingInd,model::PieceType::B_KING);
-        _squaresLookupRef.setPieceTypeAtIndex(fromRookInd,model::PieceType::EMPTY);
-        _squaresLookupRef.setPieceTypeAtIndex(toRookInd,model::PieceType::B_ROOK);
+        _pieceMapRef.setPieceTypeAtIndex(fromKingInd,model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(toKingInd,model::PieceType::B_KING);
+        _pieceMapRef.setPieceTypeAtIndex(fromRookInd,model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(toRookInd,model::PieceType::B_ROOK);
     }
 
-    _gameStateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
+    _stateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
 }
 
 void MoveMaker::makeTemporaryKingMove(bool isWhite, bool isKingSide)
@@ -135,17 +135,17 @@ void MoveMaker::makeTemporaryKingMove(bool isWhite, bool isKingSide)
 model::PieceType MoveMaker::removeMovedPieceFromBoard(bool isWhite, int fromIndex) 
 {
     // Determine the piece type of the piece being moved
-   model::PieceType  movedPieceType = _squaresLookupRef.getPieceTypeAtIndex(fromIndex);
+   model::PieceType  movedPieceType = _pieceMapRef.getPieceTypeAtIndex(fromIndex);
     //assert(movedPieceType !=model::PieceType::EMPTY);
     
     // Clear the piece from bitboards, squarelookup and gamestate bitmasks
-    _squaresLookupRef.setPieceTypeAtIndex(fromIndex,model::PieceType::EMPTY);
+    _pieceMapRef.setPieceTypeAtIndex(fromIndex,model::PieceType::EMPTY);
     _bitboardsRef.clearPieceTypeBit(fromIndex, movedPieceType);
 
     if (isWhite) {
-        _gameStateBitmasksRef.clearWhitePiecesBit(fromIndex);
+        _stateBitmasksRef.clearWhitePiecesBit(fromIndex);
     } else {
-        _gameStateBitmasksRef.clearBlackPiecesBit(fromIndex);
+        _stateBitmasksRef.clearBlackPiecesBit(fromIndex);
     }
 
     return movedPieceType;
@@ -157,12 +157,12 @@ void MoveMaker::placeMovedPieceOnBoard(
    model::PieceType  movedPieceType) 
 {
     _bitboardsRef.setPieceTypeBit(toIndex, movedPieceType);
-    _squaresLookupRef.setPieceTypeAtIndex(toIndex, movedPieceType);
+    _pieceMapRef.setPieceTypeAtIndex(toIndex, movedPieceType);
 
     if (isWhite) {
-        _gameStateBitmasksRef.setWhitePiecesBit(toIndex);
+        _stateBitmasksRef.setWhitePiecesBit(toIndex);
     } else {
-        _gameStateBitmasksRef.setBlackPiecesBit(toIndex);
+        _stateBitmasksRef.setBlackPiecesBit(toIndex);
     }
 }
 
@@ -196,16 +196,16 @@ void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captur
     _bitboardsRef.clearPieceTypeBit(captureIndex, capturedPieceType);
 
     if (isWhite) {
-        _gameStateBitmasksRef.clearBlackPiecesBit(captureIndex);
+        _stateBitmasksRef.clearBlackPiecesBit(captureIndex);
     } else {
-        _gameStateBitmasksRef.clearWhitePiecesBit(captureIndex);
+        _stateBitmasksRef.clearWhitePiecesBit(captureIndex);
     }
 
     // Only clear from the squares lookup if the move was an ep capture
     // because the capture index points to the square where the pawn was
     // and is now empty, the square we moved to will have been updated
     if (isEP) {
-        _squaresLookupRef.setPieceTypeAtIndex(captureIndex,model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(captureIndex,model::PieceType::EMPTY);
     }
 }
 

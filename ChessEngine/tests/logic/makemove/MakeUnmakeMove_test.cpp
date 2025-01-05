@@ -41,189 +41,189 @@
 //                 return moveGenerator.getBoard().getBitboards();
 //             }
 
-//             std::vector<PieceType> getSquaresLookup() {
-//                 return moveGenerator.getBoard().getSquaresLookup();
+//             std::vector<PieceType> getPieceMap() {
+//                 return moveGenerator.getBoard().getPieceMap();
 //             }
 //     };
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_StartingPositionWhite) {
 //         moveGenerator.genMoves(true, movelist);
 
-//         // Makes copies of the bitboards and squaresLookup
+//         // Makes copies of the bitboards and pieceMap
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
-//         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
+//         std::vector<PieceType> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = movelist;
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], true);
 //             moveGenerator.getBoard().unmakeMove(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
-//             ASSERT_EQ(getSquaresLookup(), squaresLookupCopy);
+//             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
 //     }
 
 //         TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_StartingPositionBlack) {
 //         moveGenerator.genMoves(false, movelist);
 
-//         // Makes copies of the bitboards and squaresLookup
+//         // Makes copies of the bitboards and pieceMap
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
-//         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
+//         std::vector<PieceType> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], false);
 //             moveGenerator.getBoard().unmakeMove(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
-//             ASSERT_EQ(getSquaresLookup(), squaresLookupCopy);
+//             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
 
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesWhite) {
-//         io::setBoardFromFen(captures, bitboards, gameStateBitmasks, squaresLookup);
+//         io::setBoardFromFen(captures, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(true, movelist);
 
-//         // Makes copies of the bitboards and squaresLookup
+//         // Makes copies of the bitboards and pieceMap
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
-//         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
+//         std::vector<PieceType> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], true);
 //             moveGenerator.getBoard().unmakeMove(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
-//             ASSERT_EQ(getSquaresLookup(), squaresLookupCopy);
+//             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesBlack) {
-//         io::setBoardFromFen(captures, bitboards, gameStateBitmasks, squaresLookup);
+//         io::setBoardFromFen(captures, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(false, movelist);
 
-//         // Makes copies of the bitboards and squaresLookup
+//         // Makes copies of the bitboards and pieceMap
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
-//         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
+//         std::vector<PieceType> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], false);
 //             moveGenerator.getBoard().unmakeMove(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
-//             ASSERT_EQ(getSquaresLookup(), squaresLookupCopy);
+//             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingWhite) {
-//         io::setBoardFromFen(castling, bitboards, gameStateBitmasks, squaresLookup);
+//         io::setBoardFromFen(castling, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(true, movelist);
 
-//         // Makes copies of the bitboards and squaresLookup
+//         // Makes copies of the bitboards and pieceMap
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
-//         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
+//         std::vector<PieceType> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], true);
 //             moveGenerator.getBoard().unmakeMove(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
-//             ASSERT_EQ(getSquaresLookup(), squaresLookupCopy);
+//             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingBlack) {
-//         io::setBoardFromFen(castling, bitboards, gameStateBitmasks, squaresLookup);
+//         io::setBoardFromFen(castling, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(false, movelist);
 
-//         // Makes copies of the bitboards and squaresLookup
+//         // Makes copies of the bitboards and pieceMap
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
-//         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
+//         std::vector<PieceType> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], false);
 //             moveGenerator.getBoard().unmakeMove(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
-//             ASSERT_EQ(getSquaresLookup(), squaresLookupCopy);
+//             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionWhite) {
-//         io::setBoardFromFen(normalPromotion, bitboards, gameStateBitmasks, squaresLookup);
+//         io::setBoardFromFen(normalPromotion, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(true, movelist);
 
-//         // Makes copies of the bitboards and squaresLookup
+//         // Makes copies of the bitboards and pieceMap
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
-//         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
+//         std::vector<PieceType> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], true);
 //             moveGenerator.getBoard().unmakeMove(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
-//             ASSERT_EQ(getSquaresLookup(), squaresLookupCopy);
+//             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionBlack) {
-//         io::setBoardFromFen(normalPromotion, bitboards, gameStateBitmasks, squaresLookup);
+//         io::setBoardFromFen(normalPromotion, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(false, movelist);
 
-//         // Makes copies of the bitboards and squaresLookup
+//         // Makes copies of the bitboards and pieceMap
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
-//         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
+//         std::vector<PieceType> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], false);
 //             moveGenerator.getBoard().unmakeMove(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
-//             ASSERT_EQ(getSquaresLookup(), squaresLookupCopy);
+//             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionWhite) {
-//         io::setBoardFromFen(capturePromotion, bitboards, gameStateBitmasks, squaresLookup);
+//         io::setBoardFromFen(capturePromotion, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(true, movelist);
 
-//         // Makes copies of the bitboards and squaresLookup
+//         // Makes copies of the bitboards and pieceMap
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
-//         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
+//         std::vector<PieceType> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], true);
 //             moveGenerator.getBoard().unmakeMove(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
-//             ASSERT_EQ(getSquaresLookup(), squaresLookupCopy);
+//             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionBlack) {
-//         io::setBoardFromFen(capturePromotion, bitboards, gameStateBitmasks, squaresLookup);
+//         io::setBoardFromFen(capturePromotion, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(false, movelist);
 
-//         // Makes copies of the bitboards and squaresLookup
+//         // Makes copies of the bitboards and pieceMap
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
-//         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
+//         std::vector<PieceType> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.getMoveIndex(); i++) {
 //             moveGenerator.getBoard().makeMove(moves[i], false);
 //             moveGenerator.getBoard().unmakeMove(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
-//             ASSERT_EQ(getSquaresLookup(), squaresLookupCopy);
+//             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_EnPessantWhite) {
-//         io::setBoardFromFen(enPessant, bitboards, gameStateBitmasks, squaresLookup);
+//         io::setBoardFromFen(enPessant, bitboards, stateBitmasks, pieceMap);
 
 //         // Make a double pawn push to enable en pessant
 //         moveGenerator.getBoard().makeMove(Move(51, 35, model::Move::DOUBLE_PAWN_PUSH_FLAG), false);
 
-//         // Makes copies of the bitboards and squaresLookup
+//         // Makes copies of the bitboards and pieceMap
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
-//         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
+//         std::vector<PieceType> pieceMapCopy = getPieceMap();
         
 //         moveGenerator.genMoves(true, movelist);
 //         std::vector<model::Move> moves = getMoves();
@@ -232,19 +232,19 @@
 //             moveGenerator.getBoard().makeMove(moves[i], true);
 //             moveGenerator.getBoard().unmakeMove(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
-//             ASSERT_EQ(getSquaresLookup(), squaresLookupCopy);
+//             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_EnPessantBlack) {
-//         io::setBoardFromFen(enPessant, bitboards, gameStateBitmasks, squaresLookup);
+//         io::setBoardFromFen(enPessant, bitboards, stateBitmasks, pieceMap);
 
 //         // Make a double pawn push to enable en pessant
 //         moveGenerator.getBoard().makeMove(Move(9, 17, model::Move::DOUBLE_PAWN_PUSH_FLAG), true);
 
-//         // Makes copies of the bitboards and squaresLookup
+//         // Makes copies of the bitboards and pieceMap
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
-//         std::vector<PieceType> squaresLookupCopy = getSquaresLookup();
+//         std::vector<PieceType> pieceMapCopy = getPieceMap();
         
 //         moveGenerator.genMoves(false, movelist);
 //         std::vector<model::Move> moves = getMoves();
@@ -253,12 +253,12 @@
 //             moveGenerator.getBoard().makeMove(moves[i], false);
 //             moveGenerator.getBoard().unmakeMove(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
-//             ASSERT_EQ(getSquaresLookup(), squaresLookupCopy);
+//             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsWhite) {
-//         io::setBoardFromFen(castling, bitboards, gameStateBitmasks, squaresLookup);
+//         io::setBoardFromFen(castling, bitboards, stateBitmasks, pieceMap);
 
 //         moveGenerator.genCastlingMoves(true, movelist);
 //         std::vector<model::Move> castlingMoves = getMoves();
@@ -282,7 +282,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsBlack) {
-//         io::setBoardFromFen(castling, bitboards, gameStateBitmasks, squaresLookup);
+//         io::setBoardFromFen(castling, bitboards, stateBitmasks, pieceMap);
 
 //         moveGenerator.genCastlingMoves(false, movelist);
 //         std::vector<model::Move> castlingMoves = getMoves();

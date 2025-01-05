@@ -14,22 +14,22 @@ namespace logic {
 
 MoveGenerator::MoveGenerator(
     const model::Bitboards& bitboards,
-    const model::GameStateBitmasks& gameStateBitmasks,
+    const model::StateBitmasks& stateBitmasks,
     logic::MoveMaker& moveMaker,
     logic::MoveRetractor& moveRetractor)
     : _bitboardsRef(bitboards)
-    , _gameStateBitmasksRef(gameStateBitmasks)
+    , _stateBitmasksRef(stateBitmasks)
     , _moveMakerRef(moveMaker)
     , _moveRetractorRef(moveRetractor)
     , _searchMemoryRef(moveMaker.getSearchMemory())
-    , _checkDetection(_bitboardsRef, _gameStateBitmasksRef)
-    , _rookGenerator(_bitboardsRef, _gameStateBitmasksRef)
-    , _bishopGenerator(_bitboardsRef, _gameStateBitmasksRef)
-    , _queenGenerator(_bitboardsRef, _gameStateBitmasksRef)
-    , _knightGenerator(_bitboardsRef, _gameStateBitmasksRef)
-    , _kingGenerator(_bitboardsRef, _gameStateBitmasksRef)
-    , _pawnGenerator(_bitboardsRef, _gameStateBitmasksRef)
-    , _castlingGenerator(_bitboardsRef, _gameStateBitmasksRef, moveMaker, moveRetractor, &_checkDetection)
+    , _checkDetection(_bitboardsRef, _stateBitmasksRef)
+    , _rookGenerator(_bitboardsRef, _stateBitmasksRef)
+    , _bishopGenerator(_bitboardsRef, _stateBitmasksRef)
+    , _queenGenerator(_bitboardsRef, _stateBitmasksRef)
+    , _knightGenerator(_bitboardsRef, _stateBitmasksRef)
+    , _kingGenerator(_bitboardsRef, _stateBitmasksRef)
+    , _pawnGenerator(_bitboardsRef, _stateBitmasksRef)
+    , _castlingGenerator(_bitboardsRef, _stateBitmasksRef, moveMaker, moveRetractor, &_checkDetection)
 {
 }
 

@@ -5,30 +5,30 @@
 
 namespace model {
 
-class SquaresLookup {
+class PieceMap {
 
 public:
     /// @brief Constructor
-    SquaresLookup(const Bitboards& bitboards);
+    PieceMap(const Bitboards& bitboards);
 
     /// @brief Get the piece type at the given index
     inline PieceType getPieceTypeAtIndex(int index) const
     {
-        return _squaresLookup[index];
+        return _pieceMap[index];
     }
 
     /// @brief Set the piece type at the given index
     inline void setPieceTypeAtIndex(int index, PieceType pieceType)
     {
-        _squaresLookup[index] = pieceType;
+        _pieceMap[index] = pieceType;
     }
 
     /// @brief Fill the squares lookup from the given bitboards
-    void fillSquaresLookupFromBitboards(const Bitboards& bitboards);
+    void fillPieceMapFromBitboards(const Bitboards& bitboards);
     
 private:
 
-    std::vector<PieceType> _squaresLookup;
+    std::vector<PieceType> _pieceMap;
 };
 
 } // namespace model

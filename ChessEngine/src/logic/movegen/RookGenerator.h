@@ -14,7 +14,7 @@ class RookGenerator {
 
 public:
     // Constructor
-    RookGenerator(const model::Bitboards& bitboards, const model::StateBitmasks& stateBitmasks);
+    RookGenerator(model::Board& board);
     
     // Public member functions
     void generate(

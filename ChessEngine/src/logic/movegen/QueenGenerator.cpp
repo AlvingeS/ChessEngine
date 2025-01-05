@@ -8,11 +8,9 @@
 
 namespace logic {
 
-QueenGenerator::QueenGenerator(
-    const model::Bitboards& bitboards,
-    const model::StateBitmasks& stateBitmasks) 
-    : _bitboards(bitboards)
-    , _stateBitmasks(stateBitmasks)
+QueenGenerator::QueenGenerator(model::Board& board) 
+    : _bitboards(board.bitboards)
+    , _stateBitmasks(board.stateBitmasks)
 {
     _straightRayBitmasks = getAllStraightRayBitmasks();
     _diagonalRayBitmasks = getAllDiagonalRayBitmasks();

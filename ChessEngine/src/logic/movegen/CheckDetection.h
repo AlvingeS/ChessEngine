@@ -15,7 +15,7 @@ class CheckDetection {
 
 public:
     // Constructor
-    CheckDetection(const model::Bitboards& bitboards, const model::StateBitmasks& stateBitmasks);
+    CheckDetection(model::Board& board);
     
     // Public member functions
     bool isInCheck(bool isWhite) const;

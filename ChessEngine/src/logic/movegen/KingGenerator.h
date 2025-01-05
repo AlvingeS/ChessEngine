@@ -14,10 +14,7 @@ class KingGenerator {
 
 public:
     // Constructor
-    KingGenerator(
-        const model::Bitboards& bitboards,
-        const model::StateBitmasks& stateBitmasks
-    );
+    KingGenerator(model::Board& board);
     
     // Public member functions
     void generate(bool isWhite, model::Movelist& moveList);

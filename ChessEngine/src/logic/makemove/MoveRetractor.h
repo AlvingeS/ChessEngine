@@ -13,10 +13,7 @@ class MoveRetractor {
 public:
     // Constructor
     MoveRetractor(
-        model::Bitboards& bitBoards, 
-        model::StateBitmasks& stateBitmasks, 
-        model::PieceMap& pieceMap, 
-        model::ZHasher& zHasher,
+        model::Board& board,
         engine::SearchMemory& searchMemory 
     );
     

@@ -13,25 +13,23 @@
 namespace logic {
 
 MoveGenerator::MoveGenerator(
-    const model::Bitboards& bitboards,
-    const model::StateBitmasks& stateBitmasks,
+    model::Board& board,
     logic::MoveMaker& moveMaker,
     logic::MoveRetractor& moveRetractor)
-    : _bitboards(bitboards)
-    , _stateBitmasks(stateBitmasks)
+    : _bitboards(board.bitboards)
+    , _stateBitmasks(board.stateBitmasks)
     , _moveMaker(moveMaker)
     , _moveRetractor(moveRetractor)
     , _searchMemory(moveMaker.getSearchMemory())
-    , _checkDetection(_bitboards, _stateBitmasks)
-    , _rookGenerator(_bitboards, _stateBitmasks)
-    , _bishopGenerator(_bitboards, _stateBitmasks)
-    , _queenGenerator(_bitboards, _stateBitmasks)
-    , _knightGenerator(_bitboards, _stateBitmasks)
-    , _kingGenerator(_bitboards, _stateBitmasks)
-    , _pawnGenerator(_bitboards, _stateBitmasks)
-    , _castlingGenerator(_bitboards, _stateBitmasks, moveMaker, moveRetractor, &_checkDetection)
-{
-}
+    , _checkDetection(board)
+    , _rookGenerator(board)
+    , _bishopGenerator(board)
+    , _queenGenerator(board)
+    , _knightGenerator(board)
+    , _kingGenerator(board)
+    , _pawnGenerator(board)
+    , _castlingGenerator(board, moveMaker, moveRetractor, &_checkDetection)
+{}
 
 void MoveGenerator::genMoves(
     bool isWhite,

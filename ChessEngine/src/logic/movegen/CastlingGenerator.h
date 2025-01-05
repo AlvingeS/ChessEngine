@@ -21,8 +21,7 @@ class CastlingGenerator {
 
 public:
     CastlingGenerator(
-        const model::Bitboards& bitboards,
-        const model::StateBitmasks& stateBitmasks,
+        model::Board& board,
         logic::MoveMaker& moveMaker,
         logic::MoveRetractor& moveRetractor,
         CheckDetection* checkDetection

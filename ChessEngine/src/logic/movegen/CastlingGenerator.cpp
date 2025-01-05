@@ -7,13 +7,12 @@
 namespace logic {
 
 CastlingGenerator::CastlingGenerator(
-    const model::Bitboards& bitboards,
-    const model::StateBitmasks& stateBitmasks,
+    model::Board& board,
     logic::MoveMaker& moveMaker, 
     logic::MoveRetractor& moveRetractor, 
     CheckDetection* checkDetection)
-    : _bitboards(bitboards)
-    , _stateBitmasks(stateBitmasks)
+    : _bitboards(board.bitboards)
+    , _stateBitmasks(board.stateBitmasks)
     , _moveMaker(moveMaker)
     , _moveRetractor(moveRetractor)
     , _checkDetection(checkDetection) 

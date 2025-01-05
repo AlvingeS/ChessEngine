@@ -8,15 +8,16 @@
 namespace engine {
 
 perft::perft(int maxDepth)
-    : _bitboards(),
-      _pieceMap(_bitboards),
-      _stateBitmasks(_bitboards),
-      _zHasher(_pieceMap),
+    : _board(),
+      _bitboards(_board.bitboards),
+      _pieceMap(_board.pieceMap),
+      _stateBitmasks(_board.stateBitmasks),
+      _zHasher(_board.zHasher),
       _searchMemory(maxDepth),
-      _moveMaker(_bitboards, _stateBitmasks, _pieceMap, _zHasher, _searchMemory),
-      _moveRetractor(_bitboards, _stateBitmasks, _pieceMap, _zHasher, _searchMemory),
-      _moveGenerator(_bitboards, _stateBitmasks, _moveMaker, _moveRetractor),
-      _evaluator(_bitboards),
+      _moveMaker(_board, _searchMemory),
+      _moveRetractor(_board, _searchMemory),
+      _moveGenerator(_board, _moveMaker, _moveRetractor),
+      _evaluator(_board),
       _perftData(maxDepth),
       _numMoveGenCalls(0),
       _totalNodes(0)

@@ -7,8 +7,9 @@ namespace logic {
 class Evaluator {
 
 public:
-    Evaluator(model::Bitboards& bitboards);
+    Evaluator(model::Board& board);
     float evaluate();
+
 private:
     model::Bitboards& _bitboards;
 };

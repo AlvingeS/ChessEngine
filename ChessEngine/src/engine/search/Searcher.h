@@ -107,11 +107,13 @@ public:
     }
     
 private:
-    model::Bitboards _bitboards;
-    model::PieceMap _pieceMap;
-    model::StateBitmasks _stateBitmasks;
+    model::Board _board;
+    model::Bitboards& _bitboards;
+    model::PieceMap& _pieceMap;
+    model::StateBitmasks& _stateBitmasks;
+    model::ZHasher& _zHasher;
+    
     SearchMemory _searchMemory;
-    model::ZHasher _zHasher;
     logic::MoveMaker _moveMaker;
     logic::MoveRetractor _moveRetractor;
     logic::MoveGenerator _moveGenerator;

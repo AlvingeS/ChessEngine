@@ -10,9 +10,9 @@
 
 namespace logic {
 
-BishopGenerator::BishopGenerator(const model::Bitboards& bitboards, const model::StateBitmasks& stateBitmasks) 
-    : _bitboards(bitboards)
-    , _stateBitmasks(stateBitmasks)
+BishopGenerator::BishopGenerator(model::Board& board) 
+    : _bitboards(board.bitboards)
+    , _stateBitmasks(board.stateBitmasks)
 {
     _diagonalRayBitmasks = getAllDiagonalRayBitmasks();
 }

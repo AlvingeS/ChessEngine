@@ -7,11 +7,9 @@
 
 namespace logic {
 
-KingGenerator::KingGenerator(
-    const model::Bitboards& bitboards,
-    const model::StateBitmasks& stateBitmasks) 
-    : _bitboards(bitboards)
-    , _stateBitmasks(stateBitmasks)
+KingGenerator::KingGenerator(model::Board& board) 
+    : _bitboards(board.bitboards)
+    , _stateBitmasks(board.stateBitmasks)
 {
     _kingBitmasks = getAllKingBitmasks();
 }

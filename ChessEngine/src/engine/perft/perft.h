@@ -97,10 +97,11 @@ public:
     
 private:
     int _maxDepth;
-    model::Bitboards _bitboards;
-    model::PieceMap _pieceMap;
-    model::StateBitmasks _stateBitmasks;
-    model::ZHasher _zHasher;
+    model::Board _board;
+    model::Bitboards& _bitboards;
+    model::PieceMap& _pieceMap;
+    model::StateBitmasks& _stateBitmasks;
+    model::ZHasher& _zHasher;
     
     logic::MoveMaker _moveMaker;
     logic::MoveRetractor _moveRetractor;

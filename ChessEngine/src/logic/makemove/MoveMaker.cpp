@@ -7,16 +7,13 @@
 namespace logic {
 
 MoveMaker::MoveMaker(
-    model::Bitboards& bitBoards, 
-    model::StateBitmasks& stateBitmasks, 
-    model::PieceMap& pieceMap, 
-    model::ZHasher& zHasher,
+    model::Board& board,
     engine::SearchMemory& searchMemory
-) : _bitboards(bitBoards), 
-    _stateBitmasks(stateBitmasks), 
-    _pieceMap(pieceMap), 
-    _searchMemory(searchMemory), 
-    _zHasher(zHasher)
+) : _bitboards(board.bitboards), 
+    _stateBitmasks(board.stateBitmasks), 
+    _pieceMap(board.pieceMap),
+    _zHasher(board.zHasher),
+    _searchMemory(searchMemory)
 {}
 
 void MoveMaker::makeMove(

@@ -8,15 +8,16 @@
 namespace engine {
 
 Searcher::Searcher(int maxDepth) 
-    : _bitboards(model::Bitboards())
-    , _pieceMap(model::PieceMap(_bitboards))
-    , _stateBitmasks(model::StateBitmasks(_bitboards))
+    : _board()
+    , _bitboards(_board.bitboards)
+    , _pieceMap(_board.pieceMap)
+    , _stateBitmasks(_board.stateBitmasks)
+    , _zHasher(_board.zHasher)
     , _searchMemory(SearchMemory(maxDepth))
-    , _zHasher(model::ZHasher(_pieceMap))
-    , _moveMaker(logic::MoveMaker(_bitboards, _stateBitmasks, _pieceMap, _zHasher, _searchMemory))
-    , _moveRetractor(logic::MoveRetractor(_bitboards, _stateBitmasks, _pieceMap, _zHasher, _searchMemory))
-    , _moveGenerator(logic::MoveGenerator(_bitboards, _stateBitmasks, _moveMaker, _moveRetractor))
-    , _evaluator(logic::Evaluator(_bitboards))
+    , _moveMaker(logic::MoveMaker(_board, _searchMemory))
+    , _moveRetractor(logic::MoveRetractor(_board, _searchMemory))
+    , _moveGenerator(logic::MoveGenerator(_board, _moveMaker, _moveRetractor))
+    , _evaluator(logic::Evaluator(_board))
     , _maxDepth(maxDepth)
 {
     _numMoveGenCalls = 0;

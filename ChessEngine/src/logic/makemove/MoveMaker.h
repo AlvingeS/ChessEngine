@@ -7,7 +7,6 @@
 // FIXME: We cant have a dependency to perft
 #include "ChessEngine/src/engine/search/SearchMemory.h"
 
-
 namespace logic {
 
 class MoveMaker {
@@ -15,10 +14,7 @@ class MoveMaker {
 public:
     // Constructor
     MoveMaker(
-        model::Bitboards& bitBoards, 
-        model::StateBitmasks& stateBitmasks, 
-        model::PieceMap& pieceMap, 
-        model::ZHasher& zHasher,
+        model::Board& board,
         engine::SearchMemory& searchMemory
     );
     

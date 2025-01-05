@@ -8,11 +8,9 @@
 
 namespace logic {
 
-RookGenerator::RookGenerator(
-    const model::Bitboards& bitboards,
-    const model::StateBitmasks& stateBitmasks)
-    : _bitboards(bitboards)
-    , _stateBitmasks(stateBitmasks)
+RookGenerator::RookGenerator(model::Board& board)
+    : _bitboards(board.bitboards)
+    , _stateBitmasks(board.stateBitmasks)
 {
     _straightRayBitmasks = getAllStraightRayBitmasks();
 }

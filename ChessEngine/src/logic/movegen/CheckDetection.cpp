@@ -7,11 +7,9 @@
 
 namespace logic {
 
-CheckDetection::CheckDetection(
-    const model::Bitboards& bitboards,
-    const model::StateBitmasks& stateBitmasks)
-    : _bitboards(bitboards)
-    , _stateBitmasks(stateBitmasks)
+CheckDetection::CheckDetection(model::Board& board)
+    : _bitboards(board.bitboards)
+    , _stateBitmasks(board.stateBitmasks)
 {
     _straightRayBitmasks = getAllStraightRayBitmasks();
     _diagonalRayBitmasks = getAllDiagonalRayBitmasks();

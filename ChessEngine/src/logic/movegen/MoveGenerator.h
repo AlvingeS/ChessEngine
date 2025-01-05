@@ -26,8 +26,7 @@ public:
 
     // Public member functions
     MoveGenerator(
-        const model::Bitboards& bitboards,
-        const model::StateBitmasks& stateBitmasks,
+        model::Board& board,
         logic::MoveMaker& moveMaker,
         logic::MoveRetractor& moveRetractor
     );

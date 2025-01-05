@@ -18,10 +18,7 @@ class PawnGenerator {
 
 public:
     // Constructor
-    PawnGenerator(
-        const model::Bitboards& bitboards,
-        const model::StateBitmasks& stateBitmasks
-    );
+    PawnGenerator(model::Board& board);
     
     // Public member functions
     void generate(

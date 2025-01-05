@@ -14,10 +14,7 @@ class KnightGenerator {
 
 public:
     // Constructor
-    KnightGenerator(
-        const model::Bitboards& bitboards,
-        const model::StateBitmasks& stateBitmasks
-    );
+    KnightGenerator(model::Board& board);
     
     // Public member functions
     void generate(bool isWhite, model::Movelist& moveList);

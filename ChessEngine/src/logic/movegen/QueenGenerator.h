@@ -14,7 +14,7 @@ class QueenGenerator {
 
 public:
     // Constructor
-    QueenGenerator(const model::Bitboards& bitboards, const model::StateBitmasks& stateBitmasks);
+    QueenGenerator(model::Board& board);
     
     // Public member functions
     void generate(

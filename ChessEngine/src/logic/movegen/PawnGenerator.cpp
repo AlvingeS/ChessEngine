@@ -8,11 +8,9 @@
 
 namespace logic {
 
-PawnGenerator::PawnGenerator(
-    const model::Bitboards& bitboards,
-    const model::StateBitmasks& stateBitmasks) 
-    : _bitboards(bitboards)
-    , _stateBitmasks(stateBitmasks)
+PawnGenerator::PawnGenerator(model::Board& board) 
+    : _bitboards(board.bitboards)
+    , _stateBitmasks(board.stateBitmasks)
 {
     _whitePawnStraightMoveBitmasks = getAllStraightPawnMoveBitmasks(true);
     _whitePawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(true);

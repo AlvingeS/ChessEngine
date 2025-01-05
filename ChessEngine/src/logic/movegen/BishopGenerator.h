@@ -13,7 +13,7 @@ class BishopGenerator {
 
 public:
     // Constructor
-    BishopGenerator(const model::Bitboards& bitboards, const model::StateBitmasks& stateBitmasks);
+    BishopGenerator(model::Board& board);
     
     // Public member functions
     void generate(

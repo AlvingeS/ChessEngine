@@ -18,26 +18,29 @@ namespace logic {
 class BaseGenerator : public ::testing::Test 
 {
 protected:
-    model::Bitboards bitboards;
-    model::StateBitmasks stateBitmasks;
-    model::PieceMap pieceMap;
+    model::Board board;
+    model::Bitboards& bitboards;
+    model::StateBitmasks& stateBitmasks;
+    model::PieceMap& pieceMap;
+    model::ZHasher& zHasher;
     engine::SearchMemory searchMemory;
-    model::ZHasher zHasher;
     MoveMaker moveMaker;
     MoveRetractor moveRetractor;
     MoveGenerator moveGenerator;
     std::string startingPos;
     model::Movelist movelist;
 
-    BaseGenerator() : bitboards(model::Bitboards()),
-                        stateBitmasks(model::StateBitmasks(bitboards)),
-                        pieceMap(model::PieceMap(bitboards)),
-                        searchMemory(engine::SearchMemory(0)),
-                        zHasher(model::ZHasher(pieceMap)),
-                        moveMaker(bitboards, stateBitmasks, pieceMap, zHasher, searchMemory),
-                        moveRetractor(bitboards, stateBitmasks, pieceMap, zHasher, searchMemory),
-                        moveGenerator(MoveGenerator(bitboards, stateBitmasks, moveMaker, moveRetractor)),
-                        movelist(model::Movelist()) {}
+    BaseGenerator() 
+        : board(),
+          bitboards(board.bitboards),
+          stateBitmasks(board.stateBitmasks),
+          pieceMap(board.pieceMap),
+          zHasher(board.zHasher),
+          searchMemory(engine::SearchMemory(0)),
+          moveMaker(board, searchMemory),
+          moveRetractor(board, searchMemory),
+          moveGenerator(MoveGenerator(board, moveMaker, moveRetractor)),
+          movelist(model::Movelist()) {}
 
     virtual void SetUp() override {
         // board = model::ChessBoard();

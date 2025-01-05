@@ -66,7 +66,7 @@ void MoveMaker::makeMove(
     _stateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
 }
 
-void MoveMaker::makeCastleMove(bool isWhite,bool isKingSide)
+void MoveMaker::makeCastleMove(bool isWhite, bool isKingSide)
 {
     int fromKingInd, toKingInd, fromRookInd, toRookInd;
 
@@ -86,10 +86,10 @@ void MoveMaker::makeCastleMove(bool isWhite,bool isKingSide)
         _stateBitmasksRef.clearWhitePiecesBit(fromRookInd);
         _stateBitmasksRef.setWhitePiecesBit(toRookInd);
 
-        _pieceMapRef.setPieceTypeAtIndex(fromKingInd,model::PieceType::EMPTY);
-        _pieceMapRef.setPieceTypeAtIndex(toKingInd,model::PieceType::W_KING);
-        _pieceMapRef.setPieceTypeAtIndex(fromRookInd,model::PieceType::EMPTY);
-        _pieceMapRef.setPieceTypeAtIndex(toRookInd,model::PieceType::W_ROOK);
+        _pieceMapRef.setPieceTypeAtIndex(fromKingInd, model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(toKingInd, model::PieceType::W_KING);
+        _pieceMapRef.setPieceTypeAtIndex(fromRookInd, model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(toRookInd, model::PieceType::W_ROOK);
     } else {
         fromKingInd = 59;
         toKingInd = isKingSide ? 57 : 61;
@@ -106,10 +106,10 @@ void MoveMaker::makeCastleMove(bool isWhite,bool isKingSide)
         _stateBitmasksRef.clearBlackPiecesBit(fromRookInd);
         _stateBitmasksRef.setBlackPiecesBit(toRookInd);
 
-        _pieceMapRef.setPieceTypeAtIndex(fromKingInd,model::PieceType::EMPTY);
-        _pieceMapRef.setPieceTypeAtIndex(toKingInd,model::PieceType::B_KING);
-        _pieceMapRef.setPieceTypeAtIndex(fromRookInd,model::PieceType::EMPTY);
-        _pieceMapRef.setPieceTypeAtIndex(toRookInd,model::PieceType::B_ROOK);
+        _pieceMapRef.setPieceTypeAtIndex(fromKingInd, model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(toKingInd, model::PieceType::B_KING);
+        _pieceMapRef.setPieceTypeAtIndex(fromRookInd, model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(toRookInd, model::PieceType::B_ROOK);
     }
 
     _stateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
@@ -139,7 +139,7 @@ model::PieceType MoveMaker::removeMovedPieceFromBoard(bool isWhite, int fromInde
     //assert(movedPieceType !=model::PieceType::EMPTY);
     
     // Clear the piece from bitboards, squarelookup and gamestate bitmasks
-    _pieceMapRef.setPieceTypeAtIndex(fromIndex,model::PieceType::EMPTY);
+    _pieceMapRef.setPieceTypeAtIndex(fromIndex, model::PieceType::EMPTY);
     _bitboardsRef.clearPieceTypeBit(fromIndex, movedPieceType);
 
     if (isWhite) {
@@ -191,7 +191,7 @@ void MoveMaker::handleEnPessantMemory(
     }
 }
 
-void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captureIndex,model::PieceType  capturedPieceType) {
+void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captureIndex, model::PieceType  capturedPieceType) {
     // Remove captured piece from board models
     _bitboardsRef.clearPieceTypeBit(captureIndex, capturedPieceType);
 
@@ -205,7 +205,7 @@ void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captur
     // because the capture index points to the square where the pawn was
     // and is now empty, the square we moved to will have been updated
     if (isEP) {
-        _pieceMapRef.setPieceTypeAtIndex(captureIndex,model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(captureIndex, model::PieceType::EMPTY);
     }
 }
 

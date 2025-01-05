@@ -37,10 +37,10 @@ void MoveRetractor::unmakeCastleMove(bool wasWhite, bool wasKingSide)
         _stateBitmasksRef.setWhitePiecesBit(fromRookInd);
         _stateBitmasksRef.clearWhitePiecesBit(toRookInd);
 
-        _pieceMapRef.setPieceTypeAtIndex(fromKingInd,model::PieceType::W_KING);
-        _pieceMapRef.setPieceTypeAtIndex(toKingInd,model::PieceType::EMPTY);
-        _pieceMapRef.setPieceTypeAtIndex(fromRookInd,model::PieceType::W_ROOK);
-        _pieceMapRef.setPieceTypeAtIndex(toRookInd,model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(fromKingInd, model::PieceType::W_KING);
+        _pieceMapRef.setPieceTypeAtIndex(toKingInd, model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(fromRookInd, model::PieceType::W_ROOK);
+        _pieceMapRef.setPieceTypeAtIndex(toRookInd, model::PieceType::EMPTY);
     } else {
         fromKingInd = 59;
         toKingInd = wasKingSide ? 57 : 61;
@@ -57,10 +57,10 @@ void MoveRetractor::unmakeCastleMove(bool wasWhite, bool wasKingSide)
         _stateBitmasksRef.setBlackPiecesBit(fromRookInd);
         _stateBitmasksRef.clearBlackPiecesBit(toRookInd);
 
-        _pieceMapRef.setPieceTypeAtIndex(toKingInd,model::PieceType::EMPTY);
-        _pieceMapRef.setPieceTypeAtIndex(fromKingInd,model::PieceType::B_KING);
-        _pieceMapRef.setPieceTypeAtIndex(toRookInd,model::PieceType::EMPTY);
-        _pieceMapRef.setPieceTypeAtIndex(fromRookInd,model::PieceType::B_ROOK);
+        _pieceMapRef.setPieceTypeAtIndex(toKingInd, model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(fromKingInd, model::PieceType::B_KING);
+        _pieceMapRef.setPieceTypeAtIndex(toRookInd, model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(fromRookInd, model::PieceType::B_ROOK);
     }
 
     _stateBitmasksRef.updOccupiedAndEmptySquaresBitmasks();
@@ -82,7 +82,7 @@ void MoveRetractor::unmakeTemporaryKingMove(bool wasWhite, bool isKingSide)
     }
 }
 
-void MoveRetractor::removePreviouslyMovedPieceFromBoard(const model::Move& move, int toIndex,model::PieceType  previouslyMovedPieceType, bool wasWhite) 
+void MoveRetractor::removePreviouslyMovedPieceFromBoard(const model::Move& move, int toIndex, model::PieceType  previouslyMovedPieceType, bool wasWhite) 
 {
     // Square lookup is dependent on if there was a capture or promotion,
     // handled by the placeBackCapturedPieceOnBoard method 
@@ -104,14 +104,14 @@ void MoveRetractor::removePreviouslyMovedPieceFromBoard(const model::Move& move,
 }
 
 
-void MoveRetractor::placeBackCapturedPieceOnBoard(bool isEP, int captureIndex, int toIndex, bool wasWhite,model::PieceType  previouslyCapturedPieceType) 
+void MoveRetractor::placeBackCapturedPieceOnBoard(bool isEP, int captureIndex, int toIndex, bool wasWhite, model::PieceType  previouslyCapturedPieceType) 
 {
     _bitboardsRef.setPieceTypeBit(captureIndex, previouslyCapturedPieceType);
     _pieceMapRef.setPieceTypeAtIndex(captureIndex, previouslyCapturedPieceType);
 
     // If the move was an ep capture, the to square will be empty
     if (isEP) {
-        _pieceMapRef.setPieceTypeAtIndex(toIndex,model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(toIndex, model::PieceType::EMPTY);
     }
 
     if (wasWhite) {
@@ -190,7 +190,7 @@ void MoveRetractor::unmakeMove(
         placeBackCapturedPieceOnBoard(previousMove.isEpCapture(), captureIndex, toIndex, wasWhite, previouslyCapturedPieceType);
     } else {
         // If there was no capture, we place back an empty square on the to square
-        _pieceMapRef.setPieceTypeAtIndex(toIndex,model::PieceType::EMPTY);
+        _pieceMapRef.setPieceTypeAtIndex(toIndex, model::PieceType::EMPTY);
     }
 
     // Place the moved piece back on the from square

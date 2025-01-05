@@ -5,8 +5,7 @@
 
 #include "ChessEngine/src/model/move/Move.h"
 #include "ChessEngine/src/model/move/Movelist.h"
-#include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/StateBitmasks.h"
+#include "ChessEngine/src/model/board/Board.h"
 
 namespace logic {
 

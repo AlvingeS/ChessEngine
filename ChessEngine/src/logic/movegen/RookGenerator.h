@@ -3,8 +3,7 @@
 #include "ChessEngine/src/model/move/Movelist.h"
 #include "ChessEngine/src/logic/movegen/RayLogic.h"
 
-#include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/StateBitmasks.h"
+#include "ChessEngine/src/model/board/Board.h"
 
 #include "ChessEngine/src/model/move/Move.h"
 #include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"

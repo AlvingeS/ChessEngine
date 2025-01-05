@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ChessEngine/src/model/board/PieceType.h"
 #include "ChessEngine/src/model/board/Bitboards.h"
 
 namespace model {

@@ -1,12 +1,7 @@
 #pragma once
 
 #include "ChessEngine/src/model/move/Move.h"
-#include "ChessEngine/src/model/board/PieceType.h"
-#include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/StateBitmasks.h"
-#include "ChessEngine/src/model/board/PieceMap.h"
-#include "ChessEngine/src/model/board/ZHasher.h"
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "ChessEngine/src/model/board/Board.h"
 
 // FIXME: We cant have a dependency to perft
 #include "ChessEngine/src/engine/search/SearchMemory.h"

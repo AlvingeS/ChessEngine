@@ -7,9 +7,7 @@
 #include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
 #include "ChessEngine/src/logic/movegen/bitmasks/KnightBitmasks.h"
 #include "ChessEngine/src/logic/movegen/bitmasks/PawnBitmasks.h"
-#include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/StateBitmasks.h"
-
+#include "ChessEngine/src/model/board/Board.h"
 
 namespace logic {
 

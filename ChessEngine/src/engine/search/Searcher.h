@@ -4,9 +4,7 @@
 
 #include "ChessEngine/src/logic/evaluation/Evaluator.h"
 
-#include "ChessEngine/src/model/board/ZHasher.h"
-#include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/StateBitmasks.h"
+#include "ChessEngine/src/model/board/Board.h"
 
 #include "ChessEngine/src/model/board/PieceMap.h"
 #include "ChessEngine/src/logic/movegen/MoveGenerator.h"

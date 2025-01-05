@@ -1,4 +1,4 @@
-#include "ChessEngine/src/model/board/Bitboards.h"
+#include "ChessEngine/src/model/board/Board.h"
 
 namespace model {
 

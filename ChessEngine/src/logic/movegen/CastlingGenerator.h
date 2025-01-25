@@ -1,16 +1,19 @@
 #pragma once
+#include "ChessEngine/src/common.h"
 
-#include "ChessEngine/src/model/move/Movelist.h"
-#include "ChessEngine/src/logic/movegen/RayLogic.h"
-#include "ChessEngine/src/logic/movegen/CheckDetection.h"
-
-#include "ChessEngine/src/model/board/Board.h"
-
-#include "ChessEngine/src/model/move/Move.h"
-#include "ChessEngine/src/logic/makemove/MoveMaker.h"
-#include "ChessEngine/src/logic/makemove/MoveRetractor.h"
+namespace model {
+    class Move;
+    class Movelist;
+    class Board;
+    class Bitboards;
+    class StateBitmasks;
+}
 
 namespace logic {
+
+class MoveMaker;
+class MoveRetractor;
+class CheckDetection;
 
 constexpr bitmask whiteKingSideCastleMask = 0x000000000000006ULL;
 constexpr bitmask whiteQueenSideCastleMask = 0x0000000000000070ULL;

@@ -1,7 +1,8 @@
 #include "ChessEngine/src/logic/movegen/QueenGenerator.h"
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "ChessEngine/src/model/board/Board.h"
 
+#include "ChessEngine/src/logic/movegen/RayLogic.h"
 #include "ChessEngine/src/logic/movegen/utils/Containers.h"
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"

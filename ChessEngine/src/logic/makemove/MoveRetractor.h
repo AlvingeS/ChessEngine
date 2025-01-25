@@ -1,10 +1,16 @@
 #pragma once
 
-#include "ChessEngine/src/model/move/Move.h"
-#include "ChessEngine/src/model/board/Board.h"
-
 // FIXME: We cant have a dependency to perft
 #include "ChessEngine/src/engine/search/SearchMemory.h"
+
+namespace model {
+    class Board;
+    class Move;
+    class Bitboards;
+    class StateBitmasks;
+    class PieceMap;
+    class ZHasher;
+}
 
 namespace logic {
 

@@ -143,8 +143,8 @@ DiagonalRays getDiagonalRays(int ind)
         getNorthWestRay(ind)
     };
 }
-
 std::vector<StraightRays> getAllStraightRayBitmasks() 
+
 {
     std::vector<StraightRays> allStraightRayBitmasks;
 

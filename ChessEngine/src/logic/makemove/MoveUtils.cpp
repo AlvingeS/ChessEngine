@@ -1,5 +1,7 @@
 #include "ChessEngine/src/logic/makemove/MoveUtils.h"
 
+#include "ChessEngine/src/model/move/Move.h"
+
 namespace logic {
 
 model::PieceType getPromotionPieceType(int promotionFlag, bool isWhite) 

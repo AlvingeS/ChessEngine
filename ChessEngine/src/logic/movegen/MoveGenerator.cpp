@@ -1,12 +1,12 @@
 #include "ChessEngine/src/logic/movegen/MoveGenerator.h"
 
-#include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
-#include "ChessEngine/src/logic/movegen/bitmasks/KnightBitmasks.h"
-#include "ChessEngine/src/logic/movegen/bitmasks/KingBitmasks.h"
-#include "ChessEngine/src/logic/movegen/bitmasks/PawnBitmasks.h"
+#include "ChessEngine/src/logic/makemove/MoveMaker.h"
+#include "ChessEngine/src/logic/makemove/MoveRetractor.h"
 
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "ChessEngine/src/model/board/Board.h"
+#include "ChessEngine/src/model/move/Movelist.h"
+
+#include "ChessEngine/src/engine/search/SearchMemory.h"
 
 #include <iostream>
 

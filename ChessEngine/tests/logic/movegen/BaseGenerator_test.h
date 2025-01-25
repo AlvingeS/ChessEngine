@@ -7,6 +7,9 @@
 #include "ChessEngine/src/model/move/Movelist.h"
 #include "ChessEngine/src/logic/movegen/MoveGenerator.h"
 
+#include "ChessEngine/src/logic/makemove/MoveMaker.h"
+#include "ChessEngine/src/logic/makemove/MoveRetractor.h"
+
 #include "ChessEngine/src/engine/search/SearchMemory.h"
 #include "ChessEngine/src/io/Fen.h"
 

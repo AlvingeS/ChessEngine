@@ -1,7 +1,9 @@
 #include "ChessEngine/src/logic/movegen/KnightGenerator.h"
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "ChessEngine/src/model/board/Board.h"
+#include "ChessEngine/src/model/move/Movelist.h"
 
+#include "ChessEngine/src/logic/movegen/bitmasks/KnightBitmasks.h"
 #include "ChessEngine/src/logic/movegen/utils/Containers.h"
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
 

@@ -1,6 +1,9 @@
 #pragma once
 
-#include "ChessEngine/src/model/board/Board.h"
+namespace model {
+    class Board;
+    class Bitboards;
+}
 
 namespace logic {
 

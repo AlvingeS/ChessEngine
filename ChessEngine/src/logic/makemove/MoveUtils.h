@@ -1,8 +1,10 @@
 #pragma once
 
-#include "ChessEngine/src/model/move/Move.h"
-
 #include "ChessEngine/src/model/board/PieceType.h"
+
+namespace model {
+    class Move;
+}
 
 namespace logic {
 

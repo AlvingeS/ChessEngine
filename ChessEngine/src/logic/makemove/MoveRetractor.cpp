@@ -2,6 +2,8 @@
 
 #include "ChessEngine/src/logic/makemove/MoveUtils.h"
 
+#include "ChessEngine/src/model/board/Board.h"
+
 namespace logic {
 
 MoveRetractor::MoveRetractor(

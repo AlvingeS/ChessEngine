@@ -1,8 +1,15 @@
 #include "ChessEngine/src/logic/movegen/CastlingGenerator.h"
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "ChessEngine/src/model/board/Board.h"
 
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
+#include "ChessEngine/src/logic/movegen/CheckDetection.h"
+
+#include "ChessEngine/src/logic/makemove/MoveMaker.h"
+#include "ChessEngine/src/logic/makemove/MoveRetractor.h"
+
+#include "ChessEngine/src/model/move/Movelist.h"
+#include "ChessEngine/src/model/move/Move.h"
 
 namespace logic {
 

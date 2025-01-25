@@ -1,22 +1,31 @@
 #pragma once
 
-#include "ChessEngine/src/logic/movegen/RayLogic.h"
-#include "ChessEngine/src/logic/movegen/CheckDetection.h"
-#include "ChessEngine/src/logic/movegen/RookGenerator.h"
+#include "ChessEngine/src/logic/movegen/PawnGenerator.h"
 #include "ChessEngine/src/logic/movegen/BishopGenerator.h"
 #include "ChessEngine/src/logic/movegen/KnightGenerator.h"
+#include "ChessEngine/src/logic/movegen/CastlingGenerator.h"
+#include "ChessEngine/src/logic/movegen/RookGenerator.h"
 #include "ChessEngine/src/logic/movegen/QueenGenerator.h"
 #include "ChessEngine/src/logic/movegen/KingGenerator.h"
-#include "ChessEngine/src/logic/movegen/PawnGenerator.h"
-#include "ChessEngine/src/logic/movegen/CastlingGenerator.h"
-#include "ChessEngine/src/model/move/Movelist.h"
-
-#include "ChessEngine/src/model/move/Move.h"
-#include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
+#include "ChessEngine/src/logic/movegen/CheckDetection.h"
 
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
 
+namespace model {
+    class Board;
+    class Bitboards;
+    class StateBitmasks;
+    class Movelist;
+}
+
+namespace engine {
+    class SearchMemory;
+}
+
 namespace logic {
+
+class MoveMaker;
+class MoveRetractor;
 
 class MoveGenerator {
 

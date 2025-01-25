@@ -2,6 +2,7 @@
 
 #include "ChessEngine/src/logic/makemove/MoveUtils.h"
 
+#include "ChessEngine/src/model/board/Board.h"
 #include "ChessEngine/src/model/move/Move.h"
 
 namespace logic {

@@ -1,5 +1,7 @@
 #include "ChessEngine/src/logic/evaluation/Evaluator.h"
 
+#include "ChessEngine/src/model/board/Board.h"
+
 namespace logic {
 
 static const int PAWN_VALUE = 1000;

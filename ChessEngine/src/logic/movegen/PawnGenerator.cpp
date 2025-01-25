@@ -1,7 +1,9 @@
 #include "ChessEngine/src/logic/movegen/PawnGenerator.h"
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "ChessEngine/src/model/board/Board.h"
+#include "ChessEngine/src/model/move/Movelist.h"
 
+#include "ChessEngine/src/logic/movegen/bitmasks/PawnBitmasks.h"
 #include "ChessEngine/src/logic/movegen/utils/Containers.h"
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"

@@ -1,9 +1,12 @@
 #include "ChessEngine/src/logic/movegen/CheckDetection.h"
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "ChessEngine/src/model/board/Board.h"
 
+#include "ChessEngine/src/logic/movegen/RayLogic.h"
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "ChessEngine/src/logic/movegen/bitmasks/KnightBitmasks.h"
+#include "ChessEngine/src/logic/movegen/bitmasks/PawnBitmasks.h"
 
 namespace logic {
 

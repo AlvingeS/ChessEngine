@@ -1,13 +1,14 @@
 #pragma once
 
-#include "ChessEngine/src/model/move/Movelist.h"
-#include "ChessEngine/src/logic/movegen/RayLogic.h"
+#include "ChessEngine/src/common.h"
 
-#include "ChessEngine/src/model/move/Move.h"
 #include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
-#include "ChessEngine/src/logic/movegen/bitmasks/KnightBitmasks.h"
-#include "ChessEngine/src/logic/movegen/bitmasks/PawnBitmasks.h"
-#include "ChessEngine/src/model/board/Board.h"
+
+namespace model {
+    class Board;
+    class Bitboards;
+    class StateBitmasks;
+}
 
 namespace logic {
 

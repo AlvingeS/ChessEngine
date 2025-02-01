@@ -28,7 +28,7 @@ void BishopGenerator::generate(
     std::vector<int>& bishopIndices = Containers::getPiecePositionIndices();
 
     getBitIndices(bishopIndices, isWhite ? _bitboards.getWhiteBishopsBitboard()
-                                                : _bitboards.getBlackBishopsBitboard());
+                                         : _bitboards.getBlackBishopsBitboard());
 
     for (int currentBishopIndex : bishopIndices) {
         DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];

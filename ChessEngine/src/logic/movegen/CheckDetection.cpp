@@ -26,55 +26,12 @@ bool CheckDetection::isInCheck(bool isWhite) const
     int kingIndex, opponentKingIndex, kingRankDiff, kingFileDiff;
 
     kingIndex = indexOfLSB(isWhite ? _bitboards.getWhiteKingBitboard()
-                                          : _bitboards.getBlackKingBitboard());
+                                   : _bitboards.getBlackKingBitboard());
 
-    opponentKingIndex = indexOfLSB(isWhite ? _bitboards.getBlackKingBitboard()
-                                                  : _bitboards.getWhiteKingBitboard());
-
-    kingRankDiff = rankFromBitIndex(kingIndex) - rankFromBitIndex(opponentKingIndex);
-    kingFileDiff = fileFromBitIndex(kingIndex) - fileFromBitIndex(opponentKingIndex);
-
-    kingRankDiff = kingRankDiff < 0 ? -kingRankDiff 
-                                    : kingRankDiff;
-
-    kingFileDiff = kingFileDiff < 0 ? -kingFileDiff 
-                                    : kingFileDiff;
-
-    int manhattanDistance = kingRankDiff + kingFileDiff;
-
-    if (manhattanDistance <= 2) {
-        if (kingRankDiff == 0 || kingFileDiff == 0) {
-            if (manhattanDistance == 1) {
-                return true;
-            }
-        } else {
-            return true;
-        }
-    }
-
+    // Check if any opponent rooks or queens are attacking the king
     StraightRays straightRays = _straightRayBitmasks[kingIndex];
-    DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
-
-    bitmask knightMoves = _knightBitmasks[kingIndex];
-
-    bitmask pawnAttackingMoves = isWhite ? _whitePawnCaptureMoveBitmasks[kingIndex] 
-                                     : _blackPawnCaptureMoveBitmasks[kingIndex];
     bitmask opponentRooksAndQueens = isWhite ? _bitboards.getBlackRooksBitboard() | _bitboards.getBlackQueensBitboard()
-                                         : _bitboards.getWhiteRooksBitboard() | _bitboards.getWhiteQueensBitboard();
-
-    bitmask opponentBishopsAndQueens = isWhite ? _bitboards.getBlackBishopsBitboard() | _bitboards.getBlackQueensBitboard() 
-                                           : _bitboards.getWhiteBishopsBitboard() | _bitboards.getWhiteQueensBitboard();
-
-    bitmask opponentPawns = isWhite ? _bitboards.getBlackPawnsBitboard() : _bitboards.getWhitePawnsBitboard();
-
-    if ((pawnAttackingMoves & opponentPawns) != 0)
-        return true;
-
-    bitmask opponentKnights = isWhite ? _bitboards.getBlackKnightsBitboard() 
-                                  : _bitboards.getWhiteKnightsBitboard();
-
-    if ((knightMoves & opponentKnights) != 0)
-        return true;
+                                             : _bitboards.getWhiteRooksBitboard() | _bitboards.getWhiteQueensBitboard();
 
     if (checkStraightRay(straightRays.north, true, opponentRooksAndQueens, _stateBitmasks.getOccupiedPiecesBitmask()))
         return true;
@@ -88,6 +45,11 @@ bool CheckDetection::isInCheck(bool isWhite) const
     if (checkStraightRay(straightRays.west, true, opponentRooksAndQueens, _stateBitmasks.getOccupiedPiecesBitmask()))
         return true;
 
+    // Check if any opponent bishops or queens are attacking the king
+    DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
+    bitmask opponentBishopsAndQueens = isWhite ? _bitboards.getBlackBishopsBitboard() | _bitboards.getBlackQueensBitboard() 
+                                               : _bitboards.getWhiteBishopsBitboard() | _bitboards.getWhiteQueensBitboard();
+
     if (checkDiagonalRay(diagonalRays.northEast, true, opponentBishopsAndQueens, _stateBitmasks.getOccupiedPiecesBitmask()))
         return true;
 
@@ -98,6 +60,39 @@ bool CheckDetection::isInCheck(bool isWhite) const
         return true;
 
     if (checkDiagonalRay(diagonalRays.northWest, true, opponentBishopsAndQueens, _stateBitmasks.getOccupiedPiecesBitmask()))
+        return true;
+
+    // Check if any opponent knights are attacking the king
+    bitmask knightMoves = _knightBitmasks[kingIndex];
+    bitmask opponentKnights = isWhite ? _bitboards.getBlackKnightsBitboard() 
+                                      : _bitboards.getWhiteKnightsBitboard();
+
+    if ((knightMoves & opponentKnights) != 0)
+        return true;
+    
+    // Check if any opponent pawns are attacking the king
+    bitmask opponentPawns = isWhite ? _bitboards.getBlackPawnsBitboard() 
+                                    : _bitboards.getWhitePawnsBitboard();
+    
+    bitmask pawnAttackingMoves = isWhite ? _whitePawnCaptureMoveBitmasks[kingIndex] 
+                                         : _blackPawnCaptureMoveBitmasks[kingIndex];
+
+    if ((pawnAttackingMoves & opponentPawns) != 0)
+        return true;
+
+    // Check if the king is in check from an adjacent king
+    opponentKingIndex = indexOfLSB(isWhite ? _bitboards.getBlackKingBitboard()
+                                           : _bitboards.getWhiteKingBitboard());
+
+    kingRankDiff = abs(rankFromBitIndex(kingIndex) - rankFromBitIndex(opponentKingIndex));
+    kingFileDiff = abs(fileFromBitIndex(kingIndex) - fileFromBitIndex(opponentKingIndex));
+
+    int manhattanDistance = kingRankDiff + kingFileDiff;
+
+    if (manhattanDistance <= 1)
+        return true;
+
+    if (manhattanDistance == 2 && kingRankDiff == 1 && kingFileDiff == 1)
         return true;
 
     return false;

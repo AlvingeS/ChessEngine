@@ -3,10 +3,11 @@
 #include "ChessEngine/src/common.h"
 
 namespace logic {
+    
+bitmask getKnightBitmask(int ind);
+const std::vector<bitmask> getAllKnightBitmasks();
 
 bitmask applyKnightMoves(int ind);
 bitmask removeWrapAroundKnightMoves(bitmask knightMoves, int ind);
-bitmask getKnightBitmask(int ind);
-const std::vector<bitmask> getAllKnightBitmasks();
 
 } // namespace logic

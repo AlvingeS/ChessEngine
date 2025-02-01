@@ -22,15 +22,14 @@ public:
         engine::SearchMemory& searchMemory
     );
     
+    inline engine::SearchMemory& getSearchMemory() const { return _searchMemory; }
+    
     void makeMove(
         const model::Move& move,
         bool isWhite, 
         int currentDepth
     );
-
     void makeTemporaryKingMove(bool isWhite, bool isKingSide);
-
-    inline engine::SearchMemory& getSearchMemory() const { return _searchMemory; }
 
 private:
     void makeCastleMove(bool isWhite, bool isKingSide);

@@ -34,8 +34,8 @@ bitmask getOccupiedSquaresBitmask(bitmask whitePieces, bitmask blackPieces);
 bitmask getEmptySquaresBitmask(bitmask whitePieces, bitmask blackPieces);
 bitmask getWhiteSquaresBitmask();
 bitmask getBlackSquaresBitmask();
-int abs(int n);
 
+int abs(int n);
 int manhattanDistance(int i, int j);
 
 } // namespace logic

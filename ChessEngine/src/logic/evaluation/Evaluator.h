@@ -11,6 +11,7 @@ class Evaluator {
 
 public:
     Evaluator(model::Board& board);
+    
     float evaluate();
 
 private:

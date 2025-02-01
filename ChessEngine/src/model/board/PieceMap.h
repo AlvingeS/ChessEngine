@@ -12,21 +12,14 @@ class PieceMap {
 public:
     PieceMap(const Bitboards& bitboards);
 
-    inline PieceType getPieceTypeAtIndex(int index) const
-    {
-        return _pieceMap[index];
-    }
-
-    inline void setPieceTypeAtIndex(int index, PieceType pieceType)
-    {
-        _pieceMap[index] = pieceType;
-    }
-
+    inline PieceType getPieceTypeAtIndex(int index) const;
+    void setPieceTypeAtIndex(int index, PieceType pieceType);
     void fillPieceMapFromBitboards(const Bitboards& bitboards);
     
 private:
-
     std::vector<PieceType> _pieceMap;
 };
 
 } // namespace model
+
+#include "ChessEngine/src/model/board/PieceMap.inl"

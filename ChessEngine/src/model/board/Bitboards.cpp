@@ -35,4 +35,10 @@ Bitboards::Bitboards()
     _bitboards.push_back(&_blackKingBitboard);
 }
 
+void Bitboards::resetBitboards() 
+{
+    for (int i = 0; i < 12; i++)
+        *(_bitboards[i]) = 0;
+}
+
 } // namespace model

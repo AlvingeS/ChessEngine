@@ -31,4 +31,10 @@ void StateBitmasks::fillBlackPiecesBitmaskFromBitboards(const Bitboards& bitboar
     _blackPiecesBitmask = b_all;
 }
 
+void StateBitmasks::updOccupiedAndEmptySquaresBitmasks() 
+{
+    updOccupiedPiecesBitmask();
+    updEmptySquaresBitmask();
+}
+
 } // namespace model

@@ -21,11 +21,8 @@ enum class PieceType : int {
 };
 
 PieceType CharToPieceType(char c);
-
 char pieceTypeToChar(PieceType piece_type); 
-
 int pieceTypeToInt(PieceType piece_type); 
-
 PieceType intToPieceType(int i); 
 
 } // namespace model

@@ -12,22 +12,10 @@ public:
     Movelist();
 
     void addMove(const Move& move);
-
-    inline void addNullMove() {
-        _movelist[_moveIndex] = Move();
-    }
-
-    inline void reset() {
-        _moveIndex = 0;
-    }
-
-    inline const Move& getMoveAt(int index) const {
-        return _movelist[index];
-    }
-
-    inline int getMoveIndex() const {
-        return _moveIndex;
-    }
+    void addNullMove();
+    void reset();
+    const Move& getMoveAt(int index) const;
+    int getMoveIndex() const;
 
 private:
     std::vector<Move> _movelist;
@@ -35,3 +23,5 @@ private:
 };
 
 } // namespace model
+
+#include "ChessEngine/src/model/move/Movelist.inl"

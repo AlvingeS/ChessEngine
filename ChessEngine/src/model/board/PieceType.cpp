@@ -40,14 +40,4 @@ char pieceTypeToChar(PieceType piece_type)
     }
 }
 
-int pieceTypeToInt(PieceType piece_type) 
-{
-    return static_cast<int>(piece_type);
-}
-
-PieceType intToPieceType(int i) 
-{
-    return static_cast<PieceType>(i);
-}
-
 } // namespace model

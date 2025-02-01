@@ -29,6 +29,7 @@ public:
         bool isWhite, 
         int currentDepth
     );
+    
     void makeTemporaryKingMove(bool isWhite, bool isKingSide);
 
 private:

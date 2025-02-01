@@ -26,3 +26,5 @@ int pieceTypeToInt(PieceType piece_type);
 PieceType intToPieceType(int i); 
 
 } // namespace model
+
+#include "ChessEngine/src/model/board/PieceType.inl"

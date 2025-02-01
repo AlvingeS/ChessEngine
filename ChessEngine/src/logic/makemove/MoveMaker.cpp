@@ -25,23 +25,21 @@ void MoveMaker::makeMove(
     // If the move is a castle, update and return
     if (move.isAnyCastle()) {
         makeCastleMove(isWhite, move.isKingCastle());
-
         return;
     }
 
     // Get the from and to indices
     int fromIndex = move.getBitIndexFrom();
     int toIndex = move.getBitIndexTo();
-    //assert(fromIndex != toIndex);
 
     // Pick up the piece from the from square and get the moved piece type
-    model::PieceType  movedPieceType = removeMovedPieceFromBoard(isWhite, fromIndex);
+    model::PieceType movedPieceType = removeMovedPieceFromBoard(isWhite, fromIndex);
 
     // If the move is a capture, handle memory and remove the captured piece
     if (move.isAnyCapture()) {
         // Calculate index of captured piece, might be EP
         int captureIndex = determineCaptureIndex(move, isWhite, toIndex);
-        model::PieceType  capturedPieceType = _pieceMap.getPieceTypeAtIndex(captureIndex);
+        model::PieceType capturedPieceType = _pieceMap.getPieceTypeAtIndex(captureIndex);
         
         _searchMemory.setLastCapturedPieceAtDepth(currentDepth, capturedPieceType);
         
@@ -49,9 +47,8 @@ void MoveMaker::makeMove(
     }
 
     // Update the moved piece type if the move is a promotion    
-    if (move.isAnyPromo()) {
+    if (move.isAnyPromo())
         movedPieceType = getPromotionPieceType(move.getFlag(), isWhite);
-    }
 
     // Place the moved piece on the to square
     placeMovedPieceOnBoard(isWhite, toIndex, movedPieceType);
@@ -133,18 +130,14 @@ void MoveMaker::makeTemporaryKingMove(bool isWhite, bool isKingSide)
 model::PieceType MoveMaker::removeMovedPieceFromBoard(bool isWhite, int fromIndex) 
 {
     // Determine the piece type of the piece being moved
-   model::PieceType  movedPieceType = _pieceMap.getPieceTypeAtIndex(fromIndex);
-    //assert(movedPieceType !=model::PieceType::EMPTY);
+    model::PieceType  movedPieceType = _pieceMap.getPieceTypeAtIndex(fromIndex);
     
     // Clear the piece from bitboards, squarelookup and gamestate bitmasks
-    _pieceMap.setPieceTypeAtIndex(fromIndex, model::PieceType::EMPTY);
     _bitboards.clearPieceTypeBit(fromIndex, movedPieceType);
+    _pieceMap.setPieceTypeAtIndex(fromIndex, model::PieceType::EMPTY);
 
-    if (isWhite) {
-        _stateBitmasks.clearWhitePiecesBit(fromIndex);
-    } else {
-        _stateBitmasks.clearBlackPiecesBit(fromIndex);
-    }
+    isWhite ? _stateBitmasks.clearWhitePiecesBit(fromIndex) 
+            : _stateBitmasks.clearBlackPiecesBit(fromIndex);
 
     return movedPieceType;
 }
@@ -152,28 +145,34 @@ model::PieceType MoveMaker::removeMovedPieceFromBoard(bool isWhite, int fromInde
 void MoveMaker::placeMovedPieceOnBoard(
     bool isWhite, 
     int toIndex, 
-   model::PieceType  movedPieceType) 
+    model::PieceType movedPieceType) 
 {
     _bitboards.setPieceTypeBit(toIndex, movedPieceType);
     _pieceMap.setPieceTypeAtIndex(toIndex, movedPieceType);
 
-    if (isWhite) {
-        _stateBitmasks.setWhitePiecesBit(toIndex);
-    } else {
-        _stateBitmasks.setBlackPiecesBit(toIndex);
-    }
+    isWhite ? _stateBitmasks.setWhitePiecesBit(toIndex) 
+            : _stateBitmasks.setBlackPiecesBit(toIndex);
 }
 
 void MoveMaker::handleNoCaptureCount(
     const model::Move& move, 
     int currentDepth, 
-   model::PieceType  movedPieceType)
+    model::PieceType  movedPieceType)
 {
-    if (not move.isAnyCapture() && (movedPieceType !=model::PieceType::W_PAWN && movedPieceType !=model::PieceType::B_PAWN)) {
-        _searchMemory.incrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
-    } else {
+    // If the move is a capture, reset the no capture count
+    if (move.isAnyCapture()) {
         _searchMemory.resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
+        return;
     }
+
+    // If the move is a pawn move, reset the no capture count
+    if (movedPieceType == model::PieceType::W_PAWN || movedPieceType == model::PieceType::B_PAWN) {
+        _searchMemory.resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
+        return;
+    }
+
+    // If the move is not a capture or pawn move, increment the no capture count
+    _searchMemory.incrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
 }
 
 void MoveMaker::handleEnPessantMemory(
@@ -182,10 +181,16 @@ void MoveMaker::handleEnPessantMemory(
     int currentDepth, 
     int toIndex) 
 {
-    if (move.isDoublePawnPush()) {
-        _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, isWhite ? (1ULL << (toIndex - 8)) : (1ULL << (toIndex + 8)));
-    } else {
+    if (not move.isDoublePawnPush()) {
         _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
+        return;
+    }
+
+    if (move.isDoublePawnPush()) {
+        bitmask enPessantTarget = isWhite ? (1ULL << (toIndex - 8)) 
+                                          : (1ULL << (toIndex + 8));
+
+        _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, enPessantTarget);
     }
 }
 
@@ -193,11 +198,8 @@ void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captur
     // Remove captured piece from board models
     _bitboards.clearPieceTypeBit(captureIndex, capturedPieceType);
 
-    if (isWhite) {
-        _stateBitmasks.clearBlackPiecesBit(captureIndex);
-    } else {
-        _stateBitmasks.clearWhitePiecesBit(captureIndex);
-    }
+    isWhite ? _stateBitmasks.clearBlackPiecesBit(captureIndex) 
+            : _stateBitmasks.clearWhitePiecesBit(captureIndex);
 
     // Only clear from the squares lookup if the move was an ep capture
     // because the capture index points to the square where the pawn was

@@ -81,7 +81,11 @@ void MoveRetractor::unmakeTemporaryKingMove(bool wasWhite, bool isKingSide)
     }
 }
 
-void MoveRetractor::removePreviouslyMovedPieceFromBoard(const model::Move& move, int toIndex, model::PieceType  previouslyMovedPieceType, bool wasWhite) 
+void MoveRetractor::removePreviouslyMovedPieceFromBoard(
+    const model::Move& move,
+    int toIndex,
+    model::PieceType previouslyMovedPieceType,
+    bool wasWhite) 
 {
     // Square lookup is dependent on if there was a capture or promotion,
     // handled by the placeBackCapturedPieceOnBoard method 
@@ -91,19 +95,21 @@ void MoveRetractor::removePreviouslyMovedPieceFromBoard(const model::Move& move,
     if (not move.isAnyPromo()) {
         _bitboards.clearPieceTypeBit(toIndex, previouslyMovedPieceType);
     } else {
-       model::PieceType  promotionPieceType = getPromotionPieceType(move.getFlag(), wasWhite);
+        model::PieceType promotionPieceType = getPromotionPieceType(move.getFlag(), wasWhite);
         _bitboards.clearPieceTypeBit(toIndex, promotionPieceType);
     }
 
-    if (wasWhite) {
-        _stateBitmasks.clearWhitePiecesBit(toIndex);
-    } else {
-        _stateBitmasks.clearBlackPiecesBit(toIndex);
-    }
+    wasWhite ? _stateBitmasks.clearWhitePiecesBit(toIndex) 
+             : _stateBitmasks.clearBlackPiecesBit(toIndex);
 }
 
 
-void MoveRetractor::placeBackCapturedPieceOnBoard(bool isEP, int captureIndex, int toIndex, bool wasWhite, model::PieceType  previouslyCapturedPieceType) 
+void MoveRetractor::placeBackCapturedPieceOnBoard(
+    bool isEP,
+    int captureIndex,
+    int toIndex,
+    bool wasWhite,
+    model::PieceType previouslyCapturedPieceType) 
 {
     _bitboards.setPieceTypeBit(captureIndex, previouslyCapturedPieceType);
     _pieceMap.setPieceTypeAtIndex(captureIndex, previouslyCapturedPieceType);
@@ -113,11 +119,8 @@ void MoveRetractor::placeBackCapturedPieceOnBoard(bool isEP, int captureIndex, i
         _pieceMap.setPieceTypeAtIndex(toIndex, model::PieceType::EMPTY);
     }
 
-    if (wasWhite) {
-        _stateBitmasks.setBlackPiecesBit(captureIndex);
-    } else {
-        _stateBitmasks.setWhitePiecesBit(captureIndex);
-    }
+    wasWhite ? _stateBitmasks.setBlackPiecesBit(captureIndex) 
+             : _stateBitmasks.setWhitePiecesBit(captureIndex);
 }
 
 void MoveRetractor::placeBackMovedPieceOnBoard(
@@ -128,11 +131,8 @@ void MoveRetractor::placeBackMovedPieceOnBoard(
     _bitboards.setPieceTypeBit(fromIndex, movedPieceType);
     _pieceMap.setPieceTypeAtIndex(fromIndex, movedPieceType);
 
-    if (wasWhite) {
-        _stateBitmasks.setWhitePiecesBit(fromIndex);
-    } else {
-        _stateBitmasks.setBlackPiecesBit(fromIndex);
-    }
+    wasWhite ? _stateBitmasks.setWhitePiecesBit(fromIndex) 
+             : _stateBitmasks.setBlackPiecesBit(fromIndex);
 }
 
 model::PieceType MoveRetractor::determineMovedPieceType(
@@ -145,11 +145,9 @@ model::PieceType MoveRetractor::determineMovedPieceType(
 
     // If the move was a promotion, set the moved piece to a pawn of the same color
     // Else, set the moved piece to the piece occupying the to square
-    if (move.isAnyPromo()) {
-        previouslyMovedPieceType = wasWhite ?model::PieceType::W_PAWN :model::PieceType::B_PAWN;
-    } else {
-        previouslyMovedPieceType = _pieceMap.getPieceTypeAtIndex(toIndex);
-    }
+    previouslyMovedPieceType = move.isAnyPromo() ? (wasWhite ? model::PieceType::W_PAWN
+                                                             : model::PieceType::B_PAWN)
+                                                 : _pieceMap.getPieceTypeAtIndex(toIndex);
 
     return previouslyMovedPieceType;
 }
@@ -162,7 +160,6 @@ void MoveRetractor::unmakeMove(
     // If the move is a castle, update the bitboards and return
     if (previousMove.isAnyCastle()) {
         unmakeCastleMove(wasWhite, previousMove.isKingCastle());
-
         return;
     }
 

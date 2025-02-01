@@ -26,55 +26,18 @@ constexpr bitmask RANK_MASK[8] = {
     0xFF00000000000000ULL
 };
 
-inline bitmask getFileMask(int file) 
-{
-    return FILE_MASK[file];
-}
+bitmask getFileMask(int file);
+bitmask getRankMask(int rank);
+int rankFromBitIndex(int i);
+int fileFromBitIndex(int i);
+bitmask getOccupiedSquaresBitmask(bitmask whitePieces, bitmask blackPieces);
+bitmask getEmptySquaresBitmask(bitmask whitePieces, bitmask blackPieces);
+bitmask getWhiteSquaresBitmask();
+bitmask getBlackSquaresBitmask();
+int abs(int n);
 
-inline bitmask getRankMask(int rank) 
-{
-    return RANK_MASK[rank];
-}
-
-inline int rankFromBitIndex(int i) 
-{
-    return i / 8;
-}
-
-inline int fileFromBitIndex(int i) 
-{
-    return i % 8;
-}
-
-inline bitmask getOccupiedSquaresBitmask(bitmask whitePieces, bitmask blackPieces) 
-{
-    return whitePieces | blackPieces;
-}
-
-inline bitmask getEmptySquaresBitmask(bitmask whitePieces, bitmask blackPieces) 
-{
-    return ~getOccupiedSquaresBitmask(whitePieces, blackPieces);
-}
-
-inline bitmask getWhiteSquaresBitmask() 
-{
-    return 0xAA55AA55AA55AA55ULL;
-}
-
-inline bitmask getBlackSquaresBitmask() 
-{
-    return 0x55AA55AA55AA55AAULL;
-}
-
-inline int abs(int n) {
-    return (n < 0) ? -n : n;
-}
-
-inline int manhattanDistance(int i, int j) 
-{
-    int rankDiff = rankFromBitIndex(i) - rankFromBitIndex(j);
-    int fileDiff = fileFromBitIndex(i) - fileFromBitIndex(j);
-    return abs(rankDiff) + abs(fileDiff);
-}
+int manhattanDistance(int i, int j);
 
 } // namespace logic
+
+#include "ChessEngine/src/logic/movegen/utils/ChessUtils.inl"

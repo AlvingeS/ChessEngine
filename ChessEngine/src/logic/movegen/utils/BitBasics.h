@@ -4,27 +4,14 @@
 
 namespace logic {
 
-inline bool getBit(bitmask a, int i) 
-{
-    return (a >> i) & 1;
-}
-
-inline int indexOfLSB(bitmask a) 
-{
-    return __builtin_ctzll(a);
-}   
-
-inline int indexOfMSB(bitmask a) 
-{
-    return 63 - __builtin_clzll(a);
-}
-
-inline int popCount(bitmask a) 
-{
-    return __builtin_popcountll(a);
-}
+bool getBit(bitmask a, int i);
+int indexOfLSB(bitmask a); 
+int indexOfMSB(bitmask a);
+int popCount(bitmask a);
 
 void getBitIndices(std::vector<int>& indices, bitmask bitboard);
 void printbitmaskInBits(bitmask n);
 
 } // namespace logic
+
+#include "ChessEngine/src/logic/movegen/utils/BitBasics.inl"

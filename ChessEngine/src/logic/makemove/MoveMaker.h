@@ -30,10 +30,7 @@ public:
 
     void makeTemporaryKingMove(bool isWhite, bool isKingSide);
 
-    inline engine::SearchMemory& getSearchMemory() const
-    {
-        return _searchMemory;
-    }
+    inline engine::SearchMemory& getSearchMemory() const { return _searchMemory; }
 
 private:
     void makeCastleMove(bool isWhite, bool isKingSide);

@@ -37,7 +37,6 @@ public:
 
     int getBitIndexFrom() const;
     int getBitIndexTo() const;
-
     bool isQuite() const;
     bool isDoublePawnPush() const;
     bool isKingCastle() const;
@@ -52,8 +51,6 @@ public:
     bool isBishopPromoCapture() const;
     bool isRookPromoCapture() const;
     bool isQueenPromoCapture() const;
-
-    // Checks if the flag is any number between 1 and 6
     bool isAnyCapture() const;
     bool isAnyPromo() const;
     bool isAnyPromoCapture() const;

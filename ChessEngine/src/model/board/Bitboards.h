@@ -12,8 +12,10 @@ public:
     const bitboard& getBitboardFromPieceType(PieceType pieceType) const;
     const bitboard& getBitboardFromIndex(int index) const;
     bool pieceTypeBitIsSet(int index, PieceType pieceType) const;
+    
     void clearPieceTypeBit(int index, PieceType pieceType);
     void setPieceTypeBit(int index, PieceType pieceType);
+    void resetBitboards();
 
     // Set, clear and get for all individual piece types / bitboards
     #define DEFINE_BITBOARD_MACROS(PIECE_NAME, VARIABLE_NAME) \
@@ -42,8 +44,6 @@ public:
     DEFINE_BITBOARD_MACROS(BlackRooks, _blackRooksBitboard)
     DEFINE_BITBOARD_MACROS(BlackQueens, _blackQueensBitboard)
     DEFINE_BITBOARD_MACROS(BlackKing, _blackKingBitboard)
-
-    void resetBitboards();
 
 private:
     std::vector<bitboard*> _bitboards;

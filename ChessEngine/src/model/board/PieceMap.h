@@ -13,6 +13,7 @@ public:
     PieceMap(const Bitboards& bitboards);
 
     PieceType getPieceTypeAtIndex(int index) const;
+    
     void setPieceTypeAtIndex(int index, PieceType pieceType);
     void fillPieceMapFromBitboards(const Bitboards& bitboards);
     

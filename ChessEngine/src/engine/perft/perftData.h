@@ -16,32 +16,25 @@ public:
     size_t getNumFirstMoves() const { return _firstMoves.size(); }
     int getNodeCountPerFirstMoveAt(int firstMoveIndex) const { return _nodeCountPerFirstMove[firstMoveIndex]; }
 
-    inline int getNodeCountAt(int depth) const { return _nodeCount[depth]; }
-    inline int getCaptureCountAt(int depth) const { return _captureCount[depth]; }
-    inline int getEpCaptureCountAt(int depth) const { return _epCaptureCount[depth]; }
-    inline int getCastlingCountAt(int depth) const { return _castlingCount[depth]; }
-    inline int getPromotionCountAt(int depth) const { return _promotionCount[depth]; }
-    inline int getCheckCountAt(int depth) const { return _checkCount[depth]; }
-    inline int getCheckmateCountAt(int depth) const { return _checkmateCount[depth]; }
+    int getNodeCountAt(int depth) const;
+    int getCaptureCountAt(int depth) const;
+    int getEpCaptureCountAt(int depth) const;
+    int getCastlingCountAt(int depth) const;
+    int getPromotionCountAt(int depth) const;
+    int getCheckCountAt(int depth) const;
+    int getCheckmateCountAt(int depth) const;
 
-    inline void increaseNodeCountAt(int depth) { _nodeCount[depth]++; }
-    inline void increaseCaptureCountAt(int depth) { _captureCount[depth]++; }
-    inline void increaseEpCaptureCountAt(int depth) { _epCaptureCount[depth]++; }
-    inline void increaseCastlingCountAt(int depth) { _castlingCount[depth]++; }
-    inline void increasePromotionCountAt(int depth) { _promotionCount[depth]++; }
-    inline void increaseCheckCountAt(int depth) { _checkCount[depth]++; }
-    inline void increaseCheckmateCountAt(int depth) { _checkmateCount[depth]++; }
+    void increaseNodeCountAt(int depth);
+    void increaseCaptureCountAt(int depth);
+    void increaseEpCaptureCountAt(int depth);
+    void increaseCastlingCountAt(int depth);
+    void increasePromotionCountAt(int depth);
+    void increaseCheckCountAt(int depth);
+    void increaseCheckmateCountAt(int depth);
 
     model::Move getFirstMoveAt(int firstMoveIndex) const { return _firstMoves[firstMoveIndex]; }
-    void setFirstMoveAt(int firstMoveIndex, model::Move currentMove) 
-    {
-        _firstMoves[firstMoveIndex] = currentMove;
-    }
-
-    void increaseNodeCountPerFirstMoveAt(int firstMoveIndex) 
-    {
-        _nodeCountPerFirstMove[firstMoveIndex]++;
-    }
+    void setFirstMoveAt(int firstMoveIndex, model::Move currentMove);
+    void increaseNodeCountPerFirstMoveAt(int firstMoveIndex);
 
 private:
     int _maxDepth;

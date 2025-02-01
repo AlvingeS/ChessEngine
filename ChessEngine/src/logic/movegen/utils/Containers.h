@@ -9,30 +9,11 @@ class Containers {
 public:
     static void init();
 
-    inline static std::vector<int>& getSlidingPiecefreeMovesIndices()
-    {
-        return _slidingPiecefreeMovesIndices;
-    }
-
-    inline static std::vector<int>& getLeapingPiecefreeMovesIndices()
-    {
-        return _leapingPiecefreeMovesIndices;
-    }
-
-    inline static std::vector<int>& getSlidingPieceCapturableMovesIndices()
-    {
-        return _slidingPieceCapturableMovesIndices;
-    }
-
-    inline static std::vector<int>& getLeapingPieceCapturableMovesIndices()
-    {
-        return _leapingPieceCapturableMovesIndices;
-    }
-
-    inline static std::vector<int>& getPiecePositionIndices()
-    {
-        return _piecePositionIndices;
-    }
+    static std::vector<int>& getSlidingPiecefreeMovesIndices();
+    static std::vector<int>& getLeapingPiecefreeMovesIndices();
+    static std::vector<int>& getSlidingPieceCapturableMovesIndices();
+    static std::vector<int>& getLeapingPieceCapturableMovesIndices();
+    static std::vector<int>& getPiecePositionIndices();
 
 private:
     static std::vector<int> _slidingPiecefreeMovesIndices;
@@ -42,7 +23,6 @@ private:
     static std::vector<int> _leapingPieceCapturableMovesIndices;
 
     static std::vector<int> _piecePositionIndices;
-
 };
 
 } // namespace logic

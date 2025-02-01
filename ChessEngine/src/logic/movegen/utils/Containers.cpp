@@ -18,4 +18,29 @@ void Containers::init() {
     _piecePositionIndices = std::vector<int>(16, 0);
 }
 
+std::vector<int>& Containers::getSlidingPiecefreeMovesIndices()
+{
+    return _slidingPiecefreeMovesIndices;
+}
+
+std::vector<int>& Containers::getLeapingPiecefreeMovesIndices()
+{
+    return _leapingPiecefreeMovesIndices;
+}
+
+std::vector<int>& Containers::getSlidingPieceCapturableMovesIndices()
+{
+    return _slidingPieceCapturableMovesIndices;
+}
+
+std::vector<int>& Containers::getLeapingPieceCapturableMovesIndices()
+{
+    return _leapingPieceCapturableMovesIndices;
+}
+
+std::vector<int>& Containers::getPiecePositionIndices()
+{
+    return _piecePositionIndices;
+}
+
 } // namespace logic

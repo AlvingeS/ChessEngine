@@ -24,125 +24,48 @@ public:
     static const int KING_CASTLE_FLAG = 14;
     static const int QUEEN_CASTLE_FLAG = 15;
     
-    inline Move() {
-        _move = 0;
-    }
+    Move();
+    Move(int bitIndexFrom, int bitIndexTo, int flag);
+    Move(const Move& move);
 
-    inline Move(int bitIndexFrom, int bitIndexTo, int flag) {
-        _move = ((flag & 0xf) << 12 | (bitIndexTo & 0x3f) << 6 | (bitIndexFrom & 0x3f));
-    }
+    int getMove() const;
+    int getFlag() const;
 
-    inline Move(const Move& move) {
-        _move = move._move;
-    }
+    void operator=(const Move& move);
+    bool operator==(const Move& move) const;
+    bool operator!=(const Move& move) const;
 
-    inline int getMove() const {
-        return _move;
-    }
+    int getBitIndexFrom() const;
+    int getBitIndexTo() const;
 
-    inline int getFlag() const {
-        return (_move >> 12) & 0xf;
-    }
-
-    inline void operator=(const Move& move) {
-        _move = move._move;
-    }
-
-    inline bool operator==(const Move& move) const {
-        return (_move & 0xffff) == (move._move & 0xffff);
-    }
-
-    inline bool operator!=(const Move& move) const {
-        return (_move & 0xffff) != (move._move & 0xffff);
-    }
-
-    inline int getBitIndexFrom() const {
-        return _move & 0x3f;
-    }
-    
-    inline int getBitIndexTo() const {
-        return (_move >> 6) & 0x3f;
-    }
-    
-    inline bool isQuite() const {
-        return ((_move >> 12) & 0xf) == QUITE_FLAG;
-    }
-
-    inline bool isDoublePawnPush() const {
-        return ((_move >> 12) & 0xf) == DOUBLE_PAWN_PUSH_FLAG;
-    }
-
-    inline bool isKingCastle() const {
-        return ((_move >> 12) & 0xf) == KING_CASTLE_FLAG;
-    }
-
-    inline bool isQueenCastle() const {
-        return ((_move >> 12) & 0xf) == QUEEN_CASTLE_FLAG;
-    }
-
-    inline bool isNormalCapture() const {
-        return ((_move >> 12) & 0xf) == CAPTURE_FLAG;
-    }
-
-    inline bool isEpCapture() const {
-        return ((_move >> 12) & 0xf) == EP_CAPTURE_FLAG;
-    }
-
-    inline bool isKnightPromo() const {
-        return ((_move >> 12) & 0xf) == KNIGHT_PROMO_FLAG;
-    }
-
-    inline bool isBishopPromo() const {
-        return ((_move >> 12) & 0xf) == BISHOP_PROMO_FLAG;
-    }
-
-    inline bool isRookPromo() const {
-        return ((_move >> 12) & 0xf) == ROOK_PROMO_FLAG;
-    }
-
-    inline bool isQueenPromo() const {
-        return ((_move >> 12) & 0xf) == QUEEN_PROMO_FLAG;
-    }
-
-    inline bool isKnightPromoCapture() const {
-        return ((_move >> 12) & 0xf) == KNIGHT_PROMO_CAPTURE_FLAG;
-    }
-
-    inline bool isBishopPromoCapture() const {
-        return ((_move >> 12) & 0xf) == BISHOP_PROMO_CAPTURE_FLAG;
-    }
-
-    inline bool isRookPromoCapture() const {
-        return ((_move >> 12) & 0xf) == ROOK_PROMO_CAPTURE_FLAG;
-    }
-
-    inline bool isQueenPromoCapture() const {
-        return ((_move >> 12) & 0xf) == QUEEN_PROMO_CAPTURE_FLAG;
-    }
+    bool isQuite() const;
+    bool isDoublePawnPush() const;
+    bool isKingCastle() const;
+    bool isQueenCastle() const;
+    bool isNormalCapture() const;
+    bool isEpCapture() const;
+    bool isKnightPromo() const;
+    bool isBishopPromo() const;
+    bool isRookPromo() const;
+    bool isQueenPromo() const;
+    bool isKnightPromoCapture() const;
+    bool isBishopPromoCapture() const;
+    bool isRookPromoCapture() const;
+    bool isQueenPromoCapture() const;
 
     // Checks if the flag is any number between 1 and 6
-    inline bool isAnyCapture() const {
-        return getFlag() >= 1 && getFlag()  <= 6;
-    }
-
-    inline bool isAnyPromo() const {
-        return getFlag() >= 3 && getFlag() <= 10;
-    }
-
-    inline bool isAnyPromoCapture() const {
-        return getFlag() >= 3 && getFlag() <= 6;
-    }
-
-    inline bool isAnyCastle() const {
-        return getFlag() >= 14;
-    }
+    bool isAnyCapture() const;
+    bool isAnyPromo() const;
+    bool isAnyPromoCapture() const;
+    bool isAnyCastle() const;
 
 private:
-    // Private member variables
     int _move;
 };
 
 } // namespace model
+
+#include "ChessEngine/src/model/move/Move.inl"
 
 namespace std {
     template <>

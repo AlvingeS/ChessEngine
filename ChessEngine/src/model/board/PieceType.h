@@ -20,16 +20,12 @@ enum class PieceType : int {
     ERROR
 };
 
-/// @brief Converts a character to a PieceType for FEN parsing
 PieceType CharToPieceType(char c);
 
-/// @brief Converts a PieceType to a character for FEN parsing
 char pieceTypeToChar(PieceType piece_type); 
 
-/// @brief Converts a PieceType to an integer for indexing purposes
 int pieceTypeToInt(PieceType piece_type); 
 
-/// @brief Converts an integer to a PieceType for indexing purposes
 PieceType intToPieceType(int i); 
 
 } // namespace model

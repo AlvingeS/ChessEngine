@@ -136,9 +136,8 @@ void perft::minimax(
     const model::Move& lastMove, 
     bool verbose)
 {        
-    if (currentDepth == _maxDepth) {
+    if (currentDepth == _maxDepth)
         return;
-    }
 
     genMoves(
         isMaximizer, 
@@ -153,9 +152,8 @@ void perft::minimax(
     for (size_t i = 0; i < MAX_LEGAL_MOVES; i++) {
         model::Move currentMove = _movelists[currentDepth].getMoveAt(i);
 
-        if (currentMove.getMove() == 0) {
+        if (currentMove.getMove() == 0)
             break;
-        }
 
         if (checkCondition(
             currentDepth, 

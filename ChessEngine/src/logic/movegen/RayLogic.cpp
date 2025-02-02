@@ -190,31 +190,23 @@ bool checkStraightRay(
     bitmask rooksAndQueensBlockerBitmask = straightRay & opponentRooksAndQueens;
     
     // There must be a rook or a queen on the file or rank to be in check
-    if (rooksAndQueensBlockerBitmask != 0ULL) {
-        bitmask occupiedBlockerBitmask = straightRay & occupiedPiecesBitmask;
+    if (rooksAndQueensBlockerBitmask == 0ULL)
+        return false;
 
-        // If there is only one blocker out of all pieces, then it must be a rook or a queen thus the king is in check
-        if (popCount(occupiedBlockerBitmask) == 1) {
-            return true;
-        } else {
-            int occupiedBlockerIndex = firstBlockerOnLSB
-                                       ? indexOfLSB(occupiedBlockerBitmask)
-                                       : indexOfMSB(occupiedBlockerBitmask);
+    bitmask occupiedBlockerBitmask = straightRay & occupiedPiecesBitmask;
 
-            int rooksAndQueensBlockerIndex = firstBlockerOnLSB 
-                                             ? indexOfLSB(rooksAndQueensBlockerBitmask)
-                                             : indexOfMSB(rooksAndQueensBlockerBitmask);
+    // If there is only one blocker out of all pieces, then it must be a rook or a queen thus the king is in check
+    if (popCount(occupiedBlockerBitmask) == 1)
+        return true;
 
-            // If the the first blocker of any piece is the same as the first blocker of a rook or queen, then the king is in check
-            if (occupiedBlockerIndex == rooksAndQueensBlockerIndex) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
+    int occupiedBlockerIndex = firstBlockerOnLSB ? indexOfLSB(occupiedBlockerBitmask)
+                                                 : indexOfMSB(occupiedBlockerBitmask);
 
-    return false;
+    int rooksAndQueensBlockerIndex = firstBlockerOnLSB ? indexOfLSB(rooksAndQueensBlockerBitmask)
+                                                       : indexOfMSB(rooksAndQueensBlockerBitmask);
+
+    // If the the first blocker of any piece is the same as the first blocker of a rook or queen, then the king is in check
+    return occupiedBlockerIndex == rooksAndQueensBlockerIndex;
 }
 
 bool checkDiagonalRay(
@@ -225,29 +217,21 @@ bool checkDiagonalRay(
 {
     bitmask bishopsAndQueensBlockerBitmask = diagonalRay & opponentBishopsAndQueens;
 
-    if ((bishopsAndQueensBlockerBitmask) != 0) {
-        bitmask occupiedBlockerBitmask = diagonalRay & occupiedPiecesBitmask;
+    if ((bishopsAndQueensBlockerBitmask) == 0)
+        return false;
 
-        if (popCount(occupiedBlockerBitmask) == 1) {
-            return true;
-        } else {
-            int occupiedBlockerIndex = firstBlockerOnLSB
-                                       ? indexOfLSB(occupiedBlockerBitmask)
-                                       : indexOfMSB(occupiedBlockerBitmask);
+    bitmask occupiedBlockerBitmask = diagonalRay & occupiedPiecesBitmask;
 
-            int bishopsAndQueensBlockerIndex = firstBlockerOnLSB
-                                               ? indexOfLSB(bishopsAndQueensBlockerBitmask)
-                                               : indexOfMSB(bishopsAndQueensBlockerBitmask);
+    if (popCount(occupiedBlockerBitmask) == 1)
+        return true;
 
-            if (occupiedBlockerIndex == bishopsAndQueensBlockerIndex) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
+    int occupiedBlockerIndex = firstBlockerOnLSB ? indexOfLSB(occupiedBlockerBitmask)
+                                                 : indexOfMSB(occupiedBlockerBitmask);
 
-    return false;
+    int bishopsAndQueensBlockerIndex = firstBlockerOnLSB ? indexOfLSB(bishopsAndQueensBlockerBitmask)
+                                                         : indexOfMSB(bishopsAndQueensBlockerBitmask);
+
+    return occupiedBlockerIndex == bishopsAndQueensBlockerIndex;
 }
 
 } // namespace logic

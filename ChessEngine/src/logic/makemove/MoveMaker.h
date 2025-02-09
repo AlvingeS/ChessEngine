@@ -69,7 +69,7 @@ private:
     model::Bitboards& _bitboards;
     model::StateBitmasks& _stateBitmasks;
     model::PieceMap& _pieceMap;
-    const model::ZHasher& _zHasher;
+    model::ZHasher& _zHasher;
     engine::SearchMemory& _searchMemory;
 };
 

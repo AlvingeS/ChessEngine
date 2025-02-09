@@ -131,7 +131,10 @@ model::PieceType MoveMaker::removeMovedPieceFromBoard(bool isWhite, int fromInde
 {
     // Determine the piece type of the piece being moved
     model::PieceType  movedPieceType = _pieceMap.getPieceTypeAtIndex(fromIndex);
-    
+
+    // Update zobrist hash
+    _zHasher.hashSquarePieceType(fromIndex, movedPieceType);
+
     // Clear the piece from bitboards, squarelookup and gamestate bitmasks
     _bitboards.clearPieceTypeBit(fromIndex, movedPieceType);
     _pieceMap.setPieceTypeAtIndex(fromIndex, model::PieceType::EMPTY);

@@ -45,20 +45,19 @@ void ZHasher::computeInitialHash()
     for (size_t i = 0; i < 64; i++) {
         PieceType pieceType = _pieceMap.getPieceTypeAtIndex(i);
 
-        if (pieceType != PieceType::EMPTY) {
-            _hash ^= _randBoardPieceTypeNums[i][static_cast<int>(pieceType)];
-        }
+        if (pieceType != PieceType::EMPTY)
+            hashSquarePieceType(i, pieceType);
     }
 
     // We know that we have castling rights, so we can just add them
     for (size_t i = 0; i < 4; i++) {
-        _hash ^= _randCastleRightsNums[i];
+        hashCastleRights(i);
     }
 
     // There can be no en passant file
 
     // We know that it is white's turn
-    _hash ^= _randIsWhiteNum;
+    hashIsWhite(true);
 }
 
 } // namespace model

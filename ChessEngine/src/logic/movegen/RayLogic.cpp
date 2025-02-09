@@ -30,9 +30,8 @@ void addMoveIfBlockerIsEnemy(
 {
     bool blockerIsWhite = getBit(whitePiecesBitmask, blockerIndex);
 
-    if (blockerIsWhite != isWhite) {
+    if (blockerIsWhite != isWhite)
         moveList.addMove(model::Move(bitIndexFrom, blockerIndex, model::Move::CAPTURE_FLAG));
-    }
 }
 
 void addMovesBetweenBlockerAndPieceOnStraightRay(
@@ -56,7 +55,8 @@ void addMovesBetweenBlockerAndPieceOnStraightRay(
                             : rankFromBitIndex(blockerIndex));
 
     for (int i = start - 1; i > stop; --i) {
-        int rankOrFileIndex = alongFile ? rookRank * 8 + i : i * 8 + rookFile;
+        int rankOrFileIndex = alongFile ? rookRank * 8 + i 
+                                        : i * 8 + rookFile;
         
         moveList.addMove(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
     }

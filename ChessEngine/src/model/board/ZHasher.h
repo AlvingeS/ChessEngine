@@ -1,6 +1,8 @@
 #pragma once
 #include "ChessEngine/src/common.h"
 
+#include "ChessEngine/src/model/board/PieceType.h"
+
 namespace model {
 
 class PieceMap;
@@ -9,6 +11,10 @@ class ZHasher {
 
 public:
     ZHasher(PieceMap& pieceMap);
+    void hashSquarePieceType(int squareIndex, PieceType pieceType);
+    void hashCastleRights(int castleRights);
+    void hashEnPassantFile(int file);
+    void hashIsWhite(bool isWhite);
 
 private:
     void computeInitialHash();
@@ -30,3 +36,5 @@ private:
 };
 
 } // namespace model
+
+#include "ChessEngine/src/model/board/ZHasher.inl"

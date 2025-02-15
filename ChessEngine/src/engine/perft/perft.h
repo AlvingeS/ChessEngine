@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ChessEngine/src/engine/perft/perftData.h"
-#include "ChessEngine/src/engine/search/SearchMemory.h"
+#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
 
 #include "ChessEngine/src/io/Fen.h"
 
@@ -13,7 +13,7 @@
 #include "ChessEngine/src/logic/makemove/MoveMaker.h"
 #include "ChessEngine/src/logic/makemove/MoveRetractor.h"
 #include "ChessEngine/src/logic/movegen/MoveGenerator.h"
-#include "ChessEngine/src/logic/evaluation/Evaluator.h"
+#include "ChessEngine/src/logic/eval/Evaluator.h"
 
 namespace engine {
 

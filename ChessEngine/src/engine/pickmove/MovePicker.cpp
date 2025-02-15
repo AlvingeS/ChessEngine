@@ -1,4 +1,4 @@
-#include "ChessEngine/src/engine/search/Searcher.h"
+#include "ChessEngine/src/engine/pickmove/MovePicker.h"
 
 #include "ChessEngine/src/io/BoardPrinter.h"
 
@@ -7,7 +7,7 @@
 
 namespace engine {
 
-Searcher::Searcher(int maxDepth) 
+MovePicker::MovePicker(int maxDepth) 
     : _board()
     , _bitboards(_board.bitboards)
     , _pieceMap(_board.pieceMap)
@@ -60,7 +60,7 @@ Searcher::Searcher(int maxDepth)
     }
 }
 
-long Searcher::sumNodesToDepth(int depth) const {
+long MovePicker::sumNodesToDepth(int depth) const {
     long sum = 0;
 
     for (long i = 1; i <= depth; i++) {
@@ -70,7 +70,7 @@ long Searcher::sumNodesToDepth(int depth) const {
     return sum;
 }
 
-void Searcher::genMoves(
+void MovePicker::genMoves(
     bool isWhite,
     int currentDepth,
     unsigned char castlingRights) 
@@ -78,7 +78,7 @@ void Searcher::genMoves(
     _moveGenerator.genMoves(isWhite, _movelists[currentDepth], currentDepth, castlingRights);
 }
 
-void Searcher::makeMove(
+void MovePicker::makeMove(
     model::Move move,
     bool isWhite,
     int currentdepth) 
@@ -86,7 +86,7 @@ void Searcher::makeMove(
     _moveMaker.makeMove(move, isWhite, currentdepth);
 }
 
-void Searcher::unmakeMove(
+void MovePicker::unmakeMove(
     model::Move move,
     bool isWhite,
     int currentDepth)
@@ -94,7 +94,7 @@ void Searcher::unmakeMove(
     _moveRetractor.unmakeMove(move, isWhite, currentDepth);
 }
 
-void Searcher::debugPrint(bool verbose) const
+void MovePicker::debugPrint(bool verbose) const
 {
     if (verbose) {
         io::BoardPrinter boardPrinter = io::BoardPrinter(_bitboards);
@@ -135,7 +135,7 @@ void Searcher::debugPrint(bool verbose) const
 //     return true;
 // }
 
-bool Searcher::tooManyPiecesOnBoard() 
+bool MovePicker::tooManyPiecesOnBoard() 
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
@@ -147,7 +147,7 @@ bool Searcher::tooManyPiecesOnBoard()
     return count > 32;
 }
 
-bool Searcher::checkCondition(
+bool MovePicker::checkCondition(
     int currentDepth,
     bool isMaximizer,
     int firstMoveIndex, 
@@ -169,7 +169,7 @@ bool Searcher::checkCondition(
 }
 
 // TODO: Implement draw by repetition after implementing zobrist hashing
-void Searcher::minimax(
+void MovePicker::minimax(
     int currentDepth, 
     bool isMaximizer, 
     int firstMoveIndex, 
@@ -310,7 +310,7 @@ void Searcher::minimax(
     return;
 }
 
-void Searcher::recordPerftStats(
+void MovePicker::recordPerftStats(
     bool isMaximizer, 
     int currentDepth, 
     int &firstMoveIndex, 

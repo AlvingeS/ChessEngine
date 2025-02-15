@@ -1,7 +1,7 @@
 #pragma once
 
 // FIXME: We cant have a dependency to perft
-#include "ChessEngine/src/engine/search/SearchMemory.h"
+#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
 
 namespace model {
     class Board;

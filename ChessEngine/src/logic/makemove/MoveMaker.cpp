@@ -70,7 +70,7 @@ void MoveMaker::makeCastleMove(bool isWhite, bool isKingSide)
         toKingInd = isKingSide ? 1 : 5;
         fromRookInd = isKingSide ? 0 : 7;
         toRookInd = isKingSide ? 2 : 4;
-        
+
         _bitboards.clearWhiteKingBit(fromKingInd);
         _bitboards.setWhiteKingBit(toKingInd);
         _bitboards.clearWhiteRooksBit(fromRookInd);
@@ -114,7 +114,7 @@ void MoveMaker::makeTemporaryKingMove(bool isWhite, bool isKingSide)
 {
     int from = isWhite ? 3 : 59;
 
-    int to = isKingSide ? (isWhite ? 2 : 58) 
+    int to = isKingSide ? (isWhite ? 2 : 58)
                         : (isWhite ? 4 : 60);
 
     if (isWhite) {
@@ -152,6 +152,8 @@ void MoveMaker::placeMovedPieceOnBoard(
 {
     _bitboards.setPieceTypeBit(toIndex, movedPieceType);
     _pieceMap.setPieceTypeAtIndex(toIndex, movedPieceType);
+
+    _zHasher.hashSquarePieceType(toIndex, movedPieceType);
 
     isWhite ? _stateBitmasks.setWhitePiecesBit(toIndex) 
             : _stateBitmasks.setBlackPiecesBit(toIndex);
@@ -194,6 +196,7 @@ void MoveMaker::handleEnPessantMemory(
                                           : (1ULL << (toIndex + 8));
 
         _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, enPessantTarget);
+        _zHasher.hashEnPassantFile(toIndex % 8);
     }
 }
 
@@ -203,6 +206,8 @@ void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captur
 
     isWhite ? _stateBitmasks.clearBlackPiecesBit(captureIndex) 
             : _stateBitmasks.clearWhitePiecesBit(captureIndex);
+
+    _zHasher.hashSquarePieceType(captureIndex, capturedPieceType);
 
     // Only clear from the squares lookup if the move was an ep capture
     // because the capture index points to the square where the pawn was

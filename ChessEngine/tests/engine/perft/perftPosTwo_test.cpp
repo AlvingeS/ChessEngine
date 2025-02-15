@@ -24,13 +24,13 @@ protected:
 TEST_F(perftPosTwo, perft_pos2) 
 {
     if (enablePos2Test) {
-        searcher.setBoardFromFen(posTwo);
+        movePicker.setBoardFromFen(posTwo);
 
         // Make dubug move
         // model::Move move = moveFromStrAndFlag("a2a3", 0);
-        // searcher.makeMove(move, true);
+        // movePicker.makeMove(move, true);
         // move = moveFromStrAndFlag("c7c6", 0);
-        // searcher.makeMove(model::Move(0, 0, model::Move::QUEEN_CASTLE_FLAG), false);
+        // movePicker.makeMove(model::Move(0, 0, model::Move::QUEEN_CASTLE_FLAG), false);
 
         int nDebugMoves = 0;
 
@@ -40,30 +40,30 @@ TEST_F(perftPosTwo, perft_pos2)
 
         std::string debugFen;
         if (nDebugMoves > 0) {
-            debugFen = searcher.getFenFromBoard();
+            debugFen = movePicker.getFenFromBoard();
             debugFen += whiteToStart ? " w" : " b";
             debugFen += " KQkq -";
         }
 
         std::unordered_map<std::string, long> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posTwo, depth);
 
-        searcher.setMaxDepth(depth);
-        searcher.minimax(0, whiteToStart, 0);
+        movePicker.setMaxDepth(depth);
+        movePicker.minimax(0, whiteToStart, 0);
         
         std::unordered_map<std::string, long> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
         compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
         
         if (nDebugMoves == 0) {
-            for (long i = 1; i <= searcher.getMaxDepth(); i++) {
-                ASSERT_EQ(searcher._nodeCount[i], expectedResults[i][0]);
-                ASSERT_EQ(searcher._captureCount[i], expectedResults[i][1]);
-                ASSERT_EQ(searcher._epCaptureCount[i], expectedResults[i][2]);
-                ASSERT_EQ(searcher._castlingCount[i], expectedResults[i][3]);
-                ASSERT_EQ(searcher._promotionCount[i], expectedResults[i][4]);
-                ASSERT_EQ(searcher._checkCount[i], expectedResults[i][5]);
+            for (long i = 1; i <= movePicker.getMaxDepth(); i++) {
+                ASSERT_EQ(movePicker._nodeCount[i], expectedResults[i][0]);
+                ASSERT_EQ(movePicker._captureCount[i], expectedResults[i][1]);
+                ASSERT_EQ(movePicker._epCaptureCount[i], expectedResults[i][2]);
+                ASSERT_EQ(movePicker._castlingCount[i], expectedResults[i][3]);
+                ASSERT_EQ(movePicker._promotionCount[i], expectedResults[i][4]);
+                ASSERT_EQ(movePicker._checkCount[i], expectedResults[i][5]);
                 
-                if (i < searcher.getMaxDepth()) {
-                    ASSERT_EQ(searcher._checkmateCount[i], expectedResults[i][6]);
+                if (i < movePicker.getMaxDepth()) {
+                    ASSERT_EQ(movePicker._checkmateCount[i], expectedResults[i][6]);
                 }       
             }
         }

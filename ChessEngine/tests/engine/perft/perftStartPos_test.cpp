@@ -22,10 +22,10 @@ TEST_F(perftStartPos, perft_starting_pos)
 
         std::unordered_map<std::string, long> stockfishResults = getStockFishPerftResults(startPos, depth);
 
-        searcher.setMaxDepth(depth);
+        movePicker.setMaxDepth(depth);
         bool whiteToStart = true;
 
-        searcher.minimax(0, whiteToStart, 0);
+        movePicker.minimax(0, whiteToStart, 0);
         std::unordered_map<std::string, long> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
         compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
 
@@ -40,16 +40,16 @@ TEST_F(perftStartPos, perft_starting_pos)
             {7, {3195901860, 108329926,  319617, 883453, 0, 33103848, 0}}
         };
 
-        for (long i = 1; i <= searcher.getMaxDepth(); i++) {
-            ASSERT_EQ(searcher._nodeCount[i], expectedResults[i][0]);
-            ASSERT_EQ(searcher._captureCount[i], expectedResults[i][1]);
-            ASSERT_EQ(searcher._epCaptureCount[i], expectedResults[i][2]);
-            ASSERT_EQ(searcher._castlingCount[i], expectedResults[i][3]);
-            ASSERT_EQ(searcher._promotionCount[i], expectedResults[i][4]);
-            ASSERT_EQ(searcher._checkCount[i], expectedResults[i][5]);
+        for (long i = 1; i <= movePicker.getMaxDepth(); i++) {
+            ASSERT_EQ(movePicker._nodeCount[i], expectedResults[i][0]);
+            ASSERT_EQ(movePicker._captureCount[i], expectedResults[i][1]);
+            ASSERT_EQ(movePicker._epCaptureCount[i], expectedResults[i][2]);
+            ASSERT_EQ(movePicker._castlingCount[i], expectedResults[i][3]);
+            ASSERT_EQ(movePicker._promotionCount[i], expectedResults[i][4]);
+            ASSERT_EQ(movePicker._checkCount[i], expectedResults[i][5]);
             
-            if (i < searcher.getMaxDepth()) {
-                ASSERT_EQ(searcher._checkmateCount[i], expectedResults[i][6]);
+            if (i < movePicker.getMaxDepth()) {
+                ASSERT_EQ(movePicker._checkmateCount[i], expectedResults[i][6]);
             }       
         }
     }

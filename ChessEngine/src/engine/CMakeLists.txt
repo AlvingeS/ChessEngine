@@ -1,2 +1,2 @@
-add_subdirectory(search)
+add_subdirectory(pickmove)
 add_subdirectory(perft)

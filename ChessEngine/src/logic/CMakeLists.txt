@@ -1,3 +1,3 @@
-add_subdirectory(evaluation)
+add_subdirectory(eval)
 add_subdirectory(makemove)
 add_subdirectory(movegen)

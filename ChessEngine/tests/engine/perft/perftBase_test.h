@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChessEngine/src/engine/search/Searcher.h"
+#include "ChessEngine/src/engine/pickmove/MovePicker.h"
 
 #include "ChessEngine/src/io/Fen.h"
 
@@ -47,9 +47,9 @@ protected:
     std::string posThree;
     std::string posFive;
 
-    Searcher searcher;
+    MovePicker movePicker;
 
-    perftBase() : searcher(20) {}
+    perftBase() : movePicker(20) {}
 
     virtual void SetUp() override 
     {
@@ -167,14 +167,14 @@ protected:
         std::unordered_map<std::string, long> nodeCountPerFirstMoveMap;
         int sum = 0;
 
-        for (size_t i = 0; i < searcher._nodeCountPerFirstMove.size(); i++) {
-            if (searcher._firstMoves[i].getMove() != 0) {
-                std::string moveStr = translateMoveToStr(searcher._firstMoves[i], whiteStarted);
-                std::string nodeCountStr = std::to_string(searcher._nodeCountPerFirstMove[i]);
+        for (size_t i = 0; i < movePicker._nodeCountPerFirstMove.size(); i++) {
+            if (movePicker._firstMoves[i].getMove() != 0) {
+                std::string moveStr = translateMoveToStr(movePicker._firstMoves[i], whiteStarted);
+                std::string nodeCountStr = std::to_string(movePicker._nodeCountPerFirstMove[i]);
                 std::string moveNodeCountStr = moveStr + ": " + nodeCountStr;
-                nodeCountPerFirstMoveMap[moveStr] = searcher._nodeCountPerFirstMove[i];
+                nodeCountPerFirstMoveMap[moveStr] = movePicker._nodeCountPerFirstMove[i];
 
-                sum += searcher._nodeCountPerFirstMove[i];
+                sum += movePicker._nodeCountPerFirstMove[i];
             }
         }
 

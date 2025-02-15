@@ -1,4 +1,4 @@
-#include "ChessEngine/src/engine/search/SearchMemory.h"
+#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
 
 #include "ChessEngine/src/model/board/PieceType.h"
 

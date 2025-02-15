@@ -1,5 +1,5 @@
 #include "ChessEngine/src/logic/movegen/MoveGenerator.h"
-#include "ChessEngine/src/engine/search/Searcher.h"
+#include "ChessEngine/src/engine/pickmove/MovePicker.h"
 #include "ChessEngine/src/engine/perft/perft.h"
 #include "ChessEngine/src/io/BoardPrinter.h"
 #include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
@@ -45,7 +45,7 @@ int main()
             Refactored acessing bitboards to use pointers directly instead of lookup
             1.940s ~ 3.471M nodes/s ~ 1.4% SF
 
-            Removed castling logic that I had forgotten about, it is all handled by the searcher
+            Removed castling logic that I had forgotten about, it is all handled by the movePicker
             1.783s ~ 3.686M nodes/s ~ 1.5% SF
 
         - 2024-05-12
@@ -61,7 +61,7 @@ int main()
             greater than 14 to see if it is a castle
             0.346s ~ 19.145M nodes/s ~ 7.8% SF
 
-            Refactored searcher so that castling rights and last captured pieces info
+            Refactored movePicker so that castling rights and last captured pieces info
             is now in its on class, will add everything else as well
             0.337s ~ 20.009M nodes/s ~ 8.0% SF
 
@@ -90,28 +90,28 @@ int main()
     
     bool recPerftStats = false;
 
-    engine::Searcher searcherStartPos = engine::Searcher(MAX_DEPTH);
-    searcherStartPos.setBoardFromFen(startPos);
-    searcherStartPos.minimax(0, true, 0, recPerftStats);
+    engine::MovePicker movePickerStartPos = engine::MovePicker(MAX_DEPTH);
+    movePickerStartPos.setBoardFromFen(startPos);
+    movePickerStartPos.minimax(0, true, 0, recPerftStats);
 
-    engine::Searcher searcherPosTwo = engine::Searcher(MAX_DEPTH);
-    searcherPosTwo.setBoardFromFen(posTwo);
-    searcherPosTwo.minimax(0, true, 0, recPerftStats);
+    engine::MovePicker movePickerPosTwo = engine::MovePicker(MAX_DEPTH);
+    movePickerPosTwo.setBoardFromFen(posTwo);
+    movePickerPosTwo.minimax(0, true, 0, recPerftStats);
     
-    engine::Searcher searcherPosThree = engine::Searcher(MAX_DEPTH);
-    searcherPosThree.setBoardFromFen(posThree);
-    searcherPosThree.minimax(0, true, 0, recPerftStats);
+    engine::MovePicker movePickerPosThree = engine::MovePicker(MAX_DEPTH);
+    movePickerPosThree.setBoardFromFen(posThree);
+    movePickerPosThree.minimax(0, true, 0, recPerftStats);
 
-    engine::Searcher searcherPosFive = engine::Searcher(MAX_DEPTH);
-    searcherPosFive.setBoardFromFen(posFive);
-    searcherPosFive.minimax(0, true, 0, recPerftStats);
+    engine::MovePicker movePickerPosFive = engine::MovePicker(MAX_DEPTH);
+    movePickerPosFive.setBoardFromFen(posFive);
+    movePickerPosFive.minimax(0, true, 0, recPerftStats);
 
     if (recPerftStats) {
         int sum = 0;
-        sum += searcherStartPos.sumNodesToDepth(MAX_DEPTH);
-        sum += searcherPosTwo.sumNodesToDepth(MAX_DEPTH);
-        sum += searcherPosThree.sumNodesToDepth(MAX_DEPTH);
-        sum += searcherPosFive.sumNodesToDepth(MAX_DEPTH);
+        sum += movePickerStartPos.sumNodesToDepth(MAX_DEPTH);
+        sum += movePickerPosTwo.sumNodesToDepth(MAX_DEPTH);
+        sum += movePickerPosThree.sumNodesToDepth(MAX_DEPTH);
+        sum += movePickerPosFive.sumNodesToDepth(MAX_DEPTH);
         std::cout << "Total nodes: " << sum << std::endl;
     }
 

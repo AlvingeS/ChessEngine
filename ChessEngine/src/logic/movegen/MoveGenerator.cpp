@@ -6,7 +6,7 @@
 #include "ChessEngine/src/model/board/Board.h"
 #include "ChessEngine/src/model/move/Movelist.h"
 
-#include "ChessEngine/src/engine/search/SearchMemory.h"
+#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
 
 #include <iostream>
 

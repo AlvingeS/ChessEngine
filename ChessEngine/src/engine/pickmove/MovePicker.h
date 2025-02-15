@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ChessEngine/src/engine/search/SearchMemory.h"
+#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
 
-#include "ChessEngine/src/logic/evaluation/Evaluator.h"
+#include "ChessEngine/src/logic/eval/Evaluator.h"
 
 #include "ChessEngine/src/model/board/Board.h"
 
@@ -16,10 +16,10 @@
 
 namespace engine {
 
-class Searcher {
+class MovePicker {
 
 public:
-    Searcher(int maxDepth);
+    MovePicker(int maxDepth);
     
     void minimax(
         int current_depth,

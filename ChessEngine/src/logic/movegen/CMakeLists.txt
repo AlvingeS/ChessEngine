@@ -16,4 +16,4 @@ target_sources(movegen PRIVATE
     CheckDetection.cpp
 )
 
-target_link_libraries(movegen PUBLIC search move board cxx_setup)
+target_link_libraries(movegen PUBLIC pickmove move board cxx_setup)

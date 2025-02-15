@@ -23,8 +23,7 @@ PawnGenerator::PawnGenerator(model::Board& board)
 void PawnGenerator::generate(
     bool isWhite,
     model::Movelist& moveList,
-    int currentDepth,
-    engine::SearchMemory& searchMemory)
+    bitmask enpessantTarget)
 {
     std::vector<int>& pawnIndices = Containers::getPiecePositionIndices();
     std::vector<int>& freeMovesIndices = Containers::getLeapingPiecefreeMovesIndices();
@@ -46,7 +45,6 @@ void PawnGenerator::generate(
         bitmask enemyPieces = isWhite ? _stateBitmasks.getBlackPiecesBitmask()
                                       : _stateBitmasks.getWhitePiecesBitmask();
         
-        bitmask enPessantTarget = searchMemory.getEnPessantTargetAtDepth(currentDepth);
         bitmask capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
 
         getBitIndices(freeMovesIndices, freePawnMoves);
@@ -86,8 +84,8 @@ void PawnGenerator::generate(
             }
         }
 
-        if ((capturePawnMoveBitmask & enPessantTarget) != 0) {
-            moveList.addMove(model::Move(currentPawnIndex, indexOfLSB(capturePawnMoveBitmask & enPessantTarget), model::Move::EP_CAPTURE_FLAG));
+        if ((capturePawnMoveBitmask & enpessantTarget) != 0) {
+            moveList.addMove(model::Move(currentPawnIndex, indexOfLSB(capturePawnMoveBitmask & enpessantTarget), model::Move::EP_CAPTURE_FLAG));
         }
     }
 }

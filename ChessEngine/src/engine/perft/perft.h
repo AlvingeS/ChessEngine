@@ -43,11 +43,12 @@ public:
     void genMoves(
         bool isWhite,
         int currentDepth, 
+        bitmask enpessantTarget,
         unsigned char castlingRights
     );
 
-    void makeMove(model::Move move, bool isWhite, int currentDepth);
-    void unmakeMove(model::Move move, bool isWhite, int currentDepth);
+    logic::MoveResult makeMove(model::Move move, bool isWhite);
+    void unmakeMove(model::Move move, bool isWhite, logic::MoveResult previousMoveResult);
     void undoMove();
     
     int _numMoveGenCalls;

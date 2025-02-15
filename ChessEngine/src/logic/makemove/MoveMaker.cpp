@@ -7,25 +7,21 @@
 
 namespace logic {
 
-MoveMaker::MoveMaker(
-    model::Board& board,
-    engine::SearchMemory& searchMemory
-) : _bitboards(board.bitboards), 
-    _stateBitmasks(board.stateBitmasks), 
-    _pieceMap(board.pieceMap),
-    _zHasher(board.zHasher),
-    _searchMemory(searchMemory)
+MoveMaker::MoveMaker(model::Board& board)
+    : _bitboards(board.bitboards) 
+    , _stateBitmasks(board.stateBitmasks)
+    , _pieceMap(board.pieceMap)
+    , _zHasher(board.zHasher)
 {}
 
-void MoveMaker::makeMove(
-    const model::Move& move, 
-    bool isWhite, 
-    int currentDepth) 
+MoveResult MoveMaker::makeMove(const model::Move& move, bool isWhite)
 {
+    auto moveResult = MoveResult();
+
     // If the move is a castle, update and return
     if (move.isAnyCastle()) {
         makeCastleMove(isWhite, move.isKingCastle());
-        return;
+        return moveResult;
     }
 
     // Get the from and to indices
@@ -40,25 +36,23 @@ void MoveMaker::makeMove(
         // Calculate index of captured piece, might be EP
         int captureIndex = determineCaptureIndex(move, isWhite, toIndex);
         model::PieceType capturedPieceType = _pieceMap.getPieceTypeAtIndex(captureIndex);
-        
-        _searchMemory.setLastCapturedPieceAtDepth(currentDepth, capturedPieceType);
-        
         removeCapturedPieceFromBoard(move.isEpCapture(), isWhite, captureIndex, capturedPieceType);
+        moveResult.capturedPieceType = capturedPieceType;
     }
 
     // Update the moved piece type if the move is a promotion    
     if (move.isAnyPromo())
         movedPieceType = getPromotionPieceType(move.getFlag(), isWhite);
 
+    moveResult.movedPieceType = movedPieceType;
+
     // Place the moved piece on the to square
     placeMovedPieceOnBoard(isWhite, toIndex, movedPieceType);
 
-    // Misc. memory handling
-    handleEnPessantMemory(move, isWhite, currentDepth, toIndex);
-    handleNoCaptureCount(move, currentDepth, movedPieceType);
-
     // Update occupied and empty squares bitmasks
     _stateBitmasks.updOccupiedAndEmptySquaresBitmasks();
+
+    return moveResult;
 }
 
 void MoveMaker::makeCastleMove(bool isWhite, bool isKingSide)
@@ -157,47 +151,6 @@ void MoveMaker::placeMovedPieceOnBoard(
 
     isWhite ? _stateBitmasks.setWhitePiecesBit(toIndex) 
             : _stateBitmasks.setBlackPiecesBit(toIndex);
-}
-
-void MoveMaker::handleNoCaptureCount(
-    const model::Move& move, 
-    int currentDepth, 
-    model::PieceType  movedPieceType)
-{
-    // If the move is a capture, reset the no capture count
-    if (move.isAnyCapture()) {
-        _searchMemory.resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
-        return;
-    }
-
-    // If the move is a pawn move, reset the no capture count
-    if (movedPieceType == model::PieceType::W_PAWN || movedPieceType == model::PieceType::B_PAWN) {
-        _searchMemory.resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
-        return;
-    }
-
-    // If the move is not a capture or pawn move, increment the no capture count
-    _searchMemory.incrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
-}
-
-void MoveMaker::handleEnPessantMemory(
-    const model::Move& move, 
-    bool isWhite, 
-    int currentDepth, 
-    int toIndex) 
-{
-    if (not move.isDoublePawnPush()) {
-        _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
-        return;
-    }
-
-    if (move.isDoublePawnPush()) {
-        bitmask enPessantTarget = isWhite ? (1ULL << (toIndex - 8)) 
-                                          : (1ULL << (toIndex + 8));
-
-        _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, enPessantTarget);
-        _zHasher.hashEnPassantFile(toIndex % 8);
-    }
 }
 
 void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captureIndex, model::PieceType  capturedPieceType) {

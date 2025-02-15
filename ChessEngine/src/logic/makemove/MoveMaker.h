@@ -1,7 +1,6 @@
 #pragma once
 
-// FIXME: We cant have a dependency to perft
-#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
+#include "ChessEngine/src/logic/makemove/MoveUtils.h"
 
 namespace model {
     class Board;
@@ -17,18 +16,9 @@ namespace logic {
 class MoveMaker {
 
 public:
-    MoveMaker(
-        model::Board& board,
-        engine::SearchMemory& searchMemory
-    );
+    MoveMaker(model::Board& board);
     
-    inline engine::SearchMemory& getSearchMemory() const { return _searchMemory; }
-    
-    void makeMove(
-        const model::Move& move,
-        bool isWhite, 
-        int currentDepth
-    );
+    MoveResult makeMove(const model::Move& move, bool isWhite);
     
     void makeTemporaryKingMove(bool isWhite, bool isKingSide);
 
@@ -44,33 +34,19 @@ private:
         bool isEP, 
         bool isWhite, 
         int captureIndex, 
-       model::PieceType  capturedPieceType
+        model::PieceType capturedPieceType
     );
 
     void placeMovedPieceOnBoard(
         bool isWhite, 
         int toIndex,
-       model::PieceType  movedPieceType
-    );
-
-    void handleEnPessantMemory(
-        const model::Move& move, 
-        bool isWhite,
-        int currentDepth, 
-        int toIndex
-    );
-
-    void handleNoCaptureCount(
-        const model::Move& move, 
-        int currentDepth,
-       model::PieceType  movedPieceType 
+        model::PieceType movedPieceType
     );
 
     model::Bitboards& _bitboards;
     model::StateBitmasks& _stateBitmasks;
     model::PieceMap& _pieceMap;
     model::ZHasher& _zHasher;
-    engine::SearchMemory& _searchMemory;
 };
 
 } // namespace logic

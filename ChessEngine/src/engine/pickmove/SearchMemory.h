@@ -73,6 +73,19 @@ public:
         _noCapturedOrPawnMoveCounts[depth] = 0;
     }
 
+    void handleNoCaptureCount(
+        const model::Move& move, 
+        int currentDepth, 
+        model::PieceType  movedPieceType
+    );
+
+    void handleEnPessantMemory(
+            const model::Move& move, 
+            bool isWhite, 
+            int currentDepth, 
+            int toIndex
+    );
+
 private:
     int _maxDepth;
     std::vector<unsigned char> _castlingRights;

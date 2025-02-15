@@ -14,8 +14,8 @@ perft::perft(int maxDepth)
       _stateBitmasks(_board.stateBitmasks),
       _zHasher(_board.zHasher),
       _searchMemory(maxDepth),
-      _moveMaker(_board, _searchMemory),
-      _moveRetractor(_board, _searchMemory),
+      _moveMaker(_board),
+      _moveRetractor(_board),
       _moveGenerator(_board, _moveMaker, _moveRetractor),
       _evaluator(_board),
       _perftData(maxDepth),
@@ -32,25 +32,25 @@ perft::perft(int maxDepth)
 void perft::genMoves(
     bool isWhite,
     int currentDepth,
+    bitmask enpessantTarget,
     unsigned char castlingRights) 
 {
-    _moveGenerator.genMoves(isWhite, _movelists[currentDepth], currentDepth, castlingRights);
+    _moveGenerator.genMoves(isWhite, _movelists[currentDepth], enpessantTarget, castlingRights);
 }
 
-void perft::makeMove(
+logic::MoveResult perft::makeMove(
     model::Move move,
-    bool isWhite,
-    int currentdepth) 
+    bool isWhite) 
 {
-    _moveMaker.makeMove(move, isWhite, currentdepth);
+    return _moveMaker.makeMove(move, isWhite);
 }
 
 void perft::unmakeMove(
     model::Move move,
     bool isWhite,
-    int currentDepth)
+    logic::MoveResult previousMoveResult)
 {
-    _moveRetractor.unmakeMove(move, isWhite, currentDepth);
+    _moveRetractor.unmakeMove(move, isWhite, previousMoveResult);
 }
 
 void perft::debugPrint(bool verbose) const
@@ -141,7 +141,8 @@ void perft::minimax(
 
     genMoves(
         isMaximizer, 
-        currentDepth, 
+        currentDepth,
+        _searchMemory.getEnPessantTargetAtDepth(currentDepth),
         _searchMemory.getCastlingRightsAtDepth(currentDepth)
     );
 
@@ -169,7 +170,7 @@ void perft::minimax(
         }
 
         // Make the move and check if we are in any way left in check
-        makeMove(currentMove, isMaximizer, currentDepth);
+        logic::MoveResult moveResult = makeMove(currentMove, isMaximizer);
 
         if (checkCondition(
             currentDepth, 
@@ -186,7 +187,7 @@ void perft::minimax(
 
         if (_moveGenerator.isInCheck(isMaximizer)) {
             numIllegalMoves++;
-            unmakeMove(currentMove, isMaximizer, currentDepth);
+            unmakeMove(currentMove, isMaximizer, moveResult);
 
             if (checkCondition(
                 currentDepth, 
@@ -247,7 +248,7 @@ void perft::minimax(
             verbose
         );
 
-        unmakeMove(currentMove, isMaximizer, currentDepth);
+        unmakeMove(currentMove, isMaximizer, moveResult);
         _searchMemory.unsetCastlingRights(currentDepth);
         
         if (checkCondition(

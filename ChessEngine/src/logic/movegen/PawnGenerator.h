@@ -2,9 +2,6 @@
 
 #include "ChessEngine/src/common.h"
 
-// FIXME: We cant have a dependency to perft
-#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
-
 namespace model {
     class Board;
     class Movelist;
@@ -22,8 +19,7 @@ public:
     void generate(
         bool isWhite,
         model::Movelist& moveList,
-        int currentDepth,
-        engine::SearchMemory& searchMemory
+        bitmask enpessantTarget
     );
 
 private:

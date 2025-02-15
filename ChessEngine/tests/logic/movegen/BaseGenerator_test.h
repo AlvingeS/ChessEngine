@@ -40,8 +40,8 @@ protected:
           pieceMap(board.pieceMap),
           zHasher(board.zHasher),
           searchMemory(engine::SearchMemory(0)),
-          moveMaker(board, searchMemory),
-          moveRetractor(board, searchMemory),
+          moveMaker(board),
+          moveRetractor(board),
           moveGenerator(MoveGenerator(board, moveMaker, moveRetractor)),
           movelist(model::Movelist()) {}
 

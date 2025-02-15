@@ -93,4 +93,47 @@ void SearchMemory::overrideCastlingRights(unsigned char rights)
     }
 }
 
+void SearchMemory::handleNoCaptureCount(
+    const model::Move& move, 
+    int currentDepth, 
+    model::PieceType  movedPieceType)
+{
+    // If the move is a capture, reset the no capture count
+    if (move.isAnyCapture()) {
+        resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
+        return;
+    }
+
+    // If the move is a pawn move, reset the no capture count
+    if (movedPieceType == model::PieceType::W_PAWN || movedPieceType == model::PieceType::B_PAWN) {
+        resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
+        return;
+    }
+
+    // If the move is not a capture or pawn move, increment the no capture count
+    incrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
+}
+
+void SearchMemory::handleEnPessantMemory(
+    const model::Move& move, 
+    bool isWhite, 
+    int currentDepth, 
+    int toIndex) 
+{
+    if (not move.isDoublePawnPush()) {
+        setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
+        return;
+    }
+
+    if (move.isDoublePawnPush()) {
+        bitmask enPessantTarget = isWhite ? (1ULL << (toIndex - 8)) 
+                                          : (1ULL << (toIndex + 8));
+
+        setEnPessantTargetAtDepth(currentDepth + 1, enPessantTarget);
+        
+        // FIXME: Temporary because I don't know how to implement this haha
+        // _zHasher.hashEnPassantFile(toIndex % 8);
+    }
+}
+
 } // namespace engine

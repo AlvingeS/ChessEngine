@@ -28,7 +28,7 @@ protected:
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosWhite_ShouldReturn16Moves) 
 {
     io::setBoardFromFen(startingPos, bitboards, stateBitmasks, pieceMap);
-    moveGenerator.genPawnMoves(true, movelist, 0, searchMemory);
+    moveGenerator.genPawnMoves(true, movelist, 0);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -53,7 +53,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosWhite_ShouldReturn16Moves)
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosBlack_ShouldReturn16Moves) 
 {
     io::setBoardFromFen(startingPos, bitboards, stateBitmasks, pieceMap);
-    moveGenerator.genPawnMoves(false, movelist, 0, searchMemory);
+    moveGenerator.genPawnMoves(false, movelist, 0);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -78,7 +78,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosBlack_ShouldReturn16Moves)
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneWhite_ShouldReturn6Moves) 
 {
     io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
-    moveGenerator.genPawnMoves(true, movelist, 0, searchMemory);
+    moveGenerator.genPawnMoves(true, movelist, 0);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -98,7 +98,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneWhite_ShouldReturn6Moves)
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneBlack_ShouldReturnXMoves) 
 {
     io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
-    moveGenerator.genPawnMoves(false, movelist, 0, searchMemory);
+    moveGenerator.genPawnMoves(false, movelist, 0);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -119,7 +119,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Mov
 {
     io::setBoardFromFen(fenEnPessantForWhiteTest, bitboards, stateBitmasks, pieceMap);
     // moveGenerator.getBoard().setEnPessantTargetAtIndex(43);
-    moveGenerator.genPawnMoves(true, movelist, 0, searchMemory);
+    moveGenerator.genPawnMoves(true, movelist, 0);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -138,7 +138,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForBlack_ShouldReturn2Mov
 {
     io::setBoardFromFen(fenEnPessantForBlackTest, bitboards, stateBitmasks, pieceMap);
     // moveGenerator.getBoard().setEnPessantTargetAtIndex(23);
-    moveGenerator.genPawnMoves(false, movelist, 0, searchMemory);
+    moveGenerator.genPawnMoves(false, movelist, 0);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -156,7 +156,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForBlack_ShouldReturn2Mov
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12Moves) 
 {
     io::setBoardFromFen(fenPromotionTest, bitboards, stateBitmasks, pieceMap);
-    moveGenerator.genPawnMoves(true, movelist, 0, searchMemory);
+    moveGenerator.genPawnMoves(true, movelist, 0);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -176,7 +176,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12M
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12Moves) 
 {
     io::setBoardFromFen(fenPromotionTest, bitboards, stateBitmasks, pieceMap);
-    moveGenerator.genPawnMoves(false, movelist, 0, searchMemory);
+    moveGenerator.genPawnMoves(false, movelist, 0);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -196,7 +196,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12M
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenBuggedPawnTestWhite_ShouldNotReturnh6) 
 {
     io::setBoardFromFen(fenBuggedPawnTest, bitboards, stateBitmasks, pieceMap);
-    moveGenerator.genPawnMoves(false, movelist, 0, searchMemory);
+    moveGenerator.genPawnMoves(false, movelist, 0);
 
     model::Movelist moves = getMoves();
 

@@ -11,6 +11,7 @@
 #include "ChessEngine/src/model/move/Movelist.h"
 #include "ChessEngine/src/logic/makemove/MoveMaker.h"
 #include "ChessEngine/src/logic/makemove/MoveRetractor.h"
+#include "ChessEngine/src/logic/makemove/MoveUtils.h"
 #include "ChessEngine/src/model/move/Move.h"
 #include "ChessEngine/src/io/Fen.h"
 
@@ -41,12 +42,13 @@ public:
 
     void genMoves(
         bool isWhite,
-        int currentDepth, 
+        int currentDepth,
+        bitmask enpessantTarget, 
         unsigned char castlingRights
     );
 
-    void makeMove(model::Move move, bool isWhite, int currentDepth);
-    void unmakeMove(model::Move move, bool isWhite, int currentDepth);
+    logic::MoveResult makeMove(model::Move move, bool isWhite);
+    void unmakeMove(model::Move move, bool isWhite, logic::MoveResult prevousMoveResult);
     void undoMove();
     
     int _numMoveGenCalls;

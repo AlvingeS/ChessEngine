@@ -20,7 +20,6 @@ MoveGenerator::MoveGenerator(
     , _stateBitmasks(board.stateBitmasks)
     , _moveMaker(moveMaker)
     , _moveRetractor(moveRetractor)
-    , _searchMemory(moveMaker.getSearchMemory())
     , _checkDetection(board)
     , _rookGenerator(board)
     , _bishopGenerator(board)
@@ -34,7 +33,7 @@ MoveGenerator::MoveGenerator(
 void MoveGenerator::genMoves(
     bool isWhite,
     model::Movelist& moveList,
-    int currentDepth,
+    bitmask enpessantTarget,
     unsigned char castlingRights)
 {
     moveList.reset();
@@ -43,7 +42,7 @@ void MoveGenerator::genMoves(
     genQueenMoves(isWhite, moveList);
     genKnightMoves(isWhite, moveList);
     genKingMoves(isWhite, moveList);
-    genPawnMoves(isWhite, moveList, currentDepth, _searchMemory);
+    genPawnMoves(isWhite, moveList, enpessantTarget);
     genCastlingMoves(isWhite, moveList, castlingRights);
     moveList.addNullMove(); // Add a null move to the end of the move list
 }
@@ -86,10 +85,9 @@ void MoveGenerator::genKingMoves(
 void MoveGenerator::genPawnMoves(
     bool isWhite,
     model::Movelist& moveList,
-    int currentDepth,
-    engine::SearchMemory& searchMemory)
+    bitmask enpessantTarget)
 {
-    _pawnGenerator.generate(isWhite, moveList, currentDepth, searchMemory);
+    _pawnGenerator.generate(isWhite, moveList, enpessantTarget);
 }
 
 void MoveGenerator::genCastlingMoves(

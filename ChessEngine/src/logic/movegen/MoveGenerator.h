@@ -39,7 +39,7 @@ public:
     void genMoves(
         bool isWhite,
         model::Movelist& moveList,
-        int currentDepth,
+        bitmask enpessantTarget,
         unsigned char castlingRight
     );
     
@@ -52,8 +52,7 @@ public:
     void genPawnMoves(
         bool isWhite,
         model::Movelist& moveList,
-        int currentDepth,
-        engine::SearchMemory& searchMemory
+        bitmask enpessantTarget
     );
 
     void genCastlingMoves(
@@ -70,7 +69,6 @@ private:
     
     logic::MoveMaker& _moveMaker;
     logic::MoveRetractor& _moveRetractor;
-    engine::SearchMemory& _searchMemory;
     
     CheckDetection _checkDetection;
     RookGenerator _rookGenerator;

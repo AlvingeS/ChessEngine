@@ -14,8 +14,8 @@ MovePicker::MovePicker(int maxDepth)
     , _stateBitmasks(_board.stateBitmasks)
     , _zHasher(_board.zHasher)
     , _searchMemory(SearchMemory(maxDepth))
-    , _moveMaker(logic::MoveMaker(_board, _searchMemory))
-    , _moveRetractor(logic::MoveRetractor(_board, _searchMemory))
+    , _moveMaker(logic::MoveMaker(_board))
+    , _moveRetractor(logic::MoveRetractor(_board))
     , _moveGenerator(logic::MoveGenerator(_board, _moveMaker, _moveRetractor))
     , _evaluator(logic::Evaluator(_board))
     , _maxDepth(maxDepth)
@@ -73,25 +73,23 @@ long MovePicker::sumNodesToDepth(int depth) const {
 void MovePicker::genMoves(
     bool isWhite,
     int currentDepth,
+    bitmask enpessantTarget,
     unsigned char castlingRights) 
 {
-    _moveGenerator.genMoves(isWhite, _movelists[currentDepth], currentDepth, castlingRights);
+    _moveGenerator.genMoves(isWhite, _movelists[currentDepth], enpessantTarget, castlingRights);
 }
 
-void MovePicker::makeMove(
-    model::Move move,
-    bool isWhite,
-    int currentdepth) 
+logic::MoveResult MovePicker::makeMove(model::Move move, bool isWhite) 
 {
-    _moveMaker.makeMove(move, isWhite, currentdepth);
+    return _moveMaker.makeMove(move, isWhite);
 }
 
 void MovePicker::unmakeMove(
     model::Move move,
     bool isWhite,
-    int currentDepth)
+    logic::MoveResult previousMoveResult)
 {
-    _moveRetractor.unmakeMove(move, isWhite, currentDepth);
+    _moveRetractor.unmakeMove(move, isWhite, previousMoveResult);
 }
 
 void MovePicker::debugPrint(bool verbose) const
@@ -184,6 +182,7 @@ void MovePicker::minimax(
     genMoves(
         isMaximizer, 
         currentDepth, 
+        _searchMemory.getEnPessantTargetAtDepth(currentDepth),
         _searchMemory.getCastlingRightsAtDepth(currentDepth)
     );
 
@@ -212,7 +211,7 @@ void MovePicker::minimax(
         }
 
         // Make the move and check if we are in any way left in check
-        makeMove(currentMove, isMaximizer, currentDepth);
+        logic::MoveResult moveResult = makeMove(currentMove, isMaximizer);
 
         if (checkCondition(
             currentDepth, 
@@ -227,9 +226,10 @@ void MovePicker::minimax(
             int x = 4;
         }
 
+        // FIXME: Move generator should not be queried for this
         if (_moveGenerator.isInCheck(isMaximizer)) {
             numIllegalMoves++;
-            unmakeMove(currentMove, isMaximizer, currentDepth);
+            unmakeMove(currentMove, isMaximizer, moveResult);
 
             if (checkCondition(
                 currentDepth, 
@@ -256,6 +256,13 @@ void MovePicker::minimax(
 
             continue;
         }
+
+        if (currentMove.isAnyCapture()) {
+            _searchMemory.setLastCapturedPieceAtDepth(currentDepth, moveResult.capturedPieceType);
+        }
+
+        _searchMemory.handleEnPessantMemory(currentMove, isMaximizer, currentDepth, currentMove.getBitIndexTo());
+        _searchMemory.handleNoCaptureCount(currentMove, currentDepth, moveResult.movedPieceType);
 
         // Move was legal, update castling rights
         _searchMemory.setCastlingRights(
@@ -290,9 +297,17 @@ void MovePicker::minimax(
             verbose
         );
 
-        unmakeMove(currentMove, isMaximizer, currentDepth);
+        unmakeMove(currentMove, isMaximizer, moveResult);
         _searchMemory.unsetCastlingRights(currentDepth);
-        
+
+        if (currentMove.isDoublePawnPush()) {
+            _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
+        }
+    
+        if (not currentMove.isAnyCapture() && (moveResult.capturedPieceType != model::PieceType::W_PAWN && moveResult.movedPieceType != model::PieceType::B_PAWN)) {
+            _searchMemory.decrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
+        }
+
         if (checkCondition(
             currentDepth, 
             isMaximizer, 

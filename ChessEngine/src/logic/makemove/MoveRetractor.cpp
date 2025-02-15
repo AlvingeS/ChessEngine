@@ -1,19 +1,16 @@
 #include "ChessEngine/src/logic/makemove/MoveRetractor.h"
 
-#include "ChessEngine/src/logic/makemove/MoveUtils.h"
-
 #include "ChessEngine/src/model/board/Board.h"
+#include "ChessEngine/src/model/move/Move.h"
 
 namespace logic {
 
 MoveRetractor::MoveRetractor(
-    model::Board& board,
-    engine::SearchMemory& searchMemory
+    model::Board& board
 ) : _bitboards(board.bitboards), 
     _stateBitmasks(board.stateBitmasks), 
     _pieceMap(board.pieceMap), 
-    _zHasher(board.zHasher),
-    _searchMemory(searchMemory) 
+    _zHasher(board.zHasher)
 {}
 
 void MoveRetractor::unmakeCastleMove(bool wasWhite, bool wasKingSide)
@@ -155,7 +152,7 @@ model::PieceType MoveRetractor::determineMovedPieceType(
 void MoveRetractor::unmakeMove(
     const model::Move& previousMove, 
     bool wasWhite, 
-    int currentDepth) 
+    MoveResult previousMoveResults) 
 {
     // If the move is a castle, update the bitboards and return
     if (previousMove.isAnyCastle()) {
@@ -170,6 +167,7 @@ void MoveRetractor::unmakeMove(
     int toIndex = previousMove.getBitIndexTo();
     assert(fromIndex != toIndex);
     
+
     // Determine the piece type of the piece that was previously moved,
     // takes into consideration if the move was a promotion
     model::PieceType  previouslyMovedPieceType = determineMovedPieceType(previousMove, wasWhite, toIndex);
@@ -181,9 +179,8 @@ void MoveRetractor::unmakeMove(
     if (previousMove.isAnyCapture()) {
        // Calculate the index of the previously captured piece, might be EP
         int captureIndex = determineCaptureIndex(previousMove, wasWhite, toIndex);
-        model::PieceType  previouslyCapturedPieceType = _searchMemory.getLastCapturedPieceAtDepth(currentDepth);
 
-        placeBackCapturedPieceOnBoard(previousMove.isEpCapture(), captureIndex, toIndex, wasWhite, previouslyCapturedPieceType);
+        placeBackCapturedPieceOnBoard(previousMove.isEpCapture(), captureIndex, toIndex, wasWhite, previousMoveResults.capturedPieceType);
     } else {
         // If there was no capture, we place back an empty square on the to square
         _pieceMap.setPieceTypeAtIndex(toIndex, model::PieceType::EMPTY);
@@ -191,14 +188,6 @@ void MoveRetractor::unmakeMove(
 
     // Place the moved piece back on the from square
     placeBackMovedPieceOnBoard(wasWhite, fromIndex, previouslyMovedPieceType);
-
-    if (previousMove.isDoublePawnPush()) {
-        _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
-    }
-
-    if (not previousMove.isAnyCapture() && (previouslyMovedPieceType !=model::PieceType::W_PAWN && previouslyMovedPieceType !=model::PieceType::B_PAWN)) {
-        _searchMemory.decrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
-    }
 
     _stateBitmasks.updOccupiedAndEmptySquaresBitmasks();
 }

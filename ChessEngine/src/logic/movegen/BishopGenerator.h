@@ -1,5 +1,6 @@
 #pragma once
 #include "ChessEngine/src/common.h"
+#include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
 
 namespace model {
     class Movelist;
@@ -9,8 +10,6 @@ namespace model {
 }
 
 namespace logic {
-
-class DiagonalRays;
 
 class BishopGenerator {
 
@@ -25,7 +24,7 @@ public:
 private:
     const model::Bitboards& _bitboards;
     const model::StateBitmasks& _stateBitmasks;
-    std::vector<DiagonalRays> _diagonalRayBitmasks;
+    std::vector<RayBitmasks::DiagonalRays> _diagonalRayBitmasks;
 };
 
 } // namespace logic

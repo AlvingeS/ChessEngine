@@ -27,7 +27,7 @@ private:
     const model::Bitboards& _bitboards;
     const model::StateBitmasks& _stateBitmasks;
 
-    std::vector<StraightRays> _straightRayBitmasks;
+    std::vector<RayBitmasks::StraightRays> _straightRayBitmasks;
 };
 
 } // namespace logic

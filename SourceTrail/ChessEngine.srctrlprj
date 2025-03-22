@@ -3,7 +3,7 @@
     <source_groups>
         <source_group_cb4dcacb-97f2-4698-b152-8a848fcb1c1c>
             <build_file_path>
-                <compilation_db_path>../build/debug/compile_commands.json</compilation_db_path>
+                <compilation_db_path>../build/release/compile_commands.json</compilation_db_path>
             </build_file_path>
             <exclude_filters>
                 <exclude_filter>../ChessEngine/tests</exclude_filter>

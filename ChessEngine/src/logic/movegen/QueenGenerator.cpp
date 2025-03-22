@@ -13,8 +13,8 @@ QueenGenerator::QueenGenerator(model::Board& board)
     : _bitboards(board.bitboards)
     , _stateBitmasks(board.stateBitmasks)
 {
-    _straightRayBitmasks = getAllStraightRayBitmasks();
-    _diagonalRayBitmasks = getAllDiagonalRayBitmasks();
+    _straightRayBitmasks = RayBitmasks::getAllStraightRayBitmasks();
+    _diagonalRayBitmasks = RayBitmasks::getAllDiagonalRayBitmasks();
 }
 
 void QueenGenerator::generate(
@@ -27,8 +27,8 @@ void QueenGenerator::generate(
                                                : _bitboards.getBlackQueensBitboard());
 
     for (int currentQueenIndex : queenIndices) {
-        StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];
-        DiagonalRays diagonalRays = _diagonalRayBitmasks[currentQueenIndex];
+        RayBitmasks::StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];
+        RayBitmasks::DiagonalRays diagonalRays = _diagonalRayBitmasks[currentQueenIndex];
         
         int queenRank = rankFromBitIndex(currentQueenIndex);
         int queenFile = fileFromBitIndex(currentQueenIndex);

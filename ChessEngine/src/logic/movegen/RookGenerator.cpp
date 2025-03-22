@@ -13,7 +13,7 @@ RookGenerator::RookGenerator(model::Board& board)
     : _bitboards(board.bitboards)
     , _stateBitmasks(board.stateBitmasks)
 {
-    _straightRayBitmasks = getAllStraightRayBitmasks();
+    _straightRayBitmasks = RayBitmasks::getAllStraightRayBitmasks();
 }
 
 void RookGenerator::generate(
@@ -22,10 +22,10 @@ void RookGenerator::generate(
 {
     std::vector<int>& rookIndices = Containers::getPiecePositionIndices();
 
-    StraightRays rays;
+    RayBitmasks::StraightRays rays;
 
     getBitIndices(rookIndices, isWhite ? _bitboards.getWhiteRooksBitboard()
-                                              : _bitboards.getBlackRooksBitboard());
+                                       : _bitboards.getBlackRooksBitboard());
 
     // Loop through all rooks and isolate them
     for (int currentRookIndex : rookIndices) {

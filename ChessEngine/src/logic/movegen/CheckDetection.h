@@ -22,8 +22,8 @@ private:
     const model::Bitboards& _bitboards;
     const model::StateBitmasks& _stateBitmasks;
 
-    std::vector<StraightRays> _straightRayBitmasks;
-    std::vector<DiagonalRays> _diagonalRayBitmasks;
+    std::vector<RayBitmasks::StraightRays> _straightRayBitmasks;
+    std::vector<RayBitmasks::DiagonalRays> _diagonalRayBitmasks;
     std::vector<bitmask> _knightBitmasks;
     std::vector<bitmask> _whitePawnCaptureMoveBitmasks;
     std::vector<bitmask> _blackPawnCaptureMoveBitmasks;

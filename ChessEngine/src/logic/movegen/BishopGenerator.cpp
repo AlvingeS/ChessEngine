@@ -1,7 +1,6 @@
 #include "ChessEngine/src/logic/movegen/BishopGenerator.h"
 
 #include "ChessEngine/src/logic/movegen/RayLogic.h"
-#include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
 
 #include "ChessEngine/src/logic/movegen/utils/Containers.h"
 #include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
@@ -18,7 +17,7 @@ BishopGenerator::BishopGenerator(model::Board& board)
     : _bitboards(board.bitboards)
     , _stateBitmasks(board.stateBitmasks)
 {
-    _diagonalRayBitmasks = getAllDiagonalRayBitmasks();
+    _diagonalRayBitmasks = RayBitmasks::getAllDiagonalRayBitmasks();
 }
 
 void BishopGenerator::generate(
@@ -31,7 +30,7 @@ void BishopGenerator::generate(
                                          : _bitboards.getBlackBishopsBitboard());
 
     for (int currentBishopIndex : bishopIndices) {
-        DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];
+        RayBitmasks::DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];
         int bishopRank = rankFromBitIndex(currentBishopIndex);
         int bishopFile = fileFromBitIndex(currentBishopIndex);
 

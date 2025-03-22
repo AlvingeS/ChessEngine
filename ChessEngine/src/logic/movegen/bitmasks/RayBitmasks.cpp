@@ -4,7 +4,7 @@
 
 namespace logic {
 
-bitmask getNorthRay(int ind) 
+bitmask RayBitmasks::getNorthRay(int ind) 
 {
     int rank = rankFromBitIndex(ind);
     int file = fileFromBitIndex(ind);
@@ -18,7 +18,7 @@ bitmask getNorthRay(int ind)
     return north_ray;
 }
 
-bitmask getNorthEastRay(int ind) 
+bitmask RayBitmasks::getNorthEastRay(int ind) 
 {
     int rank = rankFromBitIndex(ind);
     int file = fileFromBitIndex(ind);
@@ -34,7 +34,7 @@ bitmask getNorthEastRay(int ind)
     return north_east_ray;
 }
 
-bitmask getEastRay(int ind) 
+bitmask RayBitmasks::getEastRay(int ind) 
 {
     int rank = rankFromBitIndex(ind);
     int file = fileFromBitIndex(ind);
@@ -48,7 +48,7 @@ bitmask getEastRay(int ind)
     return east_ray;
 }
 
-bitmask getSouthEastRay(int ind) 
+bitmask RayBitmasks::getSouthEastRay(int ind) 
 {
     int rank = rankFromBitIndex(ind);
     int file = fileFromBitIndex(ind);
@@ -64,7 +64,7 @@ bitmask getSouthEastRay(int ind)
     return south_east_ray;
 }
 
-bitmask getSouthRay(int ind) 
+bitmask RayBitmasks::getSouthRay(int ind) 
 {
     int rank = rankFromBitIndex(ind);
     int file = fileFromBitIndex(ind);
@@ -78,7 +78,7 @@ bitmask getSouthRay(int ind)
     return south_ray;
 }
 
-bitmask getSouthWestRay(int ind) 
+bitmask RayBitmasks::getSouthWestRay(int ind) 
 {
     int rank = rankFromBitIndex(ind);
     int file = fileFromBitIndex(ind);
@@ -94,7 +94,7 @@ bitmask getSouthWestRay(int ind)
     return south_west_ray;
 }
 
-bitmask getWestRay(int ind) 
+bitmask RayBitmasks::getWestRay(int ind) 
 {
     int rank = rankFromBitIndex(ind);
     int file = fileFromBitIndex(ind);
@@ -108,7 +108,7 @@ bitmask getWestRay(int ind)
     return west_ray;
 }
 
-bitmask getNorthWestRay(int ind) 
+bitmask RayBitmasks::getNorthWestRay(int ind) 
 {
     int rank = rankFromBitIndex(ind);
     int file = fileFromBitIndex(ind);
@@ -124,7 +124,7 @@ bitmask getNorthWestRay(int ind)
     return north_west_ray;
 }
 
-StraightRays getStraightRays(int ind) 
+RayBitmasks::StraightRays RayBitmasks::getStraightRays(int ind) 
 {
     return {
         getNorthRay(ind),
@@ -134,7 +134,7 @@ StraightRays getStraightRays(int ind)
     };
 }
 
-DiagonalRays getDiagonalRays(int ind) 
+RayBitmasks::DiagonalRays RayBitmasks::getDiagonalRays(int ind) 
 {
     return {
         getNorthEastRay(ind),
@@ -143,10 +143,9 @@ DiagonalRays getDiagonalRays(int ind)
         getNorthWestRay(ind)
     };
 }
-std::vector<StraightRays> getAllStraightRayBitmasks() 
-
+std::vector<RayBitmasks::StraightRays> RayBitmasks::getAllStraightRayBitmasks() 
 {
-    std::vector<StraightRays> allStraightRayBitmasks;
+    std::vector<RayBitmasks::StraightRays> allStraightRayBitmasks;
 
     for (int i = 0; i < 64; i++) {
         allStraightRayBitmasks.push_back(getStraightRays(i));
@@ -155,9 +154,9 @@ std::vector<StraightRays> getAllStraightRayBitmasks()
     return allStraightRayBitmasks;
 }
 
-std::vector<DiagonalRays> getAllDiagonalRayBitmasks() 
+std::vector<RayBitmasks::DiagonalRays> RayBitmasks::getAllDiagonalRayBitmasks() 
 {
-    std::vector<DiagonalRays> allDiagonalRayBitmasks;
+    std::vector<RayBitmasks::DiagonalRays> allDiagonalRayBitmasks;
 
     for (int i = 0; i < 64; i++) {
         allDiagonalRayBitmasks.push_back(getDiagonalRays(i));

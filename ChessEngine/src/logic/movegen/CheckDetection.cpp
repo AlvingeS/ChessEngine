@@ -14,8 +14,8 @@ CheckDetection::CheckDetection(model::Board& board)
     : _bitboards(board.bitboards)
     , _stateBitmasks(board.stateBitmasks)
 {
-    _straightRayBitmasks = getAllStraightRayBitmasks();
-    _diagonalRayBitmasks = getAllDiagonalRayBitmasks();
+    _straightRayBitmasks = RayBitmasks::getAllStraightRayBitmasks();
+    _diagonalRayBitmasks = RayBitmasks::getAllDiagonalRayBitmasks();
     _knightBitmasks = getAllKnightBitmasks();
     _whitePawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(true);
     _blackPawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(false);
@@ -29,7 +29,7 @@ bool CheckDetection::isInCheck(bool isWhite) const
                                    : _bitboards.getBlackKingBitboard());
 
     // Check if any opponent rooks or queens are attacking the king
-    StraightRays straightRays = _straightRayBitmasks[kingIndex];
+    RayBitmasks::StraightRays straightRays = _straightRayBitmasks[kingIndex];
     bitmask opponentRooksAndQueens = isWhite ? _bitboards.getBlackRooksBitboard() | _bitboards.getBlackQueensBitboard()
                                              : _bitboards.getWhiteRooksBitboard() | _bitboards.getWhiteQueensBitboard();
 
@@ -46,7 +46,7 @@ bool CheckDetection::isInCheck(bool isWhite) const
         return true;
 
     // Check if any opponent bishops or queens are attacking the king
-    DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
+    RayBitmasks::DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
     bitmask opponentBishopsAndQueens = isWhite ? _bitboards.getBlackBishopsBitboard() | _bitboards.getBlackQueensBitboard() 
                                                : _bitboards.getWhiteBishopsBitboard() | _bitboards.getWhiteQueensBitboard();
 

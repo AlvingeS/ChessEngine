@@ -12,13 +12,13 @@ class PieceMap {
 public:
     PieceMap(const Bitboards& bitboards);
 
-    PieceType getPieceTypeAtIndex(int index) const;
+    Piece::Type getPieceTypeAtIndex(int index) const;
     
-    void setPieceTypeAtIndex(int index, PieceType pieceType);
+    void setPieceTypeAtIndex(int index, Piece::Type pieceType);
     void fillPieceMapFromBitboards(const Bitboards& bitboards);
     
 private:
-    std::vector<PieceType> _pieceMap;
+    std::vector<Piece::Type> _pieceMap;
 };
 
 } // namespace model

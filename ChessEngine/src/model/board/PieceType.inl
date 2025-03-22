@@ -1,13 +1,13 @@
 namespace model {
 
-inline int pieceTypeToInt(PieceType piece_type) 
+inline int Piece::getIntFromType(Piece::Type type)
 {
-    return static_cast<int>(piece_type);
+    return static_cast<int>(type);
 }
 
-inline PieceType intToPieceType(int i) 
+inline Piece::Type Piece::getTypeFromInt(int integer)
 {
-    return static_cast<PieceType>(i);
+    return static_cast<Piece::Type>(integer);
 }
 
 } // namespace model

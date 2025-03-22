@@ -1,6 +1,6 @@
 namespace model {
 
-inline void ZHasher::hashSquarePieceType(int squareIndex, PieceType pieceType)
+inline void ZHasher::hashSquarePieceType(int squareIndex, Piece::Type pieceType)
 {
     _hash ^= _randBoardPieceTypeNums[squareIndex][static_cast<int>(pieceType)];
 }

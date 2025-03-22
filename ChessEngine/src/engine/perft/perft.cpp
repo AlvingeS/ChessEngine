@@ -23,7 +23,7 @@ perft::perft(int maxDepth)
       _totalNodes(0)
 {
     // For any non-uniform initialization:
-    _lastCapturedPieces.resize(_maxDepth, model::PieceType::EMPTY);
+    _lastCapturedPieces.resize(_maxDepth, model::Piece::Type::EMPTY);
     _movelists.resize(_maxDepth);
     _noCapturedOrPawnMoveCounts.resize(_maxDepth, 0);
 }
@@ -98,7 +98,7 @@ bool perft::tooManyPiecesOnBoard()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (_pieceMap.getPieceTypeAtIndex(i) != model::PieceType::EMPTY) {
+        if (_pieceMap.getPieceTypeAtIndex(i) != model::Piece::Type::EMPTY) {
             count++;
         }
     }

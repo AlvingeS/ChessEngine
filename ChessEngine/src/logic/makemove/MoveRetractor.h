@@ -31,11 +31,11 @@ public:
 private:
     void unmakeCastleMove(bool wasWhite, bool isKingSide);
 
-    model::PieceType  determineMovedPieceType(const model::Move& move, bool wasWhite, int toIndex) const;
+    model::Piece::Type  determineMovedPieceType(const model::Move& move, bool wasWhite, int toIndex) const;
     
-    void removePreviouslyMovedPieceFromBoard(const model::Move& move, int toIndex, model::PieceType  previouslyMovedPieceType, bool wasWhite);
-    void placeBackCapturedPieceOnBoard(bool isEP, int captureIndex, int toIndex, bool wasWhite, model::PieceType  previouslyCapturedPieceType);
-    void placeBackMovedPieceOnBoard(bool wasWhite, int fromIndex, model::PieceType  movedPieceType);
+    void removePreviouslyMovedPieceFromBoard(const model::Move& move, int toIndex, model::Piece::Type  previouslyMovedPieceType, bool wasWhite);
+    void placeBackCapturedPieceOnBoard(bool isEP, int captureIndex, int toIndex, bool wasWhite, model::Piece::Type  previouslyCapturedPieceType);
+    void placeBackMovedPieceOnBoard(bool wasWhite, int fromIndex, model::Piece::Type  movedPieceType);
 
     model::Bitboards& _bitboards;
     model::StateBitmasks& _stateBitmasks;

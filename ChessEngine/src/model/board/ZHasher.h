@@ -11,7 +11,7 @@ class ZHasher {
 
 public:
     ZHasher(PieceMap& pieceMap);
-    void hashSquarePieceType(int squareIndex, PieceType pieceType);
+    void hashSquarePieceType(int squareIndex, Piece::Type pieceType);
     void hashCastleRights(int castleRights);
     void hashEnPassantFile(int file);
     void hashIsWhite(bool isWhite);

@@ -23,7 +23,7 @@ void setBoardFromFen(
         } else if (std::isdigit(c)) {
             file += c - '0';
         } else {
-            model::PieceType type = model::CharToPieceType(c);
+            model::Piece::Type type = model::Piece::getTypeFromChar(c);
             bitboards.setPieceTypeBit(rank * 8 + 7 - file, type);
             file++;
         }
@@ -49,15 +49,15 @@ std::string getFenFromBoard(const model::PieceMap& pieceMap)
             fen += "/";
         }
 
-        model::PieceType type = pieceMap.getPieceTypeAtIndex(i);
-        if (type == model::PieceType::EMPTY) {
+        model::Piece::Type type = pieceMap.getPieceTypeAtIndex(i);
+        if (type == model::Piece::Type::EMPTY) {
             emptyCount++;
         } else {
             if (emptyCount != 0) {
                 fen += std::to_string(emptyCount);
                 emptyCount = 0;
             }
-            fen += model::pieceTypeToChar(type);
+            fen += model::Piece::getCharFromType(type);
         }
     }
 

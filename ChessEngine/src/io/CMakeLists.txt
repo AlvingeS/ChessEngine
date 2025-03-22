@@ -3,4 +3,4 @@ add_library(io
     Fen.cpp
 )
 
-target_link_libraries(io PUBLIC movegen cxx_setup)
+target_link_libraries(io PUBLIC movegen board cxx_setup)

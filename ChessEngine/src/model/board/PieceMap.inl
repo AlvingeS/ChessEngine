@@ -1,11 +1,11 @@
 namespace model {
 
-inline PieceType PieceMap::getPieceTypeAtIndex(int index) const
+inline Piece::Type PieceMap::getPieceTypeAtIndex(int index) const
 {
     return _pieceMap[index];
 }
 
-inline void PieceMap::setPieceTypeAtIndex(int index, PieceType pieceType)
+inline void PieceMap::setPieceTypeAtIndex(int index, Piece::Type pieceType)
 {
     _pieceMap[index] = pieceType;
 }

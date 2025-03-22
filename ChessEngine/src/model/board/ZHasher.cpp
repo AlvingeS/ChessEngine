@@ -43,9 +43,9 @@ void ZHasher::computeInitialHash()
     _hash = 0;
 
     for (size_t i = 0; i < 64; i++) {
-        PieceType pieceType = _pieceMap.getPieceTypeAtIndex(i);
+        Piece::Type pieceType = _pieceMap.getPieceTypeAtIndex(i);
 
-        if (pieceType != PieceType::EMPTY)
+        if (pieceType != Piece::Type::EMPTY)
             hashSquarePieceType(i, pieceType);
     }
 

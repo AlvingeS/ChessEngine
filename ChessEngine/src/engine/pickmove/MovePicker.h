@@ -122,7 +122,7 @@ private:
 
     int _pseudoLegalMovesCount;
     std::vector<model::Movelist> _movelists;
-    std::vector<model::PieceType> _lastCapturedPieces;
+    std::vector<model::Piece::Type> _lastCapturedPieces;
     std::vector<int> _noCapturedOrPawnMoveCounts; 
 
     bool tooManyPiecesOnBoard();

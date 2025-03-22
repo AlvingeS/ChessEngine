@@ -36,7 +36,7 @@ MovePicker::MovePicker(int maxDepth)
     _noCapturedOrPawnMoveCounts.resize(_maxDepth);
 
     for (int i = 0; i < _maxDepth; i++) {
-        _lastCapturedPieces[i] = model::PieceType::EMPTY;
+        _lastCapturedPieces[i] = model::Piece::Type::EMPTY;
         _movelists[i] = model::Movelist();
         _noCapturedOrPawnMoveCounts[i] = 0;
     }
@@ -137,7 +137,7 @@ bool MovePicker::tooManyPiecesOnBoard()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (_pieceMap.getPieceTypeAtIndex(i) != model::PieceType::EMPTY) {
+        if (_pieceMap.getPieceTypeAtIndex(i) != model::Piece::Type::EMPTY) {
             count++;
         }
     }
@@ -304,7 +304,7 @@ void MovePicker::minimax(
             _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
         }
     
-        if (not currentMove.isAnyCapture() && (moveResult.capturedPieceType != model::PieceType::W_PAWN && moveResult.movedPieceType != model::PieceType::B_PAWN)) {
+        if (not currentMove.isAnyCapture() && (moveResult.capturedPieceType != model::Piece::Type::W_PAWN && moveResult.movedPieceType != model::Piece::Type::B_PAWN)) {
             _searchMemory.decrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
         }
 

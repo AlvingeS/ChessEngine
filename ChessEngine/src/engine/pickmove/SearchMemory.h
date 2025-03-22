@@ -22,14 +22,14 @@ public:
         return _castlingRights[depth];
     }
 
-    model::PieceType getLastCapturedPieceAtDepth(int depth) const
+    model::Piece::Type getLastCapturedPieceAtDepth(int depth) const
     {
         return _lastCapturedPieces[depth];
     }
 
     void setLastCapturedPieceAtDepth(
         int currentDepth,
-        model::PieceType pieceType) 
+        model::Piece::Type pieceType) 
     {
         _lastCapturedPieces[currentDepth] = pieceType;
     }
@@ -38,7 +38,7 @@ public:
         int currentDepth, 
         const model::Move& move, 
         bool isWhite, 
-        model::PieceType movedPieceType
+        model::Piece::Type movedPieceType
     );
 
     void unsetCastlingRights(int currentDepth);
@@ -76,7 +76,7 @@ public:
     void handleNoCaptureCount(
         const model::Move& move, 
         int currentDepth, 
-        model::PieceType  movedPieceType
+        model::Piece::Type  movedPieceType
     );
 
     void handleEnPessantMemory(
@@ -89,7 +89,7 @@ public:
 private:
     int _maxDepth;
     std::vector<unsigned char> _castlingRights;
-    std::vector<model::PieceType> _lastCapturedPieces;
+    std::vector<model::Piece::Type> _lastCapturedPieces;
     std::vector<bitmask> _enPessantTargets;
     std::vector<int> _noCapturedOrPawnMoveCounts;
 

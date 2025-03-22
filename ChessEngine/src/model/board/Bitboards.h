@@ -9,12 +9,12 @@ class Bitboards {
 public:
     Bitboards();
 
-    const bitboard& getBitboardFromPieceType(PieceType pieceType) const;
+    const bitboard& getBitboardFromPieceType(Piece::Type pieceType) const;
     const bitboard& getBitboardFromIndex(int index) const;
-    bool pieceTypeBitIsSet(int index, PieceType pieceType) const;
+    bool pieceTypeBitIsSet(int index, Piece::Type pieceType) const;
     
-    void clearPieceTypeBit(int index, PieceType pieceType);
-    void setPieceTypeBit(int index, PieceType pieceType);
+    void clearPieceTypeBit(int index, Piece::Type pieceType);
+    void setPieceTypeBit(int index, Piece::Type pieceType);
     void resetBitboards();
 
     // Set, clear and get for all individual piece types / bitboards

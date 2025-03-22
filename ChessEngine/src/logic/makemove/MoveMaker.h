@@ -25,7 +25,7 @@ public:
 private:
     void makeCastleMove(bool isWhite, bool isKingSide);
     
-    model::PieceType removeMovedPieceFromBoard(
+    model::Piece::Type removeMovedPieceFromBoard(
         bool isWhite, 
         int fromIndex
     );
@@ -34,13 +34,13 @@ private:
         bool isEP, 
         bool isWhite, 
         int captureIndex, 
-        model::PieceType capturedPieceType
+        model::Piece::Type capturedPieceType
     );
 
     void placeMovedPieceOnBoard(
         bool isWhite, 
         int toIndex,
-        model::PieceType movedPieceType
+        model::Piece::Type movedPieceType
     );
 
     model::Bitboards& _bitboards;

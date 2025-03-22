@@ -9,16 +9,16 @@ namespace model {
 namespace logic {
 
 struct MoveResult {
-    model::PieceType capturedPieceType;
-    model::PieceType movedPieceType;
+    model::Piece::Type capturedPieceType;
+    model::Piece::Type movedPieceType;
 
     MoveResult() {
-        capturedPieceType = model::PieceType::EMPTY;
-        movedPieceType = model::PieceType::EMPTY;
+        capturedPieceType = model::Piece::Type::EMPTY;
+        movedPieceType = model::Piece::Type::EMPTY;
     }
 };
 
-model::PieceType getPromotionPieceType(int promotionFlag, bool isWhite);
+model::Piece::Type getPromotionPieceType(int promotionFlag, bool isWhite);
 int determineCaptureIndex(const model::Move& move, bool isWhite, int toIndex);
 
 } // namespace logic

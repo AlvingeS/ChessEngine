@@ -13,7 +13,7 @@ SearchMemory::SearchMemory(int maxDepth) : _maxDepth(maxDepth)
 
     for (int i = 0; i <= _maxDepth; i++) {
         _castlingRights[i] = 0b1111;
-        _lastCapturedPieces[i] = model::PieceType::EMPTY;
+        _lastCapturedPieces[i] = model::Piece::Type::EMPTY;
         _enPessantTargets[i] = 0ULL;
         _noCapturedOrPawnMoveCounts[i] = 0;
     }
@@ -39,7 +39,7 @@ void SearchMemory::setCastlingRights(
     int currentDepth, 
     const model::Move& move, 
     bool isWhite, 
-    model::PieceType movedPieceType) 
+    model::Piece::Type movedPieceType) 
 {
     if (move.isAnyCastle()) {
         removeCastlingRightsForRemainingDepths(
@@ -48,7 +48,7 @@ void SearchMemory::setCastlingRights(
         );
     }
 
-    if (movedPieceType == model::PieceType::W_KING || movedPieceType == model::PieceType::B_KING) {
+    if (movedPieceType == model::Piece::Type::W_KING || movedPieceType == model::Piece::Type::B_KING) {
         if (isWhite) {
             if (_castlingRights[currentDepth] & whiteBoth)
                 removeCastlingRightsForRemainingDepths(currentDepth, whiteBoth);
@@ -58,7 +58,7 @@ void SearchMemory::setCastlingRights(
         }
     }
 
-    if (movedPieceType == model::PieceType::W_ROOK || movedPieceType == model::PieceType::B_ROOK) {
+    if (movedPieceType == model::Piece::Type::W_ROOK || movedPieceType == model::Piece::Type::B_ROOK) {
         if (isWhite) {
             if (move.getBitIndexFrom() == 0) {
                 if (_castlingRights[currentDepth] & whiteKingSide)
@@ -96,7 +96,7 @@ void SearchMemory::overrideCastlingRights(unsigned char rights)
 void SearchMemory::handleNoCaptureCount(
     const model::Move& move, 
     int currentDepth, 
-    model::PieceType  movedPieceType)
+    model::Piece::Type  movedPieceType)
 {
     // If the move is a capture, reset the no capture count
     if (move.isAnyCapture()) {
@@ -105,7 +105,7 @@ void SearchMemory::handleNoCaptureCount(
     }
 
     // If the move is a pawn move, reset the no capture count
-    if (movedPieceType == model::PieceType::W_PAWN || movedPieceType == model::PieceType::B_PAWN) {
+    if (movedPieceType == model::Piece::Type::W_PAWN || movedPieceType == model::Piece::Type::B_PAWN) {
         resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
         return;
     }

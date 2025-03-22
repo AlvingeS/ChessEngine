@@ -12,7 +12,7 @@ public:
     void printBoard() const;
 
 private:
-    bool isValidPiece(model::PieceType piece_type);
+    bool isValidPiece(model::Piece::Type piece_type);
 
     std::vector<std::vector<char>> _board;
 };

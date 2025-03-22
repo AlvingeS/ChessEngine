@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.16..3.24)
 project(ChessEngine VERSION 0.1.0 DESCRIPTION "Chess Engine" LANGUAGES CXX)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Set default build type if not specified
 if(NOT CMAKE_BUILD_TYPE)

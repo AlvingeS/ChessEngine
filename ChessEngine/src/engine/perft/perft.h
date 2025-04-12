@@ -82,12 +82,12 @@ public:
 
     void setBoardFromFen(const std::string& fen)
     {
-        io::setBoardFromFen(fen, _bitboards, _stateBitmasks, _pieceMap);
+        io::Fen::setBoardFromFen(fen, _bitboards, _stateBitmasks, _pieceMap);
     }
 
     std::string getFenFromBoard() const
     {
-        return io::getFenFromBoard(_pieceMap);
+        return io::Fen::getFenFromBoard(_pieceMap);
     }
 
     bool diffBetweenStateBitmasks() const

@@ -21,5 +21,4 @@ struct PawnBitmasks {
 
 };
 
-
 } // namespace logic

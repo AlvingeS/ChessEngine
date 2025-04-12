@@ -28,7 +28,7 @@
 //     };
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhite_ShouldReturn2Moves) {
-//         io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genCastlingMoves(true, movelist);
 
 //         model::Movelist moves = getMoves();
@@ -45,7 +45,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlack_ShouldReturn2Moves) {
-//         io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genCastlingMoves(true, movelist);
 
 //         model::Movelist moves = getMoves();
@@ -63,7 +63,7 @@
 
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenTwo_ShouldReturn0Moves) {
-//         io::setBoardFromFen(fenTwo, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(fenTwo, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genCastlingMoves(true, movelist);
 //         moveGenerator.genCastlingMoves(false, movelist);
 
@@ -71,7 +71,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenThreeWhite_ShouldReturn1Moves) {
-//         io::setBoardFromFen(fenThree, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(fenThree, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.getBoard().setRookHMoved(true, true);
 //         moveGenerator.genCastlingMoves(true, movelist);
 
@@ -90,7 +90,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenThreeBlack_ShouldReturn1Moves) {
-//         io::setBoardFromFen(fenThree, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(fenThree, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.getBoard().setRookAMoved(false, true);
 //         moveGenerator.genCastlingMoves(false, movelist);
 
@@ -109,7 +109,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenStartingPos_ShouldReturn0Moves) {
-//         io::setBoardFromFen(startingPos, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(startingPos, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genCastlingMoves(true, movelist);
 //         moveGenerator.genCastlingMoves(false, movelist);
 
@@ -117,7 +117,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteKingMoved_ShouldReturn0Moves) {
-//         io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.getBoard().setKingMoved(true, true);
 //         moveGenerator.genCastlingMoves(true, movelist);
 
@@ -125,7 +125,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackKingMoved_ShouldReturn0Moves) {
-//         io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.getBoard().setKingMoved(false, true);
 //         moveGenerator.genCastlingMoves(false, movelist);
 
@@ -133,7 +133,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteRookAMoved_ShouldReturn1Moves) {
-//         io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.getBoard().setRookAMoved(true, true);
 //         moveGenerator.genCastlingMoves(true, movelist);
 
@@ -152,7 +152,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackRookAMoved_ShouldReturn1Moves) {
-//         io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.getBoard().setRookAMoved(false, true);
 //         moveGenerator.genCastlingMoves(false, movelist);
 
@@ -171,7 +171,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteRookHMoved_ShouldReturn1Moves) {
-//         io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.getBoard().setRookHMoved(true, true);
 //         moveGenerator.genCastlingMoves(true, movelist);
 
@@ -190,7 +190,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackRookHMoved_ShouldReturn1Moves) {
-//         io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.getBoard().setRookHMoved(false, true);
 //         moveGenerator.genCastlingMoves(false, movelist);
 
@@ -209,35 +209,35 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_bugFenWhite_ShouldReturn0Moves) {
-//         io::setBoardFromFen(bugFen, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(bugFen, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genCastlingMoves(true, movelist);
 
 //         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingWhileInCheckWhiteFen_ShouldReturn0Moves) {
-//         io::setBoardFromFen(castlingWhileInCheckWhiteFen, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(castlingWhileInCheckWhiteFen, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genCastlingMoves(true, movelist);
 
 //         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingWhileInCheckBlackFen_ShouldReturn0Moves) {
-//         io::setBoardFromFen(castlingWhileInCheckBlackFen, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(castlingWhileInCheckBlackFen, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genCastlingMoves(false, movelist);
 
 //         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //         }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingThroughAttacksWhiteFenWhite_ShouldReturn0Moves) {
-//         io::setBoardFromFen(castlingThroughAttacksWhiteFen, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(castlingThroughAttacksWhiteFen, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genCastlingMoves(true, movelist);
 
 //         ASSERT_EQ(movelist.getMoveIndex(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingThroughAttacksBlackFenBlack_ShouldReturn0Moves) {
-//         io::setBoardFromFen(castlingThroughAttacksBlackFen, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(castlingThroughAttacksBlackFen, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genCastlingMoves(false, movelist);
 
 //         ASSERT_EQ(movelist.getMoveIndex(), 0);

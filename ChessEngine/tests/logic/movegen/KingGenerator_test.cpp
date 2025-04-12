@@ -17,7 +17,7 @@ protected:
 
 TEST_F(MoveGeneratorKingTest, genKingMoves_fenOneWhite_ShouldReturn4Moves)
 {
-    io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
+    io::Fen::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
     moveGenerator.genKingMoves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -35,7 +35,7 @@ TEST_F(MoveGeneratorKingTest, genKingMoves_fenOneWhite_ShouldReturn4Moves)
 
 TEST_F(MoveGeneratorKingTest, genKingMoves_fenOneBlack_ShouldReturn6Moves)
 {
-    io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
+    io::Fen::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
     moveGenerator.genKingMoves(false, movelist);
 
     model::Movelist moves = getMoves();
@@ -53,7 +53,7 @@ TEST_F(MoveGeneratorKingTest, genKingMoves_fenOneBlack_ShouldReturn6Moves)
 
 TEST_F(MoveGeneratorKingTest, genKingMoves_startingPosWhite_ShouldReturn0Moves)
 {
-    io::setBoardFromFen(startingPos, bitboards, stateBitmasks, pieceMap);
+    io::Fen::setBoardFromFen(startingPos, bitboards, stateBitmasks, pieceMap);
     moveGenerator.genKingMoves(true, movelist);
 
     ASSERT_EQ(movelist.getMoveIndex(), 0);
@@ -61,7 +61,7 @@ TEST_F(MoveGeneratorKingTest, genKingMoves_startingPosWhite_ShouldReturn0Moves)
 
 TEST_F(MoveGeneratorKingTest, genKingMoves_startingPosBlack_ShouldReturn0Moves)
 {
-    io::setBoardFromFen(startingPos, bitboards, stateBitmasks, pieceMap);
+    io::Fen::setBoardFromFen(startingPos, bitboards, stateBitmasks, pieceMap);
     moveGenerator.genKingMoves(false, movelist);
 
     ASSERT_EQ(movelist.getMoveIndex(), 0);

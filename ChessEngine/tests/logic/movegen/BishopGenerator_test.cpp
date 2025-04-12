@@ -17,7 +17,7 @@ protected:
 
 TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneWhite_ShouldReturn18Moves) 
 {
-    io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
+    io::Fen::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
     moveGenerator.genBishopMoves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -36,7 +36,7 @@ TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneWhite_ShouldReturn18Moves)
 
 TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneBlack_ShouldReturn18Moves) 
 {
-    io::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
+    io::Fen::setBoardFromFen(fenOne, bitboards, stateBitmasks, pieceMap);
     moveGenerator.genBishopMoves(false, movelist);
 
     model::Movelist moves = getMoves();
@@ -55,7 +55,7 @@ TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneBlack_ShouldReturn18Moves)
 
 TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosWhite_ShouldReturn0Moves) 
 {
-    io::setBoardFromFen(startingPos, bitboards, stateBitmasks, pieceMap);
+    io::Fen::setBoardFromFen(startingPos, bitboards, stateBitmasks, pieceMap);
     moveGenerator.genBishopMoves(true, movelist);
 
     ASSERT_EQ(movelist.getMoveIndex(), 0);
@@ -63,7 +63,7 @@ TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosWhite_ShouldReturn0Mov
 
 TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosBlack_ShouldReturn0Moves) 
 {
-    io::setBoardFromFen(startingPos, bitboards, stateBitmasks, pieceMap);
+    io::Fen::setBoardFromFen(startingPos, bitboards, stateBitmasks, pieceMap);
     moveGenerator.genBishopMoves(false, movelist);;
 
     ASSERT_EQ(movelist.getMoveIndex(), 0);

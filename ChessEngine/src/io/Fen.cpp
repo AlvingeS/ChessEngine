@@ -4,7 +4,7 @@
 
 namespace io {
 
-void setBoardFromFen(
+void Fen::setBoardFromFen(
     const std::string& fen, 
     model::Bitboards& bitboards, 
     model::StateBitmasks& stateBitmasks, 
@@ -35,7 +35,7 @@ void setBoardFromFen(
     stateBitmasks.updOccupiedAndEmptySquaresBitmasks();
 }
 
-std::string getFenFromBoard(const model::PieceMap& pieceMap)
+std::string Fen::getFenFromBoard(const model::PieceMap& pieceMap)
 {
     std::string fen = "";
     int emptyCount = 0;

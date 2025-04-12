@@ -80,7 +80,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesWhite) {
-//         io::setBoardFromFen(captures, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(captures, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(true, movelist);
 
 //         // Makes copies of the bitboards and pieceMap
@@ -97,7 +97,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesBlack) {
-//         io::setBoardFromFen(captures, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(captures, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(false, movelist);
 
 //         // Makes copies of the bitboards and pieceMap
@@ -114,7 +114,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingWhite) {
-//         io::setBoardFromFen(castling, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(castling, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(true, movelist);
 
 //         // Makes copies of the bitboards and pieceMap
@@ -131,7 +131,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingBlack) {
-//         io::setBoardFromFen(castling, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(castling, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(false, movelist);
 
 //         // Makes copies of the bitboards and pieceMap
@@ -148,7 +148,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionWhite) {
-//         io::setBoardFromFen(normalPromotion, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(normalPromotion, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(true, movelist);
 
 //         // Makes copies of the bitboards and pieceMap
@@ -165,7 +165,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionBlack) {
-//         io::setBoardFromFen(normalPromotion, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(normalPromotion, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(false, movelist);
 
 //         // Makes copies of the bitboards and pieceMap
@@ -182,7 +182,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionWhite) {
-//         io::setBoardFromFen(capturePromotion, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(capturePromotion, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(true, movelist);
 
 //         // Makes copies of the bitboards and pieceMap
@@ -199,7 +199,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionBlack) {
-//         io::setBoardFromFen(capturePromotion, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(capturePromotion, bitboards, stateBitmasks, pieceMap);
 //         moveGenerator.genMoves(false, movelist);
 
 //         // Makes copies of the bitboards and pieceMap
@@ -216,7 +216,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_EnPessantWhite) {
-//         io::setBoardFromFen(enPessant, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(enPessant, bitboards, stateBitmasks, pieceMap);
 
 //         // Make a double pawn push to enable en pessant
 //         moveGenerator.getBoard().makeMove(Move(51, 35, model::Move::DOUBLE_PAWN_PUSH_FLAG), false);
@@ -237,7 +237,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_EnPessantBlack) {
-//         io::setBoardFromFen(enPessant, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(enPessant, bitboards, stateBitmasks, pieceMap);
 
 //         // Make a double pawn push to enable en pessant
 //         moveGenerator.getBoard().makeMove(Move(9, 17, model::Move::DOUBLE_PAWN_PUSH_FLAG), true);
@@ -258,7 +258,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsWhite) {
-//         io::setBoardFromFen(castling, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(castling, bitboards, stateBitmasks, pieceMap);
 
 //         moveGenerator.genCastlingMoves(true, movelist);
 //         std::vector<model::Move> castlingMoves = getMoves();
@@ -282,7 +282,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsBlack) {
-//         io::setBoardFromFen(castling, bitboards, stateBitmasks, pieceMap);
+//         io::Fen::setBoardFromFen(castling, bitboards, stateBitmasks, pieceMap);
 
 //         moveGenerator.genCastlingMoves(false, movelist);
 //         std::vector<model::Move> castlingMoves = getMoves();

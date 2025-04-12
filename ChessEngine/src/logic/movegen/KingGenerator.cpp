@@ -13,7 +13,7 @@ KingGenerator::KingGenerator(model::Board& board)
     : _bitboards(board.bitboards)
     , _stateBitmasks(board.stateBitmasks)
 {
-    _kingBitmasks = getAllKingBitmasks();
+    _kingBitmasks = KingBitmasks::getAllKingBitmasks();
 }
 
 void KingGenerator::generate(bool isWhite, model::Movelist& moveList) 

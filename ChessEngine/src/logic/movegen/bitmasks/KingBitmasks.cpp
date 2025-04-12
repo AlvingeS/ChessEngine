@@ -5,7 +5,7 @@
 namespace logic {
 
 // Applies all king moves without considering looping around the board
-bitmask applyKingMoves(int ind) 
+bitmask KingBitmasks::applyKingMoves(int ind) 
 {
     bitmask kingMoves = 0ULL;
 
@@ -22,7 +22,7 @@ bitmask applyKingMoves(int ind)
 }
 
 // Applies file masks to king moves to prevent looping around the board
-bitmask removeWrapAroundKingMoves(bitmask kingMoves, int ind) 
+bitmask KingBitmasks::removeWrapAroundKingMoves(bitmask kingMoves, int ind) 
 {
     bitmask notAFile = ~ChessUtils::getFileMask(7);
     bitmask notHFile = ~ChessUtils::getFileMask(0);
@@ -39,14 +39,14 @@ bitmask removeWrapAroundKingMoves(bitmask kingMoves, int ind)
     return kingMoves;
 }
 
-bitmask getKingBitmask(int ind) 
+bitmask KingBitmasks::getKingBitmask(int ind) 
 {
     bitmask kingMoves = applyKingMoves(ind);
     kingMoves = removeWrapAroundKingMoves(kingMoves, ind);
     return kingMoves;
 }
 
-const std::vector<bitmask> getAllKingBitmasks() 
+const std::vector<bitmask> KingBitmasks::getAllKingBitmasks() 
 {
     std::vector<bitmask> kingBitmasks;
 

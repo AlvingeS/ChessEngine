@@ -4,10 +4,14 @@
 
 namespace logic {
 
-bitmask getKingBitmask(int ind);
-const std::vector<bitmask> getAllKingBitmasks();
+struct KingBitmasks {
 
-bitmask applyKingMoves(int ind);
-bitmask removeWrapAroundKingMoves(bitmask kingMoves, int ind);
+    static bitmask getKingBitmask(int ind);
+    static const std::vector<bitmask> getAllKingBitmasks();
+    
+    static bitmask applyKingMoves(int ind);
+    static bitmask removeWrapAroundKingMoves(bitmask kingMoves, int ind);
+
+};
 
 } // namespace logic

@@ -5,7 +5,7 @@
 
 namespace logic {
 
-void getBitIndices(std::vector<int>& indices, bitboard bitboard)
+void BitBasics::getBitIndices(std::vector<int>& indices, bitboard bitboard)
 { 
     indices.clear();
 

@@ -16,7 +16,7 @@ void RayLogic::addMovesFromFreeRay(
     model::Movelist& moveList)
 {
     std::vector<int>& freeRayIndices = Containers::getSlidingPiecefreeMovesIndices();
-    getBitIndices(freeRayIndices, freeRay);
+    BitBasics::getBitIndices(freeRayIndices, freeRay);
 
     for (int bitIndex : freeRayIndices) {
         moveList.addMove(model::Move(bitIndexFrom, bitIndex, model::Move::QUITE_FLAG));
@@ -30,7 +30,7 @@ void RayLogic::addMoveIfBlockerIsEnemy(
     model::Movelist& moveList,
     bitmask whitePiecesBitmask)
 {
-    bool blockerIsWhite = getBit(whitePiecesBitmask, blockerIndex);
+    bool blockerIsWhite = BitBasics::getBit(whitePiecesBitmask, blockerIndex);
 
     if (blockerIsWhite != isWhite)
         moveList.addMove(model::Move(bitIndexFrom, blockerIndex, model::Move::CAPTURE_FLAG));
@@ -117,8 +117,8 @@ void RayLogic::addMovesFromStraightRay(
 
         if (blockerBitmask != 0) {
             int blockerIndex = blockerOnLSB
-                               ? indexOfLSB(blockerBitmask)
-                               : indexOfMSB(blockerBitmask);
+                               ? BitBasics::indexOfLSB(blockerBitmask)
+                               : BitBasics::indexOfMSB(blockerBitmask);
                                
             addMoveIfBlockerIsEnemy(
                 blockerIndex,
@@ -158,8 +158,8 @@ void RayLogic::addMovesFromDiagonalRay(
 
     if (blockerBitmask != 0) {
         int blockerIndex = blockerOnLSB
-                           ? indexOfLSB(blockerBitmask) 
-                           : indexOfMSB(blockerBitmask);
+                           ? BitBasics::indexOfLSB(blockerBitmask) 
+                           : BitBasics::indexOfMSB(blockerBitmask);
 
         addMoveIfBlockerIsEnemy(
             blockerIndex, 
@@ -198,14 +198,14 @@ bool RayLogic::checkStraightRay(
     bitmask occupiedBlockerBitmask = straightRay & occupiedPiecesBitmask;
 
     // If there is only one blocker out of all pieces, then it must be a rook or a queen thus the king is in check
-    if (popCount(occupiedBlockerBitmask) == 1)
+    if (BitBasics::popCount(occupiedBlockerBitmask) == 1)
         return true;
 
-    int occupiedBlockerIndex = firstBlockerOnLSB ? indexOfLSB(occupiedBlockerBitmask)
-                                                 : indexOfMSB(occupiedBlockerBitmask);
+    int occupiedBlockerIndex = firstBlockerOnLSB ? BitBasics::indexOfLSB(occupiedBlockerBitmask)
+                                                 : BitBasics::indexOfMSB(occupiedBlockerBitmask);
 
-    int rooksAndQueensBlockerIndex = firstBlockerOnLSB ? indexOfLSB(rooksAndQueensBlockerBitmask)
-                                                       : indexOfMSB(rooksAndQueensBlockerBitmask);
+    int rooksAndQueensBlockerIndex = firstBlockerOnLSB ? BitBasics::indexOfLSB(rooksAndQueensBlockerBitmask)
+                                                       : BitBasics::indexOfMSB(rooksAndQueensBlockerBitmask);
 
     // If the the first blocker of any piece is the same as the first blocker of a rook or queen, then the king is in check
     return occupiedBlockerIndex == rooksAndQueensBlockerIndex;
@@ -224,14 +224,14 @@ bool RayLogic::checkDiagonalRay(
 
     bitmask occupiedBlockerBitmask = diagonalRay & occupiedPiecesBitmask;
 
-    if (popCount(occupiedBlockerBitmask) == 1)
+    if (BitBasics::popCount(occupiedBlockerBitmask) == 1)
         return true;
 
-    int occupiedBlockerIndex = firstBlockerOnLSB ? indexOfLSB(occupiedBlockerBitmask)
-                                                 : indexOfMSB(occupiedBlockerBitmask);
+    int occupiedBlockerIndex = firstBlockerOnLSB ? BitBasics::indexOfLSB(occupiedBlockerBitmask)
+                                                 : BitBasics::indexOfMSB(occupiedBlockerBitmask);
 
-    int bishopsAndQueensBlockerIndex = firstBlockerOnLSB ? indexOfLSB(bishopsAndQueensBlockerBitmask)
-                                                         : indexOfMSB(bishopsAndQueensBlockerBitmask);
+    int bishopsAndQueensBlockerIndex = firstBlockerOnLSB ? BitBasics::indexOfLSB(bishopsAndQueensBlockerBitmask)
+                                                         : BitBasics::indexOfMSB(bishopsAndQueensBlockerBitmask);
 
     return occupiedBlockerIndex == bishopsAndQueensBlockerIndex;
 }

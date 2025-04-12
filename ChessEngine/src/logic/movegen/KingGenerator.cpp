@@ -22,7 +22,7 @@ void KingGenerator::generate(bool isWhite, model::Movelist& moveList)
     std::vector<int>& freeMovesIndices = Containers::getLeapingPiecefreeMovesIndices();
     std::vector<int>& capturableMovesIndices = Containers::getLeapingPieceCapturableMovesIndices();
     
-    getBitIndices(kingIndices, isWhite ? _bitboards.getWhiteKingBitboard()
+    BitBasics::getBitIndices(kingIndices, isWhite ? _bitboards.getWhiteKingBitboard()
                                               : _bitboards.getBlackKingBitboard());
 
     // TODO: It makes zero sense to have this in a loop
@@ -36,8 +36,8 @@ void KingGenerator::generate(bool isWhite, model::Movelist& moveList)
 
         bitmask capturableKingMoves = kingBitmask & enemyPieces;
 
-        getBitIndices(freeMovesIndices, freeKingMoves);
-        getBitIndices(capturableMovesIndices, capturableKingMoves);
+        BitBasics::getBitIndices(freeMovesIndices, freeKingMoves);
+        BitBasics::getBitIndices(capturableMovesIndices, capturableKingMoves);
 
         for (int freeKingMoveIndex : freeMovesIndices) {
             moveList.addMove(model::Move(currentKingIndex, freeKingMoveIndex, model::Move::QUITE_FLAG));

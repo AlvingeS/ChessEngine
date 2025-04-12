@@ -23,7 +23,7 @@ void QueenGenerator::generate(
 {
     std::vector<int>& queenIndices = Containers::getPiecePositionIndices();
 
-    getBitIndices(queenIndices, isWhite ? _bitboards.getWhiteQueensBitboard()
+    BitBasics::getBitIndices(queenIndices, isWhite ? _bitboards.getWhiteQueensBitboard()
                                                : _bitboards.getBlackQueensBitboard());
 
     for (int currentQueenIndex : queenIndices) {

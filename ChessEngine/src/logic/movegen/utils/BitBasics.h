@@ -4,13 +4,17 @@
 
 namespace logic {
 
-bool getBit(bitmask a, int i);
-int indexOfLSB(bitmask a); 
-int indexOfMSB(bitmask a);
-void getBitIndices(std::vector<int>& indices, bitmask bitboard);
+struct BitBasics {
 
-int popCount(bitmask a);
-void printbitmaskInBits(bitmask n);
+    static bool getBit(bitmask a, int i);
+    static int indexOfLSB(bitmask a); 
+    static int indexOfMSB(bitmask a);
+    static void getBitIndices(std::vector<int>& indices, bitmask bitboard);
+    
+    static int popCount(bitmask a);
+    static void printBitmaskInBits(bitmask n);
+    
+};
 
 } // namespace logic
 

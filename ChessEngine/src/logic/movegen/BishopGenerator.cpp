@@ -26,7 +26,7 @@ void BishopGenerator::generate(
 {
     std::vector<int>& bishopIndices = Containers::getPiecePositionIndices();
 
-    getBitIndices(bishopIndices, isWhite ? _bitboards.getWhiteBishopsBitboard()
+    BitBasics::getBitIndices(bishopIndices, isWhite ? _bitboards.getWhiteBishopsBitboard()
                                          : _bitboards.getBlackBishopsBitboard());
 
     for (int currentBishopIndex : bishopIndices) {

@@ -211,7 +211,7 @@ TEST_F(ChessUtils, getBitIndices_a_ShouldReturn0_8_10_16to23)
 {
     std::vector<int> expected = {0, 8, 10, 16, 17, 18, 19, 20, 21, 22, 23};
     std::vector<int> actual;
-    getBitIndices(actual, a);
+    BitBasics::getBitIndices(actual, a);
     ASSERT_EQ(expected, actual);
 }
 
@@ -219,7 +219,7 @@ TEST_F(ChessUtils, getBitIndices_b_ShouldReturnEmptyVector)
 {
     std::vector<int> expected = {};
     std::vector<int> actual;
-    getBitIndices(actual, b);
+    BitBasics::getBitIndices(actual, b);
     ASSERT_EQ(expected, actual);
 }
 
@@ -233,7 +233,7 @@ TEST_F(ChessUtils, getBitIndices_c_ShouldReturn0to63)
     }
     
     std::vector<int> actual;
-    getBitIndices(actual, c);
+    BitBasics::getBitIndices(actual, c);
     ASSERT_EQ(expected, actual);
 }
 

@@ -29,7 +29,7 @@ void PawnGenerator::generate(
     std::vector<int>& freeMovesIndices = Containers::getLeapingPiecefreeMovesIndices();
     std::vector<int>& capturableMovesIndices = Containers::getLeapingPieceCapturableMovesIndices();
 
-    getBitIndices(pawnIndices, isWhite ? _bitboards.getWhitePawnsBitboard()
+    BitBasics::getBitIndices(pawnIndices, isWhite ? _bitboards.getWhitePawnsBitboard()
                                               : _bitboards.getBlackPawnsBitboard());
 
     for (int currentPawnIndex : pawnIndices) {
@@ -47,8 +47,8 @@ void PawnGenerator::generate(
         
         bitmask capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
 
-        getBitIndices(freeMovesIndices, freePawnMoves);
-        getBitIndices(capturableMovesIndices, capturablePawnMoves);
+        BitBasics::getBitIndices(freeMovesIndices, freePawnMoves);
+        BitBasics::getBitIndices(capturableMovesIndices, capturablePawnMoves);
 
         int offset = isWhite ? 8 : -8;
         bool canPromote = (isWhite && rankFromBitIndex(currentPawnIndex) == 6) || (!isWhite && rankFromBitIndex(currentPawnIndex) == 1);
@@ -85,7 +85,7 @@ void PawnGenerator::generate(
         }
 
         if ((capturePawnMoveBitmask & enpessantTarget) != 0) {
-            moveList.addMove(model::Move(currentPawnIndex, indexOfLSB(capturePawnMoveBitmask & enpessantTarget), model::Move::EP_CAPTURE_FLAG));
+            moveList.addMove(model::Move(currentPawnIndex, BitBasics::indexOfLSB(capturePawnMoveBitmask & enpessantTarget), model::Move::EP_CAPTURE_FLAG));
         }
     }
 }

@@ -25,7 +25,7 @@ bool CheckDetection::isInCheck(bool isWhite) const
 {
     int kingIndex, opponentKingIndex, kingRankDiff, kingFileDiff;
 
-    kingIndex = indexOfLSB(isWhite ? _bitboards.getWhiteKingBitboard()
+    kingIndex = BitBasics::indexOfLSB(isWhite ? _bitboards.getWhiteKingBitboard()
                                    : _bitboards.getBlackKingBitboard());
 
     // Check if any opponent rooks or queens are attacking the king
@@ -81,7 +81,7 @@ bool CheckDetection::isInCheck(bool isWhite) const
         return true;
 
     // Check if the king is in check from an adjacent king
-    opponentKingIndex = indexOfLSB(isWhite ? _bitboards.getBlackKingBitboard()
+    opponentKingIndex = BitBasics::indexOfLSB(isWhite ? _bitboards.getBlackKingBitboard()
                                            : _bitboards.getWhiteKingBitboard());
 
     kingRankDiff = abs(rankFromBitIndex(kingIndex) - rankFromBitIndex(opponentKingIndex));

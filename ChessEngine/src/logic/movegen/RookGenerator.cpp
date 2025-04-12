@@ -24,7 +24,7 @@ void RookGenerator::generate(
 
     RayBitmasks::StraightRays rays;
 
-    getBitIndices(rookIndices, isWhite ? _bitboards.getWhiteRooksBitboard()
+    BitBasics::getBitIndices(rookIndices, isWhite ? _bitboards.getWhiteRooksBitboard()
                                        : _bitboards.getBlackRooksBitboard());
 
     // Loop through all rooks and isolate them

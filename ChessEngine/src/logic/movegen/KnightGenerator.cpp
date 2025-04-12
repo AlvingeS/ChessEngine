@@ -23,7 +23,7 @@ void KnightGenerator::generate(
     std::vector<int>& freeMovesIndices = Containers::getLeapingPiecefreeMovesIndices();
     std::vector<int>& capturableMovesIndices = Containers::getLeapingPieceCapturableMovesIndices();
 
-    getBitIndices(knightIndices, isWhite ? _bitboards.getWhiteKnightsBitboard()
+    BitBasics::getBitIndices(knightIndices, isWhite ? _bitboards.getWhiteKnightsBitboard()
                                                     : _bitboards.getBlackKnightsBitboard());
 
     for (int currentKnightIndex : knightIndices) {
@@ -36,8 +36,8 @@ void KnightGenerator::generate(
         
         bitmask capturableKnightMoves = knightBitmask & enemyPieces;
 
-        getBitIndices(freeMovesIndices, freeKnightMoves);
-        getBitIndices(capturableMovesIndices, capturableKnightMoves);
+        BitBasics::getBitIndices(freeMovesIndices, freeKnightMoves);
+        BitBasics::getBitIndices(capturableMovesIndices, capturableKnightMoves);
 
         for (int freeKnightMoveIndex : freeMovesIndices) {
             movelist.addMove(model::Move(currentKnightIndex, freeKnightMoveIndex, model::Move::QUITE_FLAG));

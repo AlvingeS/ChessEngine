@@ -3,14 +3,16 @@
 #include "ChessEngine/src/model/move/Move.h"
 #include "ChessEngine/src/model/board/PieceType.h"
 
-namespace engine {
+namespace {
+    constexpr unsigned char whiteKingSide = 0b0001;
+    constexpr unsigned char whiteQueenSide = 0b0010;
+    constexpr unsigned char whiteBoth = 0b0011;
+    constexpr unsigned char blackKingSide = 0b0100;
+    constexpr unsigned char blackQueenSide = 0b1000;
+    constexpr unsigned char blackBoth = 0b1100;
+} // namespace
 
-constexpr unsigned char whiteKingSide = 0b0001;
-constexpr unsigned char whiteQueenSide = 0b0010;
-constexpr unsigned char whiteBoth = 0b0011;
-constexpr unsigned char blackKingSide = 0b0100;
-constexpr unsigned char blackQueenSide = 0b1000;
-constexpr unsigned char blackBoth = 0b1100;
+namespace engine {
 
 class SearchMemory {
 

@@ -24,10 +24,10 @@ CastlingGenerator::CastlingGenerator(
     , _moveRetractor(moveRetractor)
     , _checkDetection(checkDetection) 
 {
-    _whiteKingSideCastleBitmask = whiteKingSideCastleMask;
-    _whiteQueenSideCastleBitmask = whiteQueenSideCastleMask;
-    _blackKingSideCastleBitmask = blackKingSideCastleMask;
-    _blackQueenSideCastleBitmask = blackQueenSideCastleMask;
+    _whiteKingSideCastleBitmask = mWhiteKingSideCastleMask;
+    _whiteQueenSideCastleBitmask = mWhiteQueenSideCastleMask;
+    _blackKingSideCastleBitmask = mBlackKingSideCastleMask;
+    _blackQueenSideCastleBitmask = mBlackQueenSideCastleMask;
 }
 
 void CastlingGenerator::generate(

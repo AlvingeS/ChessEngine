@@ -15,13 +15,8 @@ class MoveMaker;
 class MoveRetractor;
 class CheckDetection;
 
-constexpr bitmask whiteKingSideCastleMask = 0x000000000000006ULL;
-constexpr bitmask whiteQueenSideCastleMask = 0x0000000000000070ULL;
-constexpr bitmask blackKingSideCastleMask = 0x0600000000000000ULL;
-constexpr bitmask blackQueenSideCastleMask = 0x7000000000000000ULL;
-
 class CastlingGenerator {
-
+    
 public:
     CastlingGenerator(
         model::Board& board,
@@ -59,6 +54,11 @@ private:
     bool kingAndRookOnCastlingSquares(bool isWhite, bool isKingSide) const;
     void makeTemporaryKingMove(bool isWhite, bool isKingSide);
     void unmakeTemporaryKingMove(bool isWhite, bool isKingSide);
+
+    const bitmask mWhiteKingSideCastleMask = 0x000000000000006ULL;
+    const bitmask mWhiteQueenSideCastleMask = 0x0000000000000070ULL;
+    const bitmask mBlackKingSideCastleMask = 0x0600000000000000ULL;
+    const bitmask mBlackQueenSideCastleMask = 0x7000000000000000ULL;
 };
 
 } // namespace logic

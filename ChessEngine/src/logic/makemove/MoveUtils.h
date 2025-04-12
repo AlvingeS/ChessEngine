@@ -18,7 +18,12 @@ struct MoveResult {
     }
 };
 
-model::Piece::Type getPromotionPieceType(int promotionFlag, bool isWhite);
-int determineCaptureIndex(const model::Move& move, bool isWhite, int toIndex);
+struct MoveUtils {
+    
+    static model::Piece::Type getPromotionPieceType(int promotionFlag, bool isWhite);
+    static int determineCaptureIndex(const model::Move& move, bool isWhite, int toIndex);
+
+};
+
 
 } // namespace logic

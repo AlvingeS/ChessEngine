@@ -92,7 +92,7 @@ void MoveRetractor::removePreviouslyMovedPieceFromBoard(
     if (not move.isAnyPromo()) {
         _bitboards.clearPieceTypeBit(toIndex, previouslyMovedPieceType);
     } else {
-        model::Piece::Type promotionPieceType = getPromotionPieceType(move.getFlag(), wasWhite);
+        model::Piece::Type promotionPieceType = MoveUtils::getPromotionPieceType(move.getFlag(), wasWhite);
         _bitboards.clearPieceTypeBit(toIndex, promotionPieceType);
     }
 
@@ -178,7 +178,7 @@ void MoveRetractor::unmakeMove(
     // We place back the captured piece if there was one
     if (previousMove.isAnyCapture()) {
        // Calculate the index of the previously captured piece, might be EP
-        int captureIndex = determineCaptureIndex(previousMove, wasWhite, toIndex);
+        int captureIndex = MoveUtils::determineCaptureIndex(previousMove, wasWhite, toIndex);
 
         placeBackCapturedPieceOnBoard(previousMove.isEpCapture(), captureIndex, toIndex, wasWhite, previousMoveResults.capturedPieceType);
     } else {

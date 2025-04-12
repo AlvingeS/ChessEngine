@@ -4,7 +4,7 @@
 
 namespace logic {
 
-model::Piece::Type getPromotionPieceType(int promotionFlag, bool isWhite) 
+model::Piece::Type MoveUtils::getPromotionPieceType(int promotionFlag, bool isWhite) 
 {
     switch(promotionFlag) {
         case model::Move::KNIGHT_PROMO_FLAG:
@@ -36,7 +36,7 @@ model::Piece::Type getPromotionPieceType(int promotionFlag, bool isWhite)
     return model::Piece::Type::EMPTY;
 }
 
-int determineCaptureIndex(const model::Move& move, bool isWhite, int toIndex)
+int MoveUtils::determineCaptureIndex(const model::Move& move, bool isWhite, int toIndex)
 {
     return move.isEpCapture() ? isWhite ? toIndex - 8 
                                         : toIndex + 8 

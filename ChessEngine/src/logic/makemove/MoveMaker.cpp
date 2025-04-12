@@ -34,7 +34,7 @@ MoveResult MoveMaker::makeMove(const model::Move& move, bool isWhite)
     // If the move is a capture, handle memory and remove the captured piece
     if (move.isAnyCapture()) {
         // Calculate index of captured piece, might be EP
-        int captureIndex = determineCaptureIndex(move, isWhite, toIndex);
+        int captureIndex = MoveUtils::determineCaptureIndex(move, isWhite, toIndex);
         model::Piece::Type capturedPieceType = _pieceMap.getPieceTypeAtIndex(captureIndex);
         removeCapturedPieceFromBoard(move.isEpCapture(), isWhite, captureIndex, capturedPieceType);
         moveResult.capturedPieceType = capturedPieceType;
@@ -42,7 +42,7 @@ MoveResult MoveMaker::makeMove(const model::Move& move, bool isWhite)
 
     // Update the moved piece type if the move is a promotion    
     if (move.isAnyPromo())
-        movedPieceType = getPromotionPieceType(move.getFlag(), isWhite);
+        movedPieceType = MoveUtils::getPromotionPieceType(move.getFlag(), isWhite);
 
     moveResult.movedPieceType = movedPieceType;
 

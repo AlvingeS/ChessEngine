@@ -1,3 +1,5 @@
+#include "ChessEngine/src/logic/movegen/RayLogic.h"
+
 #include "ChessEngine/src/model/move/Movelist.h"
 
 #include "ChessEngine/src/model/move/Move.h"
@@ -8,7 +10,7 @@
 
 namespace logic {
 
-void addMovesFromFreeRay(
+void RayLogic::addMovesFromFreeRay(
     bitmask freeRay,
     int bitIndexFrom,
     model::Movelist& moveList)
@@ -21,7 +23,7 @@ void addMovesFromFreeRay(
     }
 }
 
-void addMoveIfBlockerIsEnemy(
+void RayLogic::addMoveIfBlockerIsEnemy(
     int blockerIndex,
     bool isWhite,
     int bitIndexFrom,
@@ -34,7 +36,7 @@ void addMoveIfBlockerIsEnemy(
         moveList.addMove(model::Move(bitIndexFrom, blockerIndex, model::Move::CAPTURE_FLAG));
 }
 
-void addMovesBetweenBlockerAndPieceOnStraightRay(
+void RayLogic::addMovesBetweenBlockerAndPieceOnStraightRay(
     int blockerIndex,
     bool alongFile, 
     bool startFromBlocker, int rookRank, 
@@ -62,7 +64,7 @@ void addMovesBetweenBlockerAndPieceOnStraightRay(
     }
 }
 
-void addMovesBetweenBlockerAndPieceOnDiagonalRay(
+void RayLogic::addMovesBetweenBlockerAndPieceOnDiagonalRay(
     int blockerIndex,
     bool startFromBlocker, 
     int bishopRank, 
@@ -99,7 +101,7 @@ void addMovesBetweenBlockerAndPieceOnDiagonalRay(
     }
 }
 
-void addMovesFromStraightRay(
+void RayLogic::addMovesFromStraightRay(
     bitmask ray, 
     bool blockerOnLSB, 
     bool alongFile, 
@@ -141,7 +143,7 @@ void addMovesFromStraightRay(
         }
 }
 
-void addMovesFromDiagonalRay(
+void RayLogic::addMovesFromDiagonalRay(
     bitmask ray, 
     bool blockerOnLSB, 
     bool isWhite, 
@@ -181,7 +183,7 @@ void addMovesFromDiagonalRay(
     }
 }
 
-bool checkStraightRay(
+bool RayLogic::checkStraightRay(
     bitmask straightRay, 
     bool firstBlockerOnLSB, 
     bitmask opponentRooksAndQueens,
@@ -209,7 +211,7 @@ bool checkStraightRay(
     return occupiedBlockerIndex == rooksAndQueensBlockerIndex;
 }
 
-bool checkDiagonalRay(
+bool RayLogic::checkDiagonalRay(
     bitmask diagonalRay, 
     bool firstBlockerOnLSB, 
     bitmask opponentBishopsAndQueens,

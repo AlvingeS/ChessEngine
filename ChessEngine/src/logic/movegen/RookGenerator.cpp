@@ -33,7 +33,7 @@ void RookGenerator::generate(
         int rookRank = rankFromBitIndex(currentRookIndex);
         int rookFile = fileFromBitIndex(currentRookIndex);
 
-        addMovesFromStraightRay(
+        RayLogic::addMovesFromStraightRay(
             rays.north,
             true, 
             false, 
@@ -46,7 +46,7 @@ void RookGenerator::generate(
             _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
-        addMovesFromStraightRay(
+        RayLogic::addMovesFromStraightRay(
             rays.east,
             false, 
             true, 
@@ -59,7 +59,7 @@ void RookGenerator::generate(
             _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
-        addMovesFromStraightRay(
+        RayLogic::addMovesFromStraightRay(
             rays.south,
             false, 
             false, 
@@ -72,7 +72,7 @@ void RookGenerator::generate(
             _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
-        addMovesFromStraightRay(
+        RayLogic::addMovesFromStraightRay(
             rays.west,
             true, 
             true, 

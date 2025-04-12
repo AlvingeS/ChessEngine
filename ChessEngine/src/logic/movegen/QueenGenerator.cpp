@@ -33,7 +33,7 @@ void QueenGenerator::generate(
         int queenRank = rankFromBitIndex(currentQueenIndex);
         int queenFile = fileFromBitIndex(currentQueenIndex);
 
-        addMovesFromStraightRay(
+        RayLogic::addMovesFromStraightRay(
             straightRays.north,
             true,
             false,
@@ -46,7 +46,7 @@ void QueenGenerator::generate(
             _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
-        addMovesFromStraightRay(
+        RayLogic::addMovesFromStraightRay(
             straightRays.east,
             false,
             true,
@@ -59,7 +59,7 @@ void QueenGenerator::generate(
             _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
-        addMovesFromStraightRay(
+        RayLogic::addMovesFromStraightRay(
             straightRays.south,
             false,
             false,
@@ -72,7 +72,7 @@ void QueenGenerator::generate(
             _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
-        addMovesFromStraightRay(
+        RayLogic::addMovesFromStraightRay(
             straightRays.west,
             true,
             true,
@@ -85,7 +85,7 @@ void QueenGenerator::generate(
             _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
-        addMovesFromDiagonalRay(
+        RayLogic::addMovesFromDiagonalRay(
             diagonalRays.northEast,
             true,
             isWhite,
@@ -97,7 +97,7 @@ void QueenGenerator::generate(
             _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
-        addMovesFromDiagonalRay(
+        RayLogic::addMovesFromDiagonalRay(
             diagonalRays.southEast,
             false,
             isWhite,
@@ -109,7 +109,7 @@ void QueenGenerator::generate(
             _stateBitmasks.getOccupiedPiecesBitmask()
         );
 
-        addMovesFromDiagonalRay(
+        RayLogic::addMovesFromDiagonalRay(
             diagonalRays.southWest,
             false,
             isWhite,
@@ -121,7 +121,7 @@ void QueenGenerator::generate(
             _stateBitmasks.getOccupiedPiecesBitmask()
         );
         
-        addMovesFromDiagonalRay(
+        RayLogic::addMovesFromDiagonalRay(
             diagonalRays.northWest,
             true,
             isWhite,

@@ -84,8 +84,8 @@ bool CheckDetection::isInCheck(bool isWhite) const
     opponentKingIndex = BitBasics::indexOfLSB(isWhite ? _bitboards.getBlackKingBitboard()
                                            : _bitboards.getWhiteKingBitboard());
 
-    kingRankDiff = abs(rankFromBitIndex(kingIndex) - rankFromBitIndex(opponentKingIndex));
-    kingFileDiff = abs(fileFromBitIndex(kingIndex) - fileFromBitIndex(opponentKingIndex));
+    kingRankDiff = ChessUtils::abs(ChessUtils::rankFromBitIndex(kingIndex) - ChessUtils::rankFromBitIndex(opponentKingIndex));
+    kingFileDiff = ChessUtils::abs(ChessUtils::fileFromBitIndex(kingIndex) - ChessUtils::fileFromBitIndex(opponentKingIndex));
 
     int manhattanDistance = kingRankDiff + kingFileDiff;
 

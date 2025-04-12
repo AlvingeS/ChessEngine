@@ -45,16 +45,16 @@ void RayLogic::addMovesBetweenBlockerAndPieceOnStraightRay(
     model::Movelist& moveList)
 {
     int start = startFromBlocker 
-                ? (alongFile ? fileFromBitIndex(blockerIndex) 
-                             : rankFromBitIndex(blockerIndex)) 
+                ? (alongFile ? ChessUtils::fileFromBitIndex(blockerIndex) 
+                             : ChessUtils::rankFromBitIndex(blockerIndex)) 
                 : (alongFile ? rookFile 
                              : rookRank);
                             
     int stop = startFromBlocker 
                ? (alongFile ? rookFile 
                             : rookRank) 
-               : (alongFile ? fileFromBitIndex(blockerIndex) 
-                            : rankFromBitIndex(blockerIndex));
+               : (alongFile ? ChessUtils::fileFromBitIndex(blockerIndex) 
+                            : ChessUtils::rankFromBitIndex(blockerIndex));
 
     for (int i = start - 1; i > stop; --i) {
         int rankOrFileIndex = alongFile ? rookRank * 8 + i 
@@ -73,20 +73,20 @@ void RayLogic::addMovesBetweenBlockerAndPieceOnDiagonalRay(
     model::Movelist& moveList)
 {
     int startRank = startFromBlocker
-                    ? rankFromBitIndex(blockerIndex)
+                    ? ChessUtils::rankFromBitIndex(blockerIndex)
                     : bishopRank;
 
     int startFile = startFromBlocker
-                    ? fileFromBitIndex(blockerIndex)
+                    ? ChessUtils::fileFromBitIndex(blockerIndex)
                     : bishopFile;
 
     int stopRank = startFromBlocker
                    ? bishopRank
-                   : rankFromBitIndex(blockerIndex);
+                   : ChessUtils::rankFromBitIndex(blockerIndex);
 
     int stopFile = startFromBlocker 
                    ? bishopFile
-                   : fileFromBitIndex(blockerIndex);
+                   : ChessUtils::fileFromBitIndex(blockerIndex);
 
     int rankDiff = startRank - stopRank;
     int fileDiff = startFile - stopFile;

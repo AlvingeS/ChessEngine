@@ -2,7 +2,7 @@
 
 namespace logic {
 
-int manhattanDistance(int i, int j) 
+int ChessUtils::manhattanDistance(int i, int j) 
 {
     int rankDiff = rankFromBitIndex(i) - rankFromBitIndex(j);
     int fileDiff = fileFromBitIndex(i) - fileFromBitIndex(j);

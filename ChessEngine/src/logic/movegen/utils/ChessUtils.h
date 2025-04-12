@@ -3,7 +3,7 @@
 #include "ChessEngine/src/model/board/PieceType.h"
 
 namespace logic {
-
+    
 constexpr bitmask FILE_MASK[8] = {
     0x0101010101010101ULL,
     0x0202020202020202ULL,
@@ -26,17 +26,21 @@ constexpr bitmask RANK_MASK[8] = {
     0xFF00000000000000ULL
 };
 
-bitmask getFileMask(int file);
-bitmask getRankMask(int rank);
-int rankFromBitIndex(int i);
-int fileFromBitIndex(int i);
-bitmask getOccupiedSquaresBitmask(bitmask whitePieces, bitmask blackPieces);
-bitmask getEmptySquaresBitmask(bitmask whitePieces, bitmask blackPieces);
-bitmask getWhiteSquaresBitmask();
-bitmask getBlackSquaresBitmask();
+struct ChessUtils {
+    
+    static bitmask getFileMask(int file);
+    static bitmask getRankMask(int rank);
+    static int rankFromBitIndex(int i);
+    static int fileFromBitIndex(int i);
+    static bitmask getOccupiedSquaresBitmask(bitmask whitePieces, bitmask blackPieces);
+    static bitmask getEmptySquaresBitmask(bitmask whitePieces, bitmask blackPieces);
+    static bitmask getWhiteSquaresBitmask();
+    static bitmask getBlackSquaresBitmask();
+    
+    static int abs(int n);
+    static int manhattanDistance(int i, int j);
 
-int abs(int n);
-int manhattanDistance(int i, int j);
+};
 
 } // namespace logic
 

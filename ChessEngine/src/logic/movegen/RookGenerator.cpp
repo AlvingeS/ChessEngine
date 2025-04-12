@@ -30,8 +30,8 @@ void RookGenerator::generate(
     // Loop through all rooks and isolate them
     for (int currentRookIndex : rookIndices) {
         rays = _straightRayBitmasks[currentRookIndex];
-        int rookRank = rankFromBitIndex(currentRookIndex);
-        int rookFile = fileFromBitIndex(currentRookIndex);
+        int rookRank = ChessUtils::rankFromBitIndex(currentRookIndex);
+        int rookFile = ChessUtils::fileFromBitIndex(currentRookIndex);
 
         RayLogic::addMovesFromStraightRay(
             rays.north,

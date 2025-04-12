@@ -6,8 +6,8 @@ namespace logic {
 
 bitmask RayBitmasks::getNorthRay(int ind) 
 {
-    int rank = rankFromBitIndex(ind);
-    int file = fileFromBitIndex(ind);
+    int rank = ChessUtils::rankFromBitIndex(ind);
+    int file = ChessUtils::fileFromBitIndex(ind);
 
     bitmask north_ray = 0ULL;
 
@@ -20,8 +20,8 @@ bitmask RayBitmasks::getNorthRay(int ind)
 
 bitmask RayBitmasks::getNorthEastRay(int ind) 
 {
-    int rank = rankFromBitIndex(ind);
-    int file = fileFromBitIndex(ind);
+    int rank = ChessUtils::rankFromBitIndex(ind);
+    int file = ChessUtils::fileFromBitIndex(ind);
 
     bitmask north_east_ray = 0ULL;
 
@@ -36,8 +36,8 @@ bitmask RayBitmasks::getNorthEastRay(int ind)
 
 bitmask RayBitmasks::getEastRay(int ind) 
 {
-    int rank = rankFromBitIndex(ind);
-    int file = fileFromBitIndex(ind);
+    int rank = ChessUtils::rankFromBitIndex(ind);
+    int file = ChessUtils::fileFromBitIndex(ind);
 
     bitmask east_ray = 0ULL;
 
@@ -50,8 +50,8 @@ bitmask RayBitmasks::getEastRay(int ind)
 
 bitmask RayBitmasks::getSouthEastRay(int ind) 
 {
-    int rank = rankFromBitIndex(ind);
-    int file = fileFromBitIndex(ind);
+    int rank = ChessUtils::rankFromBitIndex(ind);
+    int file = ChessUtils::fileFromBitIndex(ind);
 
     bitmask south_east_ray = 0ULL;
 
@@ -66,8 +66,8 @@ bitmask RayBitmasks::getSouthEastRay(int ind)
 
 bitmask RayBitmasks::getSouthRay(int ind) 
 {
-    int rank = rankFromBitIndex(ind);
-    int file = fileFromBitIndex(ind);
+    int rank = ChessUtils::rankFromBitIndex(ind);
+    int file = ChessUtils::fileFromBitIndex(ind);
 
     bitmask south_ray = 0ULL;
 
@@ -80,8 +80,8 @@ bitmask RayBitmasks::getSouthRay(int ind)
 
 bitmask RayBitmasks::getSouthWestRay(int ind) 
 {
-    int rank = rankFromBitIndex(ind);
-    int file = fileFromBitIndex(ind);
+    int rank = ChessUtils::rankFromBitIndex(ind);
+    int file = ChessUtils::fileFromBitIndex(ind);
 
     bitmask south_west_ray = 0ULL;
 
@@ -96,8 +96,8 @@ bitmask RayBitmasks::getSouthWestRay(int ind)
 
 bitmask RayBitmasks::getWestRay(int ind) 
 {
-    int rank = rankFromBitIndex(ind);
-    int file = fileFromBitIndex(ind);
+    int rank = ChessUtils::rankFromBitIndex(ind);
+    int file = ChessUtils::fileFromBitIndex(ind);
 
     bitmask west_ray = 0ULL;
 
@@ -110,8 +110,8 @@ bitmask RayBitmasks::getWestRay(int ind)
 
 bitmask RayBitmasks::getNorthWestRay(int ind) 
 {
-    int rank = rankFromBitIndex(ind);
-    int file = fileFromBitIndex(ind);
+    int rank = ChessUtils::rankFromBitIndex(ind);
+    int file = ChessUtils::fileFromBitIndex(ind);
 
     bitmask north_west_ray = 0ULL;
 

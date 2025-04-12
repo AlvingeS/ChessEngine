@@ -31,8 +31,8 @@ void BishopGenerator::generate(
 
     for (int currentBishopIndex : bishopIndices) {
         RayBitmasks::DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];
-        int bishopRank = rankFromBitIndex(currentBishopIndex);
-        int bishopFile = fileFromBitIndex(currentBishopIndex);
+        int bishopRank = ChessUtils::rankFromBitIndex(currentBishopIndex);
+        int bishopFile = ChessUtils::fileFromBitIndex(currentBishopIndex);
 
         RayLogic::addMovesFromDiagonalRay(rays.northEast, true, isWhite, currentBishopIndex, bishopRank, bishopFile, moveList, _stateBitmasks.getWhitePiecesBitmask(), _stateBitmasks.getOccupiedPiecesBitmask());
         RayLogic::addMovesFromDiagonalRay(rays.southEast, false, isWhite, currentBishopIndex, bishopRank, bishopFile, moveList, _stateBitmasks.getWhitePiecesBitmask(), _stateBitmasks.getOccupiedPiecesBitmask());

@@ -51,7 +51,7 @@ void PawnGenerator::generate(
         BitBasics::getBitIndices(capturableMovesIndices, capturablePawnMoves);
 
         int offset = isWhite ? 8 : -8;
-        bool canPromote = (isWhite && rankFromBitIndex(currentPawnIndex) == 6) || (!isWhite && rankFromBitIndex(currentPawnIndex) == 1);
+        bool canPromote = (isWhite && ChessUtils::rankFromBitIndex(currentPawnIndex) == 6) || (!isWhite && ChessUtils::rankFromBitIndex(currentPawnIndex) == 1);
 
         if (freeMovesIndices.size() == 2) {
             int singleStepIndex = (isWhite ? 0 : 1);

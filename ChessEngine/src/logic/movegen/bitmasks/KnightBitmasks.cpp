@@ -24,15 +24,15 @@ bitmask applyKnightMoves(int ind)
 // Applies file masks to knight moves to prevent looping around the board
 bitmask removeWrapAroundKnightMoves(bitmask knightMoves, int ind) 
 {
-    bitmask aFile = getFileMask(7);
-    bitmask bFile = getFileMask(6);
+    bitmask aFile = ChessUtils::getFileMask(7);
+    bitmask bFile = ChessUtils::getFileMask(6);
     bitmask notAorBFile = ~(aFile | bFile);
 
-    bitmask gFile = getFileMask(1);
-    bitmask hFile = getFileMask(0);
+    bitmask gFile = ChessUtils::getFileMask(1);
+    bitmask hFile = ChessUtils::getFileMask(0);
     bitmask notGorHFile = ~(gFile | hFile);
 
-    switch (fileFromBitIndex(ind)) {
+    switch (ChessUtils::fileFromBitIndex(ind)) {
         case 0:
             knightMoves &= notAorBFile;
             break;

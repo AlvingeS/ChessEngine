@@ -30,8 +30,8 @@ void QueenGenerator::generate(
         RayBitmasks::StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];
         RayBitmasks::DiagonalRays diagonalRays = _diagonalRayBitmasks[currentQueenIndex];
         
-        int queenRank = rankFromBitIndex(currentQueenIndex);
-        int queenFile = fileFromBitIndex(currentQueenIndex);
+        int queenRank = ChessUtils::rankFromBitIndex(currentQueenIndex);
+        int queenFile = ChessUtils::fileFromBitIndex(currentQueenIndex);
 
         RayLogic::addMovesFromStraightRay(
             straightRays.north,

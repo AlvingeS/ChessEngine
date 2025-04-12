@@ -19,10 +19,10 @@ bitmask applyCapturePawnMoves(int ind, bool isWhite)
 
 bitmask removeWrapAroundPawnMoves(bitmask captureMoves, int ind) 
 {
-    bitmask notAFile = ~getFileMask(7);
-    bitmask notHFile = ~getFileMask(0);
+    bitmask notAFile = ~ChessUtils::getFileMask(7);
+    bitmask notHFile = ~ChessUtils::getFileMask(0);
 
-    switch (fileFromBitIndex(ind)) {
+    switch (ChessUtils::fileFromBitIndex(ind)) {
         case 0:
             captureMoves &= notAFile;
             break;

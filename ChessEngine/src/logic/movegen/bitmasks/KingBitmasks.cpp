@@ -24,10 +24,10 @@ bitmask applyKingMoves(int ind)
 // Applies file masks to king moves to prevent looping around the board
 bitmask removeWrapAroundKingMoves(bitmask kingMoves, int ind) 
 {
-    bitmask notAFile = ~getFileMask(7);
-    bitmask notHFile = ~getFileMask(0);
+    bitmask notAFile = ~ChessUtils::getFileMask(7);
+    bitmask notHFile = ~ChessUtils::getFileMask(0);
 
-    switch (fileFromBitIndex(ind)) {
+    switch (ChessUtils::fileFromBitIndex(ind)) {
         case 0:
             kingMoves &= notAFile;
             break;

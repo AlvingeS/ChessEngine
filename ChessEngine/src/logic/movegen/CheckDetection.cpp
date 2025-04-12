@@ -16,7 +16,7 @@ CheckDetection::CheckDetection(model::Board& board)
 {
     _straightRayBitmasks = RayBitmasks::getAllStraightRayBitmasks();
     _diagonalRayBitmasks = RayBitmasks::getAllDiagonalRayBitmasks();
-    _knightBitmasks = getAllKnightBitmasks();
+    _knightBitmasks = KnightBitmasks::getAllKnightBitmasks();
     _whitePawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(true);
     _blackPawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(false);
 }

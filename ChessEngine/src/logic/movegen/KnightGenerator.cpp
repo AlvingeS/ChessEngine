@@ -12,7 +12,7 @@ namespace logic {
 KnightGenerator::KnightGenerator(model::Board& board) 
     : _bitboards(board.bitboards)
     , _stateBitmasks(board.stateBitmasks) {
-    _knightBitmasks = getAllKnightBitmasks();
+    _knightBitmasks = KnightBitmasks::getAllKnightBitmasks();
 }
 
 void KnightGenerator::generate(

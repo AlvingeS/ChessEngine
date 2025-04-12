@@ -14,10 +14,10 @@ PawnGenerator::PawnGenerator(model::Board& board)
     : _bitboards(board.bitboards)
     , _stateBitmasks(board.stateBitmasks)
 {
-    _whitePawnStraightMoveBitmasks = getAllStraightPawnMoveBitmasks(true);
-    _whitePawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(true);
-    _blackPawnStraightMoveBitmasks = getAllStraightPawnMoveBitmasks(false);
-    _blackPawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(false);
+    _whitePawnStraightMoveBitmasks = PawnBitmasks::getAllStraightPawnMoveBitmasks(true);
+    _whitePawnCaptureMoveBitmasks = PawnBitmasks::getAllCapturePawnMoveBitmasks(true);
+    _blackPawnStraightMoveBitmasks = PawnBitmasks::getAllStraightPawnMoveBitmasks(false);
+    _blackPawnCaptureMoveBitmasks = PawnBitmasks::getAllCapturePawnMoveBitmasks(false);
 }
 
 void PawnGenerator::generate(

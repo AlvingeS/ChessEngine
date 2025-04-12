@@ -9,12 +9,17 @@ struct MoveType {
     std::vector<bitmask> straight;
 };
 
-bitmask getCapturePawnMovesBitmask(int ind, bool isWhite);
-bitmask getStraightPawnMovesBitmask(int ind, bool isWhite);
-std::vector<bitmask> getAllStraightPawnMoveBitmasks(bool isWhite);
-std::vector<bitmask> getAllCapturePawnMoveBitmasks(bool isWhite);
+struct PawnBitmasks {
 
-bitmask applyCapturePawnMoves(int ind, bool isWhite);
-bitmask removeWrapAroundPawnMoves(bitmask pawnMoves, int ind);
+    static bitmask getCapturePawnMovesBitmask(int ind, bool isWhite);
+    static bitmask getStraightPawnMovesBitmask(int ind, bool isWhite);
+    static std::vector<bitmask> getAllStraightPawnMoveBitmasks(bool isWhite);
+    static std::vector<bitmask> getAllCapturePawnMoveBitmasks(bool isWhite);
+    
+    static bitmask applyCapturePawnMoves(int ind, bool isWhite);
+    static bitmask removeWrapAroundPawnMoves(bitmask pawnMoves, int ind);
+
+};
+
 
 } // namespace logic

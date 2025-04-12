@@ -17,8 +17,8 @@ CheckDetection::CheckDetection(model::Board& board)
     _straightRayBitmasks = RayBitmasks::getAllStraightRayBitmasks();
     _diagonalRayBitmasks = RayBitmasks::getAllDiagonalRayBitmasks();
     _knightBitmasks = KnightBitmasks::getAllKnightBitmasks();
-    _whitePawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(true);
-    _blackPawnCaptureMoveBitmasks = getAllCapturePawnMoveBitmasks(false);
+    _whitePawnCaptureMoveBitmasks = PawnBitmasks::getAllCapturePawnMoveBitmasks(true);
+    _blackPawnCaptureMoveBitmasks = PawnBitmasks::getAllCapturePawnMoveBitmasks(false);
 }
 
 bool CheckDetection::isInCheck(bool isWhite) const

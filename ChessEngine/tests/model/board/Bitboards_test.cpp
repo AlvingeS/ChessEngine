@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/position/Board.h"
 
-#include "ChessEngine/src/io/Fen.h"
+#include "io/Fen.h"
 
 namespace model {
 

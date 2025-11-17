@@ -1,19 +1,19 @@
 #pragma once
 
-#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
+#include "engine/pickmove/SearchMemory.h"
 
-#include "ChessEngine/src/logic/eval/Evaluator.h"
+#include "logic/eval/Evaluator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/position/Board.h"
 
-#include "ChessEngine/src/model/board/PieceMap.h"
-#include "ChessEngine/src/logic/movegen/MoveGenerator.h"
-#include "ChessEngine/src/model/move/Movelist.h"
-#include "ChessEngine/src/logic/makemove/MoveMaker.h"
-#include "ChessEngine/src/logic/makemove/MoveRetractor.h"
-#include "ChessEngine/src/logic/makemove/MoveUtils.h"
-#include "ChessEngine/src/model/move/Move.h"
-#include "ChessEngine/src/io/Fen.h"
+#include "model/position/PieceMap.h"
+#include "logic/movegen/MoveGenerator.h"
+#include "model/move/Movelist.h"
+#include "logic/makemove/MoveMaker.h"
+#include "logic/makemove/MoveRetractor.h"
+#include "logic/makemove/MoveUtils.h"
+#include "model/move/Move.h"
+#include "io/Fen.h"
 
 namespace engine {
 

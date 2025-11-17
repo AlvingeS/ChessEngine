@@ -1,7 +1,7 @@
 // #include <gtest/gtest.h>
 
-// #include "ChessEngine/src/game/movegen/MoveGenerator.h"
-// #include "ChessEngine/src/game/move/Move.h"
+// #include "game/movegen/MoveGenerator.h"
+// #include "game/move/Move.h"
 
 // #include <unordered_set>
 // #include <vector>

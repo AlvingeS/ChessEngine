@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChessEngine/src/model/move/Movelist.h"
+#include "model/move/Movelist.h"
 
 namespace logic {
 

@@ -1,6 +1,6 @@
-#include "ChessEngine/src/engine/pickmove/MovePicker.h"
+#include "engine/pickmove/MovePicker.h"
 
-#include "ChessEngine/src/io/BoardPrinter.h"
+#include "io/BoardPrinter.h"
 
 #include <cstdlib>
 #include <iostream>

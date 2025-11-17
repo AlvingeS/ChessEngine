@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ChessEngine/src/model/move/Move.h"
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/move/Move.h"
+#include "model/position/PieceType.h"
 
 namespace {
     constexpr unsigned char whiteKingSide = 0b0001;

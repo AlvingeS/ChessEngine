@@ -1,6 +1,6 @@
-#include "ChessEngine/src/logic/makemove/MoveUtils.h"
+#include "logic/makemove/MoveUtils.h"
 
-#include "ChessEngine/src/model/move/Move.h"
+#include "model/move/Move.h"
 
 namespace logic {
 

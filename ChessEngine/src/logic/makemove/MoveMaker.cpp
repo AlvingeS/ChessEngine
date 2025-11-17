@@ -1,9 +1,9 @@
-#include "ChessEngine/src/logic/makemove/MoveMaker.h"
+#include "logic/makemove/MoveMaker.h"
 
-#include "ChessEngine/src/logic/makemove/MoveUtils.h"
+#include "logic/makemove/MoveUtils.h"
 
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Move.h"
+#include "model/position/Board.h"
+#include "model/move/Move.h"
 
 namespace logic {
 

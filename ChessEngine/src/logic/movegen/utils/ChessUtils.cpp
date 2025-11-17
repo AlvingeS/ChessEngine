@@ -1,4 +1,4 @@
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
 

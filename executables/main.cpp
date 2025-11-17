@@ -1,9 +1,9 @@
-#include "ChessEngine/src/logic/movegen/MoveGenerator.h"
-#include "ChessEngine/src/engine/pickmove/MovePicker.h"
-#include "ChessEngine/src/engine/perft/perft.h"
-#include "ChessEngine/src/io/BoardPrinter.h"
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
+#include "logic/movegen/MoveGenerator.h"
+#include "engine/pickmove/MovePicker.h"
+#include "engine/perft/perft.h"
+#include "io/BoardPrinter.h"
+#include "logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/Containers.h"
 
 #include <iostream>
 #include <chrono>

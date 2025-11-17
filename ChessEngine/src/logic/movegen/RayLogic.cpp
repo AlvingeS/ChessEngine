@@ -1,12 +1,12 @@
-#include "ChessEngine/src/logic/movegen/RayLogic.h"
+#include "logic/movegen/RayLogic.h"
 
-#include "ChessEngine/src/model/move/Movelist.h"
+#include "model/move/Movelist.h"
 
-#include "ChessEngine/src/model/move/Move.h"
+#include "model/move/Move.h"
 
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/Containers.h"
+#include "logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace logic {
 

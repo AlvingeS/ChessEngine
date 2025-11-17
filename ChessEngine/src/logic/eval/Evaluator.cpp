@@ -1,6 +1,6 @@
-#include "ChessEngine/src/logic/eval/Evaluator.h"
+#include "logic/eval/Evaluator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/position/Board.h"
 
 namespace logic {
 

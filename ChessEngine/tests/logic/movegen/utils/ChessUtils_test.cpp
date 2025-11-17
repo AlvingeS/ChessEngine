@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace logic {
 

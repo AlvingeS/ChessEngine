@@ -1,6 +1,6 @@
-#include "ChessEngine/src/model/board/StateBitmasks.h"
+#include "model/position/StateBitmasks.h"
 
-#include "ChessEngine/src/model/board/Bitboards.h"
+#include "model/position/Bitboards.h"
 
 namespace model {
 

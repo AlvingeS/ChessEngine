@@ -1,6 +1,6 @@
 #pragma once
-#include "ChessEngine/src/common.h"
-#include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
+#include "common.h"
+#include "logic/movegen/bitmasks/RayBitmasks.h"
 
 namespace model {
     class Movelist;

@@ -205,9 +205,9 @@ static constexpr int MAX_LEGAL_MOVES = 218;
 # FILE: src/io/BoardPrinter.cpp
 
 ```cpp
-#include "ChessEngine/src/io/BoardPrinter.h"
+#include "io/BoardPrinter.h"
 
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 #include <iostream>
 
@@ -289,7 +289,7 @@ void BoardPrinter::printBoard() const {
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/board/Board.h"
 
 namespace io {
 
@@ -330,9 +330,9 @@ target_link_libraries(io PUBLIC movegen board cxx_setup)
 # FILE: src/io/Fen.cpp
 
 ```cpp
-#include "ChessEngine/src/io/Fen.h"
+#include "io/Fen.h"
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/board/PieceType.h"
 
 namespace io {
 
@@ -407,7 +407,7 @@ std::string Fen::getFenFromBoard(const model::PieceMap& pieceMap)
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/board/Board.h"
 
 namespace io {
 
@@ -427,7 +427,7 @@ struct Fen {
 # FILE: src/io/StockfishPerftRetriever.cpp
 
 ```cpp
-#include "ChessEngine/src/io/StockfishPerftRetriever.h"
+#include "io/StockfishPerftRetriever.h"
 
 #include <sstream>
 #include <regex>
@@ -512,7 +512,7 @@ std::unordered_map<std::string, uint64_t> getPerftResults(const std::string& FEN
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 #include <unordered_map>
 
 namespace io::stockfish
@@ -541,18 +541,18 @@ add_subdirectory(movegen)
 # FILE: src/logic/movegen/BishopGenerator.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/BishopGenerator.h"
+#include "logic/movegen/BishopGenerator.h"
 
-#include "ChessEngine/src/logic/movegen/RayLogic.h"
+#include "logic/movegen/RayLogic.h"
 
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/Containers.h"
+#include "logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/ChessUtils.h"
 
-#include "ChessEngine/src/model/board/PieceType.h"
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Move.h"
-#include "ChessEngine/src/model/move/Movelist.h"
+#include "model/board/PieceType.h"
+#include "model/board/Board.h"
+#include "model/move/Move.h"
+#include "model/move/Movelist.h"
 
 namespace logic {
 
@@ -594,8 +594,8 @@ void BishopGenerator::generate(
 
 ```cpp
 #pragma once
-#include "ChessEngine/src/common.h"
-#include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
+#include "common.h"
+#include "logic/movegen/bitmasks/RayBitmasks.h"
 
 namespace model {
     class Movelist;
@@ -658,18 +658,18 @@ target_link_libraries(movegen PUBLIC pickmove move board cxx_setup)
 # FILE: src/logic/movegen/CastlingGenerator.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/CastlingGenerator.h"
+#include "logic/movegen/CastlingGenerator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/board/Board.h"
 
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
-#include "ChessEngine/src/logic/movegen/CheckDetection.h"
+#include "logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/CheckDetection.h"
 
-#include "ChessEngine/src/logic/makemove/MoveMaker.h"
-#include "ChessEngine/src/logic/makemove/MoveRetractor.h"
+#include "logic/makemove/MoveMaker.h"
+#include "logic/makemove/MoveRetractor.h"
 
-#include "ChessEngine/src/model/move/Movelist.h"
-#include "ChessEngine/src/model/move/Move.h"
+#include "model/move/Movelist.h"
+#include "model/move/Move.h"
 
 namespace logic {
 
@@ -789,7 +789,7 @@ void CastlingGenerator::genSingleCastleMove(
 
 ```cpp
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace model {
     class Move;
@@ -860,15 +860,15 @@ private:
 # FILE: src/logic/movegen/CheckDetection.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/CheckDetection.h"
+#include "logic/movegen/CheckDetection.h"
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/board/Board.h"
 
-#include "ChessEngine/src/logic/movegen/RayLogic.h"
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
-#include "ChessEngine/src/logic/movegen/bitmasks/KnightBitmasks.h"
-#include "ChessEngine/src/logic/movegen/bitmasks/PawnBitmasks.h"
+#include "logic/movegen/RayLogic.h"
+#include "logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/bitmasks/KnightBitmasks.h"
+#include "logic/movegen/bitmasks/PawnBitmasks.h"
 
 namespace logic {
 
@@ -971,9 +971,9 @@ bool CheckDetection::isInCheck(bool isWhite) const
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
-#include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
+#include "logic/movegen/bitmasks/RayBitmasks.h"
 
 namespace model {
     class Board;
@@ -1009,14 +1009,14 @@ private:
 # FILE: src/logic/movegen/KingGenerator.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/KingGenerator.h"
+#include "logic/movegen/KingGenerator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Movelist.h"
+#include "model/board/Board.h"
+#include "model/move/Movelist.h"
 
-#include "ChessEngine/src/logic/movegen/bitmasks/KingBitmasks.h"
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/bitmasks/KingBitmasks.h"
+#include "logic/movegen/utils/Containers.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace logic {
 
@@ -1071,7 +1071,7 @@ void KingGenerator::generate(bool isWhite, model::Movelist& moveList)
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace model {
     class Bitboards;
@@ -1103,14 +1103,14 @@ private:
 # FILE: src/logic/movegen/KnightGenerator.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/KnightGenerator.h"
+#include "logic/movegen/KnightGenerator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Movelist.h"
+#include "model/board/Board.h"
+#include "model/move/Movelist.h"
 
-#include "ChessEngine/src/logic/movegen/bitmasks/KnightBitmasks.h"
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/bitmasks/KnightBitmasks.h"
+#include "logic/movegen/utils/Containers.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace logic {
 
@@ -1165,7 +1165,7 @@ void KnightGenerator::generate(
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace model {
     class Movelist;
@@ -1197,15 +1197,15 @@ private:
 # FILE: src/logic/movegen/MoveGenerator.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/MoveGenerator.h"
+#include "logic/movegen/MoveGenerator.h"
 
-#include "ChessEngine/src/logic/makemove/MoveMaker.h"
-#include "ChessEngine/src/logic/makemove/MoveRetractor.h"
+#include "logic/makemove/MoveMaker.h"
+#include "logic/makemove/MoveRetractor.h"
 
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Movelist.h"
+#include "model/board/Board.h"
+#include "model/move/Movelist.h"
 
-#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
+#include "engine/pickmove/SearchMemory.h"
 
 #include <iostream>
 
@@ -1312,16 +1312,16 @@ bool MoveGenerator::isInCheck(bool isWhite) {
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/logic/movegen/PawnGenerator.h"
-#include "ChessEngine/src/logic/movegen/BishopGenerator.h"
-#include "ChessEngine/src/logic/movegen/KnightGenerator.h"
-#include "ChessEngine/src/logic/movegen/CastlingGenerator.h"
-#include "ChessEngine/src/logic/movegen/RookGenerator.h"
-#include "ChessEngine/src/logic/movegen/QueenGenerator.h"
-#include "ChessEngine/src/logic/movegen/KingGenerator.h"
-#include "ChessEngine/src/logic/movegen/CheckDetection.h"
+#include "logic/movegen/PawnGenerator.h"
+#include "logic/movegen/BishopGenerator.h"
+#include "logic/movegen/KnightGenerator.h"
+#include "logic/movegen/CastlingGenerator.h"
+#include "logic/movegen/RookGenerator.h"
+#include "logic/movegen/QueenGenerator.h"
+#include "logic/movegen/KingGenerator.h"
+#include "logic/movegen/CheckDetection.h"
 
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace model {
     class Board;
@@ -1401,15 +1401,15 @@ private:
 # FILE: src/logic/movegen/PawnGenerator.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/PawnGenerator.h"
+#include "logic/movegen/PawnGenerator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Movelist.h"
+#include "model/board/Board.h"
+#include "model/move/Movelist.h"
 
-#include "ChessEngine/src/logic/movegen/bitmasks/PawnBitmasks.h"
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/bitmasks/PawnBitmasks.h"
+#include "logic/movegen/utils/Containers.h"
+#include "logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace logic {
 
@@ -1504,7 +1504,7 @@ void PawnGenerator::generate(
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace model {
     class Board;
@@ -1545,14 +1545,14 @@ private:
 # FILE: src/logic/movegen/QueenGenerator.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/QueenGenerator.h"
+#include "logic/movegen/QueenGenerator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/board/Board.h"
 
-#include "ChessEngine/src/logic/movegen/RayLogic.h"
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/RayLogic.h"
+#include "logic/movegen/utils/Containers.h"
+#include "logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
 
@@ -1693,9 +1693,9 @@ void QueenGenerator::generate(
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
-#include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
+#include "logic/movegen/bitmasks/RayBitmasks.h"
 
 namespace model {
     class Movelist;
@@ -1733,15 +1733,15 @@ private:
 # FILE: src/logic/movegen/RayLogic.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/RayLogic.h"
+#include "logic/movegen/RayLogic.h"
 
-#include "ChessEngine/src/model/move/Movelist.h"
+#include "model/move/Movelist.h"
 
-#include "ChessEngine/src/model/move/Move.h"
+#include "model/move/Move.h"
 
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/Containers.h"
+#include "logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace logic {
 
@@ -1982,7 +1982,7 @@ bool RayLogic::checkDiagonalRay(
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/model/move/Movelist.h"
+#include "model/move/Movelist.h"
 
 namespace logic {
 
@@ -2070,14 +2070,14 @@ struct RayLogic {
 # FILE: src/logic/movegen/RookGenerator.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/RookGenerator.h"
+#include "logic/movegen/RookGenerator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/board/Board.h"
 
-#include "ChessEngine/src/logic/movegen/RayLogic.h"
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/RayLogic.h"
+#include "logic/movegen/utils/Containers.h"
+#include "logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace logic {
 
@@ -2170,9 +2170,9 @@ void RookGenerator::generate(
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
-#include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
+#include "logic/movegen/bitmasks/RayBitmasks.h"
 
 namespace model {
     class Movelist;
@@ -2209,7 +2209,7 @@ private:
 # FILE: src/logic/movegen/utils/BitBasics.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 #include <iostream>
 #include <bitset>
@@ -2240,7 +2240,7 @@ void BitBasics::getBitIndices(std::vector<int>& indices, bitboard bitboard)
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace logic {
 
@@ -2258,7 +2258,7 @@ struct BitBasics {
 
 } // namespace logic
 
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.inl"
+#include "logic/movegen/utils/BitBasics.inl"
 ```
 
 
@@ -2311,7 +2311,7 @@ target_sources(movegen PRIVATE
 # FILE: src/logic/movegen/utils/ChessUtils.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
 
@@ -2333,7 +2333,7 @@ int ChessUtils::manhattanDistance(int i, int j)
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/board/PieceType.h"
 
 namespace logic {
     
@@ -2355,7 +2355,7 @@ struct ChessUtils {
 
 } // namespace logic
 
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.inl"
+#include "logic/movegen/utils/ChessUtils.inl"
 ```
 
 
@@ -2445,7 +2445,7 @@ inline int ChessUtils::abs(int n) {
 # FILE: src/logic/movegen/utils/Containers.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
+#include "logic/movegen/utils/Containers.h"
 
 namespace logic {
 
@@ -2501,7 +2501,7 @@ std::vector<int>& Containers::getPiecePositionIndices()
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace logic {
 
@@ -2603,9 +2603,9 @@ target_sources(movegen PRIVATE
 # FILE: src/logic/movegen/bitmasks/KingBitmasks.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/bitmasks/KingBitmasks.h"
+#include "logic/movegen/bitmasks/KingBitmasks.h"
 
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
 
@@ -2673,7 +2673,7 @@ const std::vector<bitmask> KingBitmasks::getAllKingBitmasks()
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace logic {
 
@@ -2696,9 +2696,9 @@ struct KingBitmasks {
 # FILE: src/logic/movegen/bitmasks/KnightBitmasks.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/bitmasks/KnightBitmasks.h"
+#include "logic/movegen/bitmasks/KnightBitmasks.h"
 
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
 
@@ -2777,7 +2777,7 @@ const std::vector<bitmask> KnightBitmasks::getAllKnightBitmasks()
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace logic {
 
@@ -2800,9 +2800,9 @@ struct KnightBitmasks {
 # FILE: src/logic/movegen/bitmasks/PawnBitmasks.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/bitmasks/PawnBitmasks.h"
+#include "logic/movegen/bitmasks/PawnBitmasks.h"
 
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
 
@@ -2892,7 +2892,7 @@ std::vector<bitmask> PawnBitmasks::getAllCapturePawnMoveBitmasks(bool isWhite)
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace logic {
 
@@ -2922,9 +2922,9 @@ struct PawnBitmasks {
 # FILE: src/logic/movegen/bitmasks/RayBitmasks.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
+#include "logic/movegen/bitmasks/RayBitmasks.h"
 
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
 
@@ -3100,7 +3100,7 @@ std::vector<RayBitmasks::DiagonalRays> RayBitmasks::getAllDiagonalRayBitmasks()
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace logic {
 
@@ -3158,9 +3158,9 @@ target_link_libraries(eval PUBLIC board cxx_setup)
 # FILE: src/logic/eval/Evaluator.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/eval/Evaluator.h"
+#include "logic/eval/Evaluator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/board/Board.h"
 
 namespace logic {
 
@@ -3248,12 +3248,12 @@ target_link_libraries(makemove PUBLIC board move pickmove cxx_setup)
 # FILE: src/logic/makemove/MoveMaker.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/makemove/MoveMaker.h"
+#include "logic/makemove/MoveMaker.h"
 
-#include "ChessEngine/src/logic/makemove/MoveUtils.h"
+#include "logic/makemove/MoveUtils.h"
 
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Move.h"
+#include "model/board/Board.h"
+#include "model/move/Move.h"
 
 namespace logic {
 
@@ -3431,7 +3431,7 @@ void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captur
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/logic/makemove/MoveUtils.h"
+#include "logic/makemove/MoveUtils.h"
 
 namespace model {
     class Board;
@@ -3489,10 +3489,10 @@ private:
 # FILE: src/logic/makemove/MoveRetractor.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/makemove/MoveRetractor.h"
+#include "logic/makemove/MoveRetractor.h"
 
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Move.h"
+#include "model/board/Board.h"
+#include "model/move/Move.h"
 
 namespace logic {
 
@@ -3694,7 +3694,7 @@ void MoveRetractor::unmakeMove(
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/logic/makemove/MoveUtils.h"
+#include "logic/makemove/MoveUtils.h"
 
 namespace model {
     class Board;
@@ -3746,9 +3746,9 @@ private:
 # FILE: src/logic/makemove/MoveUtils.cpp
 
 ```cpp
-#include "ChessEngine/src/logic/makemove/MoveUtils.h"
+#include "logic/makemove/MoveUtils.h"
 
-#include "ChessEngine/src/model/move/Move.h"
+#include "model/move/Move.h"
 
 namespace logic {
 
@@ -3802,7 +3802,7 @@ int MoveUtils::determineCaptureIndex(const model::Move& move, bool isWhite, int 
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/board/PieceType.h"
 
 namespace model {
     class Move;
@@ -3860,9 +3860,9 @@ target_link_libraries(pickmove PUBLIC io eval makemove movegen cxx_setup)
 # FILE: src/engine/pickmove/MovePicker.cpp
 
 ```cpp
-#include "ChessEngine/src/engine/pickmove/MovePicker.h"
+#include "engine/pickmove/MovePicker.h"
 
-#include "ChessEngine/src/io/BoardPrinter.h"
+#include "io/BoardPrinter.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -4248,20 +4248,20 @@ void MovePicker::recordPerftStats(
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
+#include "engine/pickmove/SearchMemory.h"
 
-#include "ChessEngine/src/logic/eval/Evaluator.h"
+#include "logic/eval/Evaluator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/board/Board.h"
 
-#include "ChessEngine/src/model/board/PieceMap.h"
-#include "ChessEngine/src/logic/movegen/MoveGenerator.h"
-#include "ChessEngine/src/model/move/Movelist.h"
-#include "ChessEngine/src/logic/makemove/MoveMaker.h"
-#include "ChessEngine/src/logic/makemove/MoveRetractor.h"
-#include "ChessEngine/src/logic/makemove/MoveUtils.h"
-#include "ChessEngine/src/model/move/Move.h"
-#include "ChessEngine/src/io/Fen.h"
+#include "model/board/PieceMap.h"
+#include "logic/movegen/MoveGenerator.h"
+#include "model/move/Movelist.h"
+#include "logic/makemove/MoveMaker.h"
+#include "logic/makemove/MoveRetractor.h"
+#include "logic/makemove/MoveUtils.h"
+#include "model/move/Move.h"
+#include "io/Fen.h"
 
 namespace engine {
 
@@ -4385,9 +4385,9 @@ private:
 # FILE: src/engine/pickmove/SearchMemory.cpp
 
 ```cpp
-#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
+#include "engine/pickmove/SearchMemory.h"
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/board/PieceType.h"
 
 namespace engine {
     
@@ -4534,8 +4534,8 @@ void SearchMemory::handleEnPessantMemory(
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/model/move/Move.h"
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/move/Move.h"
+#include "model/board/PieceType.h"
 
 namespace {
     constexpr unsigned char whiteKingSide = 0b0001;
@@ -4661,9 +4661,9 @@ target_link_libraries(perft PUBLIC movegen eval io makemove cxx_setup)
 # FILE: src/engine/perft/perft.cpp
 
 ```cpp
-#include "ChessEngine/src/engine/perft/perft.h"
+#include "engine/perft/perft.h"
 
-#include "ChessEngine/src/io/BoardPrinter.h"
+#include "io/BoardPrinter.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -4989,20 +4989,20 @@ void perft::recordPerftStats(
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/engine/perft/perftData.h"
-#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
+#include "engine/perft/perftData.h"
+#include "engine/pickmove/SearchMemory.h"
 
-#include "ChessEngine/src/io/Fen.h"
+#include "io/Fen.h"
 
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Movelist.h"
-#include "ChessEngine/src/model/move/Move.h"
-#include "ChessEngine/src/model/board/PieceMap.h"
+#include "model/board/Board.h"
+#include "model/move/Movelist.h"
+#include "model/move/Move.h"
+#include "model/board/PieceMap.h"
 
-#include "ChessEngine/src/logic/makemove/MoveMaker.h"
-#include "ChessEngine/src/logic/makemove/MoveRetractor.h"
-#include "ChessEngine/src/logic/movegen/MoveGenerator.h"
-#include "ChessEngine/src/logic/eval/Evaluator.h"
+#include "logic/makemove/MoveMaker.h"
+#include "logic/makemove/MoveRetractor.h"
+#include "logic/movegen/MoveGenerator.h"
+#include "logic/eval/Evaluator.h"
 
 namespace engine {
 
@@ -5118,7 +5118,7 @@ private:
 # FILE: src/engine/perft/perftData.cpp
 
 ```cpp
-#include "ChessEngine/src/engine/perft/perftData.h"
+#include "engine/perft/perftData.h"
 
 namespace engine {
 
@@ -5186,9 +5186,9 @@ void perftData::resetNodeCounts()
 
 ```cpp
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
-#include "ChessEngine/src/model/move/Move.h"
+#include "model/move/Move.h"
 
 namespace engine {
 
@@ -5369,7 +5369,7 @@ private:
 
 } // namespace model
 
-#include "ChessEngine/src/model/move/Move.inl"
+#include "model/move/Move.inl"
 
 namespace std {
     template <>
@@ -5515,7 +5515,7 @@ inline bool Move::isAnyCastle() const {
 # FILE: src/model/move/Movelist.cpp
 
 ```cpp
-#include "ChessEngine/src/model/move/Movelist.h"
+#include "model/move/Movelist.h"
 
 namespace model {
 
@@ -5539,9 +5539,9 @@ void Movelist::addMove(const Move& move) {
 
 ```cpp
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
-#include "ChessEngine/src/model/move/Move.h"
+#include "model/move/Move.h"
 
 namespace model {
 
@@ -5564,7 +5564,7 @@ private:
 
 } // namespace model
 
-#include "ChessEngine/src/model/move/Movelist.inl"
+#include "model/move/Movelist.inl"
 ```
 
 
@@ -5600,7 +5600,7 @@ inline int Movelist::getMoveIndex() const {
 # FILE: src/model/board/Bitboards.cpp
 
 ```cpp
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/board/Board.h"
 
 namespace model {
 
@@ -5654,7 +5654,7 @@ void Bitboards::resetBitboards()
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/board/PieceType.h"
 
 namespace model {
 
@@ -5719,7 +5719,7 @@ private:
 
 } // namespace model
 
-#include "ChessEngine/src/model/board/Bitboards.inl"
+#include "model/board/Bitboards.inl"
 ```
 
 
@@ -5766,10 +5766,10 @@ inline void Bitboards::setPieceTypeBit(int index, Piece::Type pieceType)
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/PieceMap.h"
-#include "ChessEngine/src/model/board/StateBitmasks.h"
-#include "ChessEngine/src/model/board/ZHasher.h"
+#include "model/board/Bitboards.h"
+#include "model/board/PieceMap.h"
+#include "model/board/StateBitmasks.h"
+#include "model/board/ZHasher.h"
 
 namespace model {
 
@@ -5811,9 +5811,9 @@ target_link_libraries(board PUBLIC cxx_setup)
 # FILE: src/model/board/PieceMap.cpp
 
 ```cpp
-#include "ChessEngine/src/model/board/PieceMap.h"
+#include "model/board/PieceMap.h"
 
-#include "ChessEngine/src/model/board/Bitboards.h"
+#include "model/board/Bitboards.h"
 
 namespace model {
 
@@ -5846,9 +5846,9 @@ void PieceMap::fillPieceMapFromBitboards(const Bitboards& bitboards)
 
 ```cpp
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/board/PieceType.h"
 
 namespace model {
 
@@ -5870,7 +5870,7 @@ private:
 
 } // namespace model
 
-#include "ChessEngine/src/model/board/PieceMap.inl"
+#include "model/board/PieceMap.inl"
 ```
 
 
@@ -5900,7 +5900,7 @@ inline void PieceMap::setPieceTypeAtIndex(int index, Piece::Type pieceType)
 # FILE: src/model/board/PieceType.cpp
 
 ```cpp
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/board/PieceType.h"
 
 namespace model {
 
@@ -5950,7 +5950,7 @@ char Piece::getCharFromType(Piece::Type type) {
 
 ```cpp
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace model {
 
@@ -5980,7 +5980,7 @@ struct Piece {
 
 } // namespace model
 
-#include "ChessEngine/src/model/board/PieceType.inl"
+#include "model/board/PieceType.inl"
 ```
 
 
@@ -6010,9 +6010,9 @@ inline Piece::Type Piece::getTypeFromInt(int integer)
 # FILE: src/model/board/StateBitmasks.cpp
 
 ```cpp
-#include "ChessEngine/src/model/board/StateBitmasks.h"
+#include "model/board/StateBitmasks.h"
 
-#include "ChessEngine/src/model/board/Bitboards.h"
+#include "model/board/Bitboards.h"
 
 namespace model {
 
@@ -6059,7 +6059,7 @@ void StateBitmasks::updOccupiedAndEmptySquaresBitmasks()
 
 ```cpp
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace model {
 
@@ -6097,7 +6097,7 @@ private:
 
 } // namespace model
 
-#include "ChessEngine/src/model/board/StateBitmasks.inl"
+#include "model/board/StateBitmasks.inl"
 ```
 
 
@@ -6177,9 +6177,9 @@ inline void StateBitmasks::updEmptySquaresBitmask()
 # FILE: src/model/board/ZHasher.cpp
 
 ```cpp
-#include "ChessEngine/src/model/board/ZHasher.h"
+#include "model/board/ZHasher.h"
 
-#include "ChessEngine/src/model/board/PieceMap.h"
+#include "model/board/PieceMap.h"
 
 #include <iostream>
 #include <random>
@@ -6249,9 +6249,9 @@ void ZHasher::computeInitialHash()
 
 ```cpp
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/board/PieceType.h"
 
 namespace model {
 
@@ -6287,7 +6287,7 @@ private:
 
 } // namespace model
 
-#include "ChessEngine/src/model/board/ZHasher.inl"
+#include "model/board/ZHasher.inl"
 ```
 
 
@@ -6357,16 +6357,16 @@ add_subdirectory(movegen)
 
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Move.h"
-#include "ChessEngine/src/model/move/Movelist.h"
-#include "ChessEngine/src/logic/movegen/MoveGenerator.h"
+#include "model/board/Board.h"
+#include "model/move/Move.h"
+#include "model/move/Movelist.h"
+#include "logic/movegen/MoveGenerator.h"
 
-#include "ChessEngine/src/logic/makemove/MoveMaker.h"
-#include "ChessEngine/src/logic/makemove/MoveRetractor.h"
+#include "logic/makemove/MoveMaker.h"
+#include "logic/makemove/MoveRetractor.h"
 
-#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
-#include "ChessEngine/src/io/Fen.h"
+#include "engine/pickmove/SearchMemory.h"
+#include "io/Fen.h"
 
 
 #include <unordered_set>
@@ -7523,7 +7523,7 @@ TEST_F(MoveGeneratorRookTest, genRookMoves_fenTwoBlack_ShouldReturn12Moves)
 ```cpp
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace logic {
 
@@ -7611,8 +7611,8 @@ target_sources(movegen_tests PRIVATE
 ```cpp
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace logic {
 
@@ -7887,7 +7887,7 @@ target_sources(movegen_tests PRIVATE
 ```cpp
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/logic/movegen/bitmasks/KingBitmasks.h"
+#include "logic/movegen/bitmasks/KingBitmasks.h"
 
 namespace logic {
 
@@ -7945,7 +7945,7 @@ TEST_F(Kingbitboards, getKingBitmask_63_ShouldReturn0x40C0000000000000)
 ```cpp
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/logic/movegen/bitmasks/KnightBitmasks.h"
+#include "logic/movegen/bitmasks/KnightBitmasks.h"
 
 namespace logic {
 
@@ -8025,7 +8025,7 @@ TEST_F(KnightBitmasksTest, getKnightBitmask_63_ShouldReturn0x20400000000000)
 ```cpp
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/logic/movegen/bitmasks/PawnBitmasks.h"
+#include "logic/movegen/bitmasks/PawnBitmasks.h"
 
 namespace logic {
 
@@ -8121,7 +8121,7 @@ TEST_F(PawnBitmasksTest, getCapturePawnMovesBitmask_44asBlack_ShouldReturn0x0000
 ```cpp
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
+#include "logic/movegen/bitmasks/RayBitmasks.h"
 
 namespace logic {
 
@@ -8521,8 +8521,8 @@ gtest_discover_tests(makemove_tests)
 ```cpp
 // #include <gtest/gtest.h>
 
-// #include "ChessEngine/src/game/movegen/MoveGenerator.h"
-// #include "ChessEngine/src/game/move/Move.h"
+// #include "game/movegen/MoveGenerator.h"
+// #include "game/move/Move.h"
 
 // #include <unordered_set>
 // #include <vector>
@@ -8864,11 +8864,11 @@ gtest_discover_tests(perft_test)
 ```cpp
 #pragma once
 
-#include "ChessEngine/src/engine/pickmove/MovePicker.h"
+#include "engine/pickmove/MovePicker.h"
 
-#include "ChessEngine/src/io/Fen.h"
+#include "io/Fen.h"
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/board/Board.h"
 
 #include <cstdint>
 #include <gtest/gtest.h>
@@ -9088,7 +9088,7 @@ protected:
 ```cpp
 #include "perftBase_test.h"
 
-#include "ChessEngine/src/io/StockfishPerftRetriever.h"
+#include "io/StockfishPerftRetriever.h"
 namespace engine {
 
 class perftPosFive : public perftBase 
@@ -9157,7 +9157,7 @@ TEST_F(perftPosFive, perft_pos5)
 ```cpp
 #include "perftBase_test.h"
 
-#include "ChessEngine/src/io/StockfishPerftRetriever.h"
+#include "io/StockfishPerftRetriever.h"
 
 namespace engine {
 
@@ -9248,7 +9248,7 @@ TEST_F(perftPosThree, perft_pos3)
 ```cpp
 #include "perftBase_test.h"
 
-#include "ChessEngine/src/io/StockfishPerftRetriever.h"
+#include "io/StockfishPerftRetriever.h"
 
 namespace engine {
 
@@ -9331,7 +9331,7 @@ TEST_F(perftPosTwo, perft_pos2)
 ```cpp
 #include "perftBase_test.h"
 
-#include "ChessEngine/src/io/StockfishPerftRetriever.h"
+#include "io/StockfishPerftRetriever.h"
 
 namespace engine {
 
@@ -9409,9 +9409,9 @@ add_subdirectory(board)
 ```cpp
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/board/Board.h"
 
-#include "ChessEngine/src/io/Fen.h"
+#include "io/Fen.h"
 
 namespace model {
 

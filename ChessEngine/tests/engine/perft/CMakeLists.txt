@@ -5,5 +5,5 @@ add_executable(perft_test
     perftPosFive_test.cpp
 )
 
-target_link_libraries(perft_test PRIVATE perft board GTest::gtest_main)
+target_link_libraries(perft_test PRIVATE perft board test_support GTest::gtest_main)
 gtest_discover_tests(perft_test)

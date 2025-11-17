@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/position/Board.h"
 
 namespace io {
 

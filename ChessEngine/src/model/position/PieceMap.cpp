@@ -1,6 +1,6 @@
-#include "ChessEngine/src/model/board/PieceMap.h"
+#include "model/position/PieceMap.h"
 
-#include "ChessEngine/src/model/board/Bitboards.h"
+#include "model/position/Bitboards.h"
 
 namespace model {
 

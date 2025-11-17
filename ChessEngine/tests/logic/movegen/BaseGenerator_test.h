@@ -2,16 +2,16 @@
 
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Move.h"
-#include "ChessEngine/src/model/move/Movelist.h"
-#include "ChessEngine/src/logic/movegen/MoveGenerator.h"
+#include "model/position/Board.h"
+#include "model/move/Move.h"
+#include "model/move/Movelist.h"
+#include "logic/movegen/MoveGenerator.h"
 
-#include "ChessEngine/src/logic/makemove/MoveMaker.h"
-#include "ChessEngine/src/logic/makemove/MoveRetractor.h"
+#include "logic/makemove/MoveMaker.h"
+#include "logic/makemove/MoveRetractor.h"
 
-#include "ChessEngine/src/engine/pickmove/SearchMemory.h"
-#include "ChessEngine/src/io/Fen.h"
+#include "engine/pickmove/SearchMemory.h"
+#include "io/Fen.h"
 
 
 #include <unordered_set>

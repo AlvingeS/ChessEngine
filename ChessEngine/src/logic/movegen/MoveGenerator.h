@@ -1,15 +1,15 @@
 #pragma once
 
-#include "ChessEngine/src/logic/movegen/PawnGenerator.h"
-#include "ChessEngine/src/logic/movegen/BishopGenerator.h"
-#include "ChessEngine/src/logic/movegen/KnightGenerator.h"
-#include "ChessEngine/src/logic/movegen/CastlingGenerator.h"
-#include "ChessEngine/src/logic/movegen/RookGenerator.h"
-#include "ChessEngine/src/logic/movegen/QueenGenerator.h"
-#include "ChessEngine/src/logic/movegen/KingGenerator.h"
-#include "ChessEngine/src/logic/movegen/CheckDetection.h"
+#include "logic/movegen/PawnGenerator.h"
+#include "logic/movegen/BishopGenerator.h"
+#include "logic/movegen/KnightGenerator.h"
+#include "logic/movegen/CastlingGenerator.h"
+#include "logic/movegen/RookGenerator.h"
+#include "logic/movegen/QueenGenerator.h"
+#include "logic/movegen/KingGenerator.h"
+#include "logic/movegen/CheckDetection.h"
 
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace model {
     class Board;

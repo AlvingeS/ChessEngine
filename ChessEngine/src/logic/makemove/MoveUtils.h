@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/position/PieceType.h"
 
 namespace model {
     class Move;

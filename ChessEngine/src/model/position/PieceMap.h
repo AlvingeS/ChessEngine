@@ -1,7 +1,7 @@
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/position/PieceType.h"
 
 namespace model {
 
@@ -23,4 +23,4 @@ private:
 
 } // namespace model
 
-#include "ChessEngine/src/model/board/PieceMap.inl"
+#include "model/position/PieceMap.inl"

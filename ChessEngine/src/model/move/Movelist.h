@@ -1,7 +1,7 @@
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
-#include "ChessEngine/src/model/move/Move.h"
+#include "model/move/Move.h"
 
 namespace model {
 
@@ -24,4 +24,4 @@ private:
 
 } // namespace model
 
-#include "ChessEngine/src/model/move/Movelist.inl"
+#include "model/move/Movelist.inl"

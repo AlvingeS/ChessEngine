@@ -1,7 +1,7 @@
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
-#include "ChessEngine/src/model/move/Move.h"
+#include "model/move/Move.h"
 
 namespace engine {
 

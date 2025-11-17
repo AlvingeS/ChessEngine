@@ -62,7 +62,7 @@ private:
 
 } // namespace model
 
-#include "ChessEngine/src/model/move/Move.inl"
+#include "model/move/Move.inl"
 
 namespace std {
     template <>

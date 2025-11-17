@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/logic/movegen/bitmasks/KnightBitmasks.h"
+#include "logic/movegen/bitmasks/KnightBitmasks.h"
 
 namespace logic {
 

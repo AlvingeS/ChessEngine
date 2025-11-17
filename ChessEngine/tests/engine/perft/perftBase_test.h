@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ChessEngine/src/engine/pickmove/MovePicker.h"
+#include "engine/pickmove/MovePicker.h"
 
-#include "ChessEngine/src/io/Fen.h"
+#include "io/Fen.h"
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/position/Board.h"
 
 #include <cstdint>
 #include <gtest/gtest.h>

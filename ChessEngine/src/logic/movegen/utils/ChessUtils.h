@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/position/PieceType.h"
 
 namespace logic {
     
@@ -22,4 +22,4 @@ struct ChessUtils {
 
 } // namespace logic
 
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.inl"
+#include "logic/movegen/utils/ChessUtils.inl"

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "ChessEngine/src/logic/movegen/bitmasks/RayBitmasks.h"
+#include "logic/movegen/bitmasks/RayBitmasks.h"
 
 namespace logic {
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace model {
 
@@ -29,4 +29,4 @@ struct Piece {
 
 } // namespace model
 
-#include "ChessEngine/src/model/board/PieceType.inl"
+#include "model/position/PieceType.inl"

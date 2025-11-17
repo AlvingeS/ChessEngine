@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ChessEngine/src/model/board/Bitboards.h"
-#include "ChessEngine/src/model/board/PieceMap.h"
-#include "ChessEngine/src/model/board/StateBitmasks.h"
-#include "ChessEngine/src/model/board/ZHasher.h"
+#include "model/position/Bitboards.h"
+#include "model/position/PieceMap.h"
+#include "model/position/StateBitmasks.h"
+#include "model/position/ZHasher.h"
 
 namespace model {
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace logic {
 
@@ -18,4 +18,4 @@ struct BitBasics {
 
 } // namespace logic
 
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.inl"
+#include "logic/movegen/utils/BitBasics.inl"

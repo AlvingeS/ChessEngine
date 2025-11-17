@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChessEngine/src/logic/makemove/MoveUtils.h"
+#include "logic/makemove/MoveUtils.h"
 
 namespace model {
     class Board;

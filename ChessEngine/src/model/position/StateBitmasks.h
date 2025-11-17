@@ -1,5 +1,5 @@
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace model {
 
@@ -37,4 +37,4 @@ private:
 
 } // namespace model
 
-#include "ChessEngine/src/model/board/StateBitmasks.inl"
+#include "model/position/StateBitmasks.inl"

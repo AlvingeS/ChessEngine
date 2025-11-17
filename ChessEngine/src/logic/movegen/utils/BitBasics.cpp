@@ -1,4 +1,4 @@
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 #include <iostream>
 #include <bitset>

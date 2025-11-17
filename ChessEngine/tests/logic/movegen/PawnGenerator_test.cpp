@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "ChessEngine/tests/logic/movegen/BaseGenerator_test.h"
-
+#include "tests/logic/movegen/BaseGenerator_test.h"
 namespace logic {
 
 class MoveGeneratorPawnTest : public BaseGenerator 

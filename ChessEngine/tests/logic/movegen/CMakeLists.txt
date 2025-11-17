@@ -15,6 +15,6 @@ target_sources(movegen_tests PRIVATE
     CheckDetection_test.cpp
 )
 
-target_link_libraries(movegen_tests PRIVATE makemove perft movegen board GTest::gtest_main)
+target_link_libraries(movegen_tests PRIVATE makemove perft movegen board test_support GTest::gtest_main)
 
 gtest_discover_tests(movegen_tests)

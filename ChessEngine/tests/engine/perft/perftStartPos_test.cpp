@@ -1,6 +1,6 @@
 #include "perftBase_test.h"
 
-#include "ChessEngine/src/io/StockfishPerftRetriever.h"
+#include "io/StockfishPerftRetriever.h"
 
 namespace engine {
 

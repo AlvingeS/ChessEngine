@@ -1,6 +1,6 @@
-#include "ChessEngine/src/logic/movegen/bitmasks/KingBitmasks.h"
+#include "logic/movegen/bitmasks/KingBitmasks.h"
 
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
 

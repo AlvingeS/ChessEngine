@@ -1,6 +1,6 @@
-#include "ChessEngine/src/io/BoardPrinter.h"
+#include "io/BoardPrinter.h"
 
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 #include <iostream>
 

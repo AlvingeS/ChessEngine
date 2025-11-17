@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChessEngine/src/common.h"
+#include "common.h"
 #include <unordered_map>
 
 namespace io::stockfish

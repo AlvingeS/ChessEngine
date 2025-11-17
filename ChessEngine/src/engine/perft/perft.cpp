@@ -1,6 +1,6 @@
-#include "ChessEngine/src/engine/perft/perft.h"
+#include "engine/perft/perft.h"
 
-#include "ChessEngine/src/io/BoardPrinter.h"
+#include "io/BoardPrinter.h"
 
 #include <cstdlib>
 #include <iostream>

@@ -22,7 +22,10 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 
 target_compile_definitions(cxx_setup INTERFACE cxx_std_17)
-target_include_directories(cxx_setup INTERFACE ${PROJECT_SOURCE_DIR})
+target_include_directories(cxx_setup INTERFACE
+    ${PROJECT_SOURCE_DIR}/ChessEngine/src
+    ${PROJECT_SOURCE_DIR}/ChessEngine/
+)
 
 include(CTest)
 

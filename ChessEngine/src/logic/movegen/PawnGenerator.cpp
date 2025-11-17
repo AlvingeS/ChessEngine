@@ -1,12 +1,12 @@
-#include "ChessEngine/src/logic/movegen/PawnGenerator.h"
+#include "logic/movegen/PawnGenerator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Movelist.h"
+#include "model/position/Board.h"
+#include "model/move/Movelist.h"
 
-#include "ChessEngine/src/logic/movegen/bitmasks/PawnBitmasks.h"
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/bitmasks/PawnBitmasks.h"
+#include "logic/movegen/utils/Containers.h"
+#include "logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace logic {
 

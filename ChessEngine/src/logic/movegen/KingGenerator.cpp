@@ -1,11 +1,11 @@
-#include "ChessEngine/src/logic/movegen/KingGenerator.h"
+#include "logic/movegen/KingGenerator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
-#include "ChessEngine/src/model/move/Movelist.h"
+#include "model/position/Board.h"
+#include "model/move/Movelist.h"
 
-#include "ChessEngine/src/logic/movegen/bitmasks/KingBitmasks.h"
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/bitmasks/KingBitmasks.h"
+#include "logic/movegen/utils/Containers.h"
+#include "logic/movegen/utils/BitBasics.h"
 
 namespace logic {
 

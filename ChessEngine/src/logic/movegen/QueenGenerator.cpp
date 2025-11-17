@@ -1,11 +1,11 @@
-#include "ChessEngine/src/logic/movegen/QueenGenerator.h"
+#include "logic/movegen/QueenGenerator.h"
 
-#include "ChessEngine/src/model/board/Board.h"
+#include "model/position/Board.h"
 
-#include "ChessEngine/src/logic/movegen/RayLogic.h"
-#include "ChessEngine/src/logic/movegen/utils/Containers.h"
-#include "ChessEngine/src/logic/movegen/utils/BitBasics.h"
-#include "ChessEngine/src/logic/movegen/utils/ChessUtils.h"
+#include "logic/movegen/RayLogic.h"
+#include "logic/movegen/utils/Containers.h"
+#include "logic/movegen/utils/BitBasics.h"
+#include "logic/movegen/utils/ChessUtils.h"
 
 namespace logic {
 

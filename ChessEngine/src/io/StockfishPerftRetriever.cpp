@@ -1,4 +1,4 @@
-#include "ChessEngine/src/io/StockfishPerftRetriever.h"
+#include "io/StockfishPerftRetriever.h"
 
 #include <sstream>
 #include <regex>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChessEngine/src/model/board/PieceType.h"
+#include "model/position/PieceType.h"
 
 namespace model {
 
@@ -65,4 +65,4 @@ private:
 
 } // namespace model
 
-#include "ChessEngine/src/model/board/Bitboards.inl"
+#include "model/position/Bitboards.inl"

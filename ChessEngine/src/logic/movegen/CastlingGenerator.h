@@ -1,5 +1,5 @@
 #pragma once
-#include "ChessEngine/src/common.h"
+#include "common.h"
 
 namespace model {
     class Move;

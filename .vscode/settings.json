@@ -73,5 +73,6 @@
         "shared_mutex": "cpp",
         "cassert": "cpp"
     },
-    "editor.formatOnSave": false
+    "editor.formatOnSave": false,
+    "C_Cpp.intelliSenseEngine": "Default"
 }

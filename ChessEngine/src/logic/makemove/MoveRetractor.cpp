@@ -165,8 +165,6 @@ void MoveRetractor::unmakeMove(
     // we are "moving to" the from square and "moving from" the to square
     int fromIndex = previousMove.getBitIndexFrom();
     int toIndex = previousMove.getBitIndexTo();
-    assert(fromIndex != toIndex);
-    
 
     // Determine the piece type of the piece that was previously moved,
     // takes into consideration if the move was a promotion

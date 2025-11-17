@@ -1,7 +1,8 @@
 #pragma once
-#include "common.h"
 
 #include "model/position/PieceType.h"
+
+#include <cstdint>
 
 namespace model {
 

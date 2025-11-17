@@ -1,6 +1,6 @@
 #pragma once
-#include "common.h"
 
+#include "model/position/Bitboards.h"
 #include "model/position/PieceType.h"
 
 namespace model {

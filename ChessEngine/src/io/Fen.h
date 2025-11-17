@@ -2,6 +2,7 @@
 
 #include "model/position/Board.h"
 
+#include <string>
 namespace io {
 
 struct Fen {

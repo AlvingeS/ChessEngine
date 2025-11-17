@@ -1,6 +1,7 @@
 #include "engine/pickmove/MovePicker.h"
 
 #include "io/BoardPrinter.h"
+#include "model/Constants.h"
 
 #include <cstdlib>
 #include <iostream>

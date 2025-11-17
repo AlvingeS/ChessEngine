@@ -1,5 +1,7 @@
 #include "model/move/Movelist.h"
 
+#include "model/Constants.h"
+
 namespace model {
 
 Movelist::Movelist() {

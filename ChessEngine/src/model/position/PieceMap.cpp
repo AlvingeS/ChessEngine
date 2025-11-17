@@ -1,7 +1,5 @@
 #include "model/position/PieceMap.h"
 
-#include "model/position/Bitboards.h"
-
 namespace model {
 
 PieceMap::PieceMap(const Bitboards& bitboards) 

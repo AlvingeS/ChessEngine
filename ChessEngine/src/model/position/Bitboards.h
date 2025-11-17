@@ -1,6 +1,9 @@
 #pragma once
 
+#include "model/Types.h"
 #include "model/position/PieceType.h"
+
+#include <vector>
 
 namespace model {
 

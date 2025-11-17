@@ -1,5 +1,4 @@
 #pragma once
-#include "common.h"
 #include "logic/movegen/bitmasks/RayBitmasks.h"
 
 namespace model {

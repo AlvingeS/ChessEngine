@@ -1,5 +1,7 @@
 #include "engine/perft/perftData.h"
 
+#include "model/Constants.h"
+
 namespace engine {
 
 perftData::perftData(int maxDepth)

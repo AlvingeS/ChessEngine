@@ -15,6 +15,8 @@
 #include "model/move/Move.h"
 #include "io/Fen.h"
 
+#include <string>
+
 namespace engine {
 
 class MovePicker {

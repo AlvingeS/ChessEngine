@@ -1,7 +1,8 @@
 #pragma once
 
-#include "common.h"
 #include <unordered_map>
+#include <cstdint>
+#include <string>
 
 namespace io::stockfish
 {

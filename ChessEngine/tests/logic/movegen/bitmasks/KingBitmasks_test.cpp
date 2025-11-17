@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "model/Types.h"
 #include "logic/movegen/bitmasks/KingBitmasks.h"
 
 namespace logic {

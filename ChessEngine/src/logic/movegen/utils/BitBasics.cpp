@@ -1,6 +1,5 @@
 #include "logic/movegen/utils/BitBasics.h"
 
-#include <iostream>
 #include <bitset>
 
 namespace logic {

@@ -1,5 +1,6 @@
 #include "io/BoardPrinter.h"
 
+#include "model/Types.h"
 #include "logic/movegen/utils/BitBasics.h"
 
 #include <iostream>

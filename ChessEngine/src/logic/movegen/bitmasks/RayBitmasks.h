@@ -1,6 +1,8 @@
 #pragma once
 
-#include "common.h"
+#include "model/Types.h"
+
+#include <vector>
 
 namespace logic {
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "model/Types.h"
 #include "model/move/Movelist.h"
 
 namespace logic {

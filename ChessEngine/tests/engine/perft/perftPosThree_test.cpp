@@ -1,5 +1,7 @@
 #include "perftBase_test.h"
 
+#include "ChessEngine/src/io/StockfishPerftRetriever.h"
+
 namespace engine {
 
 class perftPosThree : public perftBase 
@@ -53,12 +55,12 @@ TEST_F(perftPosThree, perft_pos3)
             debugFen += " - -";
         }
 
-        std::unordered_map<std::string, long> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posThree, depth);
+        std::unordered_map<std::string, uint64_t> stockfishResults = io::stockfish::getPerftResults(nDebugMoves > 0 ? debugFen : posThree, depth);
 
         movePicker.setMaxDepth(depth);
         movePicker.minimax(0, whiteToStart, 0);
 
-        std::unordered_map<std::string, long> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
+        std::unordered_map<std::string, uint64_t> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
         compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
 
         if (nDebugMoves == 0) {

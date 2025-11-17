@@ -72,5 +72,6 @@
         "regex": "cpp",
         "shared_mutex": "cpp",
         "cassert": "cpp"
-    }
+    },
+    "editor.formatOnSave": false
 }

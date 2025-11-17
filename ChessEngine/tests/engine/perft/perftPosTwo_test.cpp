@@ -1,5 +1,7 @@
 #include "perftBase_test.h"
 
+#include "ChessEngine/src/io/StockfishPerftRetriever.h"
+
 namespace engine {
 
 class perftPosTwo : public perftBase 
@@ -10,7 +12,7 @@ protected:
     }
 
     // Nodes, captures, epCaptures, castling, promotion, check, checkmate
-    std::unordered_map<int, std::vector<long>> expectedResults {
+    std::unordered_map<int, std::vector<uint64_t>> expectedResults {
         {0, {1,         0,          0,          0,          0,          0,          0}},
         {1, {48,        8,          0,          2,          0,          0,          0}},
         {2, {2039,      351,        1,          91,         0,          3,          0}},
@@ -45,16 +47,16 @@ TEST_F(perftPosTwo, perft_pos2)
             debugFen += " KQkq -";
         }
 
-        std::unordered_map<std::string, long> stockfishResults = getStockFishPerftResults(nDebugMoves > 0 ? debugFen : posTwo, depth);
+        std::unordered_map<std::string, uint64_t> stockfishResults = io::stockfish::getPerftResults(nDebugMoves > 0 ? debugFen : posTwo, depth);
 
         movePicker.setMaxDepth(depth);
         movePicker.minimax(0, whiteToStart, 0);
         
-        std::unordered_map<std::string, long> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
+        std::unordered_map<std::string, uint64_t> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
         compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
         
         if (nDebugMoves == 0) {
-            for (long i = 1; i <= movePicker.getMaxDepth(); i++) {
+            for (uint64_t i = 1; i <= movePicker.getMaxDepth(); i++) {
                 ASSERT_EQ(movePicker._nodeCount[i], expectedResults[i][0]);
                 ASSERT_EQ(movePicker._captureCount[i], expectedResults[i][1]);
                 ASSERT_EQ(movePicker._epCaptureCount[i], expectedResults[i][2]);

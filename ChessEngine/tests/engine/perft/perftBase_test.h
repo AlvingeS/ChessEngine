@@ -6,11 +6,9 @@
 
 #include "ChessEngine/src/model/board/Board.h"
 
+#include <cstdint>
 #include <gtest/gtest.h>
 #include <unordered_map>
-#include <sstream>
-#include <regex>
-#include <iostream>
 
 namespace engine {
 
@@ -162,9 +160,9 @@ protected:
         return model::Move(fromTo.from, fromTo.to, flag);
     }
 
-    std::unordered_map<std::string, long> nodeCountPerFirstMoveAsMap(bool whiteStarted) 
+    std::unordered_map<std::string, uint64_t> nodeCountPerFirstMoveAsMap(bool whiteStarted) 
     {
-        std::unordered_map<std::string, long> nodeCountPerFirstMoveMap;
+        std::unordered_map<std::string, uint64_t> nodeCountPerFirstMoveMap{};
         int sum = 0;
 
         for (size_t i = 0; i < movePicker._nodeCountPerFirstMove.size(); i++) {
@@ -183,21 +181,23 @@ protected:
         return nodeCountPerFirstMoveMap;
     }
 
-    void compareFirstMoveCountsToStockfish(const std::unordered_map<std::string, long>& firstMoveCounts, const std::unordered_map<std::string, long>& stockfishResults) 
+    void compareFirstMoveCountsToStockfish(
+        const std::unordered_map<std::string, uint64_t> firstMoveCounts,
+        const std::unordered_map<std::string, uint64_t> stockfishResults) 
     {
         std::ostringstream errors;
         bool hasErrors = false;
 
         for (const auto& moveCountPair : firstMoveCounts) {
             const std::string& move = moveCountPair.first;
-            long count = moveCountPair.second;
+            uint64_t count = moveCountPair.second;
 
             auto foundIt = stockfishResults.find(move);
             if (foundIt == stockfishResults.end()) {
                 errors << "Move: " << move << " not found in stockfish results.\n";
                 hasErrors = true;
             } else {
-                long stockfishCount = foundIt->second;
+                uint64_t stockfishCount = foundIt->second;
                 if (count != stockfishCount) {
                     errors << "Move: " << move << " failed. Expected: " << stockfishCount << ", Got: " << count << ".\n";
                     hasErrors = true;
@@ -210,44 +210,6 @@ protected:
             std::cerr << errors.str();
             ASSERT_TRUE(false);
         }
-    }
-
-    std::unordered_map<std::string, long> getStockFishPerftResults(std::string FEN, int depth) 
-    {
-        std::unordered_map<std::string, long> results;
-        std::ostringstream oss;
-
-        oss << "echo \"position fen " << FEN << "\\ngo perft " << depth << "\\nquit\" | stockfish";
-        std::string oss_str = oss.str();
-
-        FILE* pipe = popen(oss_str.c_str(), "r");
-
-        if (!pipe) {
-            std::cerr << "Couldn't open pipe to stockfish" << std::endl;
-            return results;
-        }
-
-        char buffer[256];
-        std::string output = "";
-
-        while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
-            output += buffer;
-        }
-
-        pclose(pipe);
-
-        std::regex pattern(R"((\w+): (\d+))");
-        std::smatch matches;
-        while (std::regex_search(output, matches, pattern)) {
-            if (matches.size() == 3) { // Full match + 2 subgroups
-                std::string move = matches[1].str();
-                long count = std::stol(matches[2].str());
-                results[move] = count;
-            }
-            output = matches.suffix().str();
-        }
-    
-        return results;
     }
 };
 

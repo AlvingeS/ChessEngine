@@ -8,19 +8,19 @@
 namespace logic {
 
 MoveMaker::MoveMaker(model::Board& board)
-    : _bitboards(board.bitboards) 
-    , _stateBitmasks(board.state_bitmasks)
+    : bitboards_(board.bitboards) 
+    , state_bitmasks_(board.state_bitmasks)
     , piece_map_(board.piece_map)
     , _zHasher(board.z_hasher)
 {}
 
-MoveResult MoveMaker::makeMove(const model::Move& move, bool isWhite)
+MoveResult MoveMaker::makeMove(const model::Move& move, bool is_w)
 {
     auto moveResult = MoveResult();
 
     // If the move is a castle, update and return
     if (move.is_any_castle()) {
-        makeCastleMove(isWhite, move.is_king_castle());
+        makeCastleMove(is_w, move.is_king_castle());
         return moveResult;
     }
 
@@ -29,51 +29,51 @@ MoveResult MoveMaker::makeMove(const model::Move& move, bool isWhite)
     int toIndex = move.get_bit_index_to();
 
     // Pick up the piece from the from square and get the moved piece type
-    model::Piece::Type movedPieceType = removeMovedPieceFromBoard(isWhite, fromIndex);
+    model::Piece::Type movedPieceType = removeMovedPieceFromBoard(is_w, fromIndex);
 
     // If the move is a capture, handle memory and remove the captured piece
     if (move.is_any_capture()) {
         // Calculate index of captured piece, might be EP
-        int captureIndex = MoveUtils::determineCaptureIndex(move, isWhite, toIndex);
+        int captureIndex = MoveUtils::determineCaptureIndex(move, is_w, toIndex);
         model::Piece::Type capturedPieceType = piece_map_.get_piece_type_at_index(captureIndex);
-        removeCapturedPieceFromBoard(move.is_ep_capture(), isWhite, captureIndex, capturedPieceType);
+        removeCapturedPieceFromBoard(move.is_ep_capture(), is_w, captureIndex, capturedPieceType);
         moveResult.capturedPieceType = capturedPieceType;
     }
 
     // Update the moved piece type if the move is a promotion    
     if (move.is_any_promo())
-        movedPieceType = MoveUtils::getPromotionPieceType(move.get_flag(), isWhite);
+        movedPieceType = MoveUtils::getPromotionPieceType(move.get_flag(), is_w);
 
     moveResult.movedPieceType = movedPieceType;
 
     // Place the moved piece on the to square
-    placeMovedPieceOnBoard(isWhite, toIndex, movedPieceType);
+    placeMovedPieceOnBoard(is_w, toIndex, movedPieceType);
 
     // Update occupied and empty squares bitmasks
-    _stateBitmasks.update_occupied_and_empty_squares_bitmasks();
+    state_bitmasks_.update_occupied_and_empty_squares_bitmasks();
 
     return moveResult;
 }
 
-void MoveMaker::makeCastleMove(bool isWhite, bool isKingSide)
+void MoveMaker::makeCastleMove(bool is_w, bool is_kside)
 {
     int fromKingInd, toKingInd, fromRookInd, toRookInd;
 
-    if (isWhite) {
+    if (is_w) {
         fromKingInd = 3;
-        toKingInd = isKingSide ? 1 : 5;
-        fromRookInd = isKingSide ? 0 : 7;
-        toRookInd = isKingSide ? 2 : 4;
+        toKingInd = is_kside ? 1 : 5;
+        fromRookInd = is_kside ? 0 : 7;
+        toRookInd = is_kside ? 2 : 4;
 
-        _bitboards.clear_w_king_bit(fromKingInd);
-        _bitboards.set_w_king_bit(toKingInd);
-        _bitboards.clear_w_rooks_bit(fromRookInd);
-        _bitboards.set_w_rooks_bit(toRookInd);
+        bitboards_.clear_w_king_bit(fromKingInd);
+        bitboards_.set_w_king_bit(toKingInd);
+        bitboards_.clear_w_rooks_bit(fromRookInd);
+        bitboards_.set_w_rooks_bit(toRookInd);
 
-        _stateBitmasks.clear_w_pieces_bit(fromKingInd);
-        _stateBitmasks.set_w_pieces_bit(toKingInd);
-        _stateBitmasks.clear_w_pieces_bit(fromRookInd);
-        _stateBitmasks.set_w_pieces_bit(toRookInd);
+        state_bitmasks_.clear_w_pieces_bit(fromKingInd);
+        state_bitmasks_.set_w_pieces_bit(toKingInd);
+        state_bitmasks_.clear_w_pieces_bit(fromRookInd);
+        state_bitmasks_.set_w_pieces_bit(toRookInd);
 
         piece_map_.set_piece_type_at_index(fromKingInd, model::Piece::Type::EMPTY);
         piece_map_.set_piece_type_at_index(toKingInd, model::Piece::Type::W_KING);
@@ -81,19 +81,19 @@ void MoveMaker::makeCastleMove(bool isWhite, bool isKingSide)
         piece_map_.set_piece_type_at_index(toRookInd, model::Piece::Type::W_ROOK);
     } else {
         fromKingInd = 59;
-        toKingInd = isKingSide ? 57 : 61;
-        fromRookInd = isKingSide ? 56 : 63;
-        toRookInd = isKingSide ? 58 : 60;
+        toKingInd = is_kside ? 57 : 61;
+        fromRookInd = is_kside ? 56 : 63;
+        toRookInd = is_kside ? 58 : 60;
 
-        _bitboards.clear_b_king_bit(fromKingInd);
-        _bitboards.set_b_king_bit(toKingInd);
-        _bitboards.clear_b_rooks_bit(fromRookInd);
-        _bitboards.set_b_rooks_bit(toRookInd);
+        bitboards_.clear_b_king_bit(fromKingInd);
+        bitboards_.set_b_king_bit(toKingInd);
+        bitboards_.clear_b_rooks_bit(fromRookInd);
+        bitboards_.set_b_rooks_bit(toRookInd);
 
-        _stateBitmasks.clear_b_pieces_bit(fromKingInd);
-        _stateBitmasks.set_b_pieces_bit(toKingInd);
-        _stateBitmasks.clear_b_pieces_bit(fromRookInd);
-        _stateBitmasks.set_b_pieces_bit(toRookInd);
+        state_bitmasks_.clear_b_pieces_bit(fromKingInd);
+        state_bitmasks_.set_b_pieces_bit(toKingInd);
+        state_bitmasks_.clear_b_pieces_bit(fromRookInd);
+        state_bitmasks_.set_b_pieces_bit(toRookInd);
 
         piece_map_.set_piece_type_at_index(fromKingInd, model::Piece::Type::EMPTY);
         piece_map_.set_piece_type_at_index(toKingInd, model::Piece::Type::B_KING);
@@ -101,27 +101,27 @@ void MoveMaker::makeCastleMove(bool isWhite, bool isKingSide)
         piece_map_.set_piece_type_at_index(toRookInd, model::Piece::Type::B_ROOK);
     }
 
-    _stateBitmasks.update_occupied_and_empty_squares_bitmasks();
+    state_bitmasks_.update_occupied_and_empty_squares_bitmasks();
 }
 
-void MoveMaker::makeTemporaryKingMove(bool isWhite, bool isKingSide)
+void MoveMaker::make_temporary_king_move(bool is_w, bool is_kside)
 {
-    int from = isWhite ? 3 : 59;
+    int from = is_w ? 3 : 59;
 
-    int to = isKingSide ? (isWhite ? 2 : 58)
-                        : (isWhite ? 4 : 60);
+    int to = is_kside ? (is_w ? 2 : 58)
+                        : (is_w ? 4 : 60);
 
-    if (isWhite) {
-        _bitboards.clear_w_king_bit(from);
-        _bitboards.set_w_king_bit(to);
+    if (is_w) {
+        bitboards_.clear_w_king_bit(from);
+        bitboards_.set_w_king_bit(to);
     } else {
-        _bitboards.clear_b_king_bit(from);
-        _bitboards.set_b_king_bit(to);
+        bitboards_.clear_b_king_bit(from);
+        bitboards_.set_b_king_bit(to);
     }
 }
 
 
-model::Piece::Type MoveMaker::removeMovedPieceFromBoard(bool isWhite, int fromIndex) 
+model::Piece::Type MoveMaker::removeMovedPieceFromBoard(bool is_w, int fromIndex) 
 {
     // Determine the piece type of the piece being moved
     model::Piece::Type  movedPieceType = piece_map_.get_piece_type_at_index(fromIndex);
@@ -130,35 +130,35 @@ model::Piece::Type MoveMaker::removeMovedPieceFromBoard(bool isWhite, int fromIn
     _zHasher.hash_square_piece_type(fromIndex, movedPieceType);
 
     // Clear the piece from bitboards, squarelookup and gamestate bitmasks
-    _bitboards.clear_piece_type_bit(fromIndex, movedPieceType);
+    bitboards_.clear_piece_type_bit(fromIndex, movedPieceType);
     piece_map_.set_piece_type_at_index(fromIndex, model::Piece::Type::EMPTY);
 
-    isWhite ? _stateBitmasks.clear_w_pieces_bit(fromIndex) 
-            : _stateBitmasks.clear_b_pieces_bit(fromIndex);
+    is_w ? state_bitmasks_.clear_w_pieces_bit(fromIndex) 
+            : state_bitmasks_.clear_b_pieces_bit(fromIndex);
 
     return movedPieceType;
 }
 
 void MoveMaker::placeMovedPieceOnBoard(
-    bool isWhite, 
+    bool is_w, 
     int toIndex, 
     model::Piece::Type movedPieceType) 
 {
-    _bitboards.set_piece_type_bit(toIndex, movedPieceType);
+    bitboards_.set_piece_type_bit(toIndex, movedPieceType);
     piece_map_.set_piece_type_at_index(toIndex, movedPieceType);
 
     _zHasher.hash_square_piece_type(toIndex, movedPieceType);
 
-    isWhite ? _stateBitmasks.set_w_pieces_bit(toIndex) 
-            : _stateBitmasks.set_b_pieces_bit(toIndex);
+    is_w ? state_bitmasks_.set_w_pieces_bit(toIndex) 
+            : state_bitmasks_.set_b_pieces_bit(toIndex);
 }
 
-void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool isWhite, int captureIndex, model::Piece::Type  capturedPieceType) {
+void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool is_w, int captureIndex, model::Piece::Type  capturedPieceType) {
     // Remove captured piece from board models
-    _bitboards.clear_piece_type_bit(captureIndex, capturedPieceType);
+    bitboards_.clear_piece_type_bit(captureIndex, capturedPieceType);
 
-    isWhite ? _stateBitmasks.clear_b_pieces_bit(captureIndex) 
-            : _stateBitmasks.clear_w_pieces_bit(captureIndex);
+    is_w ? state_bitmasks_.clear_b_pieces_bit(captureIndex) 
+            : state_bitmasks_.clear_w_pieces_bit(captureIndex);
 
     _zHasher.hash_square_piece_type(captureIndex, capturedPieceType);
 

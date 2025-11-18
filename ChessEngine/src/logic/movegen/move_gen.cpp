@@ -14,92 +14,92 @@ namespace logic {
 
 MoveGenerator::MoveGenerator(
     model::Board& board,
-    logic::MoveMaker& moveMaker,
-    logic::MoveRetractor& moveRetractor)
-    : _bitboards(board.bitboards)
-    , _stateBitmasks(board.state_bitmasks)
-    , _moveMaker(moveMaker)
-    , _moveRetractor(moveRetractor)
-    , _checkDetection(board)
-    , _rookGenerator(board)
-    , _bishopGenerator(board)
-    , _queenGenerator(board)
-    , _knightGenerator(board)
-    , _kingGenerator(board)
-    , _pawnGenerator(board)
-    , _castlingGenerator(board, moveMaker, moveRetractor, &_checkDetection)
+    logic::MoveMaker& move_maker,
+    logic::MoveRetractor& move_retractor)
+    : bitboards_(board.bitboards)
+    , state_bitmasks_(board.state_bitmasks)
+    , move_maker_(move_maker)
+    , move_retractor_(move_retractor)
+    , check_detection_(board)
+    , rook_gen_(board)
+    , bishop_gen_(board)
+    , queen_gen_(board)
+    , knight_gen_(board)
+    , king_gen_(board)
+    , pawn_gen_(board)
+    , castle_gen_(board, move_maker, move_retractor, &check_detection_)
 {}
 
-void MoveGenerator::genMoves(
-    bool isWhite,
-    model::Movelist& moveList,
-    bitmask enpessantTarget,
-    unsigned char castlingRights)
+void MoveGenerator::gen_moves(
+    bool is_w,
+    model::Movelist& movelist,
+    bitmask ep_target_mask,
+    unsigned char castle_rights)
 {
-    moveList.reset();
-    genRookMoves(isWhite, moveList);
-    genBishopMoves(isWhite, moveList);
-    genQueenMoves(isWhite, moveList);
-    genKnightMoves(isWhite, moveList);
-    genKingMoves(isWhite, moveList);
-    genPawnMoves(isWhite, moveList, enpessantTarget);
-    genCastlingMoves(isWhite, moveList, castlingRights);
-    moveList.add_null_move(); // Add a null move to the end of the move list
+    movelist.reset();
+    gen_rook_moves(is_w, movelist);
+    gen_bishop_moves(is_w, movelist);
+    gen_queen_moves(is_w, movelist);
+    gen_knight_moves(is_w, movelist);
+    gen_king_moves(is_w, movelist);
+    gen_pawn_moves(is_w, movelist, ep_target_mask);
+    gen_castle_moves(is_w, movelist, castle_rights);
+    movelist.add_null_move(); // Add a null move to the end of the move list
 }
 
-void MoveGenerator::genRookMoves(
-    bool isWhite,
-    model::Movelist& moveList)
+void MoveGenerator::gen_rook_moves(
+    bool is_w,
+    model::Movelist& movelist)
 {
-    _rookGenerator.generate(isWhite, moveList);
+    rook_gen_.generate(is_w, movelist);
 }
 
-void MoveGenerator::genBishopMoves(
-    bool isWhite,
-    model::Movelist& moveList)
+void MoveGenerator::gen_bishop_moves(
+    bool is_w,
+    model::Movelist& movelist)
 {
-    _bishopGenerator.generate(isWhite, moveList);
+    bishop_gen_.generate(is_w, movelist);
 }
 
-void MoveGenerator::genQueenMoves(
-    bool isWhite,
-    model::Movelist& moveList)
+void MoveGenerator::gen_queen_moves(
+    bool is_w,
+    model::Movelist& movelist)
 {
-    _queenGenerator.generate(isWhite, moveList);;
+    queen_gen_.generate(is_w, movelist);;
 }
 
-void MoveGenerator::genKnightMoves(
-    bool isWhite,
-    model::Movelist& moveList)
+void MoveGenerator::gen_knight_moves(
+    bool is_w,
+    model::Movelist& movelist)
 {
-    _knightGenerator.generate(isWhite, moveList);
+    knight_gen_.generate(is_w, movelist);
 }
 
-void MoveGenerator::genKingMoves(
-    bool isWhite,
-    model::Movelist& moveList)
+void MoveGenerator::gen_king_moves(
+    bool is_w,
+    model::Movelist& movelist)
 {
-    _kingGenerator.generate(isWhite, moveList);
+    king_gen_.generate(is_w, movelist);
 }
 
-void MoveGenerator::genPawnMoves(
-    bool isWhite,
-    model::Movelist& moveList,
-    bitmask enpessantTarget)
+void MoveGenerator::gen_pawn_moves(
+    bool is_w,
+    model::Movelist& movelist,
+    bitmask ep_target_mask)
 {
-    _pawnGenerator.generate(isWhite, moveList, enpessantTarget);
+    pawn_gen_.generate(is_w, movelist, ep_target_mask);
 }
 
-void MoveGenerator::genCastlingMoves(
-    bool isWhite,
-    model::Movelist& moveList,
-    unsigned char castlingRights)
+void MoveGenerator::gen_castle_moves(
+    bool is_w,
+    model::Movelist& movelist,
+    unsigned char castle_rights)
 {
-    _castlingGenerator.generate(isWhite, moveList, castlingRights);
+    castle_gen_.generate(is_w, movelist, castle_rights);
 }
 
-bool MoveGenerator::isInCheck(bool isWhite) {
-    return _checkDetection.isInCheck(isWhite);
+bool MoveGenerator::in_check(bool is_w) {
+    return check_detection_.in_check(is_w);
 }
 
 } // namespace logic

@@ -11,81 +11,81 @@
 namespace logic {
 
 PawnGenerator::PawnGenerator(model::Board& board) 
-    : _bitboards(board.bitboards)
-    , _stateBitmasks(board.state_bitmasks)
+    : bitboards_(board.bitboards)
+    , state_bitmasks_(board.state_bitmasks)
 {
-    _whitePawnStraightMoveBitmasks = PawnBitmasks::getAllStraightPawnMoveBitmasks(true);
-    _whitePawnCaptureMoveBitmasks = PawnBitmasks::getAllCapturePawnMoveBitmasks(true);
-    _blackPawnStraightMoveBitmasks = PawnBitmasks::getAllStraightPawnMoveBitmasks(false);
-    _blackPawnCaptureMoveBitmasks = PawnBitmasks::getAllCapturePawnMoveBitmasks(false);
+    w_pawn_straight_move_masks_ = PawnBitmasks::get_all_straight_pawn_move_bitmasks(true);
+    w_pawn_capture_move_masks = PawnBitmasks::get_all_capture_pawn_move_bitmasks(true);
+    b_pawn_straight_move_masks_ = PawnBitmasks::get_all_straight_pawn_move_bitmasks(false);
+    b_pawn_capture_move_masks = PawnBitmasks::get_all_capture_pawn_move_bitmasks(false);
 }
 
 void PawnGenerator::generate(
-    bool isWhite,
-    model::Movelist& moveList,
-    bitmask enpessantTarget)
+    bool is_w,
+    model::Movelist& movelist,
+    bitmask ep_target_mask)
 {
-    std::vector<int>& pawnIndices = Containers::getPiecePositionIndices();
-    std::vector<int>& freeMovesIndices = Containers::getLeapingPiecefreeMovesIndices();
-    std::vector<int>& capturableMovesIndices = Containers::getLeapingPieceCapturableMovesIndices();
+    std::vector<int>& pawn_sq_idxs = Containers::get_piece_position_indices();
+    std::vector<int>& free_moves_idxs = Containers::get_leaping_piece_free_moves_indices();
+    std::vector<int>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_indices();
 
-    BitBasics::getBitIndices(pawnIndices, isWhite ? _bitboards.get_w_pawns_bitboard()
-                                              : _bitboards.get_b_pawns_bitboard());
+    BitBasics::get_bit_indices(pawn_sq_idxs, is_w ? bitboards_.get_w_pawns_bitboard()
+                                              : bitboards_.get_b_pawns_bitboard());
 
-    for (int currentPawnIndex : pawnIndices) {
+    for (int pawn_sq_idx : pawn_sq_idxs) {
 
-        bitmask straightPawnMoveBitmask = isWhite ? _whitePawnStraightMoveBitmasks[currentPawnIndex]
-                                                  : _blackPawnStraightMoveBitmasks[currentPawnIndex];
+        bitmask attack_mask_straight = is_w ? w_pawn_straight_move_masks_[pawn_sq_idx]
+                                                  : b_pawn_straight_move_masks_[pawn_sq_idx];
 
-        bitmask capturePawnMoveBitmask = isWhite ? _whitePawnCaptureMoveBitmasks[currentPawnIndex]
-                                                 : _blackPawnCaptureMoveBitmasks[currentPawnIndex];
+        bitmask attack_mask_diag = is_w ? w_pawn_capture_move_masks[pawn_sq_idx]
+                                                 : b_pawn_capture_move_masks[pawn_sq_idx];
 
-        bitmask freePawnMoves = straightPawnMoveBitmask & _stateBitmasks.get_empty_squares_bitmask();
+        bitmask free_moves_mask = attack_mask_straight & state_bitmasks_.get_empty_squares_bitmask();
         
-        bitmask enemyPieces = isWhite ? _stateBitmasks.get_b_pieces_bitmask()
-                                      : _stateBitmasks.get_w_pieces_bitmask();
+        bitmask opp_pieces_mask = is_w ? state_bitmasks_.get_b_pieces_bitmask()
+                                      : state_bitmasks_.get_w_pieces_bitmask();
         
-        bitmask capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
+        bitmask capture_moves_mask = attack_mask_diag & opp_pieces_mask;
 
-        BitBasics::getBitIndices(freeMovesIndices, freePawnMoves);
-        BitBasics::getBitIndices(capturableMovesIndices, capturablePawnMoves);
+        BitBasics::get_bit_indices(free_moves_idxs, free_moves_mask);
+        BitBasics::get_bit_indices(capture_moves_sq_idxs, capture_moves_mask);
 
-        int offset = isWhite ? 8 : -8;
-        bool canPromote = (isWhite && ChessUtils::rankFromBitIndex(currentPawnIndex) == 6) || (!isWhite && ChessUtils::rankFromBitIndex(currentPawnIndex) == 1);
+        int offset = is_w ? 8 : -8;
+        bool can_promote = (is_w && ChessUtils::rank_from_bit_index(pawn_sq_idx) == 6) || (!is_w && ChessUtils::rank_from_bit_index(pawn_sq_idx) == 1);
 
-        if (freeMovesIndices.size() == 2) {
-            int singleStepIndex = (isWhite ? 0 : 1);
-            int doubleStepIndex = (isWhite ? 1 : 0);
+        if (free_moves_idxs.size() == 2) {
+            int single_step_index = (is_w ? 0 : 1);
+            int double_step_index = (is_w ? 1 : 0);
             
-            moveList.add_move(model::Move(currentPawnIndex, freeMovesIndices[singleStepIndex], model::Move::QUITE_FLAG));
-            moveList.add_move(model::Move(currentPawnIndex, freeMovesIndices[doubleStepIndex], model::Move::DOUBLE_PAWN_PUSH_FLAG));
+            movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[single_step_index], model::Move::QUITE_FLAG));
+            movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[double_step_index], model::Move::DOUBLE_PAWN_PUSH_FLAG));
 
-        } else if (freeMovesIndices.size() == 1 && freeMovesIndices[0] == currentPawnIndex + offset) {
+        } else if (free_moves_idxs.size() == 1 && free_moves_idxs[0] == pawn_sq_idx + offset) {
             // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces
-            if (canPromote) {
-                moveList.add_move(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::KNIGHT_PROMO_FLAG));
-                moveList.add_move(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::BISHOP_PROMO_FLAG));
-                moveList.add_move(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::ROOK_PROMO_FLAG));
-                moveList.add_move(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::QUEEN_PROMO_FLAG));
+            if (can_promote) {
+                movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[0], model::Move::KNIGHT_PROMO_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[0], model::Move::BISHOP_PROMO_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[0], model::Move::ROOK_PROMO_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[0], model::Move::QUEEN_PROMO_FLAG));
             
             } else {
-                moveList.add_move(model::Move(currentPawnIndex, freeMovesIndices[0], model::Move::QUITE_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[0], model::Move::QUITE_FLAG));
             }
         }
 
-        for (int capturablePawnMoveIndex : capturableMovesIndices) {
-            if (canPromote) {
-                moveList.add_move(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::QUEEN_PROMO_CAPTURE_FLAG));
-                moveList.add_move(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::ROOK_PROMO_CAPTURE_FLAG));
-                moveList.add_move(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::BISHOP_PROMO_CAPTURE_FLAG));
-                moveList.add_move(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::KNIGHT_PROMO_CAPTURE_FLAG));
+        for (int capture_move_sq_idx : capture_moves_sq_idxs) {
+            if (can_promote) {
+                movelist.add_move(model::Move(pawn_sq_idx, capture_move_sq_idx, model::Move::QUEEN_PROMO_CAPTURE_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, capture_move_sq_idx, model::Move::ROOK_PROMO_CAPTURE_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, capture_move_sq_idx, model::Move::BISHOP_PROMO_CAPTURE_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, capture_move_sq_idx, model::Move::KNIGHT_PROMO_CAPTURE_FLAG));
             } else {
-                moveList.add_move(model::Move(currentPawnIndex, capturablePawnMoveIndex, model::Move::CAPTURE_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, capture_move_sq_idx, model::Move::CAPTURE_FLAG));
             }
         }
 
-        if ((capturePawnMoveBitmask & enpessantTarget) != 0) {
-            moveList.add_move(model::Move(currentPawnIndex, BitBasics::indexOfLSB(capturePawnMoveBitmask & enpessantTarget), model::Move::EP_CAPTURE_FLAG));
+        if ((attack_mask_diag & ep_target_mask) != 0) {
+            movelist.add_move(model::Move(pawn_sq_idx, BitBasics::lsb_index(attack_mask_diag & ep_target_mask), model::Move::EP_CAPTURE_FLAG));
         }
     }
 }

@@ -18,19 +18,19 @@ public:
     PawnGenerator(model::Board& board);
     
     void generate(
-        bool isWhite,
-        model::Movelist& moveList,
-        bitmask enpessantTarget
+        bool is_w,
+        model::Movelist& movelist,
+        bitmask ep_target_mask
     );
 
 private:
-    const model::Bitboards& _bitboards;
-    const model::StateBitmasks& _stateBitmasks;
+    const model::Bitboards& bitboards_;
+    const model::StateBitmasks& state_bitmasks_;
 
-    std::vector<bitmask> _whitePawnStraightMoveBitmasks;
-    std::vector<bitmask> _blackPawnStraightMoveBitmasks;
-    std::vector<bitmask> _whitePawnCaptureMoveBitmasks;
-    std::vector<bitmask> _blackPawnCaptureMoveBitmasks;
+    std::vector<bitmask> w_pawn_straight_move_masks_;
+    std::vector<bitmask> b_pawn_straight_move_masks_;
+    std::vector<bitmask> w_pawn_capture_move_masks;
+    std::vector<bitmask> b_pawn_capture_move_masks;
 };
 
 } // namespace logic

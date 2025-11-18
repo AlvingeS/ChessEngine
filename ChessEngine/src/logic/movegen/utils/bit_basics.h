@@ -8,13 +8,13 @@ namespace logic {
 
 struct BitBasics {
 
-    static bool getBit(bitmask a, int i);
-    static int indexOfLSB(bitmask a); 
-    static int indexOfMSB(bitmask a);
-    static void getBitIndices(std::vector<int>& indices, bitmask bitboard);
+    static bool get_bit(bitmask a, int i);
+    static int lsb_index(bitmask a); 
+    static int msb_index(bitmask a);
+    static void get_bit_indices(std::vector<int>& indices, bitmask bitboard);
     
-    static int popCount(bitmask a);
-    static void printBitmaskInBits(bitmask n);
+    static int pop_count(bitmask a);
+    static void print_bitmask_in_bits(bitmask n);
     
 };
 

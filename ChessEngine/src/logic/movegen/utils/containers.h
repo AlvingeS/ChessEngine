@@ -9,20 +9,20 @@ class Containers {
 public:
     static void init();
 
-    static std::vector<int>& getSlidingPiecefreeMovesIndices();
-    static std::vector<int>& getLeapingPiecefreeMovesIndices();
-    static std::vector<int>& getSlidingPieceCapturableMovesIndices();
-    static std::vector<int>& getLeapingPieceCapturableMovesIndices();
-    static std::vector<int>& getPiecePositionIndices();
+    static std::vector<int>& get_sliding_piece_free_moves_indices();
+    static std::vector<int>& get_leaping_piece_free_moves_indices();
+    static std::vector<int>& get_sliding_piece_capturable_moves_indices();
+    static std::vector<int>& get_leaping_piece_capturable_moves_indices();
+    static std::vector<int>& get_piece_position_indices();
 
 private:
-    static std::vector<int> _slidingPiecefreeMovesIndices;
-    static std::vector<int> _leapingPiecefreeMovesIndices;
+    static std::vector<int> sliding_piece_free_moves_indices_;
+    static std::vector<int> leaping_piece_free_moves_indices_;
     
-    static std::vector<int> _slidingPieceCapturableMovesIndices;
-    static std::vector<int> _leapingPieceCapturableMovesIndices;
+    static std::vector<int> sliding_piece_capturable_moves_indices_;
+    static std::vector<int> leaping_piece_capturable_moves_indices_;
 
-    static std::vector<int> _piecePositionIndices;
+    static std::vector<int> piece_position_indices_;
 };
 
 } // namespace logic

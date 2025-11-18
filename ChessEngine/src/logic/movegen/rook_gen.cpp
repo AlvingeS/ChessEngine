@@ -10,79 +10,79 @@
 namespace logic {
 
 RookGenerator::RookGenerator(model::Board& board)
-    : _bitboards(board.bitboards)
-    , _stateBitmasks(board.state_bitmasks)
+    : bitboards_(board.bitboards)
+    , state_bitmasks_(board.state_bitmasks)
 {
-    _straightRayBitmasks = RayBitmasks::getAllStraightRayBitmasks();
+    line_ray_masks_ = RayBitmasks::get_all_straight_ray_bitmasks();
 }
 
 void RookGenerator::generate(
-    bool isWhite,
-    model::Movelist& moveList)
+    bool is_w,
+    model::Movelist& movelist)
 {
-    std::vector<int>& rookIndices = Containers::getPiecePositionIndices();
+    std::vector<int>& rook_sq_idxs = Containers::get_piece_position_indices();
 
     RayBitmasks::StraightRays rays;
 
-    BitBasics::getBitIndices(rookIndices, isWhite ? _bitboards.get_w_rooks_bitboard()
-                                       : _bitboards.get_b_rooks_bitboard());
+    BitBasics::get_bit_indices(rook_sq_idxs, is_w ? bitboards_.get_w_rooks_bitboard()
+                                       : bitboards_.get_b_rooks_bitboard());
 
     // Loop through all rooks and isolate them
-    for (int currentRookIndex : rookIndices) {
-        rays = _straightRayBitmasks[currentRookIndex];
-        int rookRank = ChessUtils::rankFromBitIndex(currentRookIndex);
-        int rookFile = ChessUtils::fileFromBitIndex(currentRookIndex);
+    for (int rook_sq_idx : rook_sq_idxs) {
+        rays = line_ray_masks_[rook_sq_idx];
+        int rank = ChessUtils::rank_from_bit_index(rook_sq_idx);
+        int file = ChessUtils::file_from_bit_index(rook_sq_idx);
 
-        RayLogic::addMovesFromStraightRay(
-            rays.north,
+        RayLogic::add_moves_from_line_ray(
+            rays.n,
             true, 
             false, 
-            isWhite, 
-            currentRookIndex, 
-            rookRank, 
-            rookFile, 
-            moveList,
-            _stateBitmasks.get_w_pieces_bitmask(),
-            _stateBitmasks.get_occupied_pieces_bitmask()
+            is_w, 
+            rook_sq_idx, 
+            rank, 
+            file, 
+            movelist,
+            state_bitmasks_.get_w_pieces_bitmask(),
+            state_bitmasks_.get_occupied_pieces_bitmask()
         );
 
-        RayLogic::addMovesFromStraightRay(
-            rays.east,
+        RayLogic::add_moves_from_line_ray(
+            rays.e,
             false, 
             true, 
-            isWhite, 
-            currentRookIndex, 
-            rookRank, 
-            rookFile, 
-            moveList,
-            _stateBitmasks.get_w_pieces_bitmask(),
-            _stateBitmasks.get_occupied_pieces_bitmask()
+            is_w, 
+            rook_sq_idx, 
+            rank, 
+            file, 
+            movelist,
+            state_bitmasks_.get_w_pieces_bitmask(),
+            state_bitmasks_.get_occupied_pieces_bitmask()
         );
 
-        RayLogic::addMovesFromStraightRay(
-            rays.south,
+        RayLogic::add_moves_from_line_ray(
+            rays.s,
             false, 
             false, 
-            isWhite, 
-            currentRookIndex, 
-            rookRank, 
-            rookFile, 
-            moveList,
-            _stateBitmasks.get_w_pieces_bitmask(),
-            _stateBitmasks.get_occupied_pieces_bitmask()
+            is_w, 
+            rook_sq_idx, 
+            rank, 
+            file, 
+            movelist,
+            state_bitmasks_.get_w_pieces_bitmask(),
+            state_bitmasks_.get_occupied_pieces_bitmask()
         );
 
-        RayLogic::addMovesFromStraightRay(
-            rays.west,
+        RayLogic::add_moves_from_line_ray(
+            rays.w,
             true, 
             true, 
-            isWhite, 
-            currentRookIndex, 
-            rookRank, 
-            rookFile, 
-            moveList,
-            _stateBitmasks.get_w_pieces_bitmask(),
-            _stateBitmasks.get_occupied_pieces_bitmask()
+            is_w, 
+            rook_sq_idx, 
+            rank, 
+            file, 
+            movelist,
+            state_bitmasks_.get_w_pieces_bitmask(),
+            state_bitmasks_.get_occupied_pieces_bitmask()
         );
     }
 }

@@ -8,11 +8,11 @@ namespace logic {
 
 struct KingBitmasks {
 
-    static bitmask getKingBitmask(int ind);
-    static const std::vector<bitmask> getAllKingBitmasks();
+    static bitmask get_king_bitmask(int ind);
+    static const std::vector<bitmask> get_all_king_bitmasks();
     
-    static bitmask applyKingMoves(int ind);
-    static bitmask removeWrapAroundKingMoves(bitmask kingMoves, int ind);
+    static bitmask apply_king_moves(int ind);
+    static bitmask remove_wrap_around_king_moves(bitmask kingMoves, int ind);
 
 };
 

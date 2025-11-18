@@ -2,45 +2,45 @@
 
 namespace logic {
 
-std::vector<int> Containers::_slidingPiecefreeMovesIndices;
-std::vector<int> Containers::_leapingPiecefreeMovesIndices;
-std::vector<int> Containers::_slidingPieceCapturableMovesIndices;
-std::vector<int> Containers::_leapingPieceCapturableMovesIndices;
-std::vector<int> Containers::_piecePositionIndices;
+std::vector<int> Containers::sliding_piece_free_moves_indices_;
+std::vector<int> Containers::leaping_piece_free_moves_indices_;
+std::vector<int> Containers::sliding_piece_capturable_moves_indices_;
+std::vector<int> Containers::leaping_piece_capturable_moves_indices_;
+std::vector<int> Containers::piece_position_indices_;
 
 void Containers::init() {
-    _slidingPiecefreeMovesIndices = std::vector<int>(32, 0);
-    _leapingPiecefreeMovesIndices = std::vector<int>(8, 0);
+    sliding_piece_free_moves_indices_ = std::vector<int>(32, 0);
+    leaping_piece_free_moves_indices_ = std::vector<int>(8, 0);
 
-    _slidingPieceCapturableMovesIndices = std::vector<int>(32, 0);
-    _leapingPieceCapturableMovesIndices = std::vector<int>(8, 0);
+    sliding_piece_capturable_moves_indices_ = std::vector<int>(32, 0);
+    leaping_piece_capturable_moves_indices_ = std::vector<int>(8, 0);
 
-    _piecePositionIndices = std::vector<int>(16, 0);
+    piece_position_indices_ = std::vector<int>(16, 0);
 }
 
-std::vector<int>& Containers::getSlidingPiecefreeMovesIndices()
+std::vector<int>& Containers::get_sliding_piece_free_moves_indices()
 {
-    return _slidingPiecefreeMovesIndices;
+    return sliding_piece_free_moves_indices_;
 }
 
-std::vector<int>& Containers::getLeapingPiecefreeMovesIndices()
+std::vector<int>& Containers::get_leaping_piece_free_moves_indices()
 {
-    return _leapingPiecefreeMovesIndices;
+    return leaping_piece_free_moves_indices_;
 }
 
-std::vector<int>& Containers::getSlidingPieceCapturableMovesIndices()
+std::vector<int>& Containers::get_sliding_piece_capturable_moves_indices()
 {
-    return _slidingPieceCapturableMovesIndices;
+    return sliding_piece_capturable_moves_indices_;
 }
 
-std::vector<int>& Containers::getLeapingPieceCapturableMovesIndices()
+std::vector<int>& Containers::get_leaping_piece_capturable_moves_indices()
 {
-    return _leapingPieceCapturableMovesIndices;
+    return leaping_piece_capturable_moves_indices_;
 }
 
-std::vector<int>& Containers::getPiecePositionIndices()
+std::vector<int>& Containers::get_piece_position_indices()
 {
-    return _piecePositionIndices;
+    return piece_position_indices_;
 }
 
 } // namespace logic

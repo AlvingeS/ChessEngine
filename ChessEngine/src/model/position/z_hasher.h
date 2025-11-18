@@ -15,7 +15,7 @@ public:
     void hash_square_piece_type(int square_index, Piece::Type piece_type);
     void hash_castle_rights(int castle_rights);
     void hash_en_pessant_file(int file);
-    void hash_is_white(bool is_white);
+    void hash_is_w(bool is_w);
 
 private:
     void compute_initial_hash();
@@ -30,7 +30,7 @@ private:
     uint64_t random_castle_rights_numbers_[4];
     
     uint64_t random_en_pessant_file_numbers_[8];
-    uint64_t random_is_white_number_;
+    uint64_t random_is_w_number_;
     uint64_t hash_;
 
     PieceMap& piece_map_;

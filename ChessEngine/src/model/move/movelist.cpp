@@ -5,7 +5,7 @@
 namespace model {
 
 Movelist::Movelist() {
-    movelist_ = std::vector<Move>(MAX_LEGAL_MOVES);
+    movelist_ = std::vector<Move>(constants::MAX_LEGAL_MOVES);
     move_index_ = 0;
 }
 

@@ -9,230 +9,235 @@
 
 namespace logic {
 
-void RayLogic::addMovesFromFreeRay(
-    bitmask freeRay,
-    int bitIndexFrom,
-    model::Movelist& moveList)
+void RayLogic::add_moves_from_free_ray(
+    bitmask free_ray,
+    int bit_index_from,
+    model::Movelist& movelist)
 {
-    std::vector<int>& freeRayIndices = Containers::getSlidingPiecefreeMovesIndices();
-    BitBasics::getBitIndices(freeRayIndices, freeRay);
+    std::vector<int>& free_ray_indices = Containers::get_sliding_piece_free_moves_indices();
+    BitBasics::get_bit_indices(free_ray_indices, free_ray);
 
-    for (int bitIndex : freeRayIndices) {
-        moveList.add_move(model::Move(bitIndexFrom, bitIndex, model::Move::QUITE_FLAG));
+    for (int bit_index : free_ray_indices) {
+        movelist.add_move(model::Move(bit_index_from, bit_index, model::Move::QUITE_FLAG));
     }
 }
 
-void RayLogic::addMoveIfBlockerIsEnemy(
-    int blockerIndex,
-    bool isWhite,
-    int bitIndexFrom,
-    model::Movelist& moveList,
-    bitmask whitePiecesBitmask)
+void RayLogic::add_move_if_blocker_is_enemy(
+    int blocker_index,
+    bool is_w,
+    int bit_index_from,
+    model::Movelist& movelist,
+    bitmask white_pieces_bitmask)
 {
-    bool blockerIsWhite = BitBasics::getBit(whitePiecesBitmask, blockerIndex);
+    bool blocker_is_white = BitBasics::get_bit(white_pieces_bitmask, blocker_index);
 
-    if (blockerIsWhite != isWhite)
-        moveList.add_move(model::Move(bitIndexFrom, blockerIndex, model::Move::CAPTURE_FLAG));
+    if (blocker_is_white != is_w)
+        movelist.add_move(model::Move(bit_index_from, blocker_index, model::Move::CAPTURE_FLAG));
 }
 
-void RayLogic::addMovesBetweenBlockerAndPieceOnStraightRay(
-    int blockerIndex,
-    bool alongFile, 
-    bool startFromBlocker, int rookRank, 
-    int rookFile, 
-    int bitIndexFrom,
-    model::Movelist& moveList)
+void RayLogic::add_moves_between_blocker_and_piece_on_line_ray(
+    int blocker_index,
+    bool along_file,
+    bool start_from_blocker,
+    int rook_rank,
+    int rook_file,
+    int bit_index_from,
+    model::Movelist& movelist)
 {
-    int start = startFromBlocker 
-                ? (alongFile ? ChessUtils::fileFromBitIndex(blockerIndex) 
-                             : ChessUtils::rankFromBitIndex(blockerIndex)) 
-                : (alongFile ? rookFile 
-                             : rookRank);
+    int start = start_from_blocker 
+                ? (along_file ? ChessUtils::file_from_bit_index(blocker_index) 
+                              : ChessUtils::rank_from_bit_index(blocker_index)) 
+                : (along_file ? rook_file 
+                              : rook_rank);
                             
-    int stop = startFromBlocker 
-               ? (alongFile ? rookFile 
-                            : rookRank) 
-               : (alongFile ? ChessUtils::fileFromBitIndex(blockerIndex) 
-                            : ChessUtils::rankFromBitIndex(blockerIndex));
+    int stop = start_from_blocker 
+               ? (along_file ? rook_file 
+                             : rook_rank) 
+               : (along_file ? ChessUtils::file_from_bit_index(blocker_index) 
+                             : ChessUtils::rank_from_bit_index(blocker_index));
 
     for (int i = start - 1; i > stop; --i) {
-        int rankOrFileIndex = alongFile ? rookRank * 8 + i 
-                                        : i * 8 + rookFile;
+        int rank_or_file_index = along_file ? rook_rank * 8 + i 
+                                            : i * 8 + rook_file;
         
-        moveList.add_move(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
+        movelist.add_move(model::Move(bit_index_from, rank_or_file_index, model::Move::QUITE_FLAG));
     }
 }
 
-void RayLogic::addMovesBetweenBlockerAndPieceOnDiagonalRay(
-    int blockerIndex,
-    bool startFromBlocker, 
-    int bishopRank, 
-    int bishopFile, 
-    int bitIndexFrom,
-    model::Movelist& moveList)
+void RayLogic::add_moves_between_blocker_and_pice_on_diag_ray(
+    int blocker_index,
+    bool start_from_blocker,
+    int bishop_rank,
+    int bishop_file,
+    int bit_index_from,
+    model::Movelist& movelist)
 {
-    int startRank = startFromBlocker
-                    ? ChessUtils::rankFromBitIndex(blockerIndex)
-                    : bishopRank;
+    int start_rank = start_from_blocker
+                     ? ChessUtils::rank_from_bit_index(blocker_index)
+                     : bishop_rank;
 
-    int startFile = startFromBlocker
-                    ? ChessUtils::fileFromBitIndex(blockerIndex)
-                    : bishopFile;
+    int start_file = start_from_blocker
+                     ? ChessUtils::file_from_bit_index(blocker_index)
+                     : bishop_file;
 
-    int stopRank = startFromBlocker
-                   ? bishopRank
-                   : ChessUtils::rankFromBitIndex(blockerIndex);
+    int stop_rank = start_from_blocker
+                    ? bishop_rank
+                    : ChessUtils::rank_from_bit_index(blocker_index);
 
-    int stopFile = startFromBlocker 
-                   ? bishopFile
-                   : ChessUtils::fileFromBitIndex(blockerIndex);
+    int stop_file = start_from_blocker 
+                    ? bishop_file
+                    : ChessUtils::file_from_bit_index(blocker_index);
 
-    int rankDiff = startRank - stopRank;
-    int fileDiff = startFile - stopFile;
+    int rank_diff = start_rank - stop_rank;
+    int file_diff = start_file - stop_file;
 
-    int rankIncrement = rankDiff > 0 ? -1 : 1;
-    int fileIncrement = fileDiff > 0 ? -1 : 1;
+    int rank_increment = rank_diff > 0 ? -1 : 1;
+    int file_increment = file_diff > 0 ? -1 : 1;
 
-    for (int i = startRank + rankIncrement, j = startFile + fileIncrement; i != stopRank; i += rankIncrement, j += fileIncrement) {
-        int rankOrFileIndex = i * 8 + j;
+    for (int i = start_rank + rank_increment, j = start_file + file_increment;
+         i != stop_rank;
+         i += rank_increment, j += file_increment) 
+    {
+        int rank_or_file_index = i * 8 + j;
 
-        moveList.add_move(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
+        movelist.add_move(model::Move(bit_index_from, rank_or_file_index, model::Move::QUITE_FLAG));
     }
 }
 
-void RayLogic::addMovesFromStraightRay(
-    bitmask ray, 
-    bool blockerOnLSB, 
-    bool alongFile, 
-    bool isWhite, 
-    int pieceIndex, 
-    int pieceRank, 
-    int pieceFile, 
-    model::Movelist& moveList,
-    bitmask whitePiecesBitmask,
-    bitmask occupiedPiecesBitmask) 
+void RayLogic::add_moves_from_line_ray(
+    bitmask ray,
+    bool blocker_on_lsb,
+    bool along_file,
+    bool is_w,
+    int piece_index,
+    int piece_rank,
+    int piece_file,
+    model::Movelist& movelist,
+    bitmask white_pieces_bitmask,
+    bitmask occupied_pieces_bitmask) 
 {
-        bitmask blockerBitmask = ray & occupiedPiecesBitmask;          
+    bitmask blocker_bitmask = ray & occupied_pieces_bitmask;          
 
-        if (blockerBitmask != 0) {
-            int blockerIndex = blockerOnLSB
-                               ? BitBasics::indexOfLSB(blockerBitmask)
-                               : BitBasics::indexOfMSB(blockerBitmask);
+    if (blocker_bitmask != 0) {
+        int blocker_index = blocker_on_lsb
+                            ? BitBasics::lsb_index(blocker_bitmask)
+                            : BitBasics::msb_index(blocker_bitmask);
                                
-            addMoveIfBlockerIsEnemy(
-                blockerIndex,
-                isWhite,
-                pieceIndex, 
-                moveList,
-                whitePiecesBitmask
-            );
-
-            addMovesBetweenBlockerAndPieceOnStraightRay(
-                blockerIndex,
-                alongFile, 
-                blockerOnLSB, 
-                pieceRank, 
-                pieceFile, 
-                pieceIndex, 
-                moveList
-            );
-
-        } else {
-            addMovesFromFreeRay(ray, pieceIndex, moveList);
-        }
-}
-
-void RayLogic::addMovesFromDiagonalRay(
-    bitmask ray, 
-    bool blockerOnLSB, 
-    bool isWhite, 
-    int pieceIndex, 
-    int pieceRank, 
-    int pieceFile, 
-    model::Movelist& moveList,
-    bitmask whitePiecesBitmask,
-    bitmask occupiedPiecesBitmask)
-{
-    bitmask blockerBitmask = ray & occupiedPiecesBitmask;
-
-    if (blockerBitmask != 0) {
-        int blockerIndex = blockerOnLSB
-                           ? BitBasics::indexOfLSB(blockerBitmask) 
-                           : BitBasics::indexOfMSB(blockerBitmask);
-
-        addMoveIfBlockerIsEnemy(
-            blockerIndex, 
-            isWhite, 
-            pieceIndex, 
-            moveList,
-            whitePiecesBitmask
+        add_move_if_blocker_is_enemy(
+            blocker_index,
+            is_w,
+            piece_index, 
+            movelist,
+            white_pieces_bitmask
         );
 
-        addMovesBetweenBlockerAndPieceOnDiagonalRay(
-            blockerIndex, 
-            blockerOnLSB,
-            pieceRank, 
-            pieceFile, 
-            pieceIndex, 
-            moveList
+        add_moves_between_blocker_and_piece_on_line_ray(
+            blocker_index,
+            along_file, 
+            blocker_on_lsb, 
+            piece_rank, 
+            piece_file, 
+            piece_index, 
+            movelist
         );
 
     } else {
-        addMovesFromFreeRay(ray, pieceIndex, moveList);
+        add_moves_from_free_ray(ray, piece_index, movelist);
     }
 }
 
-bool RayLogic::checkStraightRay(
-    bitmask straightRay, 
-    bool firstBlockerOnLSB, 
-    bitmask opponentRooksAndQueens,
-    bitmask occupiedPiecesBitmask) 
+void RayLogic::add_moves_from_diag_ray(
+    bitmask ray,
+    bool blocker_on_lsb,
+    bool is_w,
+    int piece_index,
+    int piece_rank,
+    int piece_file,
+    model::Movelist& movelist,
+    bitmask white_pieces_bitmask,
+    bitmask occupied_pieces_bitmask)
 {
-    bitmask rooksAndQueensBlockerBitmask = straightRay & opponentRooksAndQueens;
-    
-    // There must be a rook or a queen on the file or rank to be in check
-    if (rooksAndQueensBlockerBitmask == 0ULL)
-        return false;
+    bitmask blocker_bitmask = ray & occupied_pieces_bitmask;
 
-    bitmask occupiedBlockerBitmask = straightRay & occupiedPiecesBitmask;
+    if (blocker_bitmask != 0) {
+        int blocker_index = blocker_on_lsb
+                            ? BitBasics::lsb_index(blocker_bitmask) 
+                            : BitBasics::msb_index(blocker_bitmask);
 
-    // If there is only one blocker out of all pieces, then it must be a rook or a queen thus the king is in check
-    if (BitBasics::popCount(occupiedBlockerBitmask) == 1)
-        return true;
+        add_move_if_blocker_is_enemy(
+            blocker_index, 
+            is_w, 
+            piece_index, 
+            movelist,
+            white_pieces_bitmask
+        );
 
-    int occupiedBlockerIndex = firstBlockerOnLSB ? BitBasics::indexOfLSB(occupiedBlockerBitmask)
-                                                 : BitBasics::indexOfMSB(occupiedBlockerBitmask);
+        add_moves_between_blocker_and_pice_on_diag_ray(
+            blocker_index, 
+            blocker_on_lsb,
+            piece_rank, 
+            piece_file, 
+            piece_index, 
+            movelist
+        );
 
-    int rooksAndQueensBlockerIndex = firstBlockerOnLSB ? BitBasics::indexOfLSB(rooksAndQueensBlockerBitmask)
-                                                       : BitBasics::indexOfMSB(rooksAndQueensBlockerBitmask);
-
-    // If the the first blocker of any piece is the same as the first blocker of a rook or queen, then the king is in check
-    return occupiedBlockerIndex == rooksAndQueensBlockerIndex;
+    } else {
+        add_moves_from_free_ray(ray, piece_index, movelist);
+    }
 }
 
-bool RayLogic::checkDiagonalRay(
-    bitmask diagonalRay, 
-    bool firstBlockerOnLSB, 
-    bitmask opponentBishopsAndQueens,
-    bitmask occupiedPiecesBitmask)
+bool RayLogic::check_line_ray(
+    bitmask straight_ray,
+    bool first_blocker_on_lsb,
+    bitmask opponent_rooks_and_queens,
+    bitmask occupied_pieces_bitmask) 
 {
-    bitmask bishopsAndQueensBlockerBitmask = diagonalRay & opponentBishopsAndQueens;
-
-    if ((bishopsAndQueensBlockerBitmask) == 0)
+    bitmask rooks_and_queens_blocker_bitmask = straight_ray & opponent_rooks_and_queens;
+    
+    if (rooks_and_queens_blocker_bitmask == 0ULL)
         return false;
 
-    bitmask occupiedBlockerBitmask = diagonalRay & occupiedPiecesBitmask;
+    bitmask occupied_blocker_bitmask = straight_ray & occupied_pieces_bitmask;
 
-    if (BitBasics::popCount(occupiedBlockerBitmask) == 1)
+    if (BitBasics::pop_count(occupied_blocker_bitmask) == 1)
         return true;
 
-    int occupiedBlockerIndex = firstBlockerOnLSB ? BitBasics::indexOfLSB(occupiedBlockerBitmask)
-                                                 : BitBasics::indexOfMSB(occupiedBlockerBitmask);
+    int occupied_blocker_index = first_blocker_on_lsb
+                                 ? BitBasics::lsb_index(occupied_blocker_bitmask)
+                                 : BitBasics::msb_index(occupied_blocker_bitmask);
 
-    int bishopsAndQueensBlockerIndex = firstBlockerOnLSB ? BitBasics::indexOfLSB(bishopsAndQueensBlockerBitmask)
-                                                         : BitBasics::indexOfMSB(bishopsAndQueensBlockerBitmask);
+    int rooks_and_queens_blocker_index = first_blocker_on_lsb
+                                         ? BitBasics::lsb_index(rooks_and_queens_blocker_bitmask)
+                                         : BitBasics::msb_index(rooks_and_queens_blocker_bitmask);
 
-    return occupiedBlockerIndex == bishopsAndQueensBlockerIndex;
+    return occupied_blocker_index == rooks_and_queens_blocker_index;
+}
+
+bool RayLogic::check_diag_ray(
+    bitmask diagonal_ray,
+    bool first_blocker_on_lsb,
+    bitmask opponent_bishops_and_queens,
+    bitmask occupied_pieces_bitmask)
+{
+    bitmask bishops_and_queens_blocker_bitmask = diagonal_ray & opponent_bishops_and_queens;
+
+    if (bishops_and_queens_blocker_bitmask == 0)
+        return false;
+
+    bitmask occupied_blocker_bitmask = diagonal_ray & occupied_pieces_bitmask;
+
+    if (BitBasics::pop_count(occupied_blocker_bitmask) == 1)
+        return true;
+
+    int occupied_blocker_index = first_blocker_on_lsb
+                                 ? BitBasics::lsb_index(occupied_blocker_bitmask)
+                                 : BitBasics::msb_index(occupied_blocker_bitmask);
+
+    int bishops_and_queens_blocker_index = first_blocker_on_lsb
+                                          ? BitBasics::lsb_index(bishops_and_queens_blocker_bitmask)
+                                          : BitBasics::msb_index(bishops_and_queens_blocker_bitmask);
+
+    return occupied_blocker_index == bishops_and_queens_blocker_index;
 }
 
 } // namespace logic

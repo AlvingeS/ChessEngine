@@ -14,17 +14,17 @@ class CheckDetection {
 
 public:
     CheckDetection(model::Board& board);
-    bool isInCheck(bool isWhite) const;
+    bool in_check(bool is_w) const;
 
 private:
-    const model::Bitboards& _bitboards;
-    const model::StateBitmasks& _stateBitmasks;
+    const model::Bitboards& bitboards_;
+    const model::StateBitmasks& state_bitmasks_;
 
-    std::vector<RayBitmasks::StraightRays> _straightRayBitmasks;
-    std::vector<RayBitmasks::DiagonalRays> _diagonalRayBitmasks;
-    std::vector<bitmask> _knightBitmasks;
-    std::vector<bitmask> _whitePawnCaptureMoveBitmasks;
-    std::vector<bitmask> _blackPawnCaptureMoveBitmasks;
+    std::vector<RayBitmasks::StraightRays> line_ray_masks_;
+    std::vector<RayBitmasks::DiagonalRays> diag_ray_masks;
+    std::vector<bitmask> knight_masks_;
+    std::vector<bitmask> w_pawn_capture_move_masks;
+    std::vector<bitmask> b_pawn_capture_move_masks;
 };
 
 } // namespace logic

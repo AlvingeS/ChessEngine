@@ -20,8 +20,8 @@ struct MoveResult {
 
 struct MoveUtils {
     
-    static model::Piece::Type getPromotionPieceType(int promotionFlag, bool isWhite);
-    static int determineCaptureIndex(const model::Move& move, bool isWhite, int toIndex);
+    static model::Piece::Type getPromotionPieceType(int promotionFlag, bool is_w);
+    static int determineCaptureIndex(const model::Move& move, bool is_w, int toIndex);
 
 };
 

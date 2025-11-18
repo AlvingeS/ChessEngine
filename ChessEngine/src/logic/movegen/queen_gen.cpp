@@ -10,127 +10,127 @@
 namespace logic {
 
 QueenGenerator::QueenGenerator(model::Board& board) 
-    : _bitboards(board.bitboards)
-    , _stateBitmasks(board.state_bitmasks)
+    : bitboards_(board.bitboards)
+    , state_bitmasks_(board.state_bitmasks)
 {
-    _straightRayBitmasks = RayBitmasks::getAllStraightRayBitmasks();
-    _diagonalRayBitmasks = RayBitmasks::getAllDiagonalRayBitmasks();
+    line_ray_masks_ = RayBitmasks::get_all_straight_ray_bitmasks();
+    diag_ray_masks = RayBitmasks::get_all_diagonal_ray_bitmasks();
 }
 
 void QueenGenerator::generate(
-    bool isWhite,
-    model::Movelist& moveList)
+    bool is_w,
+    model::Movelist& movelist)
 {
-    std::vector<int>& queenIndices = Containers::getPiecePositionIndices();
+    std::vector<int>& queen_sq_idxs = Containers::get_piece_position_indices();
 
-    BitBasics::getBitIndices(queenIndices, isWhite ? _bitboards.get_w_queens_bitboard()
-                                               : _bitboards.get_b_queens_bitboard());
+    BitBasics::get_bit_indices(queen_sq_idxs, is_w ? bitboards_.get_w_queens_bitboard()
+                                               : bitboards_.get_b_queens_bitboard());
 
-    for (int currentQueenIndex : queenIndices) {
-        RayBitmasks::StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];
-        RayBitmasks::DiagonalRays diagonalRays = _diagonalRayBitmasks[currentQueenIndex];
+    for (int queen_sq_idx : queen_sq_idxs) {
+        RayBitmasks::StraightRays straightRays = line_ray_masks_[queen_sq_idx];
+        RayBitmasks::DiagonalRays diagonalRays = diag_ray_masks[queen_sq_idx];
         
-        int queenRank = ChessUtils::rankFromBitIndex(currentQueenIndex);
-        int queenFile = ChessUtils::fileFromBitIndex(currentQueenIndex);
+        int rank = ChessUtils::rank_from_bit_index(queen_sq_idx);
+        int file = ChessUtils::file_from_bit_index(queen_sq_idx);
 
-        RayLogic::addMovesFromStraightRay(
-            straightRays.north,
+        RayLogic::add_moves_from_line_ray(
+            straightRays.n,
             true,
             false,
-            isWhite,
-            currentQueenIndex,
-            queenRank,
-            queenFile,
-            moveList,
-            _stateBitmasks.get_w_pieces_bitmask(),
-            _stateBitmasks.get_occupied_pieces_bitmask()
+            is_w,
+            queen_sq_idx,
+            rank,
+            file,
+            movelist,
+            state_bitmasks_.get_w_pieces_bitmask(),
+            state_bitmasks_.get_occupied_pieces_bitmask()
         );
 
-        RayLogic::addMovesFromStraightRay(
-            straightRays.east,
+        RayLogic::add_moves_from_line_ray(
+            straightRays.e,
             false,
             true,
-            isWhite,
-            currentQueenIndex,
-            queenRank,
-            queenFile,
-            moveList,
-            _stateBitmasks.get_w_pieces_bitmask(),
-            _stateBitmasks.get_occupied_pieces_bitmask()
+            is_w,
+            queen_sq_idx,
+            rank,
+            file,
+            movelist,
+            state_bitmasks_.get_w_pieces_bitmask(),
+            state_bitmasks_.get_occupied_pieces_bitmask()
         );
 
-        RayLogic::addMovesFromStraightRay(
-            straightRays.south,
+        RayLogic::add_moves_from_line_ray(
+            straightRays.s,
             false,
             false,
-            isWhite,
-            currentQueenIndex,
-            queenRank,
-            queenFile,
-            moveList,
-            _stateBitmasks.get_w_pieces_bitmask(),
-            _stateBitmasks.get_occupied_pieces_bitmask()
+            is_w,
+            queen_sq_idx,
+            rank,
+            file,
+            movelist,
+            state_bitmasks_.get_w_pieces_bitmask(),
+            state_bitmasks_.get_occupied_pieces_bitmask()
         );
 
-        RayLogic::addMovesFromStraightRay(
-            straightRays.west,
+        RayLogic::add_moves_from_line_ray(
+            straightRays.w,
             true,
             true,
-            isWhite,
-            currentQueenIndex,
-            queenRank,
-            queenFile,
-            moveList,
-            _stateBitmasks.get_w_pieces_bitmask(),
-            _stateBitmasks.get_occupied_pieces_bitmask()
+            is_w,
+            queen_sq_idx,
+            rank,
+            file,
+            movelist,
+            state_bitmasks_.get_w_pieces_bitmask(),
+            state_bitmasks_.get_occupied_pieces_bitmask()
         );
 
-        RayLogic::addMovesFromDiagonalRay(
-            diagonalRays.northEast,
+        RayLogic::add_moves_from_diag_ray(
+            diagonalRays.ne,
             true,
-            isWhite,
-            currentQueenIndex,
-            queenRank,
-            queenFile,
-            moveList,
-            _stateBitmasks.get_w_pieces_bitmask(),
-            _stateBitmasks.get_occupied_pieces_bitmask()
+            is_w,
+            queen_sq_idx,
+            rank,
+            file,
+            movelist,
+            state_bitmasks_.get_w_pieces_bitmask(),
+            state_bitmasks_.get_occupied_pieces_bitmask()
         );
 
-        RayLogic::addMovesFromDiagonalRay(
-            diagonalRays.southEast,
+        RayLogic::add_moves_from_diag_ray(
+            diagonalRays.se,
             false,
-            isWhite,
-            currentQueenIndex,
-            queenRank,
-            queenFile,
-            moveList,
-            _stateBitmasks.get_w_pieces_bitmask(),
-            _stateBitmasks.get_occupied_pieces_bitmask()
+            is_w,
+            queen_sq_idx,
+            rank,
+            file,
+            movelist,
+            state_bitmasks_.get_w_pieces_bitmask(),
+            state_bitmasks_.get_occupied_pieces_bitmask()
         );
 
-        RayLogic::addMovesFromDiagonalRay(
-            diagonalRays.southWest,
+        RayLogic::add_moves_from_diag_ray(
+            diagonalRays.sw,
             false,
-            isWhite,
-            currentQueenIndex,
-            queenRank,
-            queenFile,
-            moveList,
-            _stateBitmasks.get_w_pieces_bitmask(),
-            _stateBitmasks.get_occupied_pieces_bitmask()
+            is_w,
+            queen_sq_idx,
+            rank,
+            file,
+            movelist,
+            state_bitmasks_.get_w_pieces_bitmask(),
+            state_bitmasks_.get_occupied_pieces_bitmask()
         );
         
-        RayLogic::addMovesFromDiagonalRay(
-            diagonalRays.northWest,
+        RayLogic::add_moves_from_diag_ray(
+            diagonalRays.nw,
             true,
-            isWhite,
-            currentQueenIndex,
-            queenRank,
-            queenFile,
-            moveList,
-            _stateBitmasks.get_w_pieces_bitmask(),
-            _stateBitmasks.get_occupied_pieces_bitmask()
+            is_w,
+            queen_sq_idx,
+            rank,
+            file,
+            movelist,
+            state_bitmasks_.get_w_pieces_bitmask(),
+            state_bitmasks_.get_occupied_pieces_bitmask()
         );
     }
 }

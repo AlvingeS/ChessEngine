@@ -15,10 +15,10 @@ inline void ZHasher::hash_en_pessant_file(int file)
     hash_ ^= random_en_pessant_file_numbers_[file];
 }
 
-inline void ZHasher::hash_is_white(bool is_white)
+inline void ZHasher::hash_is_w(bool is_w)
 {
-    if (!is_white) {
-        hash_ ^= random_is_white_number_;
+    if (!is_w) {
+        hash_ ^= random_is_w_number_;
     }
 }
 

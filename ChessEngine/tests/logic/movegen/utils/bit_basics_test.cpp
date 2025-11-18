@@ -13,55 +13,55 @@ protected:
     }
 };
 
-// BitBasics::getBit tests
+// BitBasics::get_bit tests
 TEST_F(BitBasicsTest, getBit_A_Pos0_ShouldReturnFalse) 
 {
     bool expected = 0;
-    bool actual = BitBasics::getBit(a, 0);
+    bool actual = BitBasics::get_bit(a, 0);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(BitBasicsTest, getBit_A_Pos9_ShouldReturnTrue)
 {
     bool expected = 1;
-    bool actual = BitBasics::getBit(a, 9);
+    bool actual = BitBasics::get_bit(a, 9);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(BitBasicsTest, getBit_A_Pos15_ShouldReturnTrue) 
 {
     bool expected = 1;
-    bool actual = BitBasics::getBit(a, 15);
+    bool actual = BitBasics::get_bit(a, 15);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(BitBasicsTest, getBit_A_Pos16_ShouldReturnFalse) 
 {
     bool expected = 0;
-    bool actual = BitBasics::getBit(a, 16);
+    bool actual = BitBasics::get_bit(a, 16);
     ASSERT_EQ(expected, actual);
 }
 
-// BitBasics::indexOfLSB tests
+// BitBasics::lsb_index tests
 TEST_F(BitBasicsTest, indexOfLSB_A_ShouldReturn8) 
 {
     int expected = 8;
-    int actual = BitBasics::indexOfLSB(a);
+    int actual = BitBasics::lsb_index(a);
     ASSERT_EQ(expected, actual);
 }
 
-// BitBasics::indexOfMSB tests
+// BitBasics::msb_index tests
 TEST_F(BitBasicsTest, indexOfMSB_A_ShouldReturn15) 
 {
     int expected = 15;
-    int actual = BitBasics::indexOfMSB(a);
+    int actual = BitBasics::msb_index(a);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(BitBasicsTest, indexOfMSB_0_ShouldReturnNeg1) 
 {
     int expected = -1;
-    int actual = BitBasics::indexOfMSB(0ULL);
+    int actual = BitBasics::msb_index(0ULL);
     ASSERT_EQ(expected, actual);
 }
 

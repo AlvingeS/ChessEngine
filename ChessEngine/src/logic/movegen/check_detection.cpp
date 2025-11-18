@@ -11,88 +11,88 @@
 namespace logic {
 
 CheckDetection::CheckDetection(model::Board& board)
-    : _bitboards(board.bitboards)
-    , _stateBitmasks(board.state_bitmasks)
+    : bitboards_(board.bitboards)
+    , state_bitmasks_(board.state_bitmasks)
 {
-    _straightRayBitmasks = RayBitmasks::getAllStraightRayBitmasks();
-    _diagonalRayBitmasks = RayBitmasks::getAllDiagonalRayBitmasks();
-    _knightBitmasks = KnightBitmasks::getAllKnightBitmasks();
-    _whitePawnCaptureMoveBitmasks = PawnBitmasks::getAllCapturePawnMoveBitmasks(true);
-    _blackPawnCaptureMoveBitmasks = PawnBitmasks::getAllCapturePawnMoveBitmasks(false);
+    line_ray_masks_ = RayBitmasks::get_all_straight_ray_bitmasks();
+    diag_ray_masks = RayBitmasks::get_all_diagonal_ray_bitmasks();
+    knight_masks_ = KnightBitmasks::get_all_knight_bitmasks();
+    w_pawn_capture_move_masks = PawnBitmasks::get_all_capture_pawn_move_bitmasks(true);
+    b_pawn_capture_move_masks = PawnBitmasks::get_all_capture_pawn_move_bitmasks(false);
 }
 
-bool CheckDetection::isInCheck(bool isWhite) const
+bool CheckDetection::in_check(bool is_w) const
 {
-    int kingIndex, opponentKingIndex, kingRankDiff, kingFileDiff;
+    int king_idx, opponent_king_idx, king_rank_diff, king_file_diff;
 
-    kingIndex = BitBasics::indexOfLSB(isWhite ? _bitboards.get_w_king_bitboard()
-                                   : _bitboards.get_b_king_bitboard());
+    king_idx = BitBasics::lsb_index(is_w ? bitboards_.get_w_king_bitboard()
+                                   : bitboards_.get_b_king_bitboard());
 
     // Check if any opponent rooks or queens are attacking the king
-    RayBitmasks::StraightRays straightRays = _straightRayBitmasks[kingIndex];
-    bitmask opponentRooksAndQueens = isWhite ? _bitboards.get_b_rooks_bitboard() | _bitboards.get_b_queens_bitboard()
-                                             : _bitboards.get_w_rooks_bitboard() | _bitboards.get_w_queens_bitboard();
+    RayBitmasks::StraightRays straightRays = line_ray_masks_[king_idx];
+    bitmask opponentRooksAndQueens = is_w ? bitboards_.get_b_rooks_bitboard() | bitboards_.get_b_queens_bitboard()
+                                             : bitboards_.get_w_rooks_bitboard() | bitboards_.get_w_queens_bitboard();
 
-    if (RayLogic::checkStraightRay(straightRays.north, true, opponentRooksAndQueens, _stateBitmasks.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_line_ray(straightRays.n, true, opponentRooksAndQueens, state_bitmasks_.get_occupied_pieces_bitmask()))
         return true;
 
-    if (RayLogic::checkStraightRay(straightRays.east, false, opponentRooksAndQueens, _stateBitmasks.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_line_ray(straightRays.e, false, opponentRooksAndQueens, state_bitmasks_.get_occupied_pieces_bitmask()))
         return true;
 
-    if (RayLogic::checkStraightRay(straightRays.south, false, opponentRooksAndQueens, _stateBitmasks.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_line_ray(straightRays.s, false, opponentRooksAndQueens, state_bitmasks_.get_occupied_pieces_bitmask()))
         return true;
 
-    if (RayLogic::checkStraightRay(straightRays.west, true, opponentRooksAndQueens, _stateBitmasks.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_line_ray(straightRays.w, true, opponentRooksAndQueens, state_bitmasks_.get_occupied_pieces_bitmask()))
         return true;
 
     // Check if any opponent bishops or queens are attacking the king
-    RayBitmasks::DiagonalRays diagonalRays = _diagonalRayBitmasks[kingIndex];
-    bitmask opponentBishopsAndQueens = isWhite ? _bitboards.get_b_bishops_bitboard() | _bitboards.get_b_queens_bitboard() 
-                                               : _bitboards.get_w_bishops_bitboard() | _bitboards.get_w_queens_bitboard();
+    RayBitmasks::DiagonalRays diag_rays = diag_ray_masks[king_idx];
+    bitmask opp_bishops_and_queens = is_w ? bitboards_.get_b_bishops_bitboard() | bitboards_.get_b_queens_bitboard() 
+                                               : bitboards_.get_w_bishops_bitboard() | bitboards_.get_w_queens_bitboard();
 
-    if (RayLogic::checkDiagonalRay(diagonalRays.northEast, true, opponentBishopsAndQueens, _stateBitmasks.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_diag_ray(diag_rays.ne, true, opp_bishops_and_queens, state_bitmasks_.get_occupied_pieces_bitmask()))
         return true;
 
-    if (RayLogic::checkDiagonalRay(diagonalRays.southEast, false, opponentBishopsAndQueens, _stateBitmasks.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_diag_ray(diag_rays.se, false, opp_bishops_and_queens, state_bitmasks_.get_occupied_pieces_bitmask()))
         return true;
 
-    if (RayLogic::checkDiagonalRay(diagonalRays.southWest, false, opponentBishopsAndQueens, _stateBitmasks.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_diag_ray(diag_rays.sw, false, opp_bishops_and_queens, state_bitmasks_.get_occupied_pieces_bitmask()))
         return true;
 
-    if (RayLogic::checkDiagonalRay(diagonalRays.northWest, true, opponentBishopsAndQueens, _stateBitmasks.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_diag_ray(diag_rays.nw, true, opp_bishops_and_queens, state_bitmasks_.get_occupied_pieces_bitmask()))
         return true;
 
     // Check if any opponent knights are attacking the king
-    bitmask knightMoves = _knightBitmasks[kingIndex];
-    bitmask opponentKnights = isWhite ? _bitboards.get_b_knights_bitboard() 
-                                      : _bitboards.get_w_knights_bitboard();
+    bitmask knight_moves = knight_masks_[king_idx];
+    bitmask opp_knights = is_w ? bitboards_.get_b_knights_bitboard() 
+                                      : bitboards_.get_w_knights_bitboard();
 
-    if ((knightMoves & opponentKnights) != 0)
+    if ((knight_moves & opp_knights) != 0)
         return true;
     
     // Check if any opponent pawns are attacking the king
-    bitmask opponentPawns = isWhite ? _bitboards.get_b_pawns_bitboard() 
-                                    : _bitboards.get_w_pawns_bitboard();
+    bitmask opp_pawns = is_w ? bitboards_.get_b_pawns_bitboard() 
+                                    : bitboards_.get_w_pawns_bitboard();
     
-    bitmask pawnAttackingMoves = isWhite ? _whitePawnCaptureMoveBitmasks[kingIndex] 
-                                         : _blackPawnCaptureMoveBitmasks[kingIndex];
+    bitmask pawn_attacking_moves = is_w ? w_pawn_capture_move_masks[king_idx] 
+                                         : b_pawn_capture_move_masks[king_idx];
 
-    if ((pawnAttackingMoves & opponentPawns) != 0)
+    if ((pawn_attacking_moves & opp_pawns) != 0)
         return true;
 
     // Check if the king is in check from an adjacent king
-    opponentKingIndex = BitBasics::indexOfLSB(isWhite ? _bitboards.get_b_king_bitboard()
-                                           : _bitboards.get_w_king_bitboard());
+    opponent_king_idx = BitBasics::lsb_index(is_w ? bitboards_.get_b_king_bitboard()
+                                           : bitboards_.get_w_king_bitboard());
 
-    kingRankDiff = ChessUtils::abs(ChessUtils::rankFromBitIndex(kingIndex) - ChessUtils::rankFromBitIndex(opponentKingIndex));
-    kingFileDiff = ChessUtils::abs(ChessUtils::fileFromBitIndex(kingIndex) - ChessUtils::fileFromBitIndex(opponentKingIndex));
+    king_rank_diff = ChessUtils::abs(ChessUtils::rank_from_bit_index(king_idx) - ChessUtils::rank_from_bit_index(opponent_king_idx));
+    king_file_diff = ChessUtils::abs(ChessUtils::file_from_bit_index(king_idx) - ChessUtils::file_from_bit_index(opponent_king_idx));
 
-    int manhattanDistance = kingRankDiff + kingFileDiff;
+    int manhattan_distance = king_rank_diff + king_file_diff;
 
-    if (manhattanDistance <= 1)
+    if (manhattan_distance <= 1)
         return true;
 
-    if (manhattanDistance == 2 && kingRankDiff == 1 && kingFileDiff == 1)
+    if (manhattan_distance == 2 && king_rank_diff == 1 && king_file_diff == 1)
         return true;
 
     return false;

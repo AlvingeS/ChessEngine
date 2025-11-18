@@ -40,15 +40,15 @@ public:
         bool &retFlag
     );
 
-    void genMoves(
-        bool isWhite,
+    void gen_moves(
+        bool is_w,
         int currentDepth, 
-        bitmask enpessantTarget,
-        unsigned char castlingRights
+        bitmask ep_target_mask,
+        unsigned char castle_rights
     );
 
-    logic::MoveResult makeMove(model::Move move, bool isWhite);
-    void unmakeMove(model::Move move, bool isWhite, logic::MoveResult previousMoveResult);
+    logic::MoveResult makeMove(model::Move move, bool is_w);
+    void unmakeMove(model::Move move, bool is_w, logic::MoveResult previousMoveResult);
     void undoMove();
     
     int _numMoveGenCalls;
@@ -82,7 +82,7 @@ public:
 
     void setBoardFromFen(const std::string& fen)
     {
-        io::Fen::setBoardFromFen(fen, _bitboards, _stateBitmasks, piece_map_);
+        io::Fen::setBoardFromFen(fen, bitboards_, state_bitmasks_, piece_map_);
     }
 
     std::string getFenFromBoard() const
@@ -92,20 +92,20 @@ public:
 
     bool diffBetweenStateBitmasks() const
     {
-        return (_stateBitmasks.get_b_pieces_bitmask() | _stateBitmasks.get_w_pieces_bitmask()) != _stateBitmasks.get_occupied_pieces_bitmask();
+        return (state_bitmasks_.get_b_pieces_bitmask() | state_bitmasks_.get_w_pieces_bitmask()) != state_bitmasks_.get_occupied_pieces_bitmask();
     }
 
     
 private:
     int _maxDepth;
     model::Board _board;
-    model::Bitboards& _bitboards;
+    model::Bitboards& bitboards_;
     model::PieceMap& piece_map_;
-    model::StateBitmasks& _stateBitmasks;
+    model::StateBitmasks& state_bitmasks_;
     model::ZHasher& _zHasher;
     
-    logic::MoveMaker _moveMaker;
-    logic::MoveRetractor _moveRetractor;
+    logic::MoveMaker move_maker_;
+    logic::MoveRetractor move_retractor_;
     logic::MoveGenerator _moveGenerator;
     logic::Evaluator _evaluator;
     

@@ -13,31 +13,31 @@
 
 namespace logic {
 
-BishopGenerator::BishopGenerator(model::Board& board) 
-    : _bitboards(board.bitboards)
-    , _stateBitmasks(board.state_bitmasks)
+BishopGen::BishopGen(model::Board& board) 
+    : bitboards_(board.bitboards)
+    , state_bitmasks_(board.state_bitmasks)
 {
-    _diagonalRayBitmasks = RayBitmasks::getAllDiagonalRayBitmasks();
+    diag_ray_masks = RayBitmasks::get_all_diagonal_ray_bitmasks();
 }
 
-void BishopGenerator::generate(
-    bool isWhite,
-    model::Movelist& moveList)
+void BishopGen::generate(
+    bool is_w,
+    model::Movelist& movelist)
 {
-    std::vector<int>& bishopIndices = Containers::getPiecePositionIndices();
+    std::vector<int>& bishop_indices = Containers::get_piece_position_indices();
 
-    BitBasics::getBitIndices(bishopIndices, isWhite ? _bitboards.get_w_bishops_bitboard()
-                                         : _bitboards.get_b_bishops_bitboard());
+    BitBasics::get_bit_indices(bishop_indices, is_w ? bitboards_.get_w_bishops_bitboard()
+                                         : bitboards_.get_b_bishops_bitboard());
 
-    for (int currentBishopIndex : bishopIndices) {
-        RayBitmasks::DiagonalRays rays = _diagonalRayBitmasks[currentBishopIndex];
-        int bishopRank = ChessUtils::rankFromBitIndex(currentBishopIndex);
-        int bishopFile = ChessUtils::fileFromBitIndex(currentBishopIndex);
+    for (int current_bishop_index : bishop_indices) {
+        RayBitmasks::DiagonalRays rays = diag_ray_masks[current_bishop_index];
+        int bishopRank = ChessUtils::rank_from_bit_index(current_bishop_index);
+        int bishopFile = ChessUtils::file_from_bit_index(current_bishop_index);
 
-        RayLogic::addMovesFromDiagonalRay(rays.northEast, true, isWhite, currentBishopIndex, bishopRank, bishopFile, moveList, _stateBitmasks.get_w_pieces_bitmask(), _stateBitmasks.get_occupied_pieces_bitmask());
-        RayLogic::addMovesFromDiagonalRay(rays.southEast, false, isWhite, currentBishopIndex, bishopRank, bishopFile, moveList, _stateBitmasks.get_w_pieces_bitmask(), _stateBitmasks.get_occupied_pieces_bitmask());
-        RayLogic::addMovesFromDiagonalRay(rays.southWest, false, isWhite, currentBishopIndex, bishopRank, bishopFile, moveList, _stateBitmasks.get_w_pieces_bitmask(), _stateBitmasks.get_occupied_pieces_bitmask());
-        RayLogic::addMovesFromDiagonalRay(rays.northWest, true, isWhite, currentBishopIndex, bishopRank, bishopFile, moveList, _stateBitmasks.get_w_pieces_bitmask(), _stateBitmasks.get_occupied_pieces_bitmask());
+        RayLogic::add_moves_from_diag_ray(rays.ne, true, is_w, current_bishop_index, bishopRank, bishopFile, movelist, state_bitmasks_.get_w_pieces_bitmask(), state_bitmasks_.get_occupied_pieces_bitmask());
+        RayLogic::add_moves_from_diag_ray(rays.se, false, is_w, current_bishop_index, bishopRank, bishopFile, movelist, state_bitmasks_.get_w_pieces_bitmask(), state_bitmasks_.get_occupied_pieces_bitmask());
+        RayLogic::add_moves_from_diag_ray(rays.sw, false, is_w, current_bishop_index, bishopRank, bishopFile, movelist, state_bitmasks_.get_w_pieces_bitmask(), state_bitmasks_.get_occupied_pieces_bitmask());
+        RayLogic::add_moves_from_diag_ray(rays.nw, true, is_w, current_bishop_index, bishopRank, bishopFile, movelist, state_bitmasks_.get_w_pieces_bitmask(), state_bitmasks_.get_occupied_pieces_bitmask());
     }
 }
 

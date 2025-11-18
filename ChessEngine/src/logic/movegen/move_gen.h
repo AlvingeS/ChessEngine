@@ -31,52 +31,52 @@ class MoveGenerator {
 public:
     MoveGenerator(
         model::Board& board,
-        logic::MoveMaker& moveMaker,
-        logic::MoveRetractor& moveRetractor
+        logic::MoveMaker& move_maker,
+        logic::MoveRetractor& move_retractor
     );
 
-    void genMoves(
-        bool isWhite,
-        model::Movelist& moveList,
-        bitmask enpessantTarget,
-        unsigned char castlingRight
+    void gen_moves(
+        bool is_w,
+        model::Movelist& movelist,
+        bitmask ep_target_mask,
+        unsigned char castle_rights
     );
     
-    void genRookMoves(bool isWhite, model::Movelist& moveList);
-    void genBishopMoves(bool isWhite, model::Movelist& moveList);
-    void genQueenMoves(bool isWhite, model::Movelist& moveList);
-    void genKnightMoves(bool isWite, model::Movelist& moveList);
-    void genKingMoves(bool isWhite, model::Movelist& moveList);
+    void gen_rook_moves(bool is_w, model::Movelist& movelist);
+    void gen_bishop_moves(bool is_w, model::Movelist& movelist);
+    void gen_queen_moves(bool is_w, model::Movelist& movelist);
+    void gen_knight_moves(bool is_w, model::Movelist& movelist);
+    void gen_king_moves(bool is_w, model::Movelist& movelist);
     
-    void genPawnMoves(
-        bool isWhite,
-        model::Movelist& moveList,
-        bitmask enpessantTarget
+    void gen_pawn_moves(
+        bool is_w,
+        model::Movelist& movelist,
+        bitmask ep_target_mask
     );
 
-    void genCastlingMoves(
-        bool isWhite,
-        model::Movelist& moveList,
-        unsigned char castlingRights
+    void gen_castle_moves(
+        bool is_w,
+        model::Movelist& movelist,
+        unsigned char castle_rights
     );
     
-    bool isInCheck(bool isWhite);
+    bool in_check(bool is_w);
 
 private:
-    const model::Bitboards& _bitboards;
-    const model::StateBitmasks& _stateBitmasks;
+    const model::Bitboards& bitboards_;
+    const model::StateBitmasks& state_bitmasks_;
     
-    logic::MoveMaker& _moveMaker;
-    logic::MoveRetractor& _moveRetractor;
+    logic::MoveMaker& move_maker_;
+    logic::MoveRetractor& move_retractor_;
     
-    CheckDetection _checkDetection;
-    RookGenerator _rookGenerator;
-    BishopGenerator _bishopGenerator;
-    QueenGenerator _queenGenerator;
-    KnightGenerator _knightGenerator;
-    KingGenerator _kingGenerator;
-    PawnGenerator _pawnGenerator;
-    CastlingGenerator _castlingGenerator;
+    CheckDetection check_detection_;
+    RookGenerator rook_gen_;
+    BishopGen bishop_gen_;
+    QueenGenerator queen_gen_;
+    KnightGenerator knight_gen_;
+    KingGenerator king_gen_;
+    PawnGenerator pawn_gen_;
+    CastlingGenerator castle_gen_;
+    
 };
-
 } // namespace logic

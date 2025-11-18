@@ -10,42 +10,39 @@
 namespace logic {
 
 KingGenerator::KingGenerator(model::Board& board) 
-    : _bitboards(board.bitboards)
-    , _stateBitmasks(board.state_bitmasks)
+    : bitboards_(board.bitboards)
+    , state_bitmasks_(board.state_bitmasks)
 {
-    _kingBitmasks = KingBitmasks::getAllKingBitmasks();
+    king_bitmasks_ = KingBitmasks::get_all_king_bitmasks();
 }
 
-void KingGenerator::generate(bool isWhite, model::Movelist& moveList) 
+void KingGenerator::generate(bool is_w, model::Movelist& movelist) 
 {
-    std::vector<int>& kingIndices = Containers::getPiecePositionIndices();
-    std::vector<int>& freeMovesIndices = Containers::getLeapingPiecefreeMovesIndices();
-    std::vector<int>& capturableMovesIndices = Containers::getLeapingPieceCapturableMovesIndices();
+    std::vector<int>& king_idxs = Containers::get_piece_position_indices();
+    std::vector<int>& free_moves_sq_idxs = Containers::get_leaping_piece_free_moves_indices();
+    std::vector<int>& capturable_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_indices();
     
-    BitBasics::getBitIndices(kingIndices, isWhite ? _bitboards.get_w_king_bitboard()
-                                              : _bitboards.get_b_king_bitboard());
+    BitBasics::get_bit_indices(king_idxs, is_w ? bitboards_.get_w_king_bitboard()
+                                              : bitboards_.get_b_king_bitboard());
 
-    // TODO: It makes zero sense to have this in a loop
-    for (int currentKingIndex : kingIndices) {
-        bitmask kingBitmask = _kingBitmasks[currentKingIndex];
+    int king_sq_idx = king_idxs[0];
+    bitmask attack_mask = king_bitmasks_[king_sq_idx];
+    bitmask free_moves_mask = attack_mask & state_bitmasks_.get_empty_squares_bitmask();
+    
+    bitmask enemy_pieces_mask = is_w ? state_bitmasks_.get_b_pieces_bitmask() 
+                                     : state_bitmasks_.get_w_pieces_bitmask();
 
-        bitmask freeKingMoves = kingBitmask & _stateBitmasks.get_empty_squares_bitmask();
-        
-        bitmask enemyPieces = isWhite ? _stateBitmasks.get_b_pieces_bitmask() 
-                                      : _stateBitmasks.get_w_pieces_bitmask();
+    bitmask capture_moves_mask = attack_mask & enemy_pieces_mask;
 
-        bitmask capturableKingMoves = kingBitmask & enemyPieces;
+    BitBasics::get_bit_indices(free_moves_sq_idxs, free_moves_mask);
+    BitBasics::get_bit_indices(capturable_moves_sq_idxs, capture_moves_mask);
 
-        BitBasics::getBitIndices(freeMovesIndices, freeKingMoves);
-        BitBasics::getBitIndices(capturableMovesIndices, capturableKingMoves);
+    for (int sq_idx : free_moves_sq_idxs) {
+        movelist.add_move(model::Move(king_sq_idx, sq_idx, model::Move::QUITE_FLAG));
+    }
 
-        for (int freeKingMoveIndex : freeMovesIndices) {
-            moveList.add_move(model::Move(currentKingIndex, freeKingMoveIndex, model::Move::QUITE_FLAG));
-        }
-
-        for (int capturableKingMoveIndex : capturableMovesIndices) {
-            moveList.add_move(model::Move(currentKingIndex, capturableKingMoveIndex, model::Move::CAPTURE_FLAG));
-        }
+    for (int sq_idx : capturable_moves_sq_idxs) {
+        movelist.add_move(model::Move(king_sq_idx, sq_idx, model::Move::CAPTURE_FLAG));
     }
 }
 

@@ -4,79 +4,79 @@
 
 namespace logic {
 
-bitmask PawnBitmasks::applyCapturePawnMoves(int ind, bool isWhite) 
+bitmask PawnBitmasks::apply_capture_pawn_moves(int ind, bool is_w) 
 {
-    bitmask captureMoves = 0ULL;
+    bitmask capture_moves = 0ULL;
 
-    int shiftUpLeft = isWhite ? 9 : -9;
-    int shiftUpRight = isWhite ? 7 : -7;
+    int shift_up_left = is_w ? 9 : -9;
+    int shift_up_right = is_w ? 7 : -7;
 
-    if (ind + shiftUpLeft <= 63 && ind + shiftUpLeft >= 0) captureMoves |= (1ULL << (ind + shiftUpLeft));
-    if (ind + shiftUpRight <= 63 && ind + shiftUpRight >= 0) captureMoves |= (1ULL << (ind + shiftUpRight));
+    if (ind + shift_up_left <= 63 && ind + shift_up_left >= 0) capture_moves |= (1ULL << (ind + shift_up_left));
+    if (ind + shift_up_right <= 63 && ind + shift_up_right >= 0) capture_moves |= (1ULL << (ind + shift_up_right));
 
-    return captureMoves;
+    return capture_moves;
 }
 
-bitmask PawnBitmasks::removeWrapAroundPawnMoves(bitmask captureMoves, int ind) 
+bitmask PawnBitmasks::remove_wrap_around_pawn_moves(bitmask capture_moves, int ind) 
 {
-    bitmask notAFile = ~ChessUtils::getFileMask(7);
-    bitmask notHFile = ~ChessUtils::getFileMask(0);
+    bitmask not_a_file = ~ChessUtils::get_file_mask(7);
+    bitmask not_h_file = ~ChessUtils::get_file_mask(0);
 
-    switch (ChessUtils::fileFromBitIndex(ind)) {
+    switch (ChessUtils::file_from_bit_index(ind)) {
         case 0:
-            captureMoves &= notAFile;
+            capture_moves &= not_a_file;
             break;
         case 7:
-            captureMoves &= notHFile;
+            capture_moves &= not_h_file;
             break;
     }
 
-    return captureMoves;
+    return capture_moves;
 }
 
-bitmask PawnBitmasks::getCapturePawnMovesBitmask(int ind, bool isWhite) 
+bitmask PawnBitmasks::get_capture_pawn_moves_bitmask(int ind, bool is_w) 
 {
-    bitmask captureMoves = applyCapturePawnMoves(ind, isWhite);
-    captureMoves = removeWrapAroundPawnMoves(captureMoves, ind);
-    return captureMoves;
+    bitmask capture_moves = apply_capture_pawn_moves(ind, is_w);
+    capture_moves = remove_wrap_around_pawn_moves(capture_moves, ind);
+    return capture_moves;
 }
 
-bitmask PawnBitmasks::getStraightPawnMovesBitmask(int ind, bool isWhite) 
+bitmask PawnBitmasks::get_straight_pawn_moves_bitmask(int ind, bool is_w) 
 {
-    bitmask straightMoves = 0ULL;
+    bitmask straight_moves = 0ULL;
 
-    int shiftUp = isWhite ? 8 : -8;
-    int shiftUpTwice = isWhite ? 16 : -16;
+    int shift_up = is_w ? 8 : -8;
+    int shift_up_twice = is_w ? 16 : -16;
 
-    if (ind + shiftUp <= 63 && ind + shiftUp >= 0) straightMoves |= (1ULL << (ind + shiftUp));
-    if (isWhite && (ind >= 8 && ind <= 15)) {
-        if (ind + shiftUpTwice <= 63 && ind + shiftUpTwice >= 0) straightMoves |= (1ULL << (ind + shiftUpTwice));
-    } else if (!isWhite && (ind >= 48 && ind <= 55)) {
-        if (ind + shiftUpTwice <= 63 && ind + shiftUpTwice >= 0) straightMoves |= (1ULL << (ind + shiftUpTwice));
+    if (ind + shift_up <= 63 && ind + shift_up >= 0) straight_moves |= (1ULL << (ind + shift_up));
+    if (is_w && (ind >= 8 && ind <= 15)) {
+        if (ind + shift_up_twice <= 63 && ind + shift_up_twice >= 0) straight_moves |= (1ULL << (ind + shift_up_twice));
+    } else if (!is_w && (ind >= 48 && ind <= 55)) {
+        if (ind + shift_up_twice <= 63 && ind + shift_up_twice >= 0) straight_moves |= (1ULL << (ind + shift_up_twice));
     }
-    return straightMoves;
+    return straight_moves;
 }
 
-std::vector<bitmask> PawnBitmasks::getAllStraightPawnMoveBitmasks(bool isWhite) 
+std::vector<bitmask> PawnBitmasks::get_all_straight_pawn_move_bitmasks(bool is_w) 
 {
-    std::vector<bitmask> straightPawnMoveBitmasks;
+    std::vector<bitmask> straigh_pawn_moves_bitmask;
 
     for (int i = 0; i < 64; i++) {
-        straightPawnMoveBitmasks.push_back(getStraightPawnMovesBitmask(i, isWhite));
+        straigh_pawn_moves_bitmask.push_back(get_straight_pawn_moves_bitmask(i, is_w));
     }
 
-    return straightPawnMoveBitmasks;
+    return straigh_pawn_moves_bitmask;
 }
 
-std::vector<bitmask> PawnBitmasks::getAllCapturePawnMoveBitmasks(bool isWhite) 
+std::vector<bitmask> PawnBitmasks::get_all_capture_pawn_move_bitmasks(bool is_w) 
 {
-    std::vector<bitmask> capturePawnMoveBitmasks;
+    std::vector<bitmask> capture_pawn_moves_bitmask;
 
     for (int i = 0; i < 64; i++) {
-        capturePawnMoveBitmasks.push_back(getCapturePawnMovesBitmask(i, isWhite));
+        capture_pawn_moves_bitmask.push_back(get_capture_pawn_moves_bitmask(i, is_w));
     }
 
-    return capturePawnMoveBitmasks;
+    return capture_pawn_moves_bitmask;
 }
 
 } // namespace logic

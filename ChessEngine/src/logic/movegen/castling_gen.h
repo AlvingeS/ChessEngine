@@ -21,45 +21,40 @@ class CastlingGenerator {
 public:
     CastlingGenerator(
         model::Board& board,
-        logic::MoveMaker& moveMaker,
-        logic::MoveRetractor& moveRetractor,
-        CheckDetection* checkDetection
+        logic::MoveMaker& move_maker,
+        logic::MoveRetractor& move_retractor,
+        CheckDetection* check_detection
     );
     
     void generate(
-        bool isWhite, 
+        bool is_w, 
         model::Movelist& movelist, 
-        unsigned char castlingRights
+        unsigned char castle_rights
     );
 
 private:
-    const model::Bitboards& _bitboards;
-    const model::StateBitmasks& _stateBitmasks;
+    const model::Bitboards& bitboards_;
+    const model::StateBitmasks& state_bitmasks_;
     
-    logic::MoveMaker& _moveMaker;
-    logic::MoveRetractor& _moveRetractor;
+    logic::MoveMaker& move_maker_;
+    logic::MoveRetractor& move_retractor_;
     
-    CheckDetection* _checkDetection;
+    CheckDetection* check_detection_;
 
-    bitmask _whiteKingSideCastleBitmask;
-    bitmask _whiteQueenSideCastleBitmask;
-    bitmask _blackKingSideCastleBitmask;
-    bitmask _blackQueenSideCastleBitmask;
+    bitmask w_kside_castle_mask_;
+    bitmask w_qside_castle_mask_;
+    bitmask b_kside_castle_mask_;
+    bitmask b_qside_castle_mask_;
 
-    void genSingleCastleMove(
-        bool isWhite,
-        bool isKingSide,
+    void gen_single_castle_move(
+        bool is_w,
+        bool is_kside,
         model::Movelist& movelist
     );
 
-    bool kingAndRookOnCastlingSquares(bool isWhite, bool isKingSide) const;
-    void makeTemporaryKingMove(bool isWhite, bool isKingSide);
-    void unmakeTemporaryKingMove(bool isWhite, bool isKingSide);
-
-    const bitmask mWhiteKingSideCastleMask = 0x000000000000006ULL;
-    const bitmask mWhiteQueenSideCastleMask = 0x0000000000000070ULL;
-    const bitmask mBlackKingSideCastleMask = 0x0600000000000000ULL;
-    const bitmask mBlackQueenSideCastleMask = 0x7000000000000000ULL;
+    bool king_and_rook_on_castling_squares(bool is_w, bool is_kside) const;
+    void make_temporary_king_move(bool is_w, bool is_kside);
+    void revert_temporary_king_move(bool is_w, bool is_kside);
 };
 
 } // namespace logic

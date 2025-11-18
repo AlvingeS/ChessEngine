@@ -49,7 +49,7 @@ public:
     DEFINE_BITBOARD_MACROS(b_king, b_king_bitboard)
 
 private:
-    std::vector<bitboard*> _bitboards;
+    std::vector<bitboard*> bitboards_;
 
     bitboard w_pawns_bitboard_;
     bitboard w_knights_bitboard_;

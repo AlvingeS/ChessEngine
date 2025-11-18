@@ -27,8 +27,8 @@ protected:
     model::PieceMap& piece_map;
     model::ZHasher& z_hasher;
     engine::SearchMemory searchMemory;
-    MoveMaker moveMaker;
-    MoveRetractor moveRetractor;
+    MoveMaker move_maker;
+    MoveRetractor move_retractor;
     MoveGenerator moveGenerator;
     std::string startingPos;
     model::Movelist movelist;
@@ -40,9 +40,9 @@ protected:
           piece_map(board.piece_map),
           z_hasher(board.z_hasher),
           searchMemory(engine::SearchMemory(0)),
-          moveMaker(board),
-          moveRetractor(board),
-          moveGenerator(MoveGenerator(board, moveMaker, moveRetractor)),
+          move_maker(board),
+          move_retractor(board),
+          moveGenerator(MoveGenerator(board, move_maker, move_retractor)),
           movelist(model::Movelist()) {}
 
     virtual void SetUp() override {

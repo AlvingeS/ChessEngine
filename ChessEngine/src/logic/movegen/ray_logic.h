@@ -7,71 +7,71 @@ namespace logic {
 
 struct RayLogic {
 
-    static void addMovesFromFreeRay(
+    static void add_moves_from_free_ray(
         bitmask freeRay,
         int bitIndexFrom,
-        model::Movelist& moveList
+        model::Movelist& movelist
     );
 
-    static void addMoveIfBlockerIsEnemy(
+    static void add_move_if_blocker_is_enemy(
         int blockerIndex,
-        bool isWhite,
+        bool is_w,
         int bitIndexFrom,
-        model::Movelist& moveList,
+        model::Movelist& movelist,
         bitmask whitePiecesBitmask
     );
 
-    static void addMovesBetweenBlockerAndPieceOnStraightRay(
+    static void add_moves_between_blocker_and_piece_on_line_ray(
         int blockerIndex,
         bool alongFile, 
         bool startFromBlocker, int rookRank, 
         int rookFile, 
         int bitIndexFrom,
-        model::Movelist& moveList
+        model::Movelist& movelist
     );
 
-    static void addMovesBetweenBlockerAndPieceOnDiagonalRay(
+    static void add_moves_between_blocker_and_pice_on_diag_ray(
         int blockerIndex,
         bool startFromBlocker, 
         int bishopRank, 
         int bishopFile, 
         int bitIndexFrom,
-        model::Movelist& moveList
+        model::Movelist& movelist
     );
     
-    static void addMovesFromStraightRay(
+    static void add_moves_from_line_ray(
         bitmask ray,
         bool blockerOnLSB,
         bool alongFile,
-        bool isWhite,
+        bool is_w,
         int pieceIndex,
         int pieceRank,
         int pieceFile,
-        model::Movelist& moveList,
+        model::Movelist& movelist,
         bitmask whitePiecesBitmask,
         bitmask occupiedPiecesBitmask
     );
     
-    static void addMovesFromDiagonalRay(
+    static void add_moves_from_diag_ray(
         bitmask ray,
         bool blockerOnLSB,
-        bool isWhite,
+        bool is_w,
         int pieceIndex,
         int pieceRank,
         int pieceFile,
-        model::Movelist& moveList,
+        model::Movelist& movelist,
         bitmask whitePiecesBitmask,
         bitmask occupiedPiecesBitmask
     );
     
-    static bool checkStraightRay(
+    static bool check_line_ray(
         bitmask straightRay,
         bool firstBlockerOnLSB,
         bitmask opponentRooksAndQueens,
         bitmask occupiedPiecesBitmask
     );
     
-    static bool checkDiagonalRay(
+    static bool check_diag_ray(
         bitmask diagonalRay,
         bool firstBlockerOnLSB,
         bitmask opponentBishopsAndQueens,

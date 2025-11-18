@@ -10,24 +10,24 @@ namespace engine {
 
 MovePicker::MovePicker(int maxDepth) 
     : _board()
-    , _bitboards(_board.bitboards)
+    , bitboards_(_board.bitboards)
     , piece_map_(_board.piece_map)
-    , _stateBitmasks(_board.state_bitmasks)
+    , state_bitmasks_(_board.state_bitmasks)
     , _zHasher(_board.z_hasher)
     , _searchMemory(SearchMemory(maxDepth))
-    , _moveMaker(logic::MoveMaker(_board))
-    , _moveRetractor(logic::MoveRetractor(_board))
-    , _moveGenerator(logic::MoveGenerator(_board, _moveMaker, _moveRetractor))
+    , move_maker_(logic::MoveMaker(_board))
+    , move_retractor_(logic::MoveRetractor(_board))
+    , _moveGenerator(logic::MoveGenerator(_board, move_maker_, move_retractor_))
     , _evaluator(logic::Evaluator(_board))
     , _maxDepth(maxDepth)
 {
     _numMoveGenCalls = 0;
     _totalNodes = 0;
     
-    _nodeCountPerFirstMove.resize(MAX_LEGAL_MOVES);
-    _firstMoves.resize(MAX_LEGAL_MOVES);
+    _nodeCountPerFirstMove.resize(constants::MAX_LEGAL_MOVES);
+    _firstMoves.resize(constants::MAX_LEGAL_MOVES);
 
-    for (int i = 0; i < MAX_LEGAL_MOVES; i++) {
+    for (int i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
         _nodeCountPerFirstMove[i] = 0;
         _firstMoves[i] = model::Move();
     }
@@ -71,32 +71,32 @@ long MovePicker::sumNodesToDepth(int depth) const {
     return sum;
 }
 
-void MovePicker::genMoves(
-    bool isWhite,
+void MovePicker::gen_moves(
+    bool is_w,
     int currentDepth,
-    bitmask enpessantTarget,
-    unsigned char castlingRights) 
+    bitmask ep_target_mask,
+    unsigned char castle_rights) 
 {
-    _moveGenerator.genMoves(isWhite, _movelists[currentDepth], enpessantTarget, castlingRights);
+    _moveGenerator.gen_moves(is_w, _movelists[currentDepth], ep_target_mask, castle_rights);
 }
 
-logic::MoveResult MovePicker::makeMove(model::Move move, bool isWhite) 
+logic::MoveResult MovePicker::makeMove(model::Move move, bool is_w) 
 {
-    return _moveMaker.makeMove(move, isWhite);
+    return move_maker_.makeMove(move, is_w);
 }
 
 void MovePicker::unmakeMove(
     model::Move move,
-    bool isWhite,
+    bool is_w,
     logic::MoveResult previousMoveResult)
 {
-    _moveRetractor.unmakeMove(move, isWhite, previousMoveResult);
+    move_retractor_.unmakeMove(move, is_w, previousMoveResult);
 }
 
 void MovePicker::debugPrint(bool verbose) const
 {
     if (verbose) {
-        io::BoardPrinter boardPrinter = io::BoardPrinter(_bitboards);
+        io::BoardPrinter boardPrinter = io::BoardPrinter(bitboards_);
         boardPrinter.printBoard();
     }
 }
@@ -180,7 +180,7 @@ void MovePicker::minimax(
         return;
     }
 
-    genMoves(
+    gen_moves(
         isMaximizer, 
         currentDepth, 
         _searchMemory.getEnPessantTargetAtDepth(currentDepth),
@@ -191,7 +191,7 @@ void MovePicker::minimax(
     
     size_t numIllegalMoves = 0;
 
-    for (size_t i = 0; i < MAX_LEGAL_MOVES; i++) {
+    for (size_t i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
         model::Move currentMove = _movelists[currentDepth].get_move_at(i);
 
         if (currentMove.get_move() == 0) {
@@ -228,7 +228,7 @@ void MovePicker::minimax(
         }
 
         // FIXME: Move generator should not be queried for this
-        if (_moveGenerator.isInCheck(isMaximizer)) {
+        if (_moveGenerator.in_check(isMaximizer)) {
             numIllegalMoves++;
             unmakeMove(currentMove, isMaximizer, moveResult);
 
@@ -246,7 +246,7 @@ void MovePicker::minimax(
             }
 
             if (numIllegalMoves == i + 1 && _movelists[currentDepth].get_move_at(i + 1).get_move() == 0) {
-                bool wasInCheckBeforeMove = _moveGenerator.isInCheck(isMaximizer);
+                bool wasInCheckBeforeMove = _moveGenerator.in_check(isMaximizer);
 
                 if (wasInCheckBeforeMove) {
                     _checkmateCount[currentDepth]++;
@@ -335,7 +335,7 @@ void MovePicker::recordPerftStats(
     bool &retFlag) 
 {
     retFlag = true;
-    if (_moveGenerator.isInCheck(!isMaximizer))
+    if (_moveGenerator.in_check(!isMaximizer))
     {
         _checkCount[currentDepth + 1]++;
     }

@@ -26,10 +26,10 @@ public:
         MoveResult previousMoveResults
     );
 
-    void unmakeTemporaryKingMove(bool wasWhite, bool isKingSide); 
+    void revert_temporary_king_move(bool wasWhite, bool is_kside); 
 
 private:
-    void unmakeCastleMove(bool wasWhite, bool isKingSide);
+    void unmakeCastleMove(bool wasWhite, bool is_kside);
 
     model::Piece::Type  determineMovedPieceType(const model::Move& move, bool wasWhite, int toIndex) const;
     
@@ -37,8 +37,8 @@ private:
     void placeBackCapturedPieceOnBoard(bool isEP, int captureIndex, int toIndex, bool wasWhite, model::Piece::Type  previouslyCapturedPieceType);
     void placeBackMovedPieceOnBoard(bool wasWhite, int fromIndex, model::Piece::Type  movedPieceType);
 
-    model::Bitboards& _bitboards;
-    model::StateBitmasks& _stateBitmasks;
+    model::Bitboards& bitboards_;
+    model::StateBitmasks& state_bitmasks_;
     model::PieceMap& piece_map_;
     const model::ZHasher& _zHasher;
 };

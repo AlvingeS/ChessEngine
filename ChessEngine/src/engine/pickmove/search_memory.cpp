@@ -38,18 +38,18 @@ void SearchMemory::restoreCastlingRightsForRemainingDepths(int currentDepth)
 void SearchMemory::setCastlingRights(
     int currentDepth, 
     const model::Move& move, 
-    bool isWhite, 
+    bool is_w, 
     model::Piece::Type movedPieceType) 
 {
     if (move.is_any_castle()) {
         removeCastlingRightsForRemainingDepths(
             currentDepth, 
-            isWhite ? whiteBoth : blackBoth
+            is_w ? whiteBoth : blackBoth
         );
     }
 
     if (movedPieceType == model::Piece::Type::W_KING || movedPieceType == model::Piece::Type::B_KING) {
-        if (isWhite) {
+        if (is_w) {
             if (_castlingRights[currentDepth] & whiteBoth)
                 removeCastlingRightsForRemainingDepths(currentDepth, whiteBoth);
         } else {
@@ -59,7 +59,7 @@ void SearchMemory::setCastlingRights(
     }
 
     if (movedPieceType == model::Piece::Type::W_ROOK || movedPieceType == model::Piece::Type::B_ROOK) {
-        if (isWhite) {
+        if (is_w) {
             if (move.get_bit_index_from() == 0) {
                 if (_castlingRights[currentDepth] & whiteKingSide)
                     removeCastlingRightsForRemainingDepths(currentDepth, whiteKingSide);
@@ -116,7 +116,7 @@ void SearchMemory::handleNoCaptureCount(
 
 void SearchMemory::handleEnPessantMemory(
     const model::Move& move, 
-    bool isWhite, 
+    bool is_w, 
     int currentDepth, 
     int toIndex) 
 {
@@ -126,7 +126,7 @@ void SearchMemory::handleEnPessantMemory(
     }
 
     if (move.is_double_pawn_push()) {
-        bitmask enPessantTarget = isWhite ? (1ULL << (toIndex - 8)) 
+        bitmask enPessantTarget = is_w ? (1ULL << (toIndex - 8)) 
                                           : (1ULL << (toIndex + 8));
 
         setEnPessantTargetAtDepth(currentDepth + 1, enPessantTarget);

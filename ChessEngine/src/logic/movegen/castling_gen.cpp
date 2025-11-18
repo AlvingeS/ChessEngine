@@ -1,5 +1,6 @@
 #include "logic/movegen/castling_gen.h"
 
+#include "model/masks.h"
 #include "model/position/board.h"
 
 #include "logic/movegen/utils/chess_utils.h"
@@ -15,108 +16,106 @@ namespace logic {
 
 CastlingGenerator::CastlingGenerator(
     model::Board& board,
-    logic::MoveMaker& moveMaker, 
-    logic::MoveRetractor& moveRetractor, 
-    CheckDetection* checkDetection)
-    : _bitboards(board.bitboards)
-    , _stateBitmasks(board.state_bitmasks)
-    , _moveMaker(moveMaker)
-    , _moveRetractor(moveRetractor)
-    , _checkDetection(checkDetection) 
+    logic::MoveMaker& move_maker, 
+    logic::MoveRetractor& move_retractor, 
+    CheckDetection* check_detection)
+    : bitboards_(board.bitboards)
+    , state_bitmasks_(board.state_bitmasks)
+    , move_maker_(move_maker)
+    , move_retractor_(move_retractor)
+    , check_detection_(check_detection) 
 {
-    _whiteKingSideCastleBitmask = mWhiteKingSideCastleMask;
-    _whiteQueenSideCastleBitmask = mWhiteQueenSideCastleMask;
-    _blackKingSideCastleBitmask = mBlackKingSideCastleMask;
-    _blackQueenSideCastleBitmask = mBlackQueenSideCastleMask;
+    w_kside_castle_mask_ = masks::W_KSIDE_CASTLE_MASK;
+    w_qside_castle_mask_ = masks::W_QSIDE_CASTLE_MASK;
+    b_kside_castle_mask_ = masks::B_KSIDE_CASTLE_MASK;
+    b_qside_castle_mask_ = masks::B_QSIDE_CASTLE_MASK;
 }
 
 void CastlingGenerator::generate(
-    bool isWhite,
+    bool is_w,
     model::Movelist& movelist,
-    unsigned char castlingRights) 
+    unsigned char castle_rights) 
 {
-    if (castlingRights == 0) {
+    if (castle_rights == 0) {
         return;
     }
     
-    if (isWhite) {
-        if (castlingRights & 0b0001)
-            genSingleCastleMove(isWhite, true, movelist);
+    if (is_w) {
+        if (castle_rights & 0b0001)
+            gen_single_castle_move(is_w, true, movelist);
 
-        if (castlingRights & 0b0010)
-            genSingleCastleMove(isWhite, false, movelist);
+        if (castle_rights & 0b0010)
+            gen_single_castle_move(is_w, false, movelist);
     } else {
-        if (castlingRights & 0b0100)
-            genSingleCastleMove(isWhite, true, movelist);
+        if (castle_rights & 0b0100)
+            gen_single_castle_move(is_w, true, movelist);
 
-        if (castlingRights & 0b1000)
-            genSingleCastleMove(isWhite, false, movelist);
+        if (castle_rights & 0b1000)
+            gen_single_castle_move(is_w, false, movelist);
     }
 }
 
-bool CastlingGenerator::kingAndRookOnCastlingSquares(
-    bool isWhite,
-    bool isKingSide) const
+bool CastlingGenerator::king_and_rook_on_castling_squares(bool is_w, bool is_kside) const
 {
-    bool kingBitEnabled = isWhite ? (_bitboards.get_w_king_bitboard() & (1ULL << 3)) != 0
-                                  : (_bitboards.get_b_king_bitboard() & (1ULL << 59)) != 0;
+    bool king_bit_enabled = is_w ? (bitboards_.get_w_king_bitboard() & (1ULL << 3)) != 0
+                                  : (bitboards_.get_b_king_bitboard() & (1ULL << 59)) != 0;
     
-    if (!kingBitEnabled)
+    if (!king_bit_enabled)
         return false;
 
     // Since we know that the king is present, we can return if the rook is present or not
-    return isWhite ? (isKingSide ? (_bitboards.get_w_rooks_bitboard() & (1ULL << 0)) != 0
-                                 : (_bitboards.get_w_rooks_bitboard() & (1ULL << 7)) != 0)
-                   : (isKingSide ? (_bitboards.get_b_rooks_bitboard() & (1ULL << 56)) != 0
-                                 : (_bitboards.get_b_rooks_bitboard() & (1ULL << 63)) != 0);
+    return is_w ? (is_kside ? (bitboards_.get_w_rooks_bitboard() & (1ULL << 0)) != 0
+                                 : (bitboards_.get_w_rooks_bitboard() & (1ULL << 7)) != 0)
+                   : (is_kside ? (bitboards_.get_b_rooks_bitboard() & (1ULL << 56)) != 0
+                                 : (bitboards_.get_b_rooks_bitboard() & (1ULL << 63)) != 0);
 }
 
-void CastlingGenerator::makeTemporaryKingMove(bool isWhite, bool isKingSide)
+void CastlingGenerator::make_temporary_king_move(bool is_w, bool is_kside)
 {
-    _moveMaker.makeTemporaryKingMove(isWhite, isKingSide);
+    move_maker_.make_temporary_king_move(is_w, is_kside);
 }
 
-void CastlingGenerator::unmakeTemporaryKingMove(bool isWhite, bool isKingSide)
+void CastlingGenerator::revert_temporary_king_move(bool is_w, bool is_kside)
 {
-    _moveRetractor.unmakeTemporaryKingMove(isWhite, isKingSide);
+    move_retractor_.revert_temporary_king_move(is_w, is_kside);
 }
 
-void CastlingGenerator::genSingleCastleMove(
-    bool isWhite,
-    bool isKingSide,
-    model::Movelist& moveList)
+void CastlingGenerator::gen_single_castle_move(
+    bool is_w,
+    bool is_kside,
+    model::Movelist& movelist)
 {                                                  
     // Check that there are no pieces between the king and rook
-    bitmask spaceBetweenCastlersBitmask = isWhite ? (isKingSide ? _whiteKingSideCastleBitmask 
-                                                                : _whiteQueenSideCastleBitmask)
-                                                  : (isKingSide ? _blackKingSideCastleBitmask
-                                                                : _blackQueenSideCastleBitmask);
+    bitmask space_between_castlers_mask = is_w ? (is_kside ? w_kside_castle_mask_ 
+                                                                : w_qside_castle_mask_)
+                                                  : (is_kside ? b_kside_castle_mask_
+                                                                : b_qside_castle_mask_);
     
-    if ((spaceBetweenCastlersBitmask & _stateBitmasks.get_occupied_pieces_bitmask()) != 0)
+    if ((space_between_castlers_mask & state_bitmasks_.get_occupied_pieces_bitmask()) != 0)
         return;
 
     // Check that the king and rook are on the correct squares
-    if (!kingAndRookOnCastlingSquares(isWhite, isKingSide))
+    if (!king_and_rook_on_castling_squares(is_w, is_kside))
         return;
 
     // Check that we are not currently in check
-    if (_checkDetection->isInCheck(isWhite))
+    if (check_detection_->in_check(is_w))
         return;
 
     // Move king one square towards the rook, check that the king is not in check
-    makeTemporaryKingMove(isWhite, isKingSide);
+    make_temporary_king_move(is_w, is_kside);
     
-    if (_checkDetection->isInCheck(isWhite)) {
-        unmakeTemporaryKingMove(isWhite, isKingSide);
+    if (check_detection_->in_check(is_w)) {
+        revert_temporary_king_move(is_w, is_kside);
         return;
     }
     
-    unmakeTemporaryKingMove(isWhite, isKingSide);
+    revert_temporary_king_move(is_w, is_kside);
 
-    int moveFlag = isKingSide ? model::Move::KING_CASTLE_FLAG 
+    int move_flag = is_kside ? model::Move::KING_CASTLE_FLAG 
                               : model::Move::QUEEN_CASTLE_FLAG;    
 
-    moveList.add_move(model::Move(0, 0, moveFlag));
+    movelist.add_move(model::Move(0, 0, move_flag));
 }
 
 } // namespace logic

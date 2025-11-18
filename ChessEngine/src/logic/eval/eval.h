@@ -15,7 +15,7 @@ public:
     float evaluate();
 
 private:
-    model::Bitboards& _bitboards;
+    model::Bitboards& bitboards_;
 };
 
 } // namespace logic

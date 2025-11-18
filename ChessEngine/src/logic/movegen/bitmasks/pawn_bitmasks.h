@@ -13,13 +13,13 @@ struct MoveType {
 
 struct PawnBitmasks {
 
-    static bitmask getCapturePawnMovesBitmask(int ind, bool isWhite);
-    static bitmask getStraightPawnMovesBitmask(int ind, bool isWhite);
-    static std::vector<bitmask> getAllStraightPawnMoveBitmasks(bool isWhite);
-    static std::vector<bitmask> getAllCapturePawnMoveBitmasks(bool isWhite);
+    static bitmask get_capture_pawn_moves_bitmask(int ind, bool is_w);
+    static bitmask get_straight_pawn_moves_bitmask(int ind, bool is_w);
+    static std::vector<bitmask> get_all_straight_pawn_move_bitmasks(bool is_w);
+    static std::vector<bitmask> get_all_capture_pawn_move_bitmasks(bool is_w);
     
-    static bitmask applyCapturePawnMoves(int ind, bool isWhite);
-    static bitmask removeWrapAroundPawnMoves(bitmask pawnMoves, int ind);
+    static bitmask apply_capture_pawn_moves(int ind, bool is_w);
+    static bitmask remove_wrap_around_pawn_moves(bitmask moves, int ind);
 
 };
 

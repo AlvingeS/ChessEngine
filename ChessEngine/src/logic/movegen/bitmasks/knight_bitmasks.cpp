@@ -5,67 +5,67 @@
 namespace logic {
 
 // Applies all knight moves without considering looping around the board
-bitmask KnightBitmasks::applyKnightMoves(int ind) 
+bitmask KnightBitmasks::apply_knight_moves(int ind) 
 {
-    bitmask knightMoves = 0ULL;
+    bitmask moves = 0ULL;
 
-    if (ind + 15 <= 63) knightMoves |= (1ULL << (ind + 15));
-    if (ind + 6 <= 63) knightMoves |= (1ULL << (ind + 6));
-    if (ind - 10 >= 0) knightMoves |= (1ULL << (ind - 10));
-    if (ind - 17 >= 0) knightMoves |= (1ULL << (ind - 17));
-    if (ind - 15 >= 0) knightMoves |= (1ULL << (ind - 15));
-    if (ind - 6 >= 0) knightMoves |= (1ULL << (ind - 6));
-    if (ind + 10 <= 63) knightMoves |= (1ULL << (ind + 10));
-    if (ind + 17 <= 63) knightMoves |= (1ULL << (ind + 17));
+    if (ind + 15 <= 63) moves |= (1ULL << (ind + 15));
+    if (ind + 6 <= 63) moves |= (1ULL << (ind + 6));
+    if (ind - 10 >= 0) moves |= (1ULL << (ind - 10));
+    if (ind - 17 >= 0) moves |= (1ULL << (ind - 17));
+    if (ind - 15 >= 0) moves |= (1ULL << (ind - 15));
+    if (ind - 6 >= 0) moves |= (1ULL << (ind - 6));
+    if (ind + 10 <= 63) moves |= (1ULL << (ind + 10));
+    if (ind + 17 <= 63) moves |= (1ULL << (ind + 17));
 
-    return knightMoves;
+    return moves;
 }
 
 // Applies file masks to knight moves to prevent looping around the board
-bitmask KnightBitmasks::removeWrapAroundKnightMoves(bitmask knightMoves, int ind) 
+bitmask KnightBitmasks::remove_wrap_around_knight_moves(bitmask moves, int ind) 
 {
-    bitmask aFile = ChessUtils::getFileMask(7);
-    bitmask bFile = ChessUtils::getFileMask(6);
-    bitmask notAorBFile = ~(aFile | bFile);
+    bitmask a_file = ChessUtils::get_file_mask(7);
+    bitmask b_file = ChessUtils::get_file_mask(6);
+    bitmask not_a_or_b_file = ~(a_file | b_file);
 
-    bitmask gFile = ChessUtils::getFileMask(1);
-    bitmask hFile = ChessUtils::getFileMask(0);
-    bitmask notGorHFile = ~(gFile | hFile);
+    bitmask g_file = ChessUtils::get_file_mask(1);
+    bitmask h_file = ChessUtils::get_file_mask(0);
+    bitmask not_g_or_h_file = ~(g_file | h_file);
 
-    switch (ChessUtils::fileFromBitIndex(ind)) {
+    switch (ChessUtils::file_from_bit_index(ind)) {
         case 0:
-            knightMoves &= notAorBFile;
+            moves &= not_a_or_b_file;
             break;
         case 1:
-            knightMoves &= notAorBFile;
+            moves &= not_a_or_b_file;
             break;
         case 6:
-            knightMoves &= notGorHFile;
+            moves &= not_g_or_h_file;
             break;
         case 7:
-            knightMoves &= notGorHFile;
+            moves &= not_g_or_h_file;
             break;
     }
 
-    return knightMoves;
+    return moves;
 }
 
-bitmask KnightBitmasks::getKnightBitmask(int ind) 
+bitmask KnightBitmasks::get_knight_bitmask(int ind) 
 {
-    bitmask knightMoves = applyKnightMoves(ind);
-    knightMoves = removeWrapAroundKnightMoves(knightMoves, ind);
-    return knightMoves;
+    bitmask moves = apply_knight_moves(ind);
+    moves = remove_wrap_around_knight_moves(moves, ind);
+    return moves;
 }
 
-const std::vector<bitmask> KnightBitmasks::getAllKnightBitmasks() 
+const std::vector<bitmask> KnightBitmasks::get_all_knight_bitmasks() 
 {
-    std::vector<bitmask> knightBitmasks;
+    std::vector<bitmask> knight_bitmasks;
 
     for (int i = 0; i < 64; i++) {
-        knightBitmasks.push_back(getKnightBitmask(i));
+        knight_bitmasks.push_back(get_knight_bitmask(i));
     }
 
-    return knightBitmasks;
+    return knight_bitmasks;
 }
 
 } // namespace logic

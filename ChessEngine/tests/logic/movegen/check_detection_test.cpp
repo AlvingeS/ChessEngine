@@ -31,109 +31,109 @@ protected:
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenPawnChecksWhite_ShouldReturnTrue) 
 {
     io::Fen::setBoardFromFen(fenPawnChecks, bitboards, state_bitmasks, piece_map);
-    ASSERT_TRUE(moveGenerator.isInCheck(true));
+    ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenPawnChecksBlack_ShouldReturnTrue)
 {
     io::Fen::setBoardFromFen(fenPawnChecks, bitboards, state_bitmasks, piece_map);
-    ASSERT_TRUE(moveGenerator.isInCheck(false));
+    ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenKnightChecksWhite_ShouldReturnTrue)
 {
     io::Fen::setBoardFromFen(fenKnightChecks, bitboards, state_bitmasks, piece_map);
-    ASSERT_TRUE(moveGenerator.isInCheck(true));
+    ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenKnightChecksBlack_ShouldReturnTrue)
 {
     io::Fen::setBoardFromFen(fenKnightChecks, bitboards, state_bitmasks, piece_map);
-    ASSERT_TRUE(moveGenerator.isInCheck(false));
+    ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksTrueWhite_ShouldReturnTrue)
 {
     io::Fen::setBoardFromFen(fenBishopChecksTrue, bitboards, state_bitmasks, piece_map);
-    ASSERT_TRUE(moveGenerator.isInCheck(true));
+    ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksTrueBlack_ShouldReturnTrue)
 {
     io::Fen::setBoardFromFen(fenBishopChecksTrue, bitboards, state_bitmasks, piece_map);
-    ASSERT_TRUE(moveGenerator.isInCheck(false));
+    ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksFalseWhite_ShouldReturnFalse)
 {
     io::Fen::setBoardFromFen(fenBishopChecksFalse, bitboards, state_bitmasks, piece_map);
-    ASSERT_FALSE(moveGenerator.isInCheck(true));
+    ASSERT_FALSE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksFalseBlack_ShouldReturnFalse)
 {
     io::Fen::setBoardFromFen(fenBishopChecksFalse, bitboards, state_bitmasks, piece_map);
-    ASSERT_FALSE(moveGenerator.isInCheck(false));
+    ASSERT_FALSE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksTrueWhite_ShouldReturnTrue)
 {
     io::Fen::setBoardFromFen(fenRookChecksTrue, bitboards, state_bitmasks, piece_map);
-    ASSERT_TRUE(moveGenerator.isInCheck(true));
+    ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksTrueBlack_ShouldReturnTrue)
 {
     io::Fen::setBoardFromFen(fenRookChecksTrue, bitboards, state_bitmasks, piece_map);
-    ASSERT_TRUE(moveGenerator.isInCheck(false));
+    ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksFalseWhite_ShouldReturnFalse)
 {
     io::Fen::setBoardFromFen(fenRookChecksFalse, bitboards, state_bitmasks, piece_map);
-    ASSERT_FALSE(moveGenerator.isInCheck(true));
+    ASSERT_FALSE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksFalseBlack_ShouldReturnFalse)
 {
     io::Fen::setBoardFromFen(fenRookChecksFalse, bitboards, state_bitmasks, piece_map);
-    ASSERT_FALSE(moveGenerator.isInCheck(false));
+    ASSERT_FALSE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksTrueWhite_ShouldReturnTrue)
 {
     io::Fen::setBoardFromFen(fenQueenChecksTrue, bitboards, state_bitmasks, piece_map);
-    ASSERT_TRUE(moveGenerator.isInCheck(true));
+    ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksTrueBlack_ShouldReturnTrue)
 {
     io::Fen::setBoardFromFen(fenQueenChecksTrue, bitboards, state_bitmasks, piece_map);
-    ASSERT_TRUE(moveGenerator.isInCheck(false));
+    ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksFalseWhite_ShouldReturnFalse)
 {
     io::Fen::setBoardFromFen(fenQueenChecksFalse, bitboards, state_bitmasks, piece_map);
-    ASSERT_FALSE(moveGenerator.isInCheck(true));
+    ASSERT_FALSE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksFalseBlack_ShouldReturnFalse)
 {
     io::Fen::setBoardFromFen(fenQueenChecksFalse, bitboards, state_bitmasks, piece_map);
-    ASSERT_FALSE(moveGenerator.isInCheck(false));
+    ASSERT_FALSE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_startingPosWhite_ShouldReturnFalse)
 {
     io::Fen::setBoardFromFen(startingPos, bitboards, state_bitmasks, piece_map);
-    ASSERT_FALSE(moveGenerator.isInCheck(true));
+    ASSERT_FALSE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_startingPosBlack_ShouldReturnFalse)
 {
     io::Fen::setBoardFromFen(startingPos, bitboards, state_bitmasks, piece_map);
-    ASSERT_FALSE(moveGenerator.isInCheck(false));
+    ASSERT_FALSE(moveGenerator.in_check(false));
 }
 
 } // namespace logic

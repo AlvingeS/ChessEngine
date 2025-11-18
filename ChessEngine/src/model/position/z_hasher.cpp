@@ -33,7 +33,7 @@ ZHasher::ZHasher(PieceMap& piece_map)
     }
 
     // Generate random number for is white table
-    random_is_white_number_ = dis(gen);
+    random_is_w_number_ = dis(gen);
     
     compute_initial_hash();
 }
@@ -57,7 +57,7 @@ void ZHasher::compute_initial_hash()
     // There can be no en passant file
 
     // We know that it is white's turn
-    hash_is_white(true);
+    hash_is_w(true);
 }
 
 } // namespace model

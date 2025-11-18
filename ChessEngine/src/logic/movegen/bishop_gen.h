@@ -10,20 +10,20 @@ namespace model {
 
 namespace logic {
 
-class BishopGenerator {
+class BishopGen {
 
 public:
-    BishopGenerator(model::Board& board);
+    BishopGen(model::Board& board);
     
     void generate(
-        bool isWhite, 
+        bool is_w, 
         model::Movelist& movelist
     );
 
 private:
-    const model::Bitboards& _bitboards;
-    const model::StateBitmasks& _stateBitmasks;
-    std::vector<RayBitmasks::DiagonalRays> _diagonalRayBitmasks;
+    const model::Bitboards& bitboards_;
+    const model::StateBitmasks& state_bitmasks_;
+    std::vector<RayBitmasks::DiagonalRays> diag_ray_masks;
 };
 
 } // namespace logic

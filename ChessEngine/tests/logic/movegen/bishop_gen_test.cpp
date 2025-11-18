@@ -18,7 +18,7 @@ protected:
 TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneWhite_ShouldReturn18Moves) 
 {
     io::Fen::setBoardFromFen(fenOne, bitboards, state_bitmasks, piece_map);
-    moveGenerator.genBishopMoves(true, movelist);
+    moveGenerator.gen_bishop_moves(true, movelist);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -37,7 +37,7 @@ TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneWhite_ShouldReturn18Moves)
 TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneBlack_ShouldReturn18Moves) 
 {
     io::Fen::setBoardFromFen(fenOne, bitboards, state_bitmasks, piece_map);
-    moveGenerator.genBishopMoves(false, movelist);
+    moveGenerator.gen_bishop_moves(false, movelist);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -56,7 +56,7 @@ TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneBlack_ShouldReturn18Moves)
 TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosWhite_ShouldReturn0Moves) 
 {
     io::Fen::setBoardFromFen(startingPos, bitboards, state_bitmasks, piece_map);
-    moveGenerator.genBishopMoves(true, movelist);
+    moveGenerator.gen_bishop_moves(true, movelist);
 
     ASSERT_EQ(movelist.get_move_index(), 0);
 }
@@ -64,7 +64,7 @@ TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosWhite_ShouldReturn0Mov
 TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosBlack_ShouldReturn0Moves) 
 {
     io::Fen::setBoardFromFen(startingPos, bitboards, state_bitmasks, piece_map);
-    moveGenerator.genBishopMoves(false, movelist);;
+    moveGenerator.gen_bishop_moves(false, movelist);;
 
     ASSERT_EQ(movelist.get_move_index(), 0);
 }

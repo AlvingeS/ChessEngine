@@ -4,10 +4,10 @@
 
 namespace logic {
 
-bitmask RayBitmasks::getNorthRay(int ind) 
+bitmask RayBitmasks::get_n_ray(int ind) 
 {
-    int rank = ChessUtils::rankFromBitIndex(ind);
-    int file = ChessUtils::fileFromBitIndex(ind);
+    int rank = ChessUtils::rank_from_bit_index(ind);
+    int file = ChessUtils::file_from_bit_index(ind);
 
     bitmask north_ray = 0ULL;
 
@@ -18,10 +18,10 @@ bitmask RayBitmasks::getNorthRay(int ind)
     return north_ray;
 }
 
-bitmask RayBitmasks::getNorthEastRay(int ind) 
+bitmask RayBitmasks::get_ne_ray(int ind) 
 {
-    int rank = ChessUtils::rankFromBitIndex(ind);
-    int file = ChessUtils::fileFromBitIndex(ind);
+    int rank = ChessUtils::rank_from_bit_index(ind);
+    int file = ChessUtils::file_from_bit_index(ind);
 
     bitmask north_east_ray = 0ULL;
 
@@ -34,10 +34,10 @@ bitmask RayBitmasks::getNorthEastRay(int ind)
     return north_east_ray;
 }
 
-bitmask RayBitmasks::getEastRay(int ind) 
+bitmask RayBitmasks::get_e_ray(int ind) 
 {
-    int rank = ChessUtils::rankFromBitIndex(ind);
-    int file = ChessUtils::fileFromBitIndex(ind);
+    int rank = ChessUtils::rank_from_bit_index(ind);
+    int file = ChessUtils::file_from_bit_index(ind);
 
     bitmask east_ray = 0ULL;
 
@@ -48,10 +48,10 @@ bitmask RayBitmasks::getEastRay(int ind)
     return east_ray;
 }
 
-bitmask RayBitmasks::getSouthEastRay(int ind) 
+bitmask RayBitmasks::get_se_ray(int ind) 
 {
-    int rank = ChessUtils::rankFromBitIndex(ind);
-    int file = ChessUtils::fileFromBitIndex(ind);
+    int rank = ChessUtils::rank_from_bit_index(ind);
+    int file = ChessUtils::file_from_bit_index(ind);
 
     bitmask south_east_ray = 0ULL;
 
@@ -64,10 +64,10 @@ bitmask RayBitmasks::getSouthEastRay(int ind)
     return south_east_ray;
 }
 
-bitmask RayBitmasks::getSouthRay(int ind) 
+bitmask RayBitmasks::get_s_ray(int ind) 
 {
-    int rank = ChessUtils::rankFromBitIndex(ind);
-    int file = ChessUtils::fileFromBitIndex(ind);
+    int rank = ChessUtils::rank_from_bit_index(ind);
+    int file = ChessUtils::file_from_bit_index(ind);
 
     bitmask south_ray = 0ULL;
 
@@ -78,10 +78,10 @@ bitmask RayBitmasks::getSouthRay(int ind)
     return south_ray;
 }
 
-bitmask RayBitmasks::getSouthWestRay(int ind) 
+bitmask RayBitmasks::get_sw_ray(int ind) 
 {
-    int rank = ChessUtils::rankFromBitIndex(ind);
-    int file = ChessUtils::fileFromBitIndex(ind);
+    int rank = ChessUtils::rank_from_bit_index(ind);
+    int file = ChessUtils::file_from_bit_index(ind);
 
     bitmask south_west_ray = 0ULL;
 
@@ -94,10 +94,10 @@ bitmask RayBitmasks::getSouthWestRay(int ind)
     return south_west_ray;
 }
 
-bitmask RayBitmasks::getWestRay(int ind) 
+bitmask RayBitmasks::get_w_ray(int ind) 
 {
-    int rank = ChessUtils::rankFromBitIndex(ind);
-    int file = ChessUtils::fileFromBitIndex(ind);
+    int rank = ChessUtils::rank_from_bit_index(ind);
+    int file = ChessUtils::file_from_bit_index(ind);
 
     bitmask west_ray = 0ULL;
 
@@ -108,10 +108,10 @@ bitmask RayBitmasks::getWestRay(int ind)
     return west_ray;
 }
 
-bitmask RayBitmasks::getNorthWestRay(int ind) 
+bitmask RayBitmasks::get_nw_ray(int ind) 
 {
-    int rank = ChessUtils::rankFromBitIndex(ind);
-    int file = ChessUtils::fileFromBitIndex(ind);
+    int rank = ChessUtils::rank_from_bit_index(ind);
+    int file = ChessUtils::file_from_bit_index(ind);
 
     bitmask north_west_ray = 0ULL;
 
@@ -124,42 +124,42 @@ bitmask RayBitmasks::getNorthWestRay(int ind)
     return north_west_ray;
 }
 
-RayBitmasks::StraightRays RayBitmasks::getStraightRays(int ind) 
+RayBitmasks::StraightRays RayBitmasks::get_straight_rays(int ind) 
 {
     return {
-        getNorthRay(ind),
-        getEastRay(ind),
-        getSouthRay(ind),
-        getWestRay(ind)
+        get_n_ray(ind),
+        get_e_ray(ind),
+        get_s_ray(ind),
+        get_w_ray(ind)
     };
 }
 
-RayBitmasks::DiagonalRays RayBitmasks::getDiagonalRays(int ind) 
+RayBitmasks::DiagonalRays RayBitmasks::get_diagonal_rays(int ind) 
 {
     return {
-        getNorthEastRay(ind),
-        getSouthEastRay(ind),
-        getSouthWestRay(ind),
-        getNorthWestRay(ind)
+        get_ne_ray(ind),
+        get_se_ray(ind),
+        get_sw_ray(ind),
+        get_nw_ray(ind)
     };
 }
-std::vector<RayBitmasks::StraightRays> RayBitmasks::getAllStraightRayBitmasks() 
+std::vector<RayBitmasks::StraightRays> RayBitmasks::get_all_straight_ray_bitmasks() 
 {
     std::vector<RayBitmasks::StraightRays> allStraightRayBitmasks;
 
     for (int i = 0; i < 64; i++) {
-        allStraightRayBitmasks.push_back(getStraightRays(i));
+        allStraightRayBitmasks.push_back(get_straight_rays(i));
     }
 
     return allStraightRayBitmasks;
 }
 
-std::vector<RayBitmasks::DiagonalRays> RayBitmasks::getAllDiagonalRayBitmasks() 
+std::vector<RayBitmasks::DiagonalRays> RayBitmasks::get_all_diagonal_ray_bitmasks() 
 {
     std::vector<RayBitmasks::DiagonalRays> allDiagonalRayBitmasks;
 
     for (int i = 0; i < 64; i++) {
-        allDiagonalRayBitmasks.push_back(getDiagonalRays(i));
+        allDiagonalRayBitmasks.push_back(get_diagonal_rays(i));
     }
 
     return allDiagonalRayBitmasks;

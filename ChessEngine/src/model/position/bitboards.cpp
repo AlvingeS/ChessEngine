@@ -4,7 +4,7 @@ namespace model {
 
 Bitboards::Bitboards() 
 {
-    _bitboards.reserve(12);
+    bitboards_.reserve(12);
 
     w_pawns_bitboard_ = 0x000000000000FF00ULL;
     w_knights_bitboard_ = 0x0000000000000042ULL;
@@ -20,25 +20,25 @@ Bitboards::Bitboards()
     b_queens_bitboard = 0x1000000000000000ULL;
     b_king_bitboard = 0x0800000000000000ULL;
 
-    _bitboards.push_back(&w_pawns_bitboard_);
-    _bitboards.push_back(&w_knights_bitboard_);
-    _bitboards.push_back(&w_bishops_bitboard_);
-    _bitboards.push_back(&w_rooks_bitboard_);
-    _bitboards.push_back(&w_queens_bitboard_);
-    _bitboards.push_back(&w_king_bitboard_);
+    bitboards_.push_back(&w_pawns_bitboard_);
+    bitboards_.push_back(&w_knights_bitboard_);
+    bitboards_.push_back(&w_bishops_bitboard_);
+    bitboards_.push_back(&w_rooks_bitboard_);
+    bitboards_.push_back(&w_queens_bitboard_);
+    bitboards_.push_back(&w_king_bitboard_);
 
-    _bitboards.push_back(&b_pawns_bitboard_);
-    _bitboards.push_back(&b_knights_bitboard_);
-    _bitboards.push_back(&b_bishops_bitboard);
-    _bitboards.push_back(&b_rooks_bitboard);
-    _bitboards.push_back(&b_queens_bitboard);
-    _bitboards.push_back(&b_king_bitboard);
+    bitboards_.push_back(&b_pawns_bitboard_);
+    bitboards_.push_back(&b_knights_bitboard_);
+    bitboards_.push_back(&b_bishops_bitboard);
+    bitboards_.push_back(&b_rooks_bitboard);
+    bitboards_.push_back(&b_queens_bitboard);
+    bitboards_.push_back(&b_king_bitboard);
 }
 
 void Bitboards::reset_bitboards() 
 {
     for (int i = 0; i < 12; i++)
-        *(_bitboards[i]) = 0;
+        *(bitboards_[i]) = 0;
 }
 
 } // namespace model

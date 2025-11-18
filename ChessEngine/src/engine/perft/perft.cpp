@@ -10,14 +10,14 @@ namespace engine {
 
 perft::perft(int maxDepth)
     : _board(),
-      _bitboards(_board.bitboards),
+      bitboards_(_board.bitboards),
       piece_map_(_board.piece_map),
-      _stateBitmasks(_board.state_bitmasks),
+      state_bitmasks_(_board.state_bitmasks),
       _zHasher(_board.z_hasher),
       _searchMemory(maxDepth),
-      _moveMaker(_board),
-      _moveRetractor(_board),
-      _moveGenerator(_board, _moveMaker, _moveRetractor),
+      move_maker_(_board),
+      move_retractor_(_board),
+      _moveGenerator(_board, move_maker_, move_retractor_),
       _evaluator(_board),
       _perftData(maxDepth),
       _numMoveGenCalls(0),
@@ -30,34 +30,34 @@ perft::perft(int maxDepth)
 }
 
 
-void perft::genMoves(
-    bool isWhite,
+void perft::gen_moves(
+    bool is_w,
     int currentDepth,
-    bitmask enpessantTarget,
-    unsigned char castlingRights) 
+    bitmask ep_target_mask,
+    unsigned char castle_rights) 
 {
-    _moveGenerator.genMoves(isWhite, _movelists[currentDepth], enpessantTarget, castlingRights);
+    _moveGenerator.gen_moves(is_w, _movelists[currentDepth], ep_target_mask, castle_rights);
 }
 
 logic::MoveResult perft::makeMove(
     model::Move move,
-    bool isWhite) 
+    bool is_w) 
 {
-    return _moveMaker.makeMove(move, isWhite);
+    return move_maker_.makeMove(move, is_w);
 }
 
 void perft::unmakeMove(
     model::Move move,
-    bool isWhite,
+    bool is_w,
     logic::MoveResult previousMoveResult)
 {
-    _moveRetractor.unmakeMove(move, isWhite, previousMoveResult);
+    move_retractor_.unmakeMove(move, is_w, previousMoveResult);
 }
 
 void perft::debugPrint(bool verbose) const
 {
     if (verbose) {
-        io::BoardPrinter boardPrinter = io::BoardPrinter(_bitboards);
+        io::BoardPrinter boardPrinter = io::BoardPrinter(bitboards_);
         boardPrinter.printBoard();
     }
 }
@@ -140,7 +140,7 @@ void perft::minimax(
     if (currentDepth == _maxDepth)
         return;
 
-    genMoves(
+    gen_moves(
         isMaximizer, 
         currentDepth,
         _searchMemory.getEnPessantTargetAtDepth(currentDepth),
@@ -151,7 +151,7 @@ void perft::minimax(
     
     size_t numIllegalMoves = 0;
 
-    for (size_t i = 0; i < MAX_LEGAL_MOVES; i++) {
+    for (size_t i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
         model::Move currentMove = _movelists[currentDepth].get_move_at(i);
 
         if (currentMove.get_move() == 0)
@@ -186,7 +186,7 @@ void perft::minimax(
             int x = 4;
         }
 
-        if (_moveGenerator.isInCheck(isMaximizer)) {
+        if (_moveGenerator.in_check(isMaximizer)) {
             numIllegalMoves++;
             unmakeMove(currentMove, isMaximizer, moveResult);
 
@@ -204,7 +204,7 @@ void perft::minimax(
             }
 
             if (numIllegalMoves == i + 1 && _movelists[currentDepth].get_move_at(i + 1).get_move() == 0) {
-                bool wasInCheckBeforeMove = _moveGenerator.isInCheck(isMaximizer);
+                bool wasInCheckBeforeMove = _moveGenerator.in_check(isMaximizer);
 
                 if (wasInCheckBeforeMove) {
                     _perftData.increaseCheckmateCountAt(currentDepth);
@@ -278,7 +278,7 @@ void perft::recordPerftStats(
     bool &retFlag) 
 {
     retFlag = true;
-    if (_moveGenerator.isInCheck(!isMaximizer)) {
+    if (_moveGenerator.in_check(!isMaximizer)) {
         _perftData.increaseCheckCountAt(currentDepth + 1);
     }
 

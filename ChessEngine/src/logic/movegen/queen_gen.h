@@ -17,16 +17,16 @@ public:
     QueenGenerator(model::Board& board);
     
     void generate(
-        bool isWhite, 
-        model::Movelist& moveList
+        bool is_w, 
+        model::Movelist& movelist
     );
 
 private:
-    const model::Bitboards& _bitboards;
-    const model::StateBitmasks& _stateBitmasks;
+    const model::Bitboards& bitboards_;
+    const model::StateBitmasks& state_bitmasks_;
 
-    std::vector<RayBitmasks::StraightRays> _straightRayBitmasks;
-    std::vector<RayBitmasks::DiagonalRays> _diagonalRayBitmasks;
+    std::vector<RayBitmasks::StraightRays> line_ray_masks_;
+    std::vector<RayBitmasks::DiagonalRays> diag_ray_masks;
 };
 
 } // namespace logic

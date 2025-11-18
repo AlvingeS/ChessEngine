@@ -40,7 +40,7 @@ public:
     void setCastlingRights(
         int currentDepth, 
         const model::Move& move, 
-        bool isWhite, 
+        bool is_w, 
         model::Piece::Type movedPieceType
     );
 
@@ -84,7 +84,7 @@ public:
 
     void handleEnPessantMemory(
             const model::Move& move, 
-            bool isWhite, 
+            bool is_w, 
             int currentDepth, 
             int toIndex
     );

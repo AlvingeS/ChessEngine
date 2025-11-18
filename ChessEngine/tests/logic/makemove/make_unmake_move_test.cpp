@@ -47,7 +47,7 @@
 //     };
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_StartingPositionWhite) {
-//         moveGenerator.genMoves(true, movelist);
+//         moveGenerator.gen_moves(true, movelist);
 
 //         // Makes copies of the bitboards and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
@@ -63,7 +63,7 @@
 //     }
 
 //         TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_StartingPositionBlack) {
-//         moveGenerator.genMoves(false, movelist);
+//         moveGenerator.gen_moves(false, movelist);
 
 //         // Makes copies of the bitboards and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
@@ -81,7 +81,7 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesWhite) {
 //         io::Fen::setBoardFromFen(captures, bitboards, state_bitmasks, piece_map);
-//         moveGenerator.genMoves(true, movelist);
+//         moveGenerator.gen_moves(true, movelist);
 
 //         // Makes copies of the bitboards and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
@@ -98,7 +98,7 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesBlack) {
 //         io::Fen::setBoardFromFen(captures, bitboards, state_bitmasks, piece_map);
-//         moveGenerator.genMoves(false, movelist);
+//         moveGenerator.gen_moves(false, movelist);
 
 //         // Makes copies of the bitboards and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
@@ -115,7 +115,7 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingWhite) {
 //         io::Fen::setBoardFromFen(castling, bitboards, state_bitmasks, piece_map);
-//         moveGenerator.genMoves(true, movelist);
+//         moveGenerator.gen_moves(true, movelist);
 
 //         // Makes copies of the bitboards and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
@@ -132,7 +132,7 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingBlack) {
 //         io::Fen::setBoardFromFen(castling, bitboards, state_bitmasks, piece_map);
-//         moveGenerator.genMoves(false, movelist);
+//         moveGenerator.gen_moves(false, movelist);
 
 //         // Makes copies of the bitboards and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
@@ -149,7 +149,7 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionWhite) {
 //         io::Fen::setBoardFromFen(normalPromotion, bitboards, state_bitmasks, piece_map);
-//         moveGenerator.genMoves(true, movelist);
+//         moveGenerator.gen_moves(true, movelist);
 
 //         // Makes copies of the bitboards and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
@@ -166,7 +166,7 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionBlack) {
 //         io::Fen::setBoardFromFen(normalPromotion, bitboards, state_bitmasks, piece_map);
-//         moveGenerator.genMoves(false, movelist);
+//         moveGenerator.gen_moves(false, movelist);
 
 //         // Makes copies of the bitboards and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
@@ -183,7 +183,7 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionWhite) {
 //         io::Fen::setBoardFromFen(capturePromotion, bitboards, state_bitmasks, piece_map);
-//         moveGenerator.genMoves(true, movelist);
+//         moveGenerator.gen_moves(true, movelist);
 
 //         // Makes copies of the bitboards and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
@@ -200,7 +200,7 @@
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionBlack) {
 //         io::Fen::setBoardFromFen(capturePromotion, bitboards, state_bitmasks, piece_map);
-//         moveGenerator.genMoves(false, movelist);
+//         moveGenerator.gen_moves(false, movelist);
 
 //         // Makes copies of the bitboards and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
@@ -225,7 +225,7 @@
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
         
-//         moveGenerator.genMoves(true, movelist);
+//         moveGenerator.gen_moves(true, movelist);
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
@@ -246,7 +246,7 @@
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
         
-//         moveGenerator.genMoves(false, movelist);
+//         moveGenerator.gen_moves(false, movelist);
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
@@ -260,7 +260,7 @@
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsWhite) {
 //         io::Fen::setBoardFromFen(castling, bitboards, state_bitmasks, piece_map);
 
-//         moveGenerator.genCastlingMoves(true, movelist);
+//         moveGenerator.gen_castle_moves(true, movelist);
 //         std::vector<model::Move> castlingMoves = getMoves();
 
 //         Move whiteHRookMove = model::Move(0, 8, 0);
@@ -275,7 +275,7 @@
 //         moveGenerator.getBoard().unmakeMove(whiteKingMove, true);
 
 //         moveGenerator.resetMoves(movelist);
-//         moveGenerator.genCastlingMoves(true, movelist);
+//         moveGenerator.gen_castle_moves(true, movelist);
 //         std::vector<model::Move> castlingMovesAfterUnmake = getMoves();
 
 //         ASSERT_EQ(castlingMoves, castlingMovesAfterUnmake);
@@ -284,7 +284,7 @@
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsBlack) {
 //         io::Fen::setBoardFromFen(castling, bitboards, state_bitmasks, piece_map);
 
-//         moveGenerator.genCastlingMoves(false, movelist);
+//         moveGenerator.gen_castle_moves(false, movelist);
 //         std::vector<model::Move> castlingMoves = getMoves();
 
 //         Move blackHRookMove = model::Move(56, 48, 0);
@@ -299,7 +299,7 @@
 //         moveGenerator.getBoard().unmakeMove(blackKingMove, false);
 
 //         moveGenerator.resetMoves(movelist);
-//         moveGenerator.genCastlingMoves(false, movelist);
+//         moveGenerator.gen_castle_moves(false, movelist);
 //         std::vector<model::Move> castlingMovesAfterUnmake = getMoves();
 
 //         ASSERT_EQ(castlingMoves, castlingMovesAfterUnmake);

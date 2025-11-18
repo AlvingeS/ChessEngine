@@ -2,11 +2,11 @@
 
 namespace logic {
 
-int ChessUtils::manhattanDistance(int i, int j) 
+int ChessUtils::manhattan_distance(int i, int j) 
 {
-    int rankDiff = rankFromBitIndex(i) - rankFromBitIndex(j);
-    int fileDiff = fileFromBitIndex(i) - fileFromBitIndex(j);
-    return abs(rankDiff) + abs(fileDiff);
+    int rank_diff = rank_from_bit_index(i) - rank_from_bit_index(j);
+    int file_diff = file_from_bit_index(i) - file_from_bit_index(j);
+    return abs(rank_diff) + abs(file_diff);
 }
 
 }

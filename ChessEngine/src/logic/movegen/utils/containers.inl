@@ -1,28 +1,28 @@
 namespace logic {
 
-inline std::vector<int>& Containers::getSlidingPiecefreeMovesIndices()
+inline std::vector<int>& Containers::get_sliding_piece_free_moves_indices()
 {
-    return _slidingPiecefreeMovesIndices;
+    return sliding_piece_free_moves_indices_;
 }
 
-inline std::vector<int>& Containers::getLeapingPiecefreeMovesIndices()
+inline std::vector<int>& Containers::get_leaping_piece_free_moves_indices()
 {
-    return _leapingPiecefreeMovesIndices;
+    return leaping_piece_free_moves_indices_;
 }
 
-inline std::vector<int>& Containers::getSlidingPieceCapturableMovesIndices()
+inline std::vector<int>& Containers::get_sliding_piece_capturable_moves_indices()
 {
-    return _slidingPieceCapturableMovesIndices;
+    return sliding_piece_capturable_moves_indices_;
 }
 
-inline std::vector<int>& Containers::getLeapingPieceCapturableMovesIndices()
+inline std::vector<int>& Containers::get_leaping_piece_capturable_moves_indices()
 {
-    return _leapingPieceCapturableMovesIndices;
+    return leaping_piece_capturable_moves_indices_;
 }
 
-inline std::vector<int>& Containers::getPiecePositionIndices()
+inline std::vector<int>& Containers::get_piece_position_indices()
 {
-    return _piecePositionIndices;
+    return piece_position_indices_;
 }
 
 } // namespace logic

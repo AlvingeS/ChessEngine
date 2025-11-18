@@ -19,30 +19,30 @@ MoveResult MoveMaker::makeMove(const model::Move& move, bool isWhite)
     auto moveResult = MoveResult();
 
     // If the move is a castle, update and return
-    if (move.isAnyCastle()) {
-        makeCastleMove(isWhite, move.isKingCastle());
+    if (move.is_any_castle()) {
+        makeCastleMove(isWhite, move.is_king_castle());
         return moveResult;
     }
 
     // Get the from and to indices
-    int fromIndex = move.getBitIndexFrom();
-    int toIndex = move.getBitIndexTo();
+    int fromIndex = move.get_bit_index_from();
+    int toIndex = move.get_bit_index_to();
 
     // Pick up the piece from the from square and get the moved piece type
     model::Piece::Type movedPieceType = removeMovedPieceFromBoard(isWhite, fromIndex);
 
     // If the move is a capture, handle memory and remove the captured piece
-    if (move.isAnyCapture()) {
+    if (move.is_any_capture()) {
         // Calculate index of captured piece, might be EP
         int captureIndex = MoveUtils::determineCaptureIndex(move, isWhite, toIndex);
         model::Piece::Type capturedPieceType = piece_map_.get_piece_type_at_index(captureIndex);
-        removeCapturedPieceFromBoard(move.isEpCapture(), isWhite, captureIndex, capturedPieceType);
+        removeCapturedPieceFromBoard(move.is_ep_capture(), isWhite, captureIndex, capturedPieceType);
         moveResult.capturedPieceType = capturedPieceType;
     }
 
     // Update the moved piece type if the move is a promotion    
-    if (move.isAnyPromo())
-        movedPieceType = MoveUtils::getPromotionPieceType(move.getFlag(), isWhite);
+    if (move.is_any_promo())
+        movedPieceType = MoveUtils::getPromotionPieceType(move.get_flag(), isWhite);
 
     moveResult.movedPieceType = movedPieceType;
 

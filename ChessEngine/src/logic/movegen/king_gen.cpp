@@ -40,11 +40,11 @@ void KingGenerator::generate(bool isWhite, model::Movelist& moveList)
         BitBasics::getBitIndices(capturableMovesIndices, capturableKingMoves);
 
         for (int freeKingMoveIndex : freeMovesIndices) {
-            moveList.addMove(model::Move(currentKingIndex, freeKingMoveIndex, model::Move::QUITE_FLAG));
+            moveList.add_move(model::Move(currentKingIndex, freeKingMoveIndex, model::Move::QUITE_FLAG));
         }
 
         for (int capturableKingMoveIndex : capturableMovesIndices) {
-            moveList.addMove(model::Move(currentKingIndex, capturableKingMoveIndex, model::Move::CAPTURE_FLAG));
+            moveList.add_move(model::Move(currentKingIndex, capturableKingMoveIndex, model::Move::CAPTURE_FLAG));
         }
     }
 }

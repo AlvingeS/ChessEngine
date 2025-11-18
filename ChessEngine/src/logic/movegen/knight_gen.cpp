@@ -40,11 +40,11 @@ void KnightGenerator::generate(
         BitBasics::getBitIndices(capturableMovesIndices, capturableKnightMoves);
 
         for (int freeKnightMoveIndex : freeMovesIndices) {
-            movelist.addMove(model::Move(currentKnightIndex, freeKnightMoveIndex, model::Move::QUITE_FLAG));
+            movelist.add_move(model::Move(currentKnightIndex, freeKnightMoveIndex, model::Move::QUITE_FLAG));
         }
 
         for (int capturableKnightMoveIndex : capturableMovesIndices) {
-            movelist.addMove(model::Move(currentKnightIndex, capturableKnightMoveIndex, model::Move::CAPTURE_FLAG));
+            movelist.add_move(model::Move(currentKnightIndex, capturableKnightMoveIndex, model::Move::CAPTURE_FLAG));
         }
     }
 }

@@ -82,13 +82,13 @@ protected:
 
     std::string translateMoveToStr(model::Move move, bool whiteStarted) 
     {
-        if (move.isAnyCastle()) {
-            return move.isKingCastle() ? (whiteStarted ? "e1g1" : "e8g8") 
+        if (move.is_any_castle()) {
+            return move.is_king_castle() ? (whiteStarted ? "e1g1" : "e8g8") 
                                         : (whiteStarted ? "e1c1" : "e8c8");
         }
         
-        int from = move.getBitIndexFrom();
-        int to = move.getBitIndexTo();
+        int from = move.get_bit_index_from();
+        int to = move.get_bit_index_to();
         
         int fromRow = from / 8;
         int fromCol = from % 8;
@@ -105,8 +105,8 @@ protected:
         moveStr += toColChar;
         moveStr += std::to_string(toRow + 1);
 
-        if (move.isAnyPromo()) {
-            switch (move.getFlag()) {
+        if (move.is_any_promo()) {
+            switch (move.get_flag()) {
                 case model::Move::KNIGHT_PROMO_FLAG:
                     moveStr += (whiteStarted) ? "n" : "N";
                     break;
@@ -166,7 +166,7 @@ protected:
         int sum = 0;
 
         for (size_t i = 0; i < movePicker._nodeCountPerFirstMove.size(); i++) {
-            if (movePicker._firstMoves[i].getMove() != 0) {
+            if (movePicker._firstMoves[i].get_move() != 0) {
                 std::string moveStr = translateMoveToStr(movePicker._firstMoves[i], whiteStarted);
                 std::string nodeCountStr = std::to_string(movePicker._nodeCountPerFirstMove[i]);
                 std::string moveNodeCountStr = moveStr + ": " + nodeCountStr;

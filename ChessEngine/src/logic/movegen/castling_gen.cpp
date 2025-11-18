@@ -116,7 +116,7 @@ void CastlingGenerator::genSingleCastleMove(
     int moveFlag = isKingSide ? model::Move::KING_CASTLE_FLAG 
                               : model::Move::QUEEN_CASTLE_FLAG;    
 
-    moveList.addMove(model::Move(0, 0, moveFlag));
+    moveList.add_move(model::Move(0, 0, moveFlag));
 }
 
 } // namespace logic

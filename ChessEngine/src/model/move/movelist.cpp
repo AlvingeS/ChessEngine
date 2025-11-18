@@ -5,13 +5,13 @@
 namespace model {
 
 Movelist::Movelist() {
-    _movelist = std::vector<Move>(MAX_LEGAL_MOVES);
-    _moveIndex = 0;
+    movelist_ = std::vector<Move>(MAX_LEGAL_MOVES);
+    move_index_ = 0;
 }
 
-void Movelist::addMove(const Move& move) {
-    _movelist[_moveIndex] = move;
-    _moveIndex++;
+void Movelist::add_move(const Move& move) {
+    movelist_[move_index_] = move;
+    move_index_++;
 }
 
 } // namespace model

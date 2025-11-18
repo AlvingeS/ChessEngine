@@ -89,10 +89,10 @@ void MoveRetractor::removePreviouslyMovedPieceFromBoard(
 
     // If the move was not a promotion, remove the piece in the bitboard
     // Else, remove the bit for the promoted piece
-    if (not move.isAnyPromo()) {
+    if (not move.is_any_promo()) {
         _bitboards.clear_piece_type_bit(toIndex, previouslyMovedPieceType);
     } else {
-        model::Piece::Type promotionPieceType = MoveUtils::getPromotionPieceType(move.getFlag(), wasWhite);
+        model::Piece::Type promotionPieceType = MoveUtils::getPromotionPieceType(move.get_flag(), wasWhite);
         _bitboards.clear_piece_type_bit(toIndex, promotionPieceType);
     }
 
@@ -142,7 +142,7 @@ model::Piece::Type MoveRetractor::determineMovedPieceType(
 
     // If the move was a promotion, set the moved piece to a pawn of the same color
     // Else, set the moved piece to the piece occupying the to square
-    previouslyMovedPieceType = move.isAnyPromo() ? (wasWhite ? model::Piece::Type::W_PAWN
+    previouslyMovedPieceType = move.is_any_promo() ? (wasWhite ? model::Piece::Type::W_PAWN
                                                              : model::Piece::Type::B_PAWN)
                                                  : piece_map_.get_piece_type_at_index(toIndex);
 
@@ -155,16 +155,16 @@ void MoveRetractor::unmakeMove(
     MoveResult previousMoveResults) 
 {
     // If the move is a castle, update the bitboards and return
-    if (previousMove.isAnyCastle()) {
-        unmakeCastleMove(wasWhite, previousMove.isKingCastle());
+    if (previousMove.is_any_castle()) {
+        unmakeCastleMove(wasWhite, previousMove.is_king_castle());
         return;
     }
 
     // Get the from and to indices
     // Things get a bit tricky here because the move is being unmade, and so
     // we are "moving to" the from square and "moving from" the to square
-    int fromIndex = previousMove.getBitIndexFrom();
-    int toIndex = previousMove.getBitIndexTo();
+    int fromIndex = previousMove.get_bit_index_from();
+    int toIndex = previousMove.get_bit_index_to();
 
     // Determine the piece type of the piece that was previously moved,
     // takes into consideration if the move was a promotion
@@ -174,11 +174,11 @@ void MoveRetractor::unmakeMove(
     removePreviouslyMovedPieceFromBoard(previousMove, toIndex, previouslyMovedPieceType, wasWhite);
 
     // We place back the captured piece if there was one
-    if (previousMove.isAnyCapture()) {
+    if (previousMove.is_any_capture()) {
        // Calculate the index of the previously captured piece, might be EP
         int captureIndex = MoveUtils::determineCaptureIndex(previousMove, wasWhite, toIndex);
 
-        placeBackCapturedPieceOnBoard(previousMove.isEpCapture(), captureIndex, toIndex, wasWhite, previousMoveResults.capturedPieceType);
+        placeBackCapturedPieceOnBoard(previousMove.is_ep_capture(), captureIndex, toIndex, wasWhite, previousMoveResults.capturedPieceType);
     } else {
         // If there was no capture, we place back an empty square on the to square
         piece_map_.set_piece_type_at_index(toIndex, model::Piece::Type::EMPTY);

@@ -44,7 +44,7 @@ void MoveGenerator::genMoves(
     genKingMoves(isWhite, moveList);
     genPawnMoves(isWhite, moveList, enpessantTarget);
     genCastlingMoves(isWhite, moveList, castlingRights);
-    moveList.addNullMove(); // Add a null move to the end of the move list
+    moveList.add_null_move(); // Add a null move to the end of the move list
 }
 
 void MoveGenerator::genRookMoves(

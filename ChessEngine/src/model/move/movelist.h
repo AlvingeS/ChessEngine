@@ -9,16 +9,16 @@ class Movelist {
 public:
     Movelist();
 
-    const Move& getMoveAt(int index) const;
-    int getMoveIndex() const;
+    const Move& get_move_at(int index) const;
+    int get_move_index() const;
     
-    void addMove(const Move& move);
-    void addNullMove();
+    void add_move(const Move& move);
+    void add_null_move();
     void reset();
     
 private:
-    std::vector<Move> _movelist;
-    int _moveIndex;
+    std::vector<Move> movelist_;
+    int move_index_;
 };
 
 } // namespace model

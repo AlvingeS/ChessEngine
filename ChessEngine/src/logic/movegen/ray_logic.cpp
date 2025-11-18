@@ -18,7 +18,7 @@ void RayLogic::addMovesFromFreeRay(
     BitBasics::getBitIndices(freeRayIndices, freeRay);
 
     for (int bitIndex : freeRayIndices) {
-        moveList.addMove(model::Move(bitIndexFrom, bitIndex, model::Move::QUITE_FLAG));
+        moveList.add_move(model::Move(bitIndexFrom, bitIndex, model::Move::QUITE_FLAG));
     }
 }
 
@@ -32,7 +32,7 @@ void RayLogic::addMoveIfBlockerIsEnemy(
     bool blockerIsWhite = BitBasics::getBit(whitePiecesBitmask, blockerIndex);
 
     if (blockerIsWhite != isWhite)
-        moveList.addMove(model::Move(bitIndexFrom, blockerIndex, model::Move::CAPTURE_FLAG));
+        moveList.add_move(model::Move(bitIndexFrom, blockerIndex, model::Move::CAPTURE_FLAG));
 }
 
 void RayLogic::addMovesBetweenBlockerAndPieceOnStraightRay(
@@ -59,7 +59,7 @@ void RayLogic::addMovesBetweenBlockerAndPieceOnStraightRay(
         int rankOrFileIndex = alongFile ? rookRank * 8 + i 
                                         : i * 8 + rookFile;
         
-        moveList.addMove(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
+        moveList.add_move(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
     }
 }
 
@@ -96,7 +96,7 @@ void RayLogic::addMovesBetweenBlockerAndPieceOnDiagonalRay(
     for (int i = startRank + rankIncrement, j = startFile + fileIncrement; i != stopRank; i += rankIncrement, j += fileIncrement) {
         int rankOrFileIndex = i * 8 + j;
 
-        moveList.addMove(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
+        moveList.add_move(model::Move(bitIndexFrom, rankOrFileIndex, model::Move::QUITE_FLAG));
     }
 }
 

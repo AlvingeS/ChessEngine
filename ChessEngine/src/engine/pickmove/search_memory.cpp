@@ -41,7 +41,7 @@ void SearchMemory::setCastlingRights(
     bool isWhite, 
     model::Piece::Type movedPieceType) 
 {
-    if (move.isAnyCastle()) {
+    if (move.is_any_castle()) {
         removeCastlingRightsForRemainingDepths(
             currentDepth, 
             isWhite ? whiteBoth : blackBoth
@@ -60,18 +60,18 @@ void SearchMemory::setCastlingRights(
 
     if (movedPieceType == model::Piece::Type::W_ROOK || movedPieceType == model::Piece::Type::B_ROOK) {
         if (isWhite) {
-            if (move.getBitIndexFrom() == 0) {
+            if (move.get_bit_index_from() == 0) {
                 if (_castlingRights[currentDepth] & whiteKingSide)
                     removeCastlingRightsForRemainingDepths(currentDepth, whiteKingSide);
-            } else if (move.getBitIndexFrom() == 7) {
+            } else if (move.get_bit_index_from() == 7) {
                 if (_castlingRights[currentDepth] & whiteQueenSide)
                     removeCastlingRightsForRemainingDepths(currentDepth, whiteQueenSide);
             }
         } else {
-            if (move.getBitIndexFrom() == 56) {
+            if (move.get_bit_index_from() == 56) {
                 if (_castlingRights[currentDepth] & blackKingSide)
                     removeCastlingRightsForRemainingDepths(currentDepth, blackKingSide);
-            } else if (move.getBitIndexFrom() == 63) {
+            } else if (move.get_bit_index_from() == 63) {
                 if (_castlingRights[currentDepth] & blackQueenSide)
                     removeCastlingRightsForRemainingDepths(currentDepth, blackQueenSide);
             }
@@ -99,7 +99,7 @@ void SearchMemory::handleNoCaptureCount(
     model::Piece::Type  movedPieceType)
 {
     // If the move is a capture, reset the no capture count
-    if (move.isAnyCapture()) {
+    if (move.is_any_capture()) {
         resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
         return;
     }
@@ -120,12 +120,12 @@ void SearchMemory::handleEnPessantMemory(
     int currentDepth, 
     int toIndex) 
 {
-    if (not move.isDoublePawnPush()) {
+    if (not move.is_double_pawn_push()) {
         setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
         return;
     }
 
-    if (move.isDoublePawnPush()) {
+    if (move.is_double_pawn_push()) {
         bitmask enPessantTarget = isWhite ? (1ULL << (toIndex - 8)) 
                                           : (1ULL << (toIndex + 8));
 

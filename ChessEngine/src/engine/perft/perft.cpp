@@ -67,7 +67,7 @@ void perft::debugPrint(bool verbose) const
 //     int count = 0;
 
 //     for (size_t i = 0; i < movelist.numMoves; i++) {
-//         if (movelist.moves[i].isAnyCastle()) {
+//         if (movelist.moves[i].is_any_castle()) {
 //             count++;
 //         }
 //     }
@@ -77,7 +77,7 @@ void perft::debugPrint(bool verbose) const
 
 // bool noKingSideCastling(MoveList& movelist) {
 //     for (size_t i = 0; i < movelist.numMoves; i++) {
-//         if (movelist.moves[i].getFlag() == 3) {
+//         if (movelist.moves[i].get_flag() == 3) {
 //             return false;
 //         }
 //     }
@@ -118,10 +118,10 @@ bool perft::checkCondition(
 {
     // return not _board.getKingMoved(false);
     // return tooManyPiecesOnBoard();
-    // return firstMoveIndex == 19 && currentMove.isAnyCapture();
-    // return currentMove.getBitIndexFrom() == 12 && currentMove.getBitIndexTo() == 12;
-    // return currentDepth == 3 && firstMoveIndex == 0 && currentMove.getBitIndexFrom() == 34 && currentMove.getBitIndexTo() == 27;
-    // return currentMove.isAnyCapture();
+    // return firstMoveIndex == 19 && currentMove.is_any_capture();
+    // return currentMove.get_bit_index_from() == 12 && currentMove.get_bit_index_to() == 12;
+    // return currentDepth == 3 && firstMoveIndex == 0 && currentMove.get_bit_index_from() == 34 && currentMove.get_bit_index_to() == 27;
+    // return currentMove.is_any_capture();
     // return true;
     return false;
     // return diffBetweenStateBitmasks();
@@ -152,9 +152,9 @@ void perft::minimax(
     size_t numIllegalMoves = 0;
 
     for (size_t i = 0; i < MAX_LEGAL_MOVES; i++) {
-        model::Move currentMove = _movelists[currentDepth].getMoveAt(i);
+        model::Move currentMove = _movelists[currentDepth].get_move_at(i);
 
-        if (currentMove.getMove() == 0)
+        if (currentMove.get_move() == 0)
             break;
 
         if (checkCondition(
@@ -203,7 +203,7 @@ void perft::minimax(
                 int x = 4;
             }
 
-            if (numIllegalMoves == i + 1 && _movelists[currentDepth].getMoveAt(i + 1).getMove() == 0) {
+            if (numIllegalMoves == i + 1 && _movelists[currentDepth].get_move_at(i + 1).get_move() == 0) {
                 bool wasInCheckBeforeMove = _moveGenerator.isInCheck(isMaximizer);
 
                 if (wasInCheckBeforeMove) {
@@ -221,7 +221,7 @@ void perft::minimax(
             currentDepth,
             currentMove, 
             isMaximizer, 
-            piece_map_.get_piece_type_at_index(currentMove.getBitIndexTo())
+            piece_map_.get_piece_type_at_index(currentMove.get_bit_index_to())
         );
 
         if (recPerftStats) {
@@ -291,19 +291,19 @@ void perft::recordPerftStats(
 
     _perftData.increaseNodeCountAt(currentDepth + 1);
 
-    if (currentMove.isAnyCapture()) {
+    if (currentMove.is_any_capture()) {
         _perftData.increaseCaptureCountAt(currentDepth + 1);
     }
 
-    if (currentMove.isAnyPromo()) {
+    if (currentMove.is_any_promo()) {
         _perftData.increasePromotionCountAt(currentDepth + 1);
     }
 
-    if (currentMove.isAnyCastle()) {
+    if (currentMove.is_any_castle()) {
         _perftData.increaseCastlingCountAt(currentDepth + 1);
     }
 
-    if (currentMove.isEpCapture()) {
+    if (currentMove.is_ep_capture()) {
         _perftData.increaseEpCaptureCountAt(currentDepth + 1);
     }
 

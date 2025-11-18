@@ -28,36 +28,36 @@ public:
     Move(int bitIndexFrom, int bitIndexTo, int flag);
     Move(const Move& move);
 
-    int getMove() const;
-    int getFlag() const;
+    int get_move() const;
+    int get_flag() const;
 
     void operator=(const Move& move);
     bool operator==(const Move& move) const;
     bool operator!=(const Move& move) const;
 
-    int getBitIndexFrom() const;
-    int getBitIndexTo() const;
-    bool isQuite() const;
-    bool isDoublePawnPush() const;
-    bool isKingCastle() const;
-    bool isQueenCastle() const;
-    bool isNormalCapture() const;
-    bool isEpCapture() const;
-    bool isKnightPromo() const;
-    bool isBishopPromo() const;
-    bool isRookPromo() const;
-    bool isQueenPromo() const;
-    bool isKnightPromoCapture() const;
-    bool isBishopPromoCapture() const;
-    bool isRookPromoCapture() const;
-    bool isQueenPromoCapture() const;
-    bool isAnyCapture() const;
-    bool isAnyPromo() const;
-    bool isAnyPromoCapture() const;
-    bool isAnyCastle() const;
+    int get_bit_index_from() const;
+    int get_bit_index_to() const;
+    bool is_quite() const;
+    bool is_double_pawn_push() const;
+    bool is_king_castle() const;
+    bool is_queen_castle() const;
+    bool is_normal_capture() const;
+    bool is_ep_capture() const;
+    bool is_knight_promo() const;
+    bool is_bishop_promo() const;
+    bool is_rook_promo() const;
+    bool is_queen_promo() const;
+    bool is_knight_promo_capture() const;
+    bool is_bishop_promo_capture() const;
+    bool is_rook_promo_capture() const;
+    bool is_queen_promo_capture() const;
+    bool is_any_capture() const;
+    bool is_any_promo() const;
+    bool is_any_promo_capture() const;
+    bool is_any_castle() const;
 
 private:
-    int _move;
+    int move_;
 };
 
 } // namespace model
@@ -68,9 +68,9 @@ namespace std {
     template <>
     struct hash<model::Move> {
         size_t operator()(const model::Move& move) const {
-            size_t h1 = std::hash<int>()(move.getBitIndexFrom());
-            size_t h2 = std::hash<int>()(move.getBitIndexTo());
-            size_t h3 = std::hash<int>()(move.getFlag());
+            size_t h1 = std::hash<int>()(move.get_bit_index_from());
+            size_t h2 = std::hash<int>()(move.get_bit_index_to());
+            size_t h3 = std::hash<int>()(move.get_flag());
 
             return h1 ^ (h2 << 1) ^ (h3 << 2);
         }

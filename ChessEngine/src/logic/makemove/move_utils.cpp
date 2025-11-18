@@ -38,7 +38,7 @@ model::Piece::Type MoveUtils::getPromotionPieceType(int promotionFlag, bool isWh
 
 int MoveUtils::determineCaptureIndex(const model::Move& move, bool isWhite, int toIndex)
 {
-    return move.isEpCapture() ? isWhite ? toIndex - 8 
+    return move.is_ep_capture() ? isWhite ? toIndex - 8 
                                         : toIndex + 8 
                               : toIndex;
 }

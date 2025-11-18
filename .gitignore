@@ -38,3 +38,5 @@ Testing/
 *.app
 
 *callgrind.out.*
+
+*.md

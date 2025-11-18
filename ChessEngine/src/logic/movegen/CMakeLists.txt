@@ -1,19 +1,17 @@
-add_library(movegen)
+add_library(movegen
+    move_gen.cpp
+    rook_gen.cpp
+    bishop_gen.cpp
+    queen_gen.cpp
+    knight_gen.cpp
+    king_gen.cpp
+    pawn_gen.cpp
+    castling_gen.cpp
+    ray_logic.cpp
+    check_detection.cpp
+)
 
 add_subdirectory(utils)
 add_subdirectory(bitmasks)
 
-target_sources(movegen PRIVATE
-    MoveGenerator.cpp
-    RookGenerator.cpp
-    BishopGenerator.cpp
-    QueenGenerator.cpp
-    KnightGenerator.cpp
-    KingGenerator.cpp
-    PawnGenerator.cpp
-    CastlingGenerator.cpp
-    RayLogic.cpp
-    CheckDetection.cpp
-)
-
-target_link_libraries(movegen PUBLIC pickmove move board cxx_setup)
+target_link_libraries(movegen PUBLIC move position pickmove cxx_setup)

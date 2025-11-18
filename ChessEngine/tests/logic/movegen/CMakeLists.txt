@@ -5,16 +5,16 @@ add_subdirectory(utils)
 add_subdirectory(bitmasks)
 
 target_sources(movegen_tests PRIVATE
-    RookGenerator_test.cpp
-    BishopGenerator_test.cpp
-    QueenGenerator_test.cpp
-    KnightGenerator_test.cpp
-    KingGenerator_test.cpp
-    PawnGenerator_test.cpp
-    CastlingGenerator_test.cpp
-    CheckDetection_test.cpp
+    rook_gen_test.cpp
+    bishop_gen_test.cpp
+    queen_gen_test.cpp
+    knight_gen_test.cpp
+    king_gen_test.cpp
+    pawn_gen_test.cpp
+    castling_gen_test.cpp
+    check_detection_test.cpp
 )
 
-target_link_libraries(movegen_tests PRIVATE makemove perft movegen board test_support GTest::gtest_main)
+target_link_libraries(movegen_tests PRIVATE makemove perft movegen position test_support GTest::gtest_main)
 
 gtest_discover_tests(movegen_tests)

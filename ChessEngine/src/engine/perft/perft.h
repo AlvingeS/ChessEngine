@@ -1,19 +1,19 @@
 #pragma once
 
-#include "engine/perft/perftData.h"
-#include "engine/pickmove/SearchMemory.h"
+#include "engine/perft/perft_data.h"
+#include "engine/pickmove/search_memory.h"
 
-#include "io/Fen.h"
+#include "io/fen.h"
 
-#include "model/position/Board.h"
-#include "model/move/Movelist.h"
-#include "model/move/Move.h"
-#include "model/position/PieceMap.h"
+#include "model/position/board.h"
+#include "model/move/movelist.h"
+#include "model/move/move.h"
+#include "model/position/piece_map.h"
 
-#include "logic/makemove/MoveMaker.h"
-#include "logic/makemove/MoveRetractor.h"
-#include "logic/movegen/MoveGenerator.h"
-#include "logic/eval/Evaluator.h"
+#include "logic/makemove/move_maker.h"
+#include "logic/makemove/move_retractor.h"
+#include "logic/movegen/move_gen.h"
+#include "logic/eval/eval.h"
 
 namespace engine {
 

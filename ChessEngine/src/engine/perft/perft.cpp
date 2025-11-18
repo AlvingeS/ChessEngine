@@ -1,7 +1,7 @@
 #include "engine/perft/perft.h"
 
-#include "model/Constants.h"
-#include "io/BoardPrinter.h"
+#include "model/constants.h"
+#include "io/board_printer.h"
 
 #include <cstdlib>
 #include <iostream>

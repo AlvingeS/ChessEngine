@@ -1,6 +1,6 @@
 target_sources(movegen PRIVATE
-    RayBitmasks.cpp
-    KnightBitmasks.cpp
-    KingBitmasks.cpp
-    PawnBitmasks.cpp
+    ray_bitmasks.cpp
+    knight_bitmasks.cpp
+    king_bitmasks.cpp
+    pawn_bitmasks.cpp
 )

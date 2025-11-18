@@ -1,7 +1,7 @@
 add_library(io
-    BoardPrinter.cpp
-    Fen.cpp
-    StockfishPerftRetriever.cpp
+    board_printer.cpp
+    fen.cpp
+    stockfish_perft_retriever.cpp
 )
 
-target_link_libraries(io PUBLIC movegen board cxx_setup)
+target_link_libraries(io PUBLIC movegen position cxx_setup)

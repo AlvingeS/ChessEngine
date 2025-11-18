@@ -1,4 +1,4 @@
 add_library(move
-    Movelist.cpp
+    movelist.cpp
 )
-target_link_libraries(move PUBLIC board cxx_setup)
+target_link_libraries(move PUBLIC cxx_setup)

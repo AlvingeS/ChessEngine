@@ -1,8 +1,8 @@
-add_library(board 
-    Bitboards.cpp
-    StateBitmasks.cpp
-    PieceMap.cpp
-    ZHasher.cpp
-    PieceType.cpp
+add_library(position 
+    bitboards.cpp
+    state_bitmasks.cpp
+    piece_map.cpp
+    z_hasher.cpp
+    piece_type.cpp
 )
-target_link_libraries(board PUBLIC cxx_setup)
+target_link_libraries(position PUBLIC cxx_setup)

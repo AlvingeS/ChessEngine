@@ -1,9 +1,9 @@
-#include "logic/movegen/MoveGenerator.h"
-#include "engine/pickmove/MovePicker.h"
+#include "logic/movegen/move_gen.h"
+#include "engine/pickmove/move_picker.h"
 #include "engine/perft/perft.h"
-#include "io/BoardPrinter.h"
-#include "logic/movegen/utils/ChessUtils.h"
-#include "logic/movegen/utils/Containers.h"
+#include "io/board_printer.h"
+#include "logic/movegen/utils/chess_utils.h"
+#include "logic/movegen/utils/containers.h"
 
 #include <iostream>
 #include <chrono>

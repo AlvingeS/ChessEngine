@@ -1,4 +1,4 @@
 target_sources(movegen_tests PRIVATE
-    BitBasics_test.cpp
-    ChessUtils_test.cpp
+    bit_basics_test.cpp
+    chess_utils_test.cpp
 )

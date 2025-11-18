@@ -1,0 +1,20 @@
+#include "logic/movegen/utils/bit_basics.h"
+
+#include <bitset>
+
+namespace logic {
+
+void BitBasics::getBitIndices(std::vector<int>& indices, bitboard bitboard)
+{ 
+    indices.clear();
+
+    while (bitboard != 0) {
+        int index = __builtin_ctzll(bitboard);
+
+        indices.push_back(index);
+
+        bitboard &= (bitboard - 1);
+    }
+}
+
+} // namespace logic

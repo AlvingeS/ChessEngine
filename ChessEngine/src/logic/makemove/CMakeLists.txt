@@ -1,6 +1,6 @@
 add_library(makemove
-    MoveMaker.cpp
-    MoveRetractor.cpp
-    MoveUtils.cpp
+    move_maker.cpp
+    move_retractor.cpp
+    move_utils.cpp
 )
-target_link_libraries(makemove PUBLIC board move pickmove cxx_setup)
+target_link_libraries(makemove PUBLIC position move cxx_setup)

@@ -1,13 +1,13 @@
 namespace model {
 
-inline Piece::Type PieceMap::getPieceTypeAtIndex(int index) const
+inline Piece::Type PieceMap::get_piece_type_at_index(int index) const
 {
-    return _pieceMap[index];
+    return piece_map_[index];
 }
 
-inline void PieceMap::setPieceTypeAtIndex(int index, Piece::Type pieceType)
+inline void PieceMap::set_piece_type_at_index(int index, Piece::Type piece_type)
 {
-    _pieceMap[index] = pieceType;
+    piece_map_[index] = piece_type;
 }
 
 } // namespace model

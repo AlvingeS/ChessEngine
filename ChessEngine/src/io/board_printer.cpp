@@ -37,9 +37,9 @@ void BoardPrinter::fillBoard(const model::Bitboards& bitboards)
     _board = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
     
     for (int i = 0; i < 12; i++) {
-        model::Piece::Type pieceType = model::Piece::getTypeFromInt(i);
-        bitmask bitboard = bitboards.getBitboardFromIndex(i);
-        char pieceChar = model::Piece::getCharFromType(pieceType);
+        model::Piece::Type piece_type = model::Piece::get_type_from_int(i);
+        bitmask bitboard = bitboards.get_bitboard_from_index(i);
+        char pieceChar = model::Piece::get_char_from_type(piece_type);
 
         for (int i = 0; i < 64; i++) {
             if ((bitboard >> i) & 1) {

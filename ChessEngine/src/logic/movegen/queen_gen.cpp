@@ -11,7 +11,7 @@ namespace logic {
 
 QueenGenerator::QueenGenerator(model::Board& board) 
     : _bitboards(board.bitboards)
-    , _stateBitmasks(board.stateBitmasks)
+    , _stateBitmasks(board.state_bitmasks)
 {
     _straightRayBitmasks = RayBitmasks::getAllStraightRayBitmasks();
     _diagonalRayBitmasks = RayBitmasks::getAllDiagonalRayBitmasks();
@@ -23,8 +23,8 @@ void QueenGenerator::generate(
 {
     std::vector<int>& queenIndices = Containers::getPiecePositionIndices();
 
-    BitBasics::getBitIndices(queenIndices, isWhite ? _bitboards.getWhiteQueensBitboard()
-                                               : _bitboards.getBlackQueensBitboard());
+    BitBasics::getBitIndices(queenIndices, isWhite ? _bitboards.get_w_queens_bitboard()
+                                               : _bitboards.get_b_queens_bitboard());
 
     for (int currentQueenIndex : queenIndices) {
         RayBitmasks::StraightRays straightRays = _straightRayBitmasks[currentQueenIndex];
@@ -42,8 +42,8 @@ void QueenGenerator::generate(
             queenRank,
             queenFile,
             moveList,
-            _stateBitmasks.getWhitePiecesBitmask(),
-            _stateBitmasks.getOccupiedPiecesBitmask()
+            _stateBitmasks.get_w_pieces_bitmask(),
+            _stateBitmasks.get_occupied_pieces_bitmask()
         );
 
         RayLogic::addMovesFromStraightRay(
@@ -55,8 +55,8 @@ void QueenGenerator::generate(
             queenRank,
             queenFile,
             moveList,
-            _stateBitmasks.getWhitePiecesBitmask(),
-            _stateBitmasks.getOccupiedPiecesBitmask()
+            _stateBitmasks.get_w_pieces_bitmask(),
+            _stateBitmasks.get_occupied_pieces_bitmask()
         );
 
         RayLogic::addMovesFromStraightRay(
@@ -68,8 +68,8 @@ void QueenGenerator::generate(
             queenRank,
             queenFile,
             moveList,
-            _stateBitmasks.getWhitePiecesBitmask(),
-            _stateBitmasks.getOccupiedPiecesBitmask()
+            _stateBitmasks.get_w_pieces_bitmask(),
+            _stateBitmasks.get_occupied_pieces_bitmask()
         );
 
         RayLogic::addMovesFromStraightRay(
@@ -81,8 +81,8 @@ void QueenGenerator::generate(
             queenRank,
             queenFile,
             moveList,
-            _stateBitmasks.getWhitePiecesBitmask(),
-            _stateBitmasks.getOccupiedPiecesBitmask()
+            _stateBitmasks.get_w_pieces_bitmask(),
+            _stateBitmasks.get_occupied_pieces_bitmask()
         );
 
         RayLogic::addMovesFromDiagonalRay(
@@ -93,8 +93,8 @@ void QueenGenerator::generate(
             queenRank,
             queenFile,
             moveList,
-            _stateBitmasks.getWhitePiecesBitmask(),
-            _stateBitmasks.getOccupiedPiecesBitmask()
+            _stateBitmasks.get_w_pieces_bitmask(),
+            _stateBitmasks.get_occupied_pieces_bitmask()
         );
 
         RayLogic::addMovesFromDiagonalRay(
@@ -105,8 +105,8 @@ void QueenGenerator::generate(
             queenRank,
             queenFile,
             moveList,
-            _stateBitmasks.getWhitePiecesBitmask(),
-            _stateBitmasks.getOccupiedPiecesBitmask()
+            _stateBitmasks.get_w_pieces_bitmask(),
+            _stateBitmasks.get_occupied_pieces_bitmask()
         );
 
         RayLogic::addMovesFromDiagonalRay(
@@ -117,8 +117,8 @@ void QueenGenerator::generate(
             queenRank,
             queenFile,
             moveList,
-            _stateBitmasks.getWhitePiecesBitmask(),
-            _stateBitmasks.getOccupiedPiecesBitmask()
+            _stateBitmasks.get_w_pieces_bitmask(),
+            _stateBitmasks.get_occupied_pieces_bitmask()
         );
         
         RayLogic::addMovesFromDiagonalRay(
@@ -129,8 +129,8 @@ void QueenGenerator::generate(
             queenRank,
             queenFile,
             moveList,
-            _stateBitmasks.getWhitePiecesBitmask(),
-            _stateBitmasks.getOccupiedPiecesBitmask()
+            _stateBitmasks.get_w_pieces_bitmask(),
+            _stateBitmasks.get_occupied_pieces_bitmask()
         );
     }
 }

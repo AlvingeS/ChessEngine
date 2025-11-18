@@ -11,29 +11,29 @@ class PieceMap;
 class ZHasher {
 
 public:
-    ZHasher(PieceMap& pieceMap);
-    void hashSquarePieceType(int squareIndex, Piece::Type pieceType);
-    void hashCastleRights(int castleRights);
-    void hashEnPassantFile(int file);
-    void hashIsWhite(bool isWhite);
+    ZHasher(PieceMap& piece_map);
+    void hash_square_piece_type(int square_index, Piece::Type piece_type);
+    void hash_castle_rights(int castle_rights);
+    void hash_en_pessant_file(int file);
+    void hash_is_white(bool is_white);
 
 private:
-    void computeInitialHash();
+    void compute_initial_hash();
 
-    uint64_t _randBoardPieceTypeNums[64][12];
+    uint64_t random_board_piece_type_numbers_[64][12];
     
     // In order:
     //      0 - White King side
     //      1 - White Queen side
     //      2 - Black King side	
     //      3 - Black Queen side
-    uint64_t _randCastleRightsNums[4];
+    uint64_t random_castle_rights_numbers_[4];
     
-    uint64_t _randEnPassantFileNums[8];
-    uint64_t _randIsWhiteNum;
-    uint64_t _hash;
+    uint64_t random_en_pessant_file_numbers_[8];
+    uint64_t random_is_white_number_;
+    uint64_t hash_;
 
-    PieceMap& _pieceMap;
+    PieceMap& piece_map_;
 };
 
 } // namespace model

@@ -95,23 +95,23 @@ public:
 
     void setBoardFromFen(const std::string& fen)
     {
-        io::Fen::setBoardFromFen(fen, _bitboards, _stateBitmasks, _pieceMap);
+        io::Fen::setBoardFromFen(fen, _bitboards, _stateBitmasks, piece_map_);
     }
 
     std::string getFenFromBoard() const
     {
-        return io::Fen::getFenFromBoard(_pieceMap);
+        return io::Fen::getFenFromBoard(piece_map_);
     }
 
     bool diffBetweenStateBitmasks() const
     {
-        return (_stateBitmasks.getBlackPiecesBitmask() | _stateBitmasks.getWhitePiecesBitmask()) != _stateBitmasks.getOccupiedPiecesBitmask();
+        return (_stateBitmasks.get_b_pieces_bitmask() | _stateBitmasks.get_w_pieces_bitmask()) != _stateBitmasks.get_occupied_pieces_bitmask();
     }
     
 private:
     model::Board _board;
     model::Bitboards& _bitboards;
-    model::PieceMap& _pieceMap;
+    model::PieceMap& piece_map_;
     model::StateBitmasks& _stateBitmasks;
     model::ZHasher& _zHasher;
     

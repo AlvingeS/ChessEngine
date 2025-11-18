@@ -32,9 +32,9 @@ public:
 
     void setLastCapturedPieceAtDepth(
         int currentDepth,
-        model::Piece::Type pieceType) 
+        model::Piece::Type piece_type) 
     {
-        _lastCapturedPieces[currentDepth] = pieceType;
+        _lastCapturedPieces[currentDepth] = piece_type;
     }
 
     void setCastlingRights(

@@ -11,29 +11,29 @@ class StateBitmasks {
 public:
     StateBitmasks(const Bitboards& bitboards);
 
-    bool whitePiecesBitIsSet(int index) const;
-    bool blackPiecesBitIsSet(int index) const;
-    const bitmask& getWhitePiecesBitmask() const;
-    const bitmask& getBlackPiecesBitmask() const;
-    const bitmask& getOccupiedPiecesBitmask() const;
-    const bitmask& getEmptySquaresBitmask() const;
+    bool w_pieces_bit_is_set(int index) const;
+    bool b_pieces_bit_is_set(int index) const;
+    const bitmask& get_w_pieces_bitmask() const;
+    const bitmask& get_b_pieces_bitmask() const;
+    const bitmask& get_occupied_pieces_bitmask() const;
+    const bitmask& get_empty_squares_bitmask() const;
     
-    void setWhitePiecesBit(int index);
-    void clearWhitePiecesBit(int index);
-    void setBlackPiecesBit(int index);
-    void clearBlackPiecesBit(int index);
-    void updOccupiedAndEmptySquaresBitmasks();
-    void fillWhitePiecesBitmaskFromBitboards(const Bitboards& bitboards);
-    void fillBlackPiecesBitmaskFromBitboards(const Bitboards& bitboards);
+    void set_w_pieces_bit(int index);
+    void clear_w_pieces_bit(int index);
+    void set_b_pieces_bit(int index);
+    void clear_b_pieces_bit(int index);
+    void update_occupied_and_empty_squares_bitmasks();
+    void fill_w_pieces_bitmask_from_bitboards(const Bitboards& bitboards);
+    void fill_b_pieces_bitmask_from_bitboards(const Bitboards& bitboards);
 
 private:
-    void updOccupiedPiecesBitmask();
-    void updEmptySquaresBitmask();
+    void update_occupied_pieces_bitmask();
+    void update_empty_squares_bitmask();
 
-    bitmask _whitePiecesBitmask;
-    bitmask _blackPiecesBitmask;
-    bitmask _occupiedPiecesBitmask;
-    bitmask _emptySquaresBitmask;
+    bitmask w_pieces_bitmask_;
+    bitmask b_pieces_bitmask_;
+    bitmask occupied_pieces_bitmask_;
+    bitmask empty_squares_bitmask_;
 };
 
 } // namespace model

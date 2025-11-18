@@ -2,7 +2,7 @@
 
 namespace model {
 
-Piece::Type Piece::getTypeFromChar(char c) {
+Piece::Type Piece::get_type_from_char(char c) {
     switch (c) {
         case 'P': return Piece::Type::W_PAWN;
         case 'N': return Piece::Type::W_KNIGHT;
@@ -20,7 +20,7 @@ Piece::Type Piece::getTypeFromChar(char c) {
     }
 }
 
-char Piece::getCharFromType(Piece::Type type) {
+char Piece::get_char_from_type(Piece::Type type) {
     switch(type) {
         case Piece::Type::W_PAWN: return 'P';
         case Piece::Type::W_KNIGHT: return 'N';

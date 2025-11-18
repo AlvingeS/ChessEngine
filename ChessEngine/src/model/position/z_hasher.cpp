@@ -7,8 +7,8 @@
 
 namespace model {
 
-ZHasher::ZHasher(PieceMap& pieceMap) 
-    : _pieceMap(pieceMap)
+ZHasher::ZHasher(PieceMap& piece_map) 
+    : piece_map_(piece_map)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -18,46 +18,46 @@ ZHasher::ZHasher(PieceMap& pieceMap)
     // Generate random numbers for board/piece table
     for (size_t i = 0; i < 64; i++) {
         for (size_t j = 0; j < 12; j++) {
-            _randBoardPieceTypeNums[i][j] = dis(gen);
+            random_board_piece_type_numbers_[i][j] = dis(gen);
         }
     }
 
     // Generate random numbers for castle rights table
     for (size_t i = 0; i < 4; i++) {
-        _randCastleRightsNums[i] = dis(gen);
+        random_castle_rights_numbers_[i] = dis(gen);
     }
 
     // Generate random numbers for en passant file table
     for (size_t i = 0; i < 8; i++) {
-        _randEnPassantFileNums[i] = dis(gen);
+        random_en_pessant_file_numbers_[i] = dis(gen);
     }
 
     // Generate random number for is white table
-    _randIsWhiteNum = dis(gen);
+    random_is_white_number_ = dis(gen);
     
-    computeInitialHash();
+    compute_initial_hash();
 }
 
-void ZHasher::computeInitialHash()
+void ZHasher::compute_initial_hash()
 {
-    _hash = 0;
+    hash_ = 0;
 
     for (size_t i = 0; i < 64; i++) {
-        Piece::Type pieceType = _pieceMap.getPieceTypeAtIndex(i);
+        Piece::Type piece_type = piece_map_.get_piece_type_at_index(i);
 
-        if (pieceType != Piece::Type::EMPTY)
-            hashSquarePieceType(i, pieceType);
+        if (piece_type != Piece::Type::EMPTY)
+            hash_square_piece_type(i, piece_type);
     }
 
     // We know that we have castling rights, so we can just add them
     for (size_t i = 0; i < 4; i++) {
-        hashCastleRights(i);
+        hash_castle_rights(i);
     }
 
     // There can be no en passant file
 
     // We know that it is white's turn
-    hashIsWhite(true);
+    hash_is_white(true);
 }
 
 } // namespace model

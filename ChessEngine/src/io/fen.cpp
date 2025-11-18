@@ -7,10 +7,10 @@ namespace io {
 void Fen::setBoardFromFen(
     const std::string& fen, 
     model::Bitboards& bitboards, 
-    model::StateBitmasks& stateBitmasks, 
-    model::PieceMap& pieceMap) 
+    model::StateBitmasks& state_bitmasks, 
+    model::PieceMap& piece_map) 
 {
-    bitboards.resetBitboards();
+    bitboards.reset_bitboards();
 
     int rank = 7;
     int file = 0;
@@ -23,19 +23,19 @@ void Fen::setBoardFromFen(
         } else if (std::isdigit(c)) {
             file += c - '0';
         } else {
-            model::Piece::Type type = model::Piece::getTypeFromChar(c);
-            bitboards.setPieceTypeBit(rank * 8 + 7 - file, type);
+            model::Piece::Type type = model::Piece::get_type_from_char(c);
+            bitboards.set_piece_type_bit(rank * 8 + 7 - file, type);
             file++;
         }
     }
 
-    pieceMap.fillPieceMapFromBitboards(bitboards);
-    stateBitmasks.fillBlackPiecesBitmaskFromBitboards(bitboards);
-    stateBitmasks.fillWhitePiecesBitmaskFromBitboards(bitboards);
-    stateBitmasks.updOccupiedAndEmptySquaresBitmasks();
+    piece_map.fill_piece_map_from_bitboards(bitboards);
+    state_bitmasks.fill_b_pieces_bitmask_from_bitboards(bitboards);
+    state_bitmasks.fill_w_pieces_bitmask_from_bitboards(bitboards);
+    state_bitmasks.update_occupied_and_empty_squares_bitmasks();
 }
 
-std::string Fen::getFenFromBoard(const model::PieceMap& pieceMap)
+std::string Fen::getFenFromBoard(const model::PieceMap& piece_map)
 {
     std::string fen = "";
     int emptyCount = 0;
@@ -49,7 +49,7 @@ std::string Fen::getFenFromBoard(const model::PieceMap& pieceMap)
             fen += "/";
         }
 
-        model::Piece::Type type = pieceMap.getPieceTypeAtIndex(i);
+        model::Piece::Type type = piece_map.get_piece_type_at_index(i);
         if (type == model::Piece::Type::EMPTY) {
             emptyCount++;
         } else {
@@ -57,7 +57,7 @@ std::string Fen::getFenFromBoard(const model::PieceMap& pieceMap)
                 fen += std::to_string(emptyCount);
                 emptyCount = 0;
             }
-            fen += model::Piece::getCharFromType(type);
+            fen += model::Piece::get_char_from_type(type);
         }
     }
 

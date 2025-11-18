@@ -11,7 +11,7 @@ namespace logic {
 
 KingGenerator::KingGenerator(model::Board& board) 
     : _bitboards(board.bitboards)
-    , _stateBitmasks(board.stateBitmasks)
+    , _stateBitmasks(board.state_bitmasks)
 {
     _kingBitmasks = KingBitmasks::getAllKingBitmasks();
 }
@@ -22,17 +22,17 @@ void KingGenerator::generate(bool isWhite, model::Movelist& moveList)
     std::vector<int>& freeMovesIndices = Containers::getLeapingPiecefreeMovesIndices();
     std::vector<int>& capturableMovesIndices = Containers::getLeapingPieceCapturableMovesIndices();
     
-    BitBasics::getBitIndices(kingIndices, isWhite ? _bitboards.getWhiteKingBitboard()
-                                              : _bitboards.getBlackKingBitboard());
+    BitBasics::getBitIndices(kingIndices, isWhite ? _bitboards.get_w_king_bitboard()
+                                              : _bitboards.get_b_king_bitboard());
 
     // TODO: It makes zero sense to have this in a loop
     for (int currentKingIndex : kingIndices) {
         bitmask kingBitmask = _kingBitmasks[currentKingIndex];
 
-        bitmask freeKingMoves = kingBitmask & _stateBitmasks.getEmptySquaresBitmask();
+        bitmask freeKingMoves = kingBitmask & _stateBitmasks.get_empty_squares_bitmask();
         
-        bitmask enemyPieces = isWhite ? _stateBitmasks.getBlackPiecesBitmask() 
-                                      : _stateBitmasks.getWhitePiecesBitmask();
+        bitmask enemyPieces = isWhite ? _stateBitmasks.get_b_pieces_bitmask() 
+                                      : _stateBitmasks.get_w_pieces_bitmask();
 
         bitmask capturableKingMoves = kingBitmask & enemyPieces;
 

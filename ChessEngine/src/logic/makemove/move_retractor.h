@@ -39,7 +39,7 @@ private:
 
     model::Bitboards& _bitboards;
     model::StateBitmasks& _stateBitmasks;
-    model::PieceMap& _pieceMap;
+    model::PieceMap& piece_map_;
     const model::ZHasher& _zHasher;
 };
 

@@ -132,7 +132,7 @@ void SearchMemory::handleEnPessantMemory(
         setEnPessantTargetAtDepth(currentDepth + 1, enPessantTarget);
         
         // FIXME: Temporary because I don't know how to implement this haha
-        // _zHasher.hashEnPassantFile(toIndex % 8);
+        // _zHasher.hash_en_pessant_file(toIndex % 8);
     }
 }
 

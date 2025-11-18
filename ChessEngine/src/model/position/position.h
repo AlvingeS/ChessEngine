@@ -7,7 +7,7 @@ namespace model
 {
 
 struct Position {
-    GameState gameState;
+    GameState game_state;
     Board board;
 };
 

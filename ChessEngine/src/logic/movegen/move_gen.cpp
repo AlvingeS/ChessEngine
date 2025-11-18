@@ -17,7 +17,7 @@ MoveGenerator::MoveGenerator(
     logic::MoveMaker& moveMaker,
     logic::MoveRetractor& moveRetractor)
     : _bitboards(board.bitboards)
-    , _stateBitmasks(board.stateBitmasks)
+    , _stateBitmasks(board.state_bitmasks)
     , _moveMaker(moveMaker)
     , _moveRetractor(moveRetractor)
     , _checkDetection(board)

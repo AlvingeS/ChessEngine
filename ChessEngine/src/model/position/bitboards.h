@@ -12,58 +12,58 @@ class Bitboards {
 public:
     Bitboards();
 
-    const bitboard& getBitboardFromPieceType(Piece::Type pieceType) const;
-    const bitboard& getBitboardFromIndex(int index) const;
-    bool pieceTypeBitIsSet(int index, Piece::Type pieceType) const;
+    const bitboard& get_bitboard_from_piece_type(Piece::Type piece_type) const;
+    const bitboard& get_bitboard_from_index(int index) const;
+    bool piece_type_bit_is_set(int index, Piece::Type piece_type) const;
     
-    void clearPieceTypeBit(int index, Piece::Type pieceType);
-    void setPieceTypeBit(int index, Piece::Type pieceType);
-    void resetBitboards();
+    void clear_piece_type_bit(int index, Piece::Type piece_type);
+    void set_piece_type_bit(int index, Piece::Type piece_type);
+    void reset_bitboards();
 
     // Set, clear and get for all individual piece types / bitboards
     #define DEFINE_BITBOARD_MACROS(PIECE_NAME, VARIABLE_NAME) \
-        inline void set##PIECE_NAME##Bit(int square) \
+        inline void set_##PIECE_NAME##_bit(int square) \
         { \
             VARIABLE_NAME |= (1ULL << square); \
         } \
-        inline void clear##PIECE_NAME##Bit(int square) \
+        inline void clear_##PIECE_NAME##_bit(int square) \
         { \
             VARIABLE_NAME &= ~(1ULL << square); \
         } \
-        inline const bitboard& get##PIECE_NAME##Bitboard() const \
+        inline const bitboard& get_##PIECE_NAME##_bitboard() const \
         { \
             return VARIABLE_NAME; \
         }
 
-    DEFINE_BITBOARD_MACROS(WhitePawns, _whitePawnsBitboard)
-    DEFINE_BITBOARD_MACROS(WhiteKnights, _whiteKnightsBitboard)
-    DEFINE_BITBOARD_MACROS(WhiteBishops, _whiteBishopsBitboard)
-    DEFINE_BITBOARD_MACROS(WhiteRooks, _whiteRooksBitboard)
-    DEFINE_BITBOARD_MACROS(WhiteQueens, _whiteQueensBitboard)
-    DEFINE_BITBOARD_MACROS(WhiteKing, _whiteKingBitboard)
-    DEFINE_BITBOARD_MACROS(BlackPawns, _blackPawnsBitboard)
-    DEFINE_BITBOARD_MACROS(BlackKnights, _blackKnightsBitboard)
-    DEFINE_BITBOARD_MACROS(BlackBishops, _blackBishopsBitboard)
-    DEFINE_BITBOARD_MACROS(BlackRooks, _blackRooksBitboard)
-    DEFINE_BITBOARD_MACROS(BlackQueens, _blackQueensBitboard)
-    DEFINE_BITBOARD_MACROS(BlackKing, _blackKingBitboard)
+    DEFINE_BITBOARD_MACROS(w_pawns, w_pawns_bitboard_)
+    DEFINE_BITBOARD_MACROS(w_knights, w_knights_bitboard_)
+    DEFINE_BITBOARD_MACROS(w_bishops, w_bishops_bitboard_)
+    DEFINE_BITBOARD_MACROS(w_rooks, w_rooks_bitboard_)
+    DEFINE_BITBOARD_MACROS(w_queens, w_queens_bitboard_)
+    DEFINE_BITBOARD_MACROS(w_king, w_king_bitboard_)
+    DEFINE_BITBOARD_MACROS(b_pawns, b_pawns_bitboard_)
+    DEFINE_BITBOARD_MACROS(b_knights, b_knights_bitboard_)
+    DEFINE_BITBOARD_MACROS(b_bishops, b_bishops_bitboard)
+    DEFINE_BITBOARD_MACROS(b_rooks, b_rooks_bitboard)
+    DEFINE_BITBOARD_MACROS(b_queens, b_queens_bitboard)
+    DEFINE_BITBOARD_MACROS(b_king, b_king_bitboard)
 
 private:
     std::vector<bitboard*> _bitboards;
 
-    bitboard _whitePawnsBitboard;
-    bitboard _whiteKnightsBitboard;
-    bitboard _whiteBishopsBitboard;
-    bitboard _whiteRooksBitboard;
-    bitboard _whiteQueensBitboard;
-    bitboard _whiteKingBitboard;
+    bitboard w_pawns_bitboard_;
+    bitboard w_knights_bitboard_;
+    bitboard w_bishops_bitboard_;
+    bitboard w_rooks_bitboard_;
+    bitboard w_queens_bitboard_;
+    bitboard w_king_bitboard_;
 
-    bitboard _blackPawnsBitboard;
-    bitboard _blackKnightsBitboard;
-    bitboard _blackBishopsBitboard;
-    bitboard _blackRooksBitboard;
-    bitboard _blackQueensBitboard;
-    bitboard _blackKingBitboard;
+    bitboard b_pawns_bitboard_;
+    bitboard b_knights_bitboard_;
+    bitboard b_bishops_bitboard;
+    bitboard b_rooks_bitboard;
+    bitboard b_queens_bitboard;
+    bitboard b_king_bitboard;
 };
 
 } // namespace model

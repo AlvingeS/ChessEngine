@@ -20,10 +20,10 @@ struct Piece {
         ERROR
     };
 
-    static Type getTypeFromChar(char c);
-    static char getCharFromType(Type type);
-    static int getIntFromType(Type type);
-    static Type getTypeFromInt(int integer);
+    static Type get_type_from_char(char c);
+    static char get_char_from_type(Type type);
+    static int get_int_from_type(Type type);
+    static Type get_type_from_int(int integer);
 };
 
 } // namespace model

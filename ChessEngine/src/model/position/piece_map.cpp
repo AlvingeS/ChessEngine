@@ -4,17 +4,17 @@ namespace model {
 
 PieceMap::PieceMap(const Bitboards& bitboards) 
 {
-    fillPieceMapFromBitboards(bitboards);
+    fill_piece_map_from_bitboards(bitboards);
 }
 
-void PieceMap::fillPieceMapFromBitboards(const Bitboards& bitboards) 
+void PieceMap::fill_piece_map_from_bitboards(const Bitboards& bitboards) 
 {
-    _pieceMap = std::vector<Piece::Type>(64, Piece::Type::EMPTY);
+    piece_map_ = std::vector<Piece::Type>(64, Piece::Type::EMPTY);
 
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 12; j++) {
-            if (bitboards.getBitboardFromIndex(j) & (1ULL << i)) {
-                _pieceMap[i] = Piece::getTypeFromInt(j);
+            if (bitboards.get_bitboard_from_index(j) & (1ULL << i)) {
+                piece_map_[i] = Piece::get_type_from_int(j);
                 break;
             }
         }

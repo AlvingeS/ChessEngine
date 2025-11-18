@@ -11,9 +11,9 @@ namespace engine {
 perft::perft(int maxDepth)
     : _board(),
       _bitboards(_board.bitboards),
-      _pieceMap(_board.pieceMap),
-      _stateBitmasks(_board.stateBitmasks),
-      _zHasher(_board.zHasher),
+      piece_map_(_board.piece_map),
+      _stateBitmasks(_board.state_bitmasks),
+      _zHasher(_board.z_hasher),
       _searchMemory(maxDepth),
       _moveMaker(_board),
       _moveRetractor(_board),
@@ -99,7 +99,7 @@ bool perft::tooManyPiecesOnBoard()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (_pieceMap.getPieceTypeAtIndex(i) != model::Piece::Type::EMPTY) {
+        if (piece_map_.get_piece_type_at_index(i) != model::Piece::Type::EMPTY) {
             count++;
         }
     }
@@ -221,7 +221,7 @@ void perft::minimax(
             currentDepth,
             currentMove, 
             isMaximizer, 
-            _pieceMap.getPieceTypeAtIndex(currentMove.getBitIndexTo())
+            piece_map_.get_piece_type_at_index(currentMove.getBitIndexTo())
         );
 
         if (recPerftStats) {

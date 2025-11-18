@@ -19,7 +19,7 @@ CastlingGenerator::CastlingGenerator(
     logic::MoveRetractor& moveRetractor, 
     CheckDetection* checkDetection)
     : _bitboards(board.bitboards)
-    , _stateBitmasks(board.stateBitmasks)
+    , _stateBitmasks(board.state_bitmasks)
     , _moveMaker(moveMaker)
     , _moveRetractor(moveRetractor)
     , _checkDetection(checkDetection) 
@@ -58,17 +58,17 @@ bool CastlingGenerator::kingAndRookOnCastlingSquares(
     bool isWhite,
     bool isKingSide) const
 {
-    bool kingBitEnabled = isWhite ? (_bitboards.getWhiteKingBitboard() & (1ULL << 3)) != 0
-                                  : (_bitboards.getBlackKingBitboard() & (1ULL << 59)) != 0;
+    bool kingBitEnabled = isWhite ? (_bitboards.get_w_king_bitboard() & (1ULL << 3)) != 0
+                                  : (_bitboards.get_b_king_bitboard() & (1ULL << 59)) != 0;
     
     if (!kingBitEnabled)
         return false;
 
     // Since we know that the king is present, we can return if the rook is present or not
-    return isWhite ? (isKingSide ? (_bitboards.getWhiteRooksBitboard() & (1ULL << 0)) != 0
-                                 : (_bitboards.getWhiteRooksBitboard() & (1ULL << 7)) != 0)
-                   : (isKingSide ? (_bitboards.getBlackRooksBitboard() & (1ULL << 56)) != 0
-                                 : (_bitboards.getBlackRooksBitboard() & (1ULL << 63)) != 0);
+    return isWhite ? (isKingSide ? (_bitboards.get_w_rooks_bitboard() & (1ULL << 0)) != 0
+                                 : (_bitboards.get_w_rooks_bitboard() & (1ULL << 7)) != 0)
+                   : (isKingSide ? (_bitboards.get_b_rooks_bitboard() & (1ULL << 56)) != 0
+                                 : (_bitboards.get_b_rooks_bitboard() & (1ULL << 63)) != 0);
 }
 
 void CastlingGenerator::makeTemporaryKingMove(bool isWhite, bool isKingSide)
@@ -92,7 +92,7 @@ void CastlingGenerator::genSingleCastleMove(
                                                   : (isKingSide ? _blackKingSideCastleBitmask
                                                                 : _blackQueenSideCastleBitmask);
     
-    if ((spaceBetweenCastlersBitmask & _stateBitmasks.getOccupiedPiecesBitmask()) != 0)
+    if ((spaceBetweenCastlersBitmask & _stateBitmasks.get_occupied_pieces_bitmask()) != 0)
         return;
 
     // Check that the king and rook are on the correct squares

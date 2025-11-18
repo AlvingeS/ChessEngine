@@ -23,9 +23,9 @@ class BaseGenerator : public ::testing::Test
 protected:
     model::Board board;
     model::Bitboards& bitboards;
-    model::StateBitmasks& stateBitmasks;
-    model::PieceMap& pieceMap;
-    model::ZHasher& zHasher;
+    model::StateBitmasks& state_bitmasks;
+    model::PieceMap& piece_map;
+    model::ZHasher& z_hasher;
     engine::SearchMemory searchMemory;
     MoveMaker moveMaker;
     MoveRetractor moveRetractor;
@@ -36,9 +36,9 @@ protected:
     BaseGenerator() 
         : board(),
           bitboards(board.bitboards),
-          stateBitmasks(board.stateBitmasks),
-          pieceMap(board.pieceMap),
-          zHasher(board.zHasher),
+          state_bitmasks(board.state_bitmasks),
+          piece_map(board.piece_map),
+          z_hasher(board.z_hasher),
           searchMemory(engine::SearchMemory(0)),
           moveMaker(board),
           moveRetractor(board),
@@ -52,7 +52,7 @@ protected:
     }
 
     virtual void TearDown() override {
-        bitboards.resetBitboards();
+        bitboards.reset_bitboards();
     }
 
     void insertExpectedMoves(std::unordered_set<model::Move>& moves, int fromBitIndex, const std::vector<int>& toBitIndices, const std::vector<int>& flags) {

@@ -12,7 +12,7 @@ namespace logic {
 
 PawnGenerator::PawnGenerator(model::Board& board) 
     : _bitboards(board.bitboards)
-    , _stateBitmasks(board.stateBitmasks)
+    , _stateBitmasks(board.state_bitmasks)
 {
     _whitePawnStraightMoveBitmasks = PawnBitmasks::getAllStraightPawnMoveBitmasks(true);
     _whitePawnCaptureMoveBitmasks = PawnBitmasks::getAllCapturePawnMoveBitmasks(true);
@@ -29,8 +29,8 @@ void PawnGenerator::generate(
     std::vector<int>& freeMovesIndices = Containers::getLeapingPiecefreeMovesIndices();
     std::vector<int>& capturableMovesIndices = Containers::getLeapingPieceCapturableMovesIndices();
 
-    BitBasics::getBitIndices(pawnIndices, isWhite ? _bitboards.getWhitePawnsBitboard()
-                                              : _bitboards.getBlackPawnsBitboard());
+    BitBasics::getBitIndices(pawnIndices, isWhite ? _bitboards.get_w_pawns_bitboard()
+                                              : _bitboards.get_b_pawns_bitboard());
 
     for (int currentPawnIndex : pawnIndices) {
 
@@ -40,10 +40,10 @@ void PawnGenerator::generate(
         bitmask capturePawnMoveBitmask = isWhite ? _whitePawnCaptureMoveBitmasks[currentPawnIndex]
                                                  : _blackPawnCaptureMoveBitmasks[currentPawnIndex];
 
-        bitmask freePawnMoves = straightPawnMoveBitmask & _stateBitmasks.getEmptySquaresBitmask();
+        bitmask freePawnMoves = straightPawnMoveBitmask & _stateBitmasks.get_empty_squares_bitmask();
         
-        bitmask enemyPieces = isWhite ? _stateBitmasks.getBlackPiecesBitmask()
-                                      : _stateBitmasks.getWhitePiecesBitmask();
+        bitmask enemyPieces = isWhite ? _stateBitmasks.get_b_pieces_bitmask()
+                                      : _stateBitmasks.get_w_pieces_bitmask();
         
         bitmask capturablePawnMoves = capturePawnMoveBitmask & enemyPieces;
 

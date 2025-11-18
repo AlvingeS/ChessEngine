@@ -1,63 +1,63 @@
 namespace model {
 
-inline bool StateBitmasks::whitePiecesBitIsSet(int index) const 
+inline bool StateBitmasks::w_pieces_bit_is_set(int index) const 
 {
-    return (_whitePiecesBitmask & (1ULL << index)) != 0;
+    return (w_pieces_bitmask_ & (1ULL << index)) != 0;
 }
 
-inline bool StateBitmasks::blackPiecesBitIsSet(int index) const 
+inline bool StateBitmasks::b_pieces_bit_is_set(int index) const 
 {
-    return (_blackPiecesBitmask & (1ULL << index)) != 0;
+    return (b_pieces_bitmask_ & (1ULL << index)) != 0;
 }
 
-inline void StateBitmasks::setWhitePiecesBit(int index) 
+inline void StateBitmasks::set_w_pieces_bit(int index) 
 {
-    _whitePiecesBitmask |= (1ULL << index);
+    w_pieces_bitmask_ |= (1ULL << index);
 }
 
-inline void StateBitmasks::clearWhitePiecesBit(int index) 
+inline void StateBitmasks::clear_w_pieces_bit(int index) 
 {
-    _whitePiecesBitmask &= ~(1ULL << index);
+    w_pieces_bitmask_ &= ~(1ULL << index);
 }
 
-inline const bitmask& StateBitmasks::getWhitePiecesBitmask() const 
+inline const bitmask& StateBitmasks::get_w_pieces_bitmask() const 
 {
-    return _whitePiecesBitmask;
+    return w_pieces_bitmask_;
 }
 
-inline void StateBitmasks::setBlackPiecesBit(int index) 
+inline void StateBitmasks::set_b_pieces_bit(int index) 
 {
-    _blackPiecesBitmask |= (1ULL << index);
+    b_pieces_bitmask_ |= (1ULL << index);
 }
 
-inline void StateBitmasks::clearBlackPiecesBit(int index) 
+inline void StateBitmasks::clear_b_pieces_bit(int index) 
 {
-    _blackPiecesBitmask &= ~(1ULL << index);
+    b_pieces_bitmask_ &= ~(1ULL << index);
 }
 
-inline const bitmask& StateBitmasks::getBlackPiecesBitmask() const 
+inline const bitmask& StateBitmasks::get_b_pieces_bitmask() const 
 {
-    return _blackPiecesBitmask;
+    return b_pieces_bitmask_;
 }
 
-inline const bitmask& StateBitmasks::getOccupiedPiecesBitmask() const 
+inline const bitmask& StateBitmasks::get_occupied_pieces_bitmask() const 
 {
-    return _occupiedPiecesBitmask;
+    return occupied_pieces_bitmask_;
 }
 
-inline const bitmask& StateBitmasks::getEmptySquaresBitmask() const 
+inline const bitmask& StateBitmasks::get_empty_squares_bitmask() const 
 {
-    return _emptySquaresBitmask;
+    return empty_squares_bitmask_;
 }
 
-inline void StateBitmasks::updOccupiedPiecesBitmask() 
+inline void StateBitmasks::update_occupied_pieces_bitmask() 
 {
-    _occupiedPiecesBitmask = _whitePiecesBitmask | _blackPiecesBitmask;
+    occupied_pieces_bitmask_ = w_pieces_bitmask_ | b_pieces_bitmask_;
 }
 
-inline void StateBitmasks::updEmptySquaresBitmask() 
+inline void StateBitmasks::update_empty_squares_bitmask() 
 {
-    _emptySquaresBitmask = ~_occupiedPiecesBitmask;
+    empty_squares_bitmask_ = ~occupied_pieces_bitmask_;
 }
 
 } // namespace model

@@ -9,14 +9,14 @@ namespace model {
 
 struct Board {
     Bitboards bitboards;
-    PieceMap pieceMap;
-    StateBitmasks stateBitmasks;
-    ZHasher zHasher;
+    PieceMap piece_map;
+    StateBitmasks state_bitmasks;
+    ZHasher z_hasher;
 
     Board() 
-        : pieceMap(bitboards)
-        , stateBitmasks(bitboards)
-        , zHasher(pieceMap) 
+        : piece_map(bitboards)
+        , state_bitmasks(bitboards)
+        , z_hasher(piece_map) 
     {}
 };
 

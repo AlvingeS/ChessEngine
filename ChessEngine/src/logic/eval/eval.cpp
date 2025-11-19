@@ -10,11 +10,11 @@ static const int BISHOP_VALUE = 3000;
 static const int ROOK_VALUE = 5000;
 static const int QUEEN_VALUE = 9000;
 
-Evaluator::Evaluator(model::Board& board) 
+Eval::Eval(model::Board& board) 
     : bitboards_(board.bitboards) 
 {}
 
-float Evaluator::evaluate() {
+float Eval::evaluate() {
     return 0.0f;
     // int score = 0;
 

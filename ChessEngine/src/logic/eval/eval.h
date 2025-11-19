@@ -7,10 +7,10 @@ namespace model {
 
 namespace logic {
 
-class Evaluator {
+class Eval {
 
 public:
-    Evaluator(model::Board& board);
+    Eval(model::Board& board);
     
     float evaluate();
 

@@ -18,7 +18,7 @@ MovePicker::MovePicker(int maxDepth)
     , move_maker_(logic::MoveMaker(_board))
     , move_retractor_(logic::MoveRetractor(_board))
     , _moveGenerator(logic::MoveGenerator(_board, move_maker_, move_retractor_))
-    , _evaluator(logic::Evaluator(_board))
+    , _evaluator(logic::Eval(_board))
     , _maxDepth(maxDepth)
 {
     _numMoveGenCalls = 0;

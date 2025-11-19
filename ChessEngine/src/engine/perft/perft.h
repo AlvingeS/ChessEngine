@@ -107,7 +107,7 @@ private:
     logic::MoveMaker move_maker_;
     logic::MoveRetractor move_retractor_;
     logic::MoveGenerator _moveGenerator;
-    logic::Evaluator _evaluator;
+    logic::Eval _evaluator;
     
     SearchMemory _searchMemory;
     perftData _perftData;

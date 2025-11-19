@@ -119,7 +119,7 @@ private:
     logic::MoveMaker move_maker_;
     logic::MoveRetractor move_retractor_;
     logic::MoveGenerator _moveGenerator;
-    logic::Evaluator _evaluator;
+    logic::Eval _evaluator;
     int _maxDepth;
 
     int _pseudoLegalMovesCount;

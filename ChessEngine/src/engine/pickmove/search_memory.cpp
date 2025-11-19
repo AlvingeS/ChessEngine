@@ -20,69 +20,69 @@ SearchMemory::SearchMemory(int maxDepth) : max_depth_(maxDepth)
 }
 
 void SearchMemory::remove_castle_rights_for_remaining_depths(
-    int currentDepth,
-    unsigned char rightsToRemove) 
+    int current_depth,
+    unsigned char rights_to_remove) 
 {
-    for (int i = currentDepth + 1; i < max_depth_; i++) {
-        castle_rights_[i] &= ~rightsToRemove;
+    for (int i = current_depth + 1; i < max_depth_; i++) {
+        castle_rights_[i] &= ~rights_to_remove;
     }
 }
 
-void SearchMemory::restore_castle_rights_for_remaining_depths(int currentDepth) 
+void SearchMemory::restore_castle_rights_for_remaining_depths(int current_depth) 
 {
-    for (int i = currentDepth + 1; i < max_depth_; i++) {
-        castle_rights_[i] = castle_rights_[currentDepth];
+    for (int i = current_depth + 1; i < max_depth_; i++) {
+        castle_rights_[i] = castle_rights_[current_depth];
     }
 }
 
 void SearchMemory::set_castle_rights(
-    int currentDepth, 
+    int current_depth, 
     const model::Move& move, 
     bool is_w, 
     model::Piece::Type moved_piece_type) 
 {
     if (move.is_any_castle()) {
         remove_castle_rights_for_remaining_depths(
-            currentDepth, 
+            current_depth, 
             is_w ? w_both_sides_castle_rights : b_both_sides_castle_rights
         );
     }
 
     if (moved_piece_type == model::Piece::Type::W_KING || moved_piece_type == model::Piece::Type::B_KING) {
         if (is_w) {
-            if (castle_rights_[currentDepth] & w_both_sides_castle_rights)
-                remove_castle_rights_for_remaining_depths(currentDepth, w_both_sides_castle_rights);
+            if (castle_rights_[current_depth] & w_both_sides_castle_rights)
+                remove_castle_rights_for_remaining_depths(current_depth, w_both_sides_castle_rights);
         } else {
-            if (castle_rights_[currentDepth] & b_both_sides_castle_rights)
-                remove_castle_rights_for_remaining_depths(currentDepth, b_both_sides_castle_rights);
+            if (castle_rights_[current_depth] & b_both_sides_castle_rights)
+                remove_castle_rights_for_remaining_depths(current_depth, b_both_sides_castle_rights);
         }
     }
 
     if (moved_piece_type == model::Piece::Type::W_ROOK || moved_piece_type == model::Piece::Type::B_ROOK) {
         if (is_w) {
             if (move.get_bit_index_from() == 0) {
-                if (castle_rights_[currentDepth] & w_kside_castle_rights)
-                    remove_castle_rights_for_remaining_depths(currentDepth, w_kside_castle_rights);
+                if (castle_rights_[current_depth] & w_kside_castle_rights)
+                    remove_castle_rights_for_remaining_depths(current_depth, w_kside_castle_rights);
             } else if (move.get_bit_index_from() == 7) {
-                if (castle_rights_[currentDepth] & w_qside_castle_rights)
-                    remove_castle_rights_for_remaining_depths(currentDepth, w_qside_castle_rights);
+                if (castle_rights_[current_depth] & w_qside_castle_rights)
+                    remove_castle_rights_for_remaining_depths(current_depth, w_qside_castle_rights);
             }
         } else {
             if (move.get_bit_index_from() == 56) {
-                if (castle_rights_[currentDepth] & b_kside_castle_rights)
-                    remove_castle_rights_for_remaining_depths(currentDepth, b_kside_castle_rights);
+                if (castle_rights_[current_depth] & b_kside_castle_rights)
+                    remove_castle_rights_for_remaining_depths(current_depth, b_kside_castle_rights);
             } else if (move.get_bit_index_from() == 63) {
-                if (castle_rights_[currentDepth] & b_qside_castle_rights)
-                    remove_castle_rights_for_remaining_depths(currentDepth, b_qside_castle_rights);
+                if (castle_rights_[current_depth] & b_qside_castle_rights)
+                    remove_castle_rights_for_remaining_depths(current_depth, b_qside_castle_rights);
             }
         }
     }
 }
 
-void SearchMemory::unset_castle_rights(int currentDepth) 
+void SearchMemory::unset_castle_rights(int current_depth) 
 {
-    if (castle_rights_[currentDepth] != castle_rights_[currentDepth + 1]) {
-        restore_castle_rights_for_remaining_depths(currentDepth);
+    if (castle_rights_[current_depth] != castle_rights_[current_depth + 1]) {
+        restore_castle_rights_for_remaining_depths(current_depth);
     }
 }
 
@@ -95,44 +95,44 @@ void SearchMemory::override_castle_rights(unsigned char rights)
 
 void SearchMemory::handle_no_capture_count(
     const model::Move& move, 
-    int currentDepth, 
+    int current_depth, 
     model::Piece::Type  moved_piece_type)
 {
     // If the move is a capture, reset the no capture count
     if (move.is_any_capture()) {
-        reset_no_captures_or_pawn_moves_count_at_depth(currentDepth + 1);
+        reset_no_captures_or_pawn_moves_count_at_depth(current_depth + 1);
         return;
     }
 
     // If the move is a pawn move, reset the no capture count
     if (moved_piece_type == model::Piece::Type::W_PAWN || moved_piece_type == model::Piece::Type::B_PAWN) {
-        reset_no_captures_or_pawn_moves_count_at_depth(currentDepth + 1);
+        reset_no_captures_or_pawn_moves_count_at_depth(current_depth + 1);
         return;
     }
 
     // If the move is not a capture or pawn move, increment the no capture count
-    increment_no_captures_or_pawn_moves_at_depth(currentDepth + 1);
+    increment_no_captures_or_pawn_moves_at_depth(current_depth + 1);
 }
 
 void SearchMemory::handle_ep_memory(
     const model::Move& move, 
     bool is_w, 
-    int currentDepth, 
-    int toIndex) 
+    int current_depth, 
+    int to_index) 
 {
     if (not move.is_double_pawn_push()) {
-        set_ep_target_at_depth(currentDepth + 1, 0ULL);
+        set_ep_target_at_depth(current_depth + 1, 0ULL);
         return;
     }
 
     if (move.is_double_pawn_push()) {
-        bitmask enPessantTarget = is_w ? (1ULL << (toIndex - 8)) 
-                                          : (1ULL << (toIndex + 8));
+        bitmask enPessantTarget = is_w ? (1ULL << (to_index - 8)) 
+                                          : (1ULL << (to_index + 8));
 
-        set_ep_target_at_depth(currentDepth + 1, enPessantTarget);
+        set_ep_target_at_depth(current_depth + 1, enPessantTarget);
         
         // FIXME: Temporary because I don't know how to implement this haha
-        // z_hasher_.hash_en_pessant_file(toIndex % 8);
+        // z_hasher_.hash_en_pessant_file(to_index % 8);
     }
 }
 

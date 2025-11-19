@@ -19,7 +19,7 @@ perft::perft(int maxDepth)
       move_retractor_(board_),
       move_generator_(board_, move_maker_, move_retractor_),
       eval_(board_),
-      _perftData(maxDepth),
+      perft_data_(maxDepth),
       num_move_gen_calls_(0),
       total_nodes_(0)
 {
@@ -32,11 +32,11 @@ perft::perft(int maxDepth)
 
 void perft::gen_moves(
     bool is_w,
-    int currentDepth,
+    int current_depth,
     bitmask ep_target_mask,
     unsigned char castle_rights) 
 {
-    move_generator_.gen_moves(is_w, move_lists_[currentDepth], ep_target_mask, castle_rights);
+    move_generator_.gen_moves(is_w, move_lists_[current_depth], ep_target_mask, castle_rights);
 }
 
 logic::MoveResult perft::make_move(
@@ -108,7 +108,7 @@ bool perft::too_many_pieces_on_board()
 }
 
 bool perft::check_condition(
-    int currentDepth,
+    int current_depth,
     bool isMaximizer,
     int firstMoveIndex, 
     model::Move currentMove, 
@@ -120,31 +120,31 @@ bool perft::check_condition(
     // return too_many_pieces_on_board();
     // return firstMoveIndex == 19 && currentMove.is_any_capture();
     // return currentMove.get_bit_index_from() == 12 && currentMove.get_bit_index_to() == 12;
-    // return currentDepth == 3 && firstMoveIndex == 0 && currentMove.get_bit_index_from() == 34 && currentMove.get_bit_index_to() == 27;
+    // return current_depth == 3 && firstMoveIndex == 0 && currentMove.get_bit_index_from() == 34 && currentMove.get_bit_index_to() == 27;
     // return currentMove.is_any_capture();
     // return true;
     return false;
-    // return diffBetweenStateBitmasks();
-    // return currentDepth == 2 && firstMoveIndex == 0 && isMaximizer == true && currentMove.getMove() == 66;
+    // return diff_between_state_bitmasks();
+    // return current_depth == 2 && firstMoveIndex == 0 && isMaximizer == true && currentMove.getMove() == 66;
 }
 
 // TODO: Implement draw by repetition after implementing zobrist hashing
 void perft::minimax(
-    int currentDepth, 
+    int current_depth, 
     bool isMaximizer, 
     int firstMoveIndex, 
     bool recPerftStats, 
     const model::Move& lastMove, 
     bool verbose)
 {        
-    if (currentDepth == max_depth_)
+    if (current_depth == max_depth_)
         return;
 
     gen_moves(
         isMaximizer, 
-        currentDepth,
-        search_memory_.get_ep_target_at_depth(currentDepth),
-        search_memory_.get_castling_rights_at_depth(currentDepth)
+        current_depth,
+        search_memory_.get_ep_target_at_depth(current_depth),
+        search_memory_.get_castling_rights_at_depth(current_depth)
     );
 
     num_move_gen_calls_++;
@@ -152,13 +152,13 @@ void perft::minimax(
     size_t numIllegalMoves = 0;
 
     for (size_t i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
-        model::Move currentMove = move_lists_[currentDepth].get_move_at(i);
+        model::Move currentMove = move_lists_[current_depth].get_move_at(i);
 
         if (currentMove.get_move() == 0)
             break;
 
         if (check_condition(
-            currentDepth, 
+            current_depth, 
             isMaximizer, 
             firstMoveIndex, 
             currentMove, 
@@ -174,7 +174,7 @@ void perft::minimax(
         logic::MoveResult move_result = make_move(currentMove, isMaximizer);
 
         if (check_condition(
-            currentDepth, 
+            current_depth, 
             isMaximizer, 
             firstMoveIndex, 
             currentMove, 
@@ -191,7 +191,7 @@ void perft::minimax(
             unmake_move(currentMove, isMaximizer, move_result);
 
             if (check_condition(
-                currentDepth, 
+                current_depth, 
                 isMaximizer, 
                 firstMoveIndex, 
                 currentMove, 
@@ -203,11 +203,11 @@ void perft::minimax(
                 int x = 4;
             }
 
-            if (numIllegalMoves == i + 1 && move_lists_[currentDepth].get_move_at(i + 1).get_move() == 0) {
+            if (numIllegalMoves == i + 1 && move_lists_[current_depth].get_move_at(i + 1).get_move() == 0) {
                 bool wasInCheckBeforeMove = move_generator_.in_check(isMaximizer);
 
                 if (wasInCheckBeforeMove) {
-                    _perftData.increaseCheckmateCountAt(currentDepth);
+                    perft_data_.increase_checkmate_count_at(current_depth);
                 }
 
                 return;
@@ -218,7 +218,7 @@ void perft::minimax(
 
         // Move was legal, update castling rights
         search_memory_.set_castle_rights(
-            currentDepth,
+            current_depth,
             currentMove, 
             isMaximizer, 
             piece_map_.get_piece_type_at_index(currentMove.get_bit_index_to())
@@ -229,7 +229,7 @@ void perft::minimax(
             
             record_perft_stats(
                 isMaximizer, 
-                currentDepth, 
+                current_depth, 
                 firstMoveIndex, 
                 i, 
                 currentMove, 
@@ -241,7 +241,7 @@ void perft::minimax(
         }
 
         minimax(
-            currentDepth + 1, 
+            current_depth + 1, 
             !isMaximizer, 
             firstMoveIndex, 
             recPerftStats, 
@@ -250,10 +250,10 @@ void perft::minimax(
         );
 
         unmake_move(currentMove, isMaximizer, move_result);
-        search_memory_.unset_castle_rights(currentDepth);
+        search_memory_.unset_castle_rights(current_depth);
         
         if (check_condition(
-            currentDepth, 
+            current_depth, 
             isMaximizer, 
             firstMoveIndex, 
             currentMove, 
@@ -271,7 +271,7 @@ void perft::minimax(
 
 void perft::record_perft_stats(
     bool isMaximizer, 
-    int currentDepth, 
+    int current_depth, 
     int &firstMoveIndex, 
     size_t i, 
     const model::Move& currentMove, 
@@ -279,38 +279,38 @@ void perft::record_perft_stats(
 {
     ret_flag = true;
     if (move_generator_.in_check(!isMaximizer)) {
-        _perftData.increaseCheckCountAt(currentDepth + 1);
+        perft_data_.increase_check_count_at(current_depth + 1);
     }
 
-    if (currentDepth == 0) {
+    if (current_depth == 0) {
         firstMoveIndex = i;
-        _perftData.setFirstMoveAt(firstMoveIndex, currentMove);
-    } else if (currentDepth == max_depth_ - 1) {
-        _perftData.increaseNodeCountPerFirstMoveAt(firstMoveIndex);
+        perft_data_.set_first_move_at(firstMoveIndex, currentMove);
+    } else if (current_depth == max_depth_ - 1) {
+        perft_data_.increase_node_count_per_first_move_at(firstMoveIndex);
     }
 
-    _perftData.increaseNodeCountAt(currentDepth + 1);
+    perft_data_.increase_node_count_at(current_depth + 1);
 
     if (currentMove.is_any_capture()) {
-        _perftData.increaseCaptureCountAt(currentDepth + 1);
+        perft_data_.increase_capture_count_at(current_depth + 1);
     }
 
     if (currentMove.is_any_promo()) {
-        _perftData.increasePromotionCountAt(currentDepth + 1);
+        perft_data_.increase_promo_count_at(current_depth + 1);
     }
 
     if (currentMove.is_any_castle()) {
-        _perftData.increaseCastlingCountAt(currentDepth + 1);
+        perft_data_.increase_castle_count_at(current_depth + 1);
     }
 
     if (currentMove.is_ep_capture()) {
-        _perftData.increaseEpCaptureCountAt(currentDepth + 1);
+        perft_data_.increase_ep_capture_count_at(current_depth + 1);
     }
 
     // FIXME: This is temporary
     // if (board_.isDeadPosition() || 49 >= 50)
     // {
-    //     unmake_move(currentMove, isMaximizer, currentDepth);
+    //     unmake_move(currentMove, isMaximizer, current_depth);
     //     return;
     // }
     ret_flag = false;

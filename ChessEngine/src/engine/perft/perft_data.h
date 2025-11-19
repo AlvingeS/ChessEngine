@@ -4,36 +4,36 @@
 
 namespace engine {
 
-class perftData {
+class PerftData {
 
 public:
-    perftData(int maxDepth);
+    PerftData(int maxDepth);
 
     long sum_nodes_to_depth(int depth) const;
-    void resetNodeCounts();
+    void reset_node_counts();
 
-    size_t getNumFirstMoves() const { return first_moves_.size(); }
-    int getNodeCountPerFirstMoveAt(int firstMoveIndex) const { return node_count_per_first_move_[firstMoveIndex]; }
+    size_t get_num_first_moves() const { return first_moves_.size(); }
+    int get_node_count_per_first_move_at(int first_move_idx) const { return node_count_per_first_move_[first_move_idx]; }
 
-    int getNodeCountAt(int depth) const;
-    int getCaptureCountAt(int depth) const;
-    int getEpCaptureCountAt(int depth) const;
-    int getCastlingCountAt(int depth) const;
-    int getPromotionCountAt(int depth) const;
-    int getCheckCountAt(int depth) const;
-    int getCheckmateCountAt(int depth) const;
+    int get_node_count_at(int depth) const;
+    int get_capture_count_at(int depth) const;
+    int get_ep_capture_count_at(int depth) const;
+    int get_castle_rights_at(int depth) const;
+    int get_promotion_count_at(int depth) const;
+    int get_check_count_at(int depth) const;
+    int get_checkmate_count_at(int depth) const;
 
-    void increaseNodeCountAt(int depth);
-    void increaseCaptureCountAt(int depth);
-    void increaseEpCaptureCountAt(int depth);
-    void increaseCastlingCountAt(int depth);
-    void increasePromotionCountAt(int depth);
-    void increaseCheckCountAt(int depth);
-    void increaseCheckmateCountAt(int depth);
+    void increase_node_count_at(int depth);
+    void increase_capture_count_at(int depth);
+    void increase_ep_capture_count_at(int depth);
+    void increase_castle_count_at(int depth);
+    void increase_promo_count_at(int depth);
+    void increase_check_count_at(int depth);
+    void increase_checkmate_count_at(int depth);
 
-    model::Move getFirstMoveAt(int firstMoveIndex) const { return first_moves_[firstMoveIndex]; }
-    void setFirstMoveAt(int firstMoveIndex, model::Move currentMove);
-    void increaseNodeCountPerFirstMoveAt(int firstMoveIndex);
+    model::Move get_first_move_at(int first_move_idx) const { return first_moves_[first_move_idx]; }
+    void set_first_move_at(int first_move_idx, model::Move currentMove);
+    void increase_node_count_per_first_move_at(int first_move_idx);
 
 private:
     int max_depth_;

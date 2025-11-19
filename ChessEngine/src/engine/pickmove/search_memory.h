@@ -31,20 +31,20 @@ public:
     }
 
     void set_last_captured_piece_at_depth(
-        int currentDepth,
+        int current_depth,
         model::Piece::Type piece_type) 
     {
-        last_captured_pieces_[currentDepth] = piece_type;
+        last_captured_pieces_[current_depth] = piece_type;
     }
 
     void set_castle_rights(
-        int currentDepth, 
+        int current_depth, 
         const model::Move& move, 
         bool is_w, 
         model::Piece::Type moved_piece_type
     );
 
-    void unset_castle_rights(int currentDepth);
+    void unset_castle_rights(int current_depth);
 
     bitmask get_ep_target_at_depth(int depth) const
     {
@@ -78,15 +78,15 @@ public:
 
     void handle_no_capture_count(
         const model::Move& move, 
-        int currentDepth, 
+        int current_depth, 
         model::Piece::Type  moved_piece_type
     );
 
     void handle_ep_memory(
             const model::Move& move, 
             bool is_w, 
-            int currentDepth, 
-            int toIndex
+            int current_depth, 
+            int to_index
     );
 
 private:
@@ -97,11 +97,11 @@ private:
     std::vector<int> no_captures_or_pawn_moves_counts_;
 
     void remove_castle_rights_for_remaining_depths(
-        int currentDepth, 
-        unsigned char rightsToRemove
+        int current_depth, 
+        unsigned char rights_to_remove
     );
     
-    void restore_castle_rights_for_remaining_depths(int currentDepth);
+    void restore_castle_rights_for_remaining_depths(int current_depth);
     void override_castle_rights(unsigned char rights);
 
 };

@@ -1,27 +1,27 @@
 namespace engine {
 
-inline int perftData::getNodeCountAt(int depth) const { return node_count_[depth]; }
-inline int perftData::getCaptureCountAt(int depth) const { return capture_count_[depth]; }
-inline int perftData::getEpCaptureCountAt(int depth) const { return ep_capture_count_[depth]; }
-inline int perftData::getCastlingCountAt(int depth) const { return casle_count_[depth]; }
-inline int perftData::getPromotionCountAt(int depth) const { return promo_count_[depth]; }
-inline int perftData::getCheckCountAt(int depth) const { return check_count_[depth]; }
-inline int perftData::getCheckmateCountAt(int depth) const { return checkmate_count_[depth]; }
+inline int PerftData::get_node_count_at(int depth) const { return node_count_[depth]; }
+inline int PerftData::get_capture_count_at(int depth) const { return capture_count_[depth]; }
+inline int PerftData::get_ep_capture_count_at(int depth) const { return ep_capture_count_[depth]; }
+inline int PerftData::get_castle_rights_at(int depth) const { return casle_count_[depth]; }
+inline int PerftData::get_promotion_count_at(int depth) const { return promo_count_[depth]; }
+inline int PerftData::get_check_count_at(int depth) const { return check_count_[depth]; }
+inline int PerftData::get_checkmate_count_at(int depth) const { return checkmate_count_[depth]; }
 
-inline void perftData::increaseNodeCountAt(int depth) { node_count_[depth]++; }
-inline void perftData::increaseCaptureCountAt(int depth) { capture_count_[depth]++; }
-inline void perftData::increaseEpCaptureCountAt(int depth) { ep_capture_count_[depth]++; }
-inline void perftData::increaseCastlingCountAt(int depth) { casle_count_[depth]++; }
-inline void perftData::increasePromotionCountAt(int depth) { promo_count_[depth]++; }
-inline void perftData::increaseCheckCountAt(int depth) { check_count_[depth]++; }
-inline void perftData::increaseCheckmateCountAt(int depth) { checkmate_count_[depth]++; }
+inline void PerftData::increase_node_count_at(int depth) { node_count_[depth]++; }
+inline void PerftData::increase_capture_count_at(int depth) { capture_count_[depth]++; }
+inline void PerftData::increase_ep_capture_count_at(int depth) { ep_capture_count_[depth]++; }
+inline void PerftData::increase_castle_count_at(int depth) { casle_count_[depth]++; }
+inline void PerftData::increase_promo_count_at(int depth) { promo_count_[depth]++; }
+inline void PerftData::increase_check_count_at(int depth) { check_count_[depth]++; }
+inline void PerftData::increase_checkmate_count_at(int depth) { checkmate_count_[depth]++; }
 
-inline void perftData::setFirstMoveAt(int firstMoveIndex, model::Move currentMove) 
+inline void PerftData::set_first_move_at(int firstMoveIndex, model::Move currentMove) 
 {
     first_moves_[firstMoveIndex] = currentMove;
 }
 
-inline void perftData::increaseNodeCountPerFirstMoveAt(int firstMoveIndex) 
+inline void PerftData::increase_node_count_per_first_move_at(int firstMoveIndex) 
 {
     node_count_per_first_move_[firstMoveIndex]++;
 }

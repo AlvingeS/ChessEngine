@@ -39,7 +39,7 @@ private:
 
     void place_moved_piece_on_board(
         bool is_w, 
-        int toIndex,
+        int to_index,
         model::Piece::Type moved_piece_type
     );
 

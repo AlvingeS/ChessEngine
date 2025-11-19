@@ -171,7 +171,7 @@ bool MovePicker::check_condition(
     // return current_move.is_any_capture();
     // return true;
     return false;
-    // return diffBetweenStateBitmasks();
+    // return diff_between_state_bitmasks();
     // return current_depth == 2 && first_move_idx == 0 && is_maximizer == true && current_move.getMove() == 66;
 }
 

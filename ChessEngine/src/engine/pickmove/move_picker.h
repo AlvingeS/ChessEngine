@@ -83,26 +83,26 @@ public:
         max_depth_ = maxDepth;
     }
 
-    int getMaxDepth() const {
+    int get_max_depth() const {
         return max_depth_;
     }
 
-    const logic::MoveGenerator& getMoveGenerator() const
+    const logic::MoveGenerator& get_move_generator() const
     {
         return move_generator_;
     }
 
-    void setBoardFromFen(const std::string& fen)
+    void set_board_from_fen(const std::string& fen)
     {
-        io::Fen::setBoardFromFen(fen, bitboards_, state_bitmasks_, piece_map_);
+        io::Fen::set_board_from_fen(fen, bitboards_, state_bitmasks_, piece_map_);
     }
 
-    std::string getFenFromBoard() const
+    std::string get_fen_from_board() const
     {
-        return io::Fen::getFenFromBoard(piece_map_);
+        return io::Fen::get_fen_from_board(piece_map_);
     }
 
-    bool diffBetweenStateBitmasks() const
+    bool diff_between_state_bitmasks() const
     {
         return (state_bitmasks_.get_b_pieces_bitmask() | state_bitmasks_.get_w_pieces_bitmask()) != state_bitmasks_.get_occupied_pieces_bitmask();
     }

@@ -24,7 +24,7 @@ protected:
 TEST_F(perftPosFive, perft_pos5) 
 {
     if (enablePos5Test) {
-        movePicker.setBoardFromFen(posFive);
+        movePicker.set_board_from_fen(posFive);
 
         // Make dubug move
         // model::Move move = moveFromStrAndFlag("a2a3", 0);
@@ -37,7 +37,7 @@ TEST_F(perftPosFive, perft_pos5)
 
         std::string debugFen;
         if (nDebugMoves > 0) {
-            debugFen = movePicker.getFenFromBoard();
+            debugFen = movePicker.get_fen_from_board();
             debugFen += whiteToStart ? " w" : " b";
             debugFen += " KQ - 1 8";
         }
@@ -51,7 +51,7 @@ TEST_F(perftPosFive, perft_pos5)
         compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
 
         if (nDebugMoves == 0) {
-            for (uint64_t i = 1; i <= movePicker.getMaxDepth(); i++) {
+            for (uint64_t i = 1; i <= movePicker.get_max_depth(); i++) {
                 ASSERT_EQ(movePicker.node_count_[i], expectedNodes[i]);
             }
         }

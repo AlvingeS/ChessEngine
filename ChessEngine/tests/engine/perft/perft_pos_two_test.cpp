@@ -26,7 +26,7 @@ protected:
 TEST_F(perftPosTwo, perft_pos2) 
 {
     if (enablePos2Test) {
-        movePicker.setBoardFromFen(posTwo);
+        movePicker.set_board_from_fen(posTwo);
 
         // Make dubug move
         // model::Move move = moveFromStrAndFlag("a2a3", 0);
@@ -42,7 +42,7 @@ TEST_F(perftPosTwo, perft_pos2)
 
         std::string debugFen;
         if (nDebugMoves > 0) {
-            debugFen = movePicker.getFenFromBoard();
+            debugFen = movePicker.get_fen_from_board();
             debugFen += whiteToStart ? " w" : " b";
             debugFen += " KQkq -";
         }
@@ -56,7 +56,7 @@ TEST_F(perftPosTwo, perft_pos2)
         compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
         
         if (nDebugMoves == 0) {
-            for (uint64_t i = 1; i <= movePicker.getMaxDepth(); i++) {
+            for (uint64_t i = 1; i <= movePicker.get_max_depth(); i++) {
                 ASSERT_EQ(movePicker.node_count_[i], expectedResults[i][0]);
                 ASSERT_EQ(movePicker.capture_count_[i], expectedResults[i][1]);
                 ASSERT_EQ(movePicker.ep_capture_count_[i], expectedResults[i][2]);
@@ -64,7 +64,7 @@ TEST_F(perftPosTwo, perft_pos2)
                 ASSERT_EQ(movePicker.promo_count_[i], expectedResults[i][4]);
                 ASSERT_EQ(movePicker.check_count_[i], expectedResults[i][5]);
                 
-                if (i < movePicker.getMaxDepth()) {
+                if (i < movePicker.get_max_depth()) {
                     ASSERT_EQ(movePicker.checkmate_count_[i], expectedResults[i][6]);
                 }       
             }

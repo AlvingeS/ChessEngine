@@ -42,7 +42,7 @@ TEST_F(perftStartPos, perft_starting_pos)
             {7, {3195901860, 108329926, 319617, 883453, 0, 33103848, 0    }}
         };
 
-        for (uint64_t i = 1; i <= movePicker.getMaxDepth(); i++) {
+        for (uint64_t i = 1; i <= movePicker.get_max_depth(); i++) {
             ASSERT_EQ(movePicker.node_count_[i], expectedResults[i][0]);
             ASSERT_EQ(movePicker.capture_count_[i], expectedResults[i][1]);
             ASSERT_EQ(movePicker.ep_capture_count_[i], expectedResults[i][2]);
@@ -50,7 +50,7 @@ TEST_F(perftStartPos, perft_starting_pos)
             ASSERT_EQ(movePicker.promo_count_[i], expectedResults[i][4]);
             ASSERT_EQ(movePicker.check_count_[i], expectedResults[i][5]);
             
-            if (i < movePicker.getMaxDepth()) {
+            if (i < movePicker.get_max_depth()) {
                 ASSERT_EQ(movePicker.checkmate_count_[i], expectedResults[i][6]);
             }       
         }

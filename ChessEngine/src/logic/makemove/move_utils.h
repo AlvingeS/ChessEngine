@@ -21,7 +21,7 @@ struct MoveResult {
 struct MoveUtils {
     
     static model::Piece::Type get_promotion_piece_type(int promotionFlag, bool is_w);
-    static int determine_capture_sq_idx(const model::Move& move, bool is_w, int toIndex);
+    static int determine_capture_sq_idx(const model::Move& move, bool is_w, int to_index);
 
 };
 

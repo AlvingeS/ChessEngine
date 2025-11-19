@@ -4,7 +4,7 @@
 
 namespace engine {
 
-perftData::perftData(int maxDepth)
+PerftData::PerftData(int maxDepth)
     : max_depth_(maxDepth)
 {
     node_count_per_first_move_.resize(constants::MAX_LEGAL_MOVES);
@@ -34,7 +34,7 @@ perftData::perftData(int maxDepth)
     }
 }
 
-long perftData::sum_nodes_to_depth(int depth) const 
+long PerftData::sum_nodes_to_depth(int depth) const 
 {
     long sum = 0;
 
@@ -45,7 +45,7 @@ long perftData::sum_nodes_to_depth(int depth) const
     return sum;
 }
 
-void perftData::resetNodeCounts() 
+void PerftData::reset_node_counts() 
 {
     for (int i = 0; i < max_depth_ + 1; i++) {
         node_count_[i] = 0;

@@ -11,11 +11,11 @@ class BoardPrinter {
 
 public:
     BoardPrinter(const model::Bitboards& bitboards);
-    void fillBoard(const model::Bitboards& bitboards);
-    void printBoard() const;
+    void fill_board(const model::Bitboards& bitboards);
+    void print() const;
 
 private:
-    bool isValidPiece(model::Piece::Type piece_type);
+    bool is_valid_piece(model::Piece::Type piece_type);
 
     std::vector<std::vector<char>> board_;
 };

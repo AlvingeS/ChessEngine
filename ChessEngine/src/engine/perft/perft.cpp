@@ -58,7 +58,7 @@ void perft::debug_print(bool verbose) const
 {
     if (verbose) {
         io::BoardPrinter boardPrinter = io::BoardPrinter(bitboards_);
-        boardPrinter.printBoard();
+        boardPrinter.print();
     }
 }
 

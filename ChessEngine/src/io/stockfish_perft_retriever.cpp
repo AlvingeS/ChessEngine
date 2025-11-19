@@ -10,7 +10,7 @@ namespace io::stockfish
 namespace
 {
 
-std::string buildShellCommand(const std::string& FEN, int depth) 
+std::string build_shell_command(const std::string& FEN, int depth) 
 {
     std::ostringstream oss;
     
@@ -21,9 +21,9 @@ std::string buildShellCommand(const std::string& FEN, int depth)
     return oss.str();
 } 
 
-std::string getStockfishOutput(const std::string& FEN, int depth)
+std::string get_stockfish_output(const std::string& FEN, int depth)
 {
-    auto shellCommand = buildShellCommand(FEN, depth);
+    auto shellCommand = build_shell_command(FEN, depth);
 
     FILE* pipe = popen(shellCommand.c_str(), "r");
 
@@ -44,7 +44,7 @@ std::string getStockfishOutput(const std::string& FEN, int depth)
     return output;
 }
 
-std::unordered_map<std::string, uint64_t> parseOutput(std::string stockfishOutput)
+std::unordered_map<std::string, uint64_t> parse_output(std::string stockfishOutput)
 {
     std::unordered_map<std::string, uint64_t> results{};
     std::regex pattern(R"((\w+): (\d+))");              // Finds <alphanumeric>: <digits> pattern
@@ -66,10 +66,10 @@ std::unordered_map<std::string, uint64_t> parseOutput(std::string stockfishOutpu
 } // namespace
 
 
-std::unordered_map<std::string, uint64_t> getPerftResults(const std::string& FEN, int depth) 
+std::unordered_map<std::string, uint64_t> get_perft_results(const std::string& FEN, int depth) 
 {
-    const auto stockfishOutput = getStockfishOutput(FEN, depth);
-    return parseOutput(stockfishOutput);
+    const auto stockfishOutput = get_stockfish_output(FEN, depth);
+    return parse_output(stockfishOutput);
 }
 
 } // namespace io::stockfish

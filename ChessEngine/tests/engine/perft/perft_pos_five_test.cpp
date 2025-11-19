@@ -42,7 +42,7 @@ TEST_F(perftPosFive, perft_pos5)
             debugFen += " KQ - 1 8";
         }
 
-        std::unordered_map<std::string, uint64_t> stockfishResults = io::stockfish::getPerftResults(nDebugMoves > 0 ? debugFen : posFive, depth);
+        std::unordered_map<std::string, uint64_t> stockfishResults = io::stockfish::get_perft_results(nDebugMoves > 0 ? debugFen : posFive, depth);
 
         movePicker.set_max_depth(depth);
         movePicker.minimax(0, whiteToStart, 0);
@@ -51,7 +51,7 @@ TEST_F(perftPosFive, perft_pos5)
         compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
 
         if (nDebugMoves == 0) {
-            for (uint64_t i = 1; i <= movePicker.get_max_depth(); i++) {
+            for (int i = 1; i <= movePicker.get_max_depth(); i++) {
                 ASSERT_EQ(movePicker.node_count_[i], expectedNodes[i]);
             }
         }

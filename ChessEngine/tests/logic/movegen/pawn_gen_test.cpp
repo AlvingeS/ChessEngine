@@ -27,7 +27,7 @@ protected:
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosWhite_ShouldReturn16Moves) 
 {
-    io::Fen::setBoardFromFen(startingPos, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(startingPos, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_pawn_moves(true, movelist, 0);
 
     model::Movelist moves = getMoves();
@@ -52,7 +52,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosWhite_ShouldReturn16Moves)
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosBlack_ShouldReturn16Moves) 
 {
-    io::Fen::setBoardFromFen(startingPos, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(startingPos, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_pawn_moves(false, movelist, 0);
 
     model::Movelist moves = getMoves();
@@ -77,7 +77,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosBlack_ShouldReturn16Moves)
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneWhite_ShouldReturn6Moves) 
 {
-    io::Fen::setBoardFromFen(fenOne, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenOne, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_pawn_moves(true, movelist, 0);
 
     model::Movelist moves = getMoves();
@@ -97,7 +97,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneWhite_ShouldReturn6Moves)
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneBlack_ShouldReturnXMoves) 
 {
-    io::Fen::setBoardFromFen(fenOne, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenOne, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_pawn_moves(false, movelist, 0);
 
     model::Movelist moves = getMoves();
@@ -117,7 +117,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneBlack_ShouldReturnXMoves)
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Moves) 
 {
-    io::Fen::setBoardFromFen(fenEnPessantForWhiteTest, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenEnPessantForWhiteTest, bitboards, state_bitmasks, piece_map);
     // moveGenerator.getBoard().setEnPessantTargetAtIndex(43);
     moveGenerator.gen_pawn_moves(true, movelist, 0);
 
@@ -136,7 +136,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Mov
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForBlack_ShouldReturn2Moves) 
 {
-    io::Fen::setBoardFromFen(fenEnPessantForBlackTest, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenEnPessantForBlackTest, bitboards, state_bitmasks, piece_map);
     // moveGenerator.getBoard().setEnPessantTargetAtIndex(23);
     moveGenerator.gen_pawn_moves(false, movelist, 0);
 
@@ -155,7 +155,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForBlack_ShouldReturn2Mov
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12Moves) 
 {
-    io::Fen::setBoardFromFen(fenPromotionTest, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenPromotionTest, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_pawn_moves(true, movelist, 0);
 
     model::Movelist moves = getMoves();
@@ -175,7 +175,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12M
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12Moves) 
 {
-    io::Fen::setBoardFromFen(fenPromotionTest, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenPromotionTest, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_pawn_moves(false, movelist, 0);
 
     model::Movelist moves = getMoves();
@@ -195,7 +195,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12M
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenBuggedPawnTestWhite_ShouldNotReturnh6) 
 {
-    io::Fen::setBoardFromFen(fenBuggedPawnTest, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenBuggedPawnTest, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_pawn_moves(false, movelist, 0);
 
     model::Movelist moves = getMoves();

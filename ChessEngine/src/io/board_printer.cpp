@@ -8,10 +8,10 @@ namespace io {
 
 BoardPrinter::BoardPrinter(const model::Bitboards& bitboards) 
 {
-    fillBoard(bitboards);
+    fill_board(bitboards);
 }
 
-bool BoardPrinter::isValidPiece(model::Piece::Type piece_type) 
+bool BoardPrinter::is_valid_piece(model::Piece::Type piece_type) 
 {
     switch(piece_type) {
         case model::Piece::Type::W_PAWN:
@@ -32,26 +32,26 @@ bool BoardPrinter::isValidPiece(model::Piece::Type piece_type)
     }
 }
 
-void BoardPrinter::fillBoard(const model::Bitboards& bitboards) 
+void BoardPrinter::fill_board(const model::Bitboards& bitboards) 
 {
     board_ = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
     
     for (int i = 0; i < 12; i++) {
         model::Piece::Type piece_type = model::Piece::get_type_from_int(i);
         bitmask bitboard = bitboards.get_bitboard_from_index(i);
-        char pieceChar = model::Piece::get_char_from_type(piece_type);
+        char piece_char = model::Piece::get_char_from_type(piece_type);
 
         for (int i = 0; i < 64; i++) {
             if ((bitboard >> i) & 1) {
                 int row = i / 8;
                 int col = i % 8;
-                board_[row][col] = pieceChar;
+                board_[row][col] = piece_char;
             }
         }
     }
 }
 
-void BoardPrinter::printBoard() const {
+void BoardPrinter::print() const {
     for (int row = 7; row >= 0; row--) {  // Start from the bottom row (row 7) and go upwards.
         std::cout << "---------------------------------   ---------------------------------" << std::endl;
         for (int col = 7; col >= 0; col--) {  // Iterate through columns from left to right.

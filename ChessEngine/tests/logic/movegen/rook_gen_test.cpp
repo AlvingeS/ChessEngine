@@ -19,7 +19,7 @@ class MoveGeneratorRookTest : public BaseGenerator
 
 TEST_F(MoveGeneratorRookTest, genRookMoves_fenOneWhite_ShouldReturn12Moves) 
 {
-    io::Fen::setBoardFromFen(fenOne, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenOne, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_rook_moves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -37,7 +37,7 @@ TEST_F(MoveGeneratorRookTest, genRookMoves_fenOneWhite_ShouldReturn12Moves)
 
 TEST_F(MoveGeneratorRookTest, genRookMoves_fenOneBlack_ShouldReturn0Moves) 
 {
-    io::Fen::setBoardFromFen(fenOne, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenOne, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_rook_moves(false, movelist);
 
     ASSERT_EQ(movelist.get_move_index(), 0);
@@ -45,7 +45,7 @@ TEST_F(MoveGeneratorRookTest, genRookMoves_fenOneBlack_ShouldReturn0Moves)
 
 TEST_F(MoveGeneratorRookTest, genRookMoves_startingPosWhite_ShouldReturn0Moves) 
 {
-    io::Fen::setBoardFromFen(startingPos, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(startingPos, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_rook_moves(true, movelist);
 
     ASSERT_EQ(movelist.get_move_index(), 0);
@@ -53,7 +53,7 @@ TEST_F(MoveGeneratorRookTest, genRookMoves_startingPosWhite_ShouldReturn0Moves)
 
 TEST_F(MoveGeneratorRookTest, genRookMoves_startingPosBlack_ShouldReturn0Moves) 
 {
-    io::Fen::setBoardFromFen(startingPos, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(startingPos, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_rook_moves(false, movelist);
 
     ASSERT_EQ(movelist.get_move_index(), 0);
@@ -61,7 +61,7 @@ TEST_F(MoveGeneratorRookTest, genRookMoves_startingPosBlack_ShouldReturn0Moves)
 
 TEST_F(MoveGeneratorRookTest, genRookMoves_fenTwoWhite_ShouldReturn17Moves) 
 {
-    io::Fen::setBoardFromFen(fenTwo, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenTwo, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_rook_moves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -80,7 +80,7 @@ TEST_F(MoveGeneratorRookTest, genRookMoves_fenTwoWhite_ShouldReturn17Moves)
 
 TEST_F(MoveGeneratorRookTest, genRookMoves_fenTwoBlack_ShouldReturn12Moves) 
 {
-    io::Fen::setBoardFromFen(fenTwo, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenTwo, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_rook_moves(false, movelist);
 
     model::Movelist moves = getMoves();

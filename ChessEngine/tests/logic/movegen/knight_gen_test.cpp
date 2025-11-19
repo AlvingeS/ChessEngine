@@ -17,7 +17,7 @@ protected:
 
 TEST_F(MoveGeneratorKnightTest, genKnightMoves_startPosWhite_ShouldReturn4Moves) 
 {
-    io::Fen::setBoardFromFen(startingPos, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(startingPos, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_knight_moves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -36,7 +36,7 @@ TEST_F(MoveGeneratorKnightTest, genKnightMoves_startPosWhite_ShouldReturn4Moves)
 
 TEST_F(MoveGeneratorKnightTest, genKnightMoves_startPosBlack_ShouldReturn4Moves) 
 {
-    io::Fen::setBoardFromFen(startingPos, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(startingPos, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_knight_moves(false, movelist);
 
     model::Movelist moves = getMoves();
@@ -55,7 +55,7 @@ TEST_F(MoveGeneratorKnightTest, genKnightMoves_startPosBlack_ShouldReturn4Moves)
 
 TEST_F(MoveGeneratorKnightTest, genKnightMoves_fenOneWhite_ShouldReturn8Moves) 
 {
-    io::Fen::setBoardFromFen(fenOne, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenOne, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_knight_moves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -74,7 +74,7 @@ TEST_F(MoveGeneratorKnightTest, genKnightMoves_fenOneWhite_ShouldReturn8Moves)
 
 TEST_F(MoveGeneratorKnightTest, genKnightMoves_fenOneBlack_ShouldReturn10Moves) 
 {
-    io::Fen::setBoardFromFen(fenOne, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenOne, bitboards, state_bitmasks, piece_map);
     moveGenerator.gen_knight_moves(false, movelist);
 
     model::Movelist moves = getMoves();

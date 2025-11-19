@@ -38,24 +38,24 @@ void Fen::set_board_from_fen(
 std::string Fen::get_fen_from_board(const model::PieceMap& piece_map)
 {
     std::string fen = "";
-    int emptyCount = 0;
+    int empty_count = 0;
 
     for (int i = 63; i >= 0; i--) {
         if ((i + 1) % 8 == 0 && i != 63) {
-            if (emptyCount != 0) {
-                fen += std::to_string(emptyCount);
-                emptyCount = 0;
+            if (empty_count != 0) {
+                fen += std::to_string(empty_count);
+                empty_count = 0;
             }
             fen += "/";
         }
 
         model::Piece::Type type = piece_map.get_piece_type_at_index(i);
         if (type == model::Piece::Type::EMPTY) {
-            emptyCount++;
+            empty_count++;
         } else {
-            if (emptyCount != 0) {
-                fen += std::to_string(emptyCount);
-                emptyCount = 0;
+            if (empty_count != 0) {
+                fen += std::to_string(empty_count);
+                empty_count = 0;
             }
             fen += model::Piece::get_char_from_type(type);
         }

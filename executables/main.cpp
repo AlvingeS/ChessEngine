@@ -91,19 +91,19 @@ int main()
     bool recPerftStats = false;
 
     engine::MovePicker movePickerStartPos = engine::MovePicker(MAX_DEPTH);
-    movePickerStartPos.setBoardFromFen(startPos);
+    movePickerStartPos.set_board_from_fen(startPos);
     movePickerStartPos.minimax(0, true, 0, recPerftStats);
 
     engine::MovePicker movePickerPosTwo = engine::MovePicker(MAX_DEPTH);
-    movePickerPosTwo.setBoardFromFen(posTwo);
+    movePickerPosTwo.set_board_from_fen(posTwo);
     movePickerPosTwo.minimax(0, true, 0, recPerftStats);
     
     engine::MovePicker movePickerPosThree = engine::MovePicker(MAX_DEPTH);
-    movePickerPosThree.setBoardFromFen(posThree);
+    movePickerPosThree.set_board_from_fen(posThree);
     movePickerPosThree.minimax(0, true, 0, recPerftStats);
 
     engine::MovePicker movePickerPosFive = engine::MovePicker(MAX_DEPTH);
-    movePickerPosFive.setBoardFromFen(posFive);
+    movePickerPosFive.set_board_from_fen(posFive);
     movePickerPosFive.minimax(0, true, 0, recPerftStats);
 
     if (recPerftStats) {

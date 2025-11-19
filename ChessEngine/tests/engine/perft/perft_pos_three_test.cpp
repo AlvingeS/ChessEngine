@@ -55,7 +55,7 @@ TEST_F(perftPosThree, perft_pos3)
             debugFen += " - -";
         }
 
-        std::unordered_map<std::string, uint64_t> stockfishResults = io::stockfish::getPerftResults(nDebugMoves > 0 ? debugFen : posThree, depth);
+        std::unordered_map<std::string, uint64_t> stockfishResults = io::stockfish::get_perft_results(nDebugMoves > 0 ? debugFen : posThree, depth);
 
         movePicker.set_max_depth(depth);
         movePicker.minimax(0, whiteToStart, 0);

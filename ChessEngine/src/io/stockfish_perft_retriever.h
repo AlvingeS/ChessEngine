@@ -7,7 +7,7 @@
 namespace io::stockfish
 {
 
-std::unordered_map<std::string, uint64_t> getPerftResults(const std::string& FEN, int depth);
+std::unordered_map<std::string, uint64_t> get_perft_results(const std::string& FEN, int depth);
 
 
 } // namespace io::stockfish

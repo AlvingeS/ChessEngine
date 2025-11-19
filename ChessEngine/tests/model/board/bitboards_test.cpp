@@ -178,7 +178,7 @@ TEST_F(BitboardsTest, fillPieceMapTest_ShouldReturnStartingPos)
 
 TEST_F(BitboardsTest, fillPieceMapFenOneTest_ShouldReturnTwoPieces) 
 {
-    io::Fen::setBoardFromFen(fenOne, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenOne, bitboards, state_bitmasks, piece_map);
 
     for (int i = 0; i < 64; i++) {
         if (i == 27) {

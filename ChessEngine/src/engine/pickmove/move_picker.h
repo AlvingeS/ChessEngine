@@ -26,71 +26,70 @@ public:
     
     void minimax(
         int current_depth,
-        bool isMaximizer, 
-        int firstMoveIndex,
+        bool is_maximizer, 
+        int first_move_idx,
         bool recPerftStats = true,
-        const model::Move& lastMove = model::Move(),
+        const model::Move& last_move = model::Move(),
         bool verbose = true
     );
 
-    void recordPerftStats(
-        bool isMaximizer,
-        int currentDepth,
-        int &firstMoveIndex,
+    void record_perft_stats(
+        bool is_maximizer,
+        int current_depth,
+        int &first_move_idx,
         size_t i,
-        const model::Move& currentMove,
-        bool &retFlag
+        const model::Move& current_move,
+        bool &ret_flag
     );
 
     void gen_moves(
         bool is_w,
-        int currentDepth,
+        int current_depth,
         bitmask ep_target_mask, 
         unsigned char castle_rights
     );
 
     logic::MoveResult make_move(model::Move move, bool is_w);
     void unmake_move(model::Move move, bool is_w, logic::MoveResult prevousMoveResult);
-    void undoMove();
     
-    int _numMoveGenCalls;
-    int _totalNodes;
+    int num_move_gen_calls_;
+    int total_nodes_;
 
-    long sumNodesToDepth(int depth) const;
-    std::vector<long> _nodeCountPerFirstMove;
-    std::vector<model::Move> _firstMoves;
-    std::vector<long> _nodeCount;
-    std::vector<long> _captureCount;
-    std::vector<long> _epCaptureCount;
-    std::vector<long> _castlingCount;
-    std::vector<long> _promotionCount;
-    std::vector<long> _checkCount;
-    std::vector<long> _checkmateCount;
+    long sum_nodes_to_depth(int depth) const;
+    std::vector<long> node_count_per_first_move_;
+    std::vector<model::Move> first_moves_;
+    std::vector<long> node_count_;
+    std::vector<long> capture_count_;
+    std::vector<long> ep_capture_count_;
+    std::vector<long> casle_count_;
+    std::vector<long> promo_count_;
+    std::vector<long> check_count_;
+    std::vector<long> checkmate_count_;
 
-    void debugPrint(bool verbose) const;
+    void debug_print(bool verbose) const;
     
-    bool checkCondition(
-        int currentDepth,
-        bool isMaximizer, 
-        int firstMoveIndex, 
-        model::Move currentMove, 
-        model::Move lastMove, 
+    bool check_condition(
+        int current_depth,
+        bool is_maximizer, 
+        int first_move_idx, 
+        model::Move current_move, 
+        model::Move last_move, 
         bool verbose, 
         size_t i
     ) const;
 
-    void setMaxDepth(int maxDepth) 
+    void set_max_depth(int maxDepth) 
     {
-        _maxDepth = maxDepth;
+        max_depth_ = maxDepth;
     }
 
     int getMaxDepth() const {
-        return _maxDepth;
+        return max_depth_;
     }
 
     const logic::MoveGenerator& getMoveGenerator() const
     {
-        return _moveGenerator;
+        return move_generator_;
     }
 
     void setBoardFromFen(const std::string& fen)
@@ -109,25 +108,25 @@ public:
     }
     
 private:
-    model::Board _board;
+    model::Board board_;
     model::Bitboards& bitboards_;
     model::PieceMap& piece_map_;
     model::StateBitmasks& state_bitmasks_;
     model::ZHasher& z_hasher_;
     
-    SearchMemory _searchMemory;
+    SearchMemory search_memory_;
     logic::MoveMaker move_maker_;
     logic::MoveRetractor move_retractor_;
-    logic::MoveGenerator _moveGenerator;
-    logic::Eval _evaluator;
-    int _maxDepth;
+    logic::MoveGenerator move_generator_;
+    logic::Eval eval_;
+    int max_depth_;
 
-    int _pseudoLegalMovesCount;
-    std::vector<model::Movelist> _movelists;
-    std::vector<model::Piece::Type> _lastCapturedPieces;
-    std::vector<int> _noCapturedOrPawnMoveCounts; 
+    int pseudo_legal_moves_count_;
+    std::vector<model::Movelist> move_lists_;
+    std::vector<model::Piece::Type> last_captured_pieces_;
+    std::vector<int> no_captures_or_pawn_moves_counts_; 
 
-    bool tooManyPiecesOnBoard();
+    bool too_many_pieces_on_board();
 };
 
 } // namespace engine

@@ -5,12 +5,12 @@
 #include "model/position/piece_type.h"
 
 namespace {
-    constexpr unsigned char whiteKingSide = 0b0001;
-    constexpr unsigned char whiteQueenSide = 0b0010;
-    constexpr unsigned char whiteBoth = 0b0011;
-    constexpr unsigned char blackKingSide = 0b0100;
-    constexpr unsigned char blackQueenSide = 0b1000;
-    constexpr unsigned char blackBoth = 0b1100;
+    constexpr unsigned char w_kside_castle_rights       = 0b0001;
+    constexpr unsigned char w_qside_castle_rights       = 0b0010;
+    constexpr unsigned char w_both_sides_castle_rights  = 0b0011;
+    constexpr unsigned char b_kside_castle_rights       = 0b0100;
+    constexpr unsigned char b_qside_castle_rights       = 0b1000;
+    constexpr unsigned char b_both_sides_castle_rights  = 0b1100;
 } // namespace
 
 namespace engine {
@@ -20,69 +20,69 @@ class SearchMemory {
 public:
     SearchMemory(int maxDepth);
 
-    unsigned char getCastlingRightsAtDepth(int depth) const
+    unsigned char get_castling_rights_at_depth(int depth) const
     {
-        return _castlingRights[depth];
+        return castle_rights_[depth];
     }
 
-    model::Piece::Type getLastCapturedPieceAtDepth(int depth) const
+    model::Piece::Type get_last_captured_piece_at_depth(int depth) const
     {
-        return _lastCapturedPieces[depth];
+        return last_captured_pieces_[depth];
     }
 
-    void setLastCapturedPieceAtDepth(
+    void set_last_captured_piece_at_depth(
         int currentDepth,
         model::Piece::Type piece_type) 
     {
-        _lastCapturedPieces[currentDepth] = piece_type;
+        last_captured_pieces_[currentDepth] = piece_type;
     }
 
-    void setCastlingRights(
+    void set_castle_rights(
         int currentDepth, 
         const model::Move& move, 
         bool is_w, 
         model::Piece::Type moved_piece_type
     );
 
-    void unsetCastlingRights(int currentDepth);
+    void unset_castle_rights(int currentDepth);
 
-    bitmask getEnPessantTargetAtDepth(int depth) const
+    bitmask get_ep_target_at_depth(int depth) const
     {
-        return _enPessantTargets[depth];
+        return ep_targets_[depth];
     }
 
-    void setEnPessantTargetAtDepth(int depth, bitmask target) 
+    void set_ep_target_at_depth(int depth, bitmask target) 
     {
-        _enPessantTargets[depth] = target;
+        ep_targets_[depth] = target;
     }
 
-    int getNoCapturedOrPawnMoveCountAtDepth(int depth) const
+    int get_no_captures_or_pawn_moves_count_at_depth(int depth) const
     {
-        return _noCapturedOrPawnMoveCounts[depth];
+        return no_captures_or_pawn_moves_counts_[depth];
     }
 
-    void incrementNoCapturedOrPawnMoveCountAtDepth(int depth) 
+    void increment_no_captures_or_pawn_moves_at_depth(int depth) 
     {
-        _noCapturedOrPawnMoveCounts[depth]++;
+        no_captures_or_pawn_moves_counts_[depth]++;
     }
 
-    void decrementNoCapturedOrPawnMoveCountAtDepth(int depth) 
+    void decrement_no_captures_or_pawn_moves_count_at_depth(int depth) 
     {
-        _noCapturedOrPawnMoveCounts[depth]--;
+        no_captures_or_pawn_moves_counts_[depth]--;
     }
 
-    void resetNoCapturedOrPawnMoveCountAtDepth(int depth) 
+    void reset_no_captures_or_pawn_moves_count_at_depth(int depth) 
     {
-        _noCapturedOrPawnMoveCounts[depth] = 0;
+        no_captures_or_pawn_moves_counts_[depth] = 0;
     }
 
-    void handleNoCaptureCount(
+    void handle_no_capture_count(
         const model::Move& move, 
         int currentDepth, 
         model::Piece::Type  moved_piece_type
     );
 
-    void handleEnPessantMemory(
+    void handle_ep_memory(
             const model::Move& move, 
             bool is_w, 
             int currentDepth, 
@@ -90,19 +90,19 @@ public:
     );
 
 private:
-    int _maxDepth;
-    std::vector<unsigned char> _castlingRights;
-    std::vector<model::Piece::Type> _lastCapturedPieces;
-    std::vector<bitmask> _enPessantTargets;
-    std::vector<int> _noCapturedOrPawnMoveCounts;
+    int max_depth_;
+    std::vector<unsigned char> castle_rights_;
+    std::vector<model::Piece::Type> last_captured_pieces_;
+    std::vector<bitmask> ep_targets_;
+    std::vector<int> no_captures_or_pawn_moves_counts_;
 
-    void removeCastlingRightsForRemainingDepths(
+    void remove_castle_rights_for_remaining_depths(
         int currentDepth, 
         unsigned char rightsToRemove
     );
     
-    void restoreCastlingRightsForRemainingDepths(int currentDepth);
-    void overrideCastlingRights(unsigned char rights);
+    void restore_castle_rights_for_remaining_depths(int currentDepth);
+    void override_castle_rights(unsigned char rights);
 
 };
 

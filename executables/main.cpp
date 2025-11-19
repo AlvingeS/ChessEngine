@@ -108,10 +108,10 @@ int main()
 
     if (recPerftStats) {
         int sum = 0;
-        sum += movePickerStartPos.sumNodesToDepth(MAX_DEPTH);
-        sum += movePickerPosTwo.sumNodesToDepth(MAX_DEPTH);
-        sum += movePickerPosThree.sumNodesToDepth(MAX_DEPTH);
-        sum += movePickerPosFive.sumNodesToDepth(MAX_DEPTH);
+        sum += movePickerStartPos.sum_nodes_to_depth(MAX_DEPTH);
+        sum += movePickerPosTwo.sum_nodes_to_depth(MAX_DEPTH);
+        sum += movePickerPosThree.sum_nodes_to_depth(MAX_DEPTH);
+        sum += movePickerPosFive.sum_nodes_to_depth(MAX_DEPTH);
         std::cout << "Total nodes: " << sum << std::endl;
     }
 

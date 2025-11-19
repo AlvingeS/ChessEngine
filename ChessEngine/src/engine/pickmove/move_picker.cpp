@@ -9,63 +9,63 @@
 namespace engine {
 
 MovePicker::MovePicker(int maxDepth) 
-    : _board()
-    , bitboards_(_board.bitboards)
-    , piece_map_(_board.piece_map)
-    , state_bitmasks_(_board.state_bitmasks)
-    , z_hasher_(_board.z_hasher)
-    , _searchMemory(SearchMemory(maxDepth))
-    , move_maker_(logic::MoveMaker(_board))
-    , move_retractor_(logic::MoveRetractor(_board))
-    , _moveGenerator(logic::MoveGenerator(_board, move_maker_, move_retractor_))
-    , _evaluator(logic::Eval(_board))
-    , _maxDepth(maxDepth)
+    : board_()
+    , bitboards_(board_.bitboards)
+    , piece_map_(board_.piece_map)
+    , state_bitmasks_(board_.state_bitmasks)
+    , z_hasher_(board_.z_hasher)
+    , search_memory_(SearchMemory(maxDepth))
+    , move_maker_(logic::MoveMaker(board_))
+    , move_retractor_(logic::MoveRetractor(board_))
+    , move_generator_(logic::MoveGenerator(board_, move_maker_, move_retractor_))
+    , eval_(logic::Eval(board_))
+    , max_depth_(maxDepth)
 {
-    _numMoveGenCalls = 0;
-    _totalNodes = 0;
+    num_move_gen_calls_ = 0;
+    total_nodes_ = 0;
     
-    _nodeCountPerFirstMove.resize(constants::MAX_LEGAL_MOVES);
-    _firstMoves.resize(constants::MAX_LEGAL_MOVES);
+    node_count_per_first_move_.resize(constants::MAX_LEGAL_MOVES);
+    first_moves_.resize(constants::MAX_LEGAL_MOVES);
 
     for (int i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
-        _nodeCountPerFirstMove[i] = 0;
-        _firstMoves[i] = model::Move();
+        node_count_per_first_move_[i] = 0;
+        first_moves_[i] = model::Move();
     }
 
-    _lastCapturedPieces.resize(_maxDepth);
-    _movelists.resize(_maxDepth);
-    _noCapturedOrPawnMoveCounts.resize(_maxDepth);
+    last_captured_pieces_.resize(max_depth_);
+    move_lists_.resize(max_depth_);
+    no_captures_or_pawn_moves_counts_.resize(max_depth_);
 
-    for (int i = 0; i < _maxDepth; i++) {
-        _lastCapturedPieces[i] = model::Piece::Type::EMPTY;
-        _movelists[i] = model::Movelist();
-        _noCapturedOrPawnMoveCounts[i] = 0;
+    for (int i = 0; i < max_depth_; i++) {
+        last_captured_pieces_[i] = model::Piece::Type::EMPTY;
+        move_lists_[i] = model::Movelist();
+        no_captures_or_pawn_moves_counts_[i] = 0;
     }
 
-    _nodeCount.resize(20);
-    _captureCount.resize(20);
-    _epCaptureCount.resize(20);
-    _castlingCount.resize(20);
-    _promotionCount.resize(20);
-    _checkCount.resize(20);
-    _checkmateCount.resize(20);
+    node_count_.resize(20);
+    capture_count_.resize(20);
+    ep_capture_count_.resize(20);
+    casle_count_.resize(20);
+    promo_count_.resize(20);
+    check_count_.resize(20);
+    checkmate_count_.resize(20);
 
     for (int i = 0; i < 20; i++) {
-        _nodeCount[i] = 0;
-        _captureCount[i] = 0;
-        _epCaptureCount[i] = 0;
-        _castlingCount[i] = 0;
-        _promotionCount[i] = 0;
-        _checkCount[i] = 0;
-        _checkmateCount[i] = 0;
+        node_count_[i] = 0;
+        capture_count_[i] = 0;
+        ep_capture_count_[i] = 0;
+        casle_count_[i] = 0;
+        promo_count_[i] = 0;
+        check_count_[i] = 0;
+        checkmate_count_[i] = 0;
     }
 }
 
-long MovePicker::sumNodesToDepth(int depth) const {
+long MovePicker::sum_nodes_to_depth(int depth) const {
     long sum = 0;
 
     for (long i = 1; i <= depth; i++) {
-        sum += _nodeCount[i];
+        sum += node_count_[i];
     }
 
     return sum;
@@ -73,11 +73,11 @@ long MovePicker::sumNodesToDepth(int depth) const {
 
 void MovePicker::gen_moves(
     bool is_w,
-    int currentDepth,
+    int current_depth,
     bitmask ep_target_mask,
     unsigned char castle_rights) 
 {
-    _moveGenerator.gen_moves(is_w, _movelists[currentDepth], ep_target_mask, castle_rights);
+    move_generator_.gen_moves(is_w, move_lists_[current_depth], ep_target_mask, castle_rights);
 }
 
 logic::MoveResult MovePicker::make_move(model::Move move, bool is_w) 
@@ -93,7 +93,7 @@ void MovePicker::unmake_move(
     move_retractor_.unmake_move(move, is_w, previousMoveResult);
 }
 
-void MovePicker::debugPrint(bool verbose) const
+void MovePicker::debug_print(bool verbose) const
 {
     if (verbose) {
         io::BoardPrinter boardPrinter = io::BoardPrinter(bitboards_);
@@ -134,7 +134,7 @@ void MovePicker::debugPrint(bool verbose) const
 //     return true;
 // }
 
-bool MovePicker::tooManyPiecesOnBoard() 
+bool MovePicker::too_many_pieces_on_board() 
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
@@ -146,110 +146,115 @@ bool MovePicker::tooManyPiecesOnBoard()
     return count > 32;
 }
 
-bool MovePicker::checkCondition(
-    int currentDepth,
-    bool isMaximizer,
-    int firstMoveIndex, 
-    model::Move currentMove, 
-    model::Move lastMove, 
+bool MovePicker::check_condition(
+    int current_depth,
+    bool is_maximizer,
+    int first_move_idx, 
+    model::Move current_move, 
+    model::Move last_move, 
     bool verbose, 
     size_t i) const
 {
-    // return not _board.getKingMoved(false);
-    // return tooManyPiecesOnBoard();
-    // return firstMoveIndex == 19 && currentMove.is_any_capture();
-    // return currentMove.get_bit_index_from() == 12 && currentMove.get_bit_index_to() == 12;
-    // return currentDepth == 3 && firstMoveIndex == 0 && currentMove.get_bit_index_from() == 34 && currentMove.get_bit_index_to() == 27;
-    // return currentMove.is_any_capture();
+    static_cast<void>(current_depth);
+    static_cast<void>(is_maximizer);
+    static_cast<void>(first_move_idx);
+    static_cast<void>(current_move);
+    static_cast<void>(last_move);
+    static_cast<void>(verbose);
+    static_cast<void>(i);
+
+    // return not board_.getKingMoved(false);
+    // return too_many_pieces_on_board();
+    // return first_move_idx == 19 && current_move.is_any_capture();
+    // return current_move.get_bit_index_from() == 12 && current_move.get_bit_index_to() == 12;
+    // return current_depth == 3 && first_move_idx == 0 && current_move.get_bit_index_from() == 34 && current_move.get_bit_index_to() == 27;
+    // return current_move.is_any_capture();
     // return true;
     return false;
     // return diffBetweenStateBitmasks();
-    // return currentDepth == 2 && firstMoveIndex == 0 && isMaximizer == true && currentMove.getMove() == 66;
+    // return current_depth == 2 && first_move_idx == 0 && is_maximizer == true && current_move.getMove() == 66;
 }
 
 // TODO: Implement draw by repetition after implementing zobrist hashing
 void MovePicker::minimax(
-    int currentDepth, 
-    bool isMaximizer, 
-    int firstMoveIndex, 
-    bool recPerftStats, 
-    const model::Move& lastMove, 
+    int current_depth, 
+    bool is_maximizer, 
+    int first_move_idx, 
+    bool do_record_perft_stats, 
+    const model::Move& last_move, 
     bool verbose)
 {        
-    if (currentDepth == _maxDepth) {
+    if (current_depth == max_depth_) {
         return;
     }
 
     gen_moves(
-        isMaximizer, 
-        currentDepth, 
-        _searchMemory.getEnPessantTargetAtDepth(currentDepth),
-        _searchMemory.getCastlingRightsAtDepth(currentDepth)
+        is_maximizer, 
+        current_depth, 
+        search_memory_.get_ep_target_at_depth(current_depth),
+        search_memory_.get_castling_rights_at_depth(current_depth)
     );
 
-    _numMoveGenCalls++;
+    num_move_gen_calls_++;
     
-    size_t numIllegalMoves = 0;
+    size_t num_illegal_moves = 0;
 
     for (size_t i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
-        model::Move currentMove = _movelists[currentDepth].get_move_at(i);
+        model::Move current_move = move_lists_[current_depth].get_move_at(i);
 
-        if (currentMove.get_move() == 0) {
+        if (current_move.get_move() == 0) {
             break;
         }
 
-        if (checkCondition(
-            currentDepth, 
-            isMaximizer, 
-            firstMoveIndex, 
-            currentMove, 
-            lastMove, 
+        if (check_condition(
+            current_depth, 
+            is_maximizer, 
+            first_move_idx, 
+            current_move, 
+            last_move, 
             verbose, 
             i)) 
         {
-            debugPrint(verbose);
-            int x = 4;
+            debug_print(verbose);
         }
 
         // Make the move and check if we are in any way left in check
-        logic::MoveResult moveResult = make_move(currentMove, isMaximizer);
+        logic::MoveResult move_result = make_move(current_move, is_maximizer);
 
-        if (checkCondition(
-            currentDepth, 
-            isMaximizer, 
-            firstMoveIndex, 
-            currentMove, 
-            lastMove, 
+        if (check_condition(
+            current_depth, 
+            is_maximizer, 
+            first_move_idx, 
+            current_move, 
+            last_move, 
             verbose, 
             i)) 
         {
-            debugPrint(verbose);
-            int x = 4;
+            debug_print(verbose);
         }
 
         // FIXME: Move generator should not be queried for this
-        if (_moveGenerator.in_check(isMaximizer)) {
-            numIllegalMoves++;
-            unmake_move(currentMove, isMaximizer, moveResult);
+        if (move_generator_.in_check(is_maximizer)) {
+            num_illegal_moves++;
+            unmake_move(current_move, is_maximizer, move_result);
 
-            if (checkCondition(
-                currentDepth, 
-                isMaximizer, 
-                firstMoveIndex, 
-                currentMove, 
-                lastMove, 
+            if (check_condition(
+                current_depth, 
+                is_maximizer, 
+                first_move_idx, 
+                current_move, 
+                last_move, 
                 verbose, 
                 i)) 
             {
-                debugPrint(verbose);
-                int x = 4;
+                debug_print(verbose);
             }
 
-            if (numIllegalMoves == i + 1 && _movelists[currentDepth].get_move_at(i + 1).get_move() == 0) {
-                bool wasInCheckBeforeMove = _moveGenerator.in_check(isMaximizer);
+            if (num_illegal_moves == i + 1 && move_lists_[current_depth].get_move_at(i + 1).get_move() == 0) {
+                bool was_in_check = move_generator_.in_check(is_maximizer);
 
-                if (wasInCheckBeforeMove) {
-                    _checkmateCount[currentDepth]++;
+                if (was_in_check) {
+                    checkmate_count_[current_depth]++;
                 }
 
                 return;
@@ -258,122 +263,121 @@ void MovePicker::minimax(
             continue;
         }
 
-        if (currentMove.is_any_capture()) {
-            _searchMemory.setLastCapturedPieceAtDepth(currentDepth, moveResult.captured_piece_type);
+        if (current_move.is_any_capture()) {
+            search_memory_.set_last_captured_piece_at_depth(current_depth, move_result.captured_piece_type);
         }
 
-        _searchMemory.handleEnPessantMemory(currentMove, isMaximizer, currentDepth, currentMove.get_bit_index_to());
-        _searchMemory.handleNoCaptureCount(currentMove, currentDepth, moveResult.moved_piece_type);
+        search_memory_.handle_ep_memory(current_move, is_maximizer, current_depth, current_move.get_bit_index_to());
+        search_memory_.handle_no_capture_count(current_move, current_depth, move_result.moved_piece_type);
 
         // Move was legal, update castling rights
-        _searchMemory.setCastlingRights(
-            currentDepth,
-            currentMove, 
-            isMaximizer, 
-            piece_map_.get_piece_type_at_index(currentMove.get_bit_index_to())
+        search_memory_.set_castle_rights(
+            current_depth,
+            current_move, 
+            is_maximizer, 
+            piece_map_.get_piece_type_at_index(current_move.get_bit_index_to())
         );
 
-        if (recPerftStats) {
-            bool retFlag;
+        if (do_record_perft_stats) {
+            bool ret_flag;
             
-            recordPerftStats(
-                isMaximizer, 
-                currentDepth, 
-                firstMoveIndex, 
+            record_perft_stats(
+                is_maximizer, 
+                current_depth, 
+                first_move_idx, 
                 i, 
-                currentMove, 
-                retFlag
+                current_move, 
+                ret_flag
             );
             
-            if (retFlag)
+            if (ret_flag)
                 return;
         }
 
         minimax(
-            currentDepth + 1, 
-            !isMaximizer, 
-            firstMoveIndex, 
-            recPerftStats, 
-            currentMove, 
+            current_depth + 1, 
+            !is_maximizer, 
+            first_move_idx, 
+            do_record_perft_stats, 
+            current_move, 
             verbose
         );
 
-        unmake_move(currentMove, isMaximizer, moveResult);
-        _searchMemory.unsetCastlingRights(currentDepth);
+        unmake_move(current_move, is_maximizer, move_result);
+        search_memory_.unset_castle_rights(current_depth);
 
-        if (currentMove.is_double_pawn_push()) {
-            _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
+        if (current_move.is_double_pawn_push()) {
+            search_memory_.set_ep_target_at_depth(current_depth + 1, 0ULL);
         }
     
-        if (not currentMove.is_any_capture() && (moveResult.captured_piece_type != model::Piece::Type::W_PAWN && moveResult.moved_piece_type != model::Piece::Type::B_PAWN)) {
-            _searchMemory.decrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
+        if (not current_move.is_any_capture() && (move_result.captured_piece_type != model::Piece::Type::W_PAWN && move_result.moved_piece_type != model::Piece::Type::B_PAWN)) {
+            search_memory_.decrement_no_captures_or_pawn_moves_count_at_depth(current_depth + 1);
         }
 
-        if (checkCondition(
-            currentDepth, 
-            isMaximizer, 
-            firstMoveIndex, 
-            currentMove, 
-            lastMove, 
+        if (check_condition(
+            current_depth, 
+            is_maximizer, 
+            first_move_idx, 
+            current_move, 
+            last_move, 
             verbose, 
             i)) 
         {
-            debugPrint(verbose);
-            int x = 4;
+            debug_print(verbose);
         }
     }
 
     return;
 }
 
-void MovePicker::recordPerftStats(
-    bool isMaximizer, 
-    int currentDepth, 
-    int &firstMoveIndex, 
+void MovePicker::record_perft_stats(
+    bool is_maximizer, 
+    int current_depth, 
+    int &first_move_idx, 
     size_t i, 
-    const model::Move& currentMove, 
-    bool &retFlag) 
+    const model::Move& current_move, 
+    bool &ret_flag) 
 {
-    retFlag = true;
-    if (_moveGenerator.in_check(!isMaximizer))
+    ret_flag = true;
+    if (move_generator_.in_check(!is_maximizer))
     {
-        _checkCount[currentDepth + 1]++;
+        check_count_[current_depth + 1]++;
     }
 
-    if (currentDepth == 0) {
-        firstMoveIndex = i;
-        _firstMoves[i] = currentMove;
+    if (current_depth == 0) {
+        first_move_idx = i;
+        first_moves_[i] = current_move;
     }
 
-    else if (currentDepth == _maxDepth - 1) {
-        _nodeCountPerFirstMove[firstMoveIndex]++;
+    else if (current_depth == max_depth_ - 1) {
+        node_count_per_first_move_[first_move_idx]++;
     }
 
-    _nodeCount[currentDepth + 1]++;
+    node_count_[current_depth + 1]++;
 
-    if (currentMove.is_any_capture()) {
-        _captureCount[currentDepth + 1]++;
+    if (current_move.is_any_capture()) {
+        capture_count_[current_depth + 1]++;
     }
 
-    if (currentMove.is_any_promo()) {
-        _promotionCount[currentDepth + 1]++;
+    if (current_move.is_any_promo()) {
+        promo_count_[current_depth + 1]++;
     }
 
-    if (currentMove.is_any_castle()) {
-        _castlingCount[currentDepth + 1]++;
+    if (current_move.is_any_castle()) {
+        casle_count_[current_depth + 1]++;
     }
 
-    if (currentMove.is_ep_capture()) {
-        _epCaptureCount[currentDepth + 1]++;
+    if (current_move.is_ep_capture()) {
+        ep_capture_count_[current_depth + 1]++;
     }
 
     // FIXME: This is temporary
-    // if (_board.isDeadPosition() || 49 >= 50)
+    // if (board_.isDeadPosition() || 49 >= 50)
     // {
-    //     unmake_move(currentMove, isMaximizer, currentDepth);
+    //     unmake_move(current_move, is_maximizer, current_depth);
     //     return;
     // }
-    retFlag = false;
+    ret_flag = false;
 }
 
 } // namespace engine

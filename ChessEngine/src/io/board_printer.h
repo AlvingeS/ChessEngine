@@ -17,7 +17,7 @@ public:
 private:
     bool isValidPiece(model::Piece::Type piece_type);
 
-    std::vector<std::vector<char>> _board;
+    std::vector<std::vector<char>> board_;
 };
 
 } // namespace io

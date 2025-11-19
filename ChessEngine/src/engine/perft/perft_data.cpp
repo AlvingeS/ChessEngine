@@ -5,41 +5,41 @@
 namespace engine {
 
 perftData::perftData(int maxDepth)
-    : _maxDepth(maxDepth)
+    : max_depth_(maxDepth)
 {
-    _nodeCountPerFirstMove.resize(constants::MAX_LEGAL_MOVES);
-    _firstMoves.resize(constants::MAX_LEGAL_MOVES);
+    node_count_per_first_move_.resize(constants::MAX_LEGAL_MOVES);
+    first_moves_.resize(constants::MAX_LEGAL_MOVES);
 
     for (int i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
-        _nodeCountPerFirstMove[i] = 0;
-        _firstMoves[i] = model::Move();
+        node_count_per_first_move_[i] = 0;
+        first_moves_[i] = model::Move();
     }
 
-    _nodeCount.resize(_maxDepth + 1);
-    _captureCount.resize(_maxDepth + 1);
-    _epCaptureCount.resize(_maxDepth + 1);
-    _castlingCount.resize(_maxDepth + 1);
-    _promotionCount.resize(_maxDepth + 1);
-    _checkCount.resize(_maxDepth + 1);
-    _checkmateCount.resize(_maxDepth + 1);
+    node_count_.resize(max_depth_ + 1);
+    capture_count_.resize(max_depth_ + 1);
+    ep_capture_count_.resize(max_depth_ + 1);
+    casle_count_.resize(max_depth_ + 1);
+    promo_count_.resize(max_depth_ + 1);
+    check_count_.resize(max_depth_ + 1);
+    checkmate_count_.resize(max_depth_ + 1);
 
-    for (int i = 0; i < _maxDepth + 1; i++) {
-        _nodeCount[i] = 0;
-        _captureCount[i] = 0;
-        _epCaptureCount[i] = 0;
-        _castlingCount[i] = 0;
-        _promotionCount[i] = 0;
-        _checkCount[i] = 0;
-        _checkmateCount[i] = 0;
+    for (int i = 0; i < max_depth_ + 1; i++) {
+        node_count_[i] = 0;
+        capture_count_[i] = 0;
+        ep_capture_count_[i] = 0;
+        casle_count_[i] = 0;
+        promo_count_[i] = 0;
+        check_count_[i] = 0;
+        checkmate_count_[i] = 0;
     }
 }
 
-long perftData::sumNodesToDepth(int depth) const 
+long perftData::sum_nodes_to_depth(int depth) const 
 {
     long sum = 0;
 
     for (long i = 1; i <= depth; i++) {
-        sum += _nodeCount[i];
+        sum += node_count_[i];
     }
 
     return sum;
@@ -47,14 +47,14 @@ long perftData::sumNodesToDepth(int depth) const
 
 void perftData::resetNodeCounts() 
 {
-    for (int i = 0; i < _maxDepth + 1; i++) {
-        _nodeCount[i] = 0;
-        _captureCount[i] = 0;
-        _epCaptureCount[i] = 0;
-        _castlingCount[i] = 0;
-        _promotionCount[i] = 0;
-        _checkCount[i] = 0;
-        _checkmateCount[i] = 0;
+    for (int i = 0; i < max_depth_ + 1; i++) {
+        node_count_[i] = 0;
+        capture_count_[i] = 0;
+        ep_capture_count_[i] = 0;
+        casle_count_[i] = 0;
+        promo_count_[i] = 0;
+        check_count_[i] = 0;
+        checkmate_count_[i] = 0;
     }
 }
 

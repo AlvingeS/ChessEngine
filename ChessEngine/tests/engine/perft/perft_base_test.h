@@ -165,14 +165,14 @@ protected:
         std::unordered_map<std::string, uint64_t> nodeCountPerFirstMoveMap{};
         int sum = 0;
 
-        for (size_t i = 0; i < movePicker._nodeCountPerFirstMove.size(); i++) {
-            if (movePicker._firstMoves[i].get_move() != 0) {
-                std::string moveStr = translateMoveToStr(movePicker._firstMoves[i], whiteStarted);
-                std::string nodeCountStr = std::to_string(movePicker._nodeCountPerFirstMove[i]);
+        for (size_t i = 0; i < movePicker.node_count_per_first_move_.size(); i++) {
+            if (movePicker.first_moves_[i].get_move() != 0) {
+                std::string moveStr = translateMoveToStr(movePicker.first_moves_[i], whiteStarted);
+                std::string nodeCountStr = std::to_string(movePicker.node_count_per_first_move_[i]);
                 std::string moveNodeCountStr = moveStr + ": " + nodeCountStr;
-                nodeCountPerFirstMoveMap[moveStr] = movePicker._nodeCountPerFirstMove[i];
+                nodeCountPerFirstMoveMap[moveStr] = movePicker.node_count_per_first_move_[i];
 
-                sum += movePicker._nodeCountPerFirstMove[i];
+                sum += movePicker.node_count_per_first_move_[i];
             }
         }
 

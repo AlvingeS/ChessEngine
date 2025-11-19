@@ -34,7 +34,7 @@ bool BoardPrinter::isValidPiece(model::Piece::Type piece_type)
 
 void BoardPrinter::fillBoard(const model::Bitboards& bitboards) 
 {
-    _board = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
+    board_ = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
     
     for (int i = 0; i < 12; i++) {
         model::Piece::Type piece_type = model::Piece::get_type_from_int(i);
@@ -45,7 +45,7 @@ void BoardPrinter::fillBoard(const model::Bitboards& bitboards)
             if ((bitboard >> i) & 1) {
                 int row = i / 8;
                 int col = i % 8;
-                _board[row][col] = pieceChar;
+                board_[row][col] = pieceChar;
             }
         }
     }
@@ -55,7 +55,7 @@ void BoardPrinter::printBoard() const {
     for (int row = 7; row >= 0; row--) {  // Start from the bottom row (row 7) and go upwards.
         std::cout << "---------------------------------   ---------------------------------" << std::endl;
         for (int col = 7; col >= 0; col--) {  // Iterate through columns from left to right.
-            char piece = _board[row][col];
+            char piece = board_[row][col];
             std::cout << "| " << piece << " ";  // Print the piece character.
         }
 

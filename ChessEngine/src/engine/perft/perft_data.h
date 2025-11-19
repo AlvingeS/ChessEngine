@@ -9,11 +9,11 @@ class perftData {
 public:
     perftData(int maxDepth);
 
-    long sumNodesToDepth(int depth) const;
+    long sum_nodes_to_depth(int depth) const;
     void resetNodeCounts();
 
-    size_t getNumFirstMoves() const { return _firstMoves.size(); }
-    int getNodeCountPerFirstMoveAt(int firstMoveIndex) const { return _nodeCountPerFirstMove[firstMoveIndex]; }
+    size_t getNumFirstMoves() const { return first_moves_.size(); }
+    int getNodeCountPerFirstMoveAt(int firstMoveIndex) const { return node_count_per_first_move_[firstMoveIndex]; }
 
     int getNodeCountAt(int depth) const;
     int getCaptureCountAt(int depth) const;
@@ -31,22 +31,22 @@ public:
     void increaseCheckCountAt(int depth);
     void increaseCheckmateCountAt(int depth);
 
-    model::Move getFirstMoveAt(int firstMoveIndex) const { return _firstMoves[firstMoveIndex]; }
+    model::Move getFirstMoveAt(int firstMoveIndex) const { return first_moves_[firstMoveIndex]; }
     void setFirstMoveAt(int firstMoveIndex, model::Move currentMove);
     void increaseNodeCountPerFirstMoveAt(int firstMoveIndex);
 
 private:
-    int _maxDepth;
+    int max_depth_;
 
-    std::vector<long> _nodeCountPerFirstMove;
-    std::vector<model::Move> _firstMoves;
-    std::vector<long> _nodeCount;
-    std::vector<long> _captureCount;
-    std::vector<long> _epCaptureCount;
-    std::vector<long> _castlingCount;
-    std::vector<long> _promotionCount;
-    std::vector<long> _checkCount;
-    std::vector<long> _checkmateCount;
+    std::vector<long> node_count_per_first_move_;
+    std::vector<model::Move> first_moves_;
+    std::vector<long> node_count_;
+    std::vector<long> capture_count_;
+    std::vector<long> ep_capture_count_;
+    std::vector<long> casle_count_;
+    std::vector<long> promo_count_;
+    std::vector<long> check_count_;
+    std::vector<long> checkmate_count_;
 };
 
 } // namespace engine

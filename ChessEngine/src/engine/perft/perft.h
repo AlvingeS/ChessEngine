@@ -31,13 +31,13 @@ public:
         bool verbose = true
     );
 
-    void recordPerftStats(
+    void record_perft_stats(
         bool isMaximizer,
         int currentDepth,
         int &firstMoveIndex,
         size_t i,
         const model::Move& currentMove,
-        bool &retFlag
+        bool &ret_flag
     );
 
     void gen_moves(
@@ -51,12 +51,12 @@ public:
     void unmake_move(model::Move move, bool is_w, logic::MoveResult previousMoveResult);
     void undoMove();
     
-    int _numMoveGenCalls;
-    int _totalNodes;
+    int num_move_gen_calls_;
+    int total_nodes_;
 
-    void debugPrint(bool verbose) const;
+    void debug_print(bool verbose) const;
 
-    bool checkCondition(
+    bool check_condition(
         int currentDepth,
         bool isMaximizer, 
         int firstMoveIndex, 
@@ -66,18 +66,18 @@ public:
         size_t i
     ) const;
 
-    void setMaxDepth(int maxDepth) 
+    void set_max_depth(int maxDepth) 
     {
-        _maxDepth = maxDepth;
+        max_depth_ = maxDepth;
     }
 
     int getMaxDepth() const {
-        return _maxDepth;
+        return max_depth_;
     }
 
     const logic::MoveGenerator& getMoveGenerator() const
     {
-        return _moveGenerator;
+        return move_generator_;
     }
 
     void setBoardFromFen(const std::string& fen)
@@ -97,8 +97,8 @@ public:
 
     
 private:
-    int _maxDepth;
-    model::Board _board;
+    int max_depth_;
+    model::Board board_;
     model::Bitboards& bitboards_;
     model::PieceMap& piece_map_;
     model::StateBitmasks& state_bitmasks_;
@@ -106,18 +106,18 @@ private:
     
     logic::MoveMaker move_maker_;
     logic::MoveRetractor move_retractor_;
-    logic::MoveGenerator _moveGenerator;
-    logic::Eval _evaluator;
+    logic::MoveGenerator move_generator_;
+    logic::Eval eval_;
     
-    SearchMemory _searchMemory;
+    SearchMemory search_memory_;
     perftData _perftData;
 
-    int _pseudoLegalMovesCount;
-    std::vector<model::Movelist> _movelists;
-    std::vector<model::Piece::Type> _lastCapturedPieces;
-    std::vector<int> _noCapturedOrPawnMoveCounts; 
+    int pseudo_legal_moves_count_;
+    std::vector<model::Movelist> move_lists_;
+    std::vector<model::Piece::Type> last_captured_pieces_;
+    std::vector<int> no_captures_or_pawn_moves_counts_; 
 
-    bool tooManyPiecesOnBoard();
+    bool too_many_pieces_on_board();
 };
 
 } // namespace engine

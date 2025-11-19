@@ -49,7 +49,7 @@ TEST_F(perftPosTwo, perft_pos2)
 
         std::unordered_map<std::string, uint64_t> stockfishResults = io::stockfish::getPerftResults(nDebugMoves > 0 ? debugFen : posTwo, depth);
 
-        movePicker.setMaxDepth(depth);
+        movePicker.set_max_depth(depth);
         movePicker.minimax(0, whiteToStart, 0);
         
         std::unordered_map<std::string, uint64_t> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
@@ -57,15 +57,15 @@ TEST_F(perftPosTwo, perft_pos2)
         
         if (nDebugMoves == 0) {
             for (uint64_t i = 1; i <= movePicker.getMaxDepth(); i++) {
-                ASSERT_EQ(movePicker._nodeCount[i], expectedResults[i][0]);
-                ASSERT_EQ(movePicker._captureCount[i], expectedResults[i][1]);
-                ASSERT_EQ(movePicker._epCaptureCount[i], expectedResults[i][2]);
-                ASSERT_EQ(movePicker._castlingCount[i], expectedResults[i][3]);
-                ASSERT_EQ(movePicker._promotionCount[i], expectedResults[i][4]);
-                ASSERT_EQ(movePicker._checkCount[i], expectedResults[i][5]);
+                ASSERT_EQ(movePicker.node_count_[i], expectedResults[i][0]);
+                ASSERT_EQ(movePicker.capture_count_[i], expectedResults[i][1]);
+                ASSERT_EQ(movePicker.ep_capture_count_[i], expectedResults[i][2]);
+                ASSERT_EQ(movePicker.casle_count_[i], expectedResults[i][3]);
+                ASSERT_EQ(movePicker.promo_count_[i], expectedResults[i][4]);
+                ASSERT_EQ(movePicker.check_count_[i], expectedResults[i][5]);
                 
                 if (i < movePicker.getMaxDepth()) {
-                    ASSERT_EQ(movePicker._checkmateCount[i], expectedResults[i][6]);
+                    ASSERT_EQ(movePicker.checkmate_count_[i], expectedResults[i][6]);
                 }       
             }
         }

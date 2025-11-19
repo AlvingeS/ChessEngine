@@ -45,7 +45,7 @@ int main()
             Refactored acessing bitboards to use pointers directly instead of lookup
             1.940s ~ 3.471M nodes/s ~ 1.4% SF
 
-            Removed castling logic that I had forgotten about, it is all handled by the movePicker
+            Removed castling logic that I had forgotten about, it is all handled by the move_picker
             1.783s ~ 3.686M nodes/s ~ 1.5% SF
 
         - 2024-05-12
@@ -61,7 +61,7 @@ int main()
             greater than 14 to see if it is a castle
             0.346s ~ 19.145M nodes/s ~ 7.8% SF
 
-            Refactored movePicker so that castling rights and last captured pieces info
+            Refactored move_picker so that castling rights and last captured pieces info
             is now in its on class, will add everything else as well
             0.337s ~ 20.009M nodes/s ~ 8.0% SF
 
@@ -84,8 +84,8 @@ int main()
     int const MAX_DEPTH = 4;
 
     std::string startPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    std::string posTwo = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -";
-    std::string posThree = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - -";
+    std::string pos_two = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -";
+    std::string pos_three = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - -";
     std::string posFive = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
     
     bool recPerftStats = false;
@@ -95,11 +95,11 @@ int main()
     movePickerStartPos.minimax(0, true, 0, recPerftStats);
 
     engine::MovePicker movePickerPosTwo = engine::MovePicker(MAX_DEPTH);
-    movePickerPosTwo.set_board_from_fen(posTwo);
+    movePickerPosTwo.set_board_from_fen(pos_two);
     movePickerPosTwo.minimax(0, true, 0, recPerftStats);
     
     engine::MovePicker movePickerPosThree = engine::MovePicker(MAX_DEPTH);
-    movePickerPosThree.set_board_from_fen(posThree);
+    movePickerPosThree.set_board_from_fen(pos_three);
     movePickerPosThree.minimax(0, true, 0, recPerftStats);
 
     engine::MovePicker movePickerPosFive = engine::MovePicker(MAX_DEPTH);

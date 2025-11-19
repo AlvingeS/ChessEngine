@@ -3,15 +3,15 @@
 #include "io/stockfish_perft_retriever.h"
 namespace engine {
 
-class perftPosFive : public perftBase 
+class perftPosFive : public PerftBase 
 {
 protected:
     void SetUp() override {
-        perftBase::SetUp();
+        PerftBase::SetUp();
     }
 
     // Nodes
-    std::unordered_map<int, int> expectedNodes = {
+    std::unordered_map<int, int> expected_nodes = {
         {0, 1},
         {1, 44},
         {2, 1486},
@@ -23,36 +23,36 @@ protected:
 
 TEST_F(perftPosFive, perft_pos5) 
 {
-    if (enablePos5Test) {
-        movePicker.set_board_from_fen(posFive);
+    if (enable_pos_5_test) {
+        move_picker.set_board_from_fen(posFive);
 
         // Make dubug move
-        // model::Move move = moveFromStrAndFlag("a2a3", 0);
-        // movePicker.make_move(move, true);
-        int nDebugMoves = 0;
+        // model::Move move = move_from_str_and_flag("a2a3", 0);
+        // move_picker.make_move(move, true);
+        int num_debug_moves = 0;
 
-        int depth = longRuns ? posFiveMaxDepth + 1 : posFiveMaxDepth;
-        depth -= nDebugMoves;
-        bool whiteToStart = nDebugMoves % 2 == 0;
+        int depth = long_runs ? pos_five_max_depth + 1 : pos_five_max_depth;
+        depth -= num_debug_moves;
+        bool white_to_start = num_debug_moves % 2 == 0;
 
-        std::string debugFen;
-        if (nDebugMoves > 0) {
-            debugFen = movePicker.get_fen_from_board();
-            debugFen += whiteToStart ? " w" : " b";
-            debugFen += " KQ - 1 8";
+        std::string debug_fen;
+        if (num_debug_moves > 0) {
+            debug_fen = move_picker.get_fen_from_board();
+            debug_fen += white_to_start ? " w" : " b";
+            debug_fen += " KQ - 1 8";
         }
 
-        std::unordered_map<std::string, uint64_t> stockfishResults = io::stockfish::get_perft_results(nDebugMoves > 0 ? debugFen : posFive, depth);
+        std::unordered_map<std::string, uint64_t> stockfish_results = io::stockfish::get_perft_results(num_debug_moves > 0 ? debug_fen : posFive, depth);
 
-        movePicker.set_max_depth(depth);
-        movePicker.minimax(0, whiteToStart, 0);
+        move_picker.set_max_depth(depth);
+        move_picker.minimax(0, white_to_start, 0);
 
-        std::unordered_map<std::string, uint64_t> firstMoveCounts = nodeCountPerFirstMoveAsMap(whiteToStart);
-        compareFirstMoveCountsToStockfish(firstMoveCounts, stockfishResults);
+        std::unordered_map<std::string, uint64_t> first_move_counts = node_count_per_first_move_as_map(white_to_start);
+        compare_first_move_counts_to_stockfish(first_move_counts, stockfish_results);
 
-        if (nDebugMoves == 0) {
-            for (int i = 1; i <= movePicker.get_max_depth(); i++) {
-                ASSERT_EQ(movePicker.node_count_[i], expectedNodes[i]);
+        if (num_debug_moves == 0) {
+            for (int i = 1; i <= move_picker.get_max_depth(); i++) {
+                ASSERT_EQ(move_picker.node_count_[i], expected_nodes[i]);
             }
         }
     }

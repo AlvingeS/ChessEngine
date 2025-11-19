@@ -71,7 +71,9 @@
         "cinttypes": "cpp",
         "regex": "cpp",
         "shared_mutex": "cpp",
-        "cassert": "cpp"
+        "cassert": "cpp",
+        "charconv": "cpp",
+        "format": "cpp"
     },
     "editor.formatOnSave": false,
     "C_Cpp.intelliSenseEngine": "Default"

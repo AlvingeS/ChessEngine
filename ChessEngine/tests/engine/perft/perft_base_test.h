@@ -12,52 +12,52 @@
 
 namespace engine {
 
-class perftBase : public ::testing::Test 
+class PerftBase : public ::testing::Test 
 {
 
-struct fromToBitIndices {
+struct from_to_bit_indices {
     int from;
     int to;
 };
 
 protected:
-    bool longRuns = true;
-    bool megaRuns = false;
+    bool long_runs = true;
+    bool mega_runs = false;
 
     // Long run should be depth 6, mega run should be depth 7
-    bool enableStartPosTest = true;
-    int startPosMaxDepth = 5;
+    bool enable_start_pos_test = true;
+    int start_pos_max_depth = 5;
 
     // Long run should be depth 5
-    bool enablePos2Test = true;
+    bool enable_pos_2_test = true;
     int posTwoMaxDepth = 4;
 
     // Long run should be depth 7
-    bool enablePos3Test = true;
-    int posThreeMaxDepth = 6;
+    bool enable_pos_3_test = true;
+    int pos_three_max_depth = 6;
 
     // Long run should be depth 5
-    bool enablePos5Test = true;
-    int posFiveMaxDepth = 4;
+    bool enable_pos_5_test = true;
+    int pos_five_max_depth = 4;
 
     std::string startPos;
-    std::string posTwo;
-    std::string posThree;
+    std::string pos_two;
+    std::string pos_three;
     std::string posFive;
 
-    MovePicker movePicker;
+    MovePicker move_picker;
 
-    perftBase() : movePicker(20) {}
+    PerftBase() : move_picker(20) {}
 
     virtual void SetUp() override 
     {
         startPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        posTwo = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -";
-        posThree = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - -";
+        pos_two = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -";
+        pos_three = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - -";
         posFive = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
     }
 
-    char colToChar(int col) {
+    char col_to_char(int col) {
         switch (col) {
             case 0:
                 return 'h';
@@ -80,7 +80,7 @@ protected:
         }
     }
 
-    std::string translateMoveToStr(model::Move move, bool whiteStarted) 
+    std::string move_to_str(model::Move move, bool whiteStarted) 
     {
         if (move.is_any_castle()) {
             return move.is_king_castle() ? (whiteStarted ? "e1g1" : "e8g8") 
@@ -90,123 +90,123 @@ protected:
         int from = move.get_bit_index_from();
         int to = move.get_bit_index_to();
         
-        int fromRow = from / 8;
-        int fromCol = from % 8;
+        int from_row = from / 8;
+        int from_col = from % 8;
 
-        char fromColChar = colToChar(fromCol);
+        char from_col_char = col_to_char(from_col);
 
-        int toRow = to / 8;
-        int toCol = to % 8;
-        char toColChar = colToChar(toCol);
+        int to_row = to / 8;
+        int to_col = to % 8;
+        char to_col_char = col_to_char(to_col);
 
-        std::string moveStr = "";
-        moveStr += fromColChar;
-        moveStr += std::to_string(fromRow + 1);
-        moveStr += toColChar;
-        moveStr += std::to_string(toRow + 1);
+        std::string move_str = "";
+        move_str += from_col_char;
+        move_str += std::to_string(from_row + 1);
+        move_str += to_col_char;
+        move_str += std::to_string(to_row + 1);
 
         if (move.is_any_promo()) {
             switch (move.get_flag()) {
                 case model::Move::KNIGHT_PROMO_FLAG:
-                    moveStr += (whiteStarted) ? "n" : "N";
+                    move_str += (whiteStarted) ? "n" : "N";
                     break;
                 case model::Move::BISHOP_PROMO_FLAG:
-                    moveStr += (whiteStarted) ? "b" : "B";
+                    move_str += (whiteStarted) ? "b" : "B";
                     break;
                 case model::Move::ROOK_PROMO_FLAG:
-                    moveStr += (whiteStarted) ? "r" : "R";
+                    move_str += (whiteStarted) ? "r" : "R";
                     break;
                 case model::Move::QUEEN_PROMO_FLAG:
-                    moveStr += (whiteStarted) ? "q" : "Q";
+                    move_str += (whiteStarted) ? "q" : "Q";
                     break;
                 default:
                     break;
                 case model::Move::KNIGHT_PROMO_CAPTURE_FLAG:
-                    moveStr += (whiteStarted) ? "n" : "N";
+                    move_str += (whiteStarted) ? "n" : "N";
                     break;
                 case model::Move::BISHOP_PROMO_CAPTURE_FLAG:
-                    moveStr += (whiteStarted) ? "b" : "B";
+                    move_str += (whiteStarted) ? "b" : "B";
                     break;
                 case model::Move::ROOK_PROMO_CAPTURE_FLAG:
-                    moveStr += (whiteStarted) ? "r" : "R";
+                    move_str += (whiteStarted) ? "r" : "R";
                     break;
                 case model::Move::QUEEN_PROMO_CAPTURE_FLAG:
-                    moveStr += (whiteStarted) ? "q" : "Q";
+                    move_str += (whiteStarted) ? "q" : "Q";
                     break;
             }
         }
 
-        return moveStr;
+        return move_str;
     }
 
-    fromToBitIndices translateStrToFromTo(std::string moveStr) 
+    from_to_bit_indices translateStrToFromTo(std::string move_str) 
     {
-        fromToBitIndices fromTo;
+        from_to_bit_indices from_to;
 
-        int fromRow = moveStr[1] - '1';
-        int fromCol = 8 - (moveStr[0] - 'a') - 1;
-        int toRow = moveStr[3] - '1';
-        int toCol = 8 - (moveStr[2] - 'a') - 1;
+        int from_row = move_str[1] - '1';
+        int from_col = 8 - (move_str[0] - 'a') - 1;
+        int to_row = move_str[3] - '1';
+        int to_col = 8 - (move_str[2] - 'a') - 1;
 
-        fromTo.from = fromRow * 8 + fromCol;
-        fromTo.to = toRow * 8 + toCol;
+        from_to.from = from_row * 8 + from_col;
+        from_to.to = to_row * 8 + to_col;
 
-        return fromTo;
+        return from_to;
     }
 
-    model::Move moveFromStrAndFlag(std::string moveStr, int flag) 
+    model::Move move_from_str_and_flag(std::string move_str, int flag) 
     {
-        fromToBitIndices fromTo = translateStrToFromTo(moveStr);
-        return model::Move(fromTo.from, fromTo.to, flag);
+        from_to_bit_indices from_to = translateStrToFromTo(move_str);
+        return model::Move(from_to.from, from_to.to, flag);
     }
 
-    std::unordered_map<std::string, uint64_t> nodeCountPerFirstMoveAsMap(bool whiteStarted) 
+    std::unordered_map<std::string, uint64_t> node_count_per_first_move_as_map(bool whiteStarted) 
     {
-        std::unordered_map<std::string, uint64_t> nodeCountPerFirstMoveMap{};
+        std::unordered_map<std::string, uint64_t> node_count_per_first_move_map{};
         int sum = 0;
 
-        for (size_t i = 0; i < movePicker.node_count_per_first_move_.size(); i++) {
-            if (movePicker.first_moves_[i].get_move() != 0) {
-                std::string moveStr = translateMoveToStr(movePicker.first_moves_[i], whiteStarted);
-                std::string nodeCountStr = std::to_string(movePicker.node_count_per_first_move_[i]);
-                std::string moveNodeCountStr = moveStr + ": " + nodeCountStr;
-                nodeCountPerFirstMoveMap[moveStr] = movePicker.node_count_per_first_move_[i];
+        for (size_t i = 0; i < move_picker.node_count_per_first_move_.size(); i++) {
+            if (move_picker.first_moves_[i].get_move() != 0) {
+                std::string move_str = move_to_str(move_picker.first_moves_[i], whiteStarted);
+                std::string node_counts_str = std::to_string(move_picker.node_count_per_first_move_[i]);
+                std::string move_node_counts_str = move_str + ": " + node_counts_str;
+                node_count_per_first_move_map[move_str] = move_picker.node_count_per_first_move_[i];
 
-                sum += movePicker.node_count_per_first_move_[i];
+                sum += move_picker.node_count_per_first_move_[i];
             }
         }
 
-        nodeCountPerFirstMoveMap["searched"] = sum;
+        node_count_per_first_move_map["searched"] = sum;
 
-        return nodeCountPerFirstMoveMap;
+        return node_count_per_first_move_map;
     }
 
-    void compareFirstMoveCountsToStockfish(
-        const std::unordered_map<std::string, uint64_t> firstMoveCounts,
-        const std::unordered_map<std::string, uint64_t> stockfishResults) 
+    void compare_first_move_counts_to_stockfish(
+        const std::unordered_map<std::string, uint64_t> first_move_counts,
+        const std::unordered_map<std::string, uint64_t> stockfish_results) 
     {
         std::ostringstream errors;
-        bool hasErrors = false;
+        bool has_errors = false;
 
-        for (const auto& moveCountPair : firstMoveCounts) {
-            const std::string& move = moveCountPair.first;
-            uint64_t count = moveCountPair.second;
+        for (const auto& move_count_pair : first_move_counts) {
+            const std::string& move = move_count_pair.first;
+            uint64_t count = move_count_pair.second;
 
-            auto foundIt = stockfishResults.find(move);
-            if (foundIt == stockfishResults.end()) {
+            auto fount_it = stockfish_results.find(move);
+            if (fount_it == stockfish_results.end()) {
                 errors << "Move: " << move << " not found in stockfish results.\n";
-                hasErrors = true;
+                has_errors = true;
             } else {
-                uint64_t stockfishCount = foundIt->second;
+                uint64_t stockfishCount = fount_it->second;
                 if (count != stockfishCount) {
                     errors << "Move: " << move << " failed. Expected: " << stockfishCount << ", Got: " << count << ".\n";
-                    hasErrors = true;
+                    has_errors = true;
                 }
             }
         }
 
         // If there were any errors, print them and fail the test
-        if (hasErrors) {
+        if (has_errors) {
             std::cerr << errors.str();
             ASSERT_TRUE(false);
         }

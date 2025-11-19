@@ -13,7 +13,7 @@ MovePicker::MovePicker(int maxDepth)
     , bitboards_(_board.bitboards)
     , piece_map_(_board.piece_map)
     , state_bitmasks_(_board.state_bitmasks)
-    , _zHasher(_board.z_hasher)
+    , z_hasher_(_board.z_hasher)
     , _searchMemory(SearchMemory(maxDepth))
     , move_maker_(logic::MoveMaker(_board))
     , move_retractor_(logic::MoveRetractor(_board))
@@ -80,17 +80,17 @@ void MovePicker::gen_moves(
     _moveGenerator.gen_moves(is_w, _movelists[currentDepth], ep_target_mask, castle_rights);
 }
 
-logic::MoveResult MovePicker::makeMove(model::Move move, bool is_w) 
+logic::MoveResult MovePicker::make_move(model::Move move, bool is_w) 
 {
-    return move_maker_.makeMove(move, is_w);
+    return move_maker_.make_move(move, is_w);
 }
 
-void MovePicker::unmakeMove(
+void MovePicker::unmake_move(
     model::Move move,
     bool is_w,
     logic::MoveResult previousMoveResult)
 {
-    move_retractor_.unmakeMove(move, is_w, previousMoveResult);
+    move_retractor_.unmake_move(move, is_w, previousMoveResult);
 }
 
 void MovePicker::debugPrint(bool verbose) const
@@ -212,7 +212,7 @@ void MovePicker::minimax(
         }
 
         // Make the move and check if we are in any way left in check
-        logic::MoveResult moveResult = makeMove(currentMove, isMaximizer);
+        logic::MoveResult moveResult = make_move(currentMove, isMaximizer);
 
         if (checkCondition(
             currentDepth, 
@@ -230,7 +230,7 @@ void MovePicker::minimax(
         // FIXME: Move generator should not be queried for this
         if (_moveGenerator.in_check(isMaximizer)) {
             numIllegalMoves++;
-            unmakeMove(currentMove, isMaximizer, moveResult);
+            unmake_move(currentMove, isMaximizer, moveResult);
 
             if (checkCondition(
                 currentDepth, 
@@ -259,11 +259,11 @@ void MovePicker::minimax(
         }
 
         if (currentMove.is_any_capture()) {
-            _searchMemory.setLastCapturedPieceAtDepth(currentDepth, moveResult.capturedPieceType);
+            _searchMemory.setLastCapturedPieceAtDepth(currentDepth, moveResult.captured_piece_type);
         }
 
         _searchMemory.handleEnPessantMemory(currentMove, isMaximizer, currentDepth, currentMove.get_bit_index_to());
-        _searchMemory.handleNoCaptureCount(currentMove, currentDepth, moveResult.movedPieceType);
+        _searchMemory.handleNoCaptureCount(currentMove, currentDepth, moveResult.moved_piece_type);
 
         // Move was legal, update castling rights
         _searchMemory.setCastlingRights(
@@ -298,14 +298,14 @@ void MovePicker::minimax(
             verbose
         );
 
-        unmakeMove(currentMove, isMaximizer, moveResult);
+        unmake_move(currentMove, isMaximizer, moveResult);
         _searchMemory.unsetCastlingRights(currentDepth);
 
         if (currentMove.is_double_pawn_push()) {
             _searchMemory.setEnPessantTargetAtDepth(currentDepth + 1, 0ULL);
         }
     
-        if (not currentMove.is_any_capture() && (moveResult.capturedPieceType != model::Piece::Type::W_PAWN && moveResult.movedPieceType != model::Piece::Type::B_PAWN)) {
+        if (not currentMove.is_any_capture() && (moveResult.captured_piece_type != model::Piece::Type::W_PAWN && moveResult.moved_piece_type != model::Piece::Type::B_PAWN)) {
             _searchMemory.decrementNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
         }
 
@@ -370,7 +370,7 @@ void MovePicker::recordPerftStats(
     // FIXME: This is temporary
     // if (_board.isDeadPosition() || 49 >= 50)
     // {
-    //     unmakeMove(currentMove, isMaximizer, currentDepth);
+    //     unmake_move(currentMove, isMaximizer, currentDepth);
     //     return;
     // }
     retFlag = false;

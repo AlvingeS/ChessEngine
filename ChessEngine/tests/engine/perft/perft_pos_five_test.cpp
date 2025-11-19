@@ -28,7 +28,7 @@ TEST_F(perftPosFive, perft_pos5)
 
         // Make dubug move
         // model::Move move = moveFromStrAndFlag("a2a3", 0);
-        // movePicker.makeMove(move, true);
+        // movePicker.make_move(move, true);
         int nDebugMoves = 0;
 
         int depth = longRuns ? posFiveMaxDepth + 1 : posFiveMaxDepth;

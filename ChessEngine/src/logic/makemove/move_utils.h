@@ -9,19 +9,19 @@ namespace model {
 namespace logic {
 
 struct MoveResult {
-    model::Piece::Type capturedPieceType;
-    model::Piece::Type movedPieceType;
+    model::Piece::Type captured_piece_type;
+    model::Piece::Type moved_piece_type;
 
     MoveResult() {
-        capturedPieceType = model::Piece::Type::EMPTY;
-        movedPieceType = model::Piece::Type::EMPTY;
+        captured_piece_type = model::Piece::Type::EMPTY;
+        moved_piece_type = model::Piece::Type::EMPTY;
     }
 };
 
 struct MoveUtils {
     
-    static model::Piece::Type getPromotionPieceType(int promotionFlag, bool is_w);
-    static int determineCaptureIndex(const model::Move& move, bool is_w, int toIndex);
+    static model::Piece::Type get_promotion_piece_type(int promotionFlag, bool is_w);
+    static int determine_capture_sq_idx(const model::Move& move, bool is_w, int toIndex);
 
 };
 

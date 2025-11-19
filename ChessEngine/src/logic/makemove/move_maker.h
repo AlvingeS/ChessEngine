@@ -18,35 +18,35 @@ class MoveMaker {
 public:
     MoveMaker(model::Board& board);
     
-    MoveResult makeMove(const model::Move& move, bool is_w);
+    MoveResult make_move(const model::Move& move, bool is_w);
     
     void make_temporary_king_move(bool is_w, bool is_kside);
 
 private:
-    void makeCastleMove(bool is_w, bool is_kside);
+    void make_castle_move(bool is_w, bool is_kside);
     
-    model::Piece::Type removeMovedPieceFromBoard(
+    model::Piece::Type remove_moved_piece_from_board(
         bool is_w, 
         int fromIndex
     );
 
-    void removeCapturedPieceFromBoard(
-        bool isEP, 
+    void remove_captured_piece_from_board(
+        bool is_ep, 
         bool is_w, 
         int captureIndex, 
-        model::Piece::Type capturedPieceType
+        model::Piece::Type captured_piece_type
     );
 
-    void placeMovedPieceOnBoard(
+    void place_moved_piece_on_board(
         bool is_w, 
         int toIndex,
-        model::Piece::Type movedPieceType
+        model::Piece::Type moved_piece_type
     );
 
     model::Bitboards& bitboards_;
     model::StateBitmasks& state_bitmasks_;
     model::PieceMap& piece_map_;
-    model::ZHasher& _zHasher;
+    model::ZHasher& z_hasher_;
 };
 
 } // namespace logic

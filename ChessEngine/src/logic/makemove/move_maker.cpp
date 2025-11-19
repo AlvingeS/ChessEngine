@@ -11,94 +11,94 @@ MoveMaker::MoveMaker(model::Board& board)
     : bitboards_(board.bitboards) 
     , state_bitmasks_(board.state_bitmasks)
     , piece_map_(board.piece_map)
-    , _zHasher(board.z_hasher)
+    , z_hasher_(board.z_hasher)
 {}
 
-MoveResult MoveMaker::makeMove(const model::Move& move, bool is_w)
+MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
 {
-    auto moveResult = MoveResult();
+    auto move_result = MoveResult();
 
     // If the move is a castle, update and return
     if (move.is_any_castle()) {
-        makeCastleMove(is_w, move.is_king_castle());
-        return moveResult;
+        make_castle_move(is_w, move.is_king_castle());
+        return move_result;
     }
 
     // Get the from and to indices
-    int fromIndex = move.get_bit_index_from();
-    int toIndex = move.get_bit_index_to();
+    int from_sq_idx = move.get_bit_index_from();
+    int to_sq_idx = move.get_bit_index_to();
 
     // Pick up the piece from the from square and get the moved piece type
-    model::Piece::Type movedPieceType = removeMovedPieceFromBoard(is_w, fromIndex);
+    model::Piece::Type moved_piece_type = remove_moved_piece_from_board(is_w, from_sq_idx);
 
     // If the move is a capture, handle memory and remove the captured piece
     if (move.is_any_capture()) {
-        // Calculate index of captured piece, might be EP
-        int captureIndex = MoveUtils::determineCaptureIndex(move, is_w, toIndex);
-        model::Piece::Type capturedPieceType = piece_map_.get_piece_type_at_index(captureIndex);
-        removeCapturedPieceFromBoard(move.is_ep_capture(), is_w, captureIndex, capturedPieceType);
-        moveResult.capturedPieceType = capturedPieceType;
+        // Calculate idx of captured piece, might be EP
+        int capture_dq_idx = MoveUtils::determine_capture_sq_idx(move, is_w, to_sq_idx);
+        model::Piece::Type captured_piece_type = piece_map_.get_piece_type_at_index(capture_dq_idx);
+        remove_captured_piece_from_board(move.is_ep_capture(), is_w, capture_dq_idx, captured_piece_type);
+        move_result.captured_piece_type = captured_piece_type;
     }
 
     // Update the moved piece type if the move is a promotion    
     if (move.is_any_promo())
-        movedPieceType = MoveUtils::getPromotionPieceType(move.get_flag(), is_w);
+        moved_piece_type = MoveUtils::get_promotion_piece_type(move.get_flag(), is_w);
 
-    moveResult.movedPieceType = movedPieceType;
+    move_result.moved_piece_type = moved_piece_type;
 
     // Place the moved piece on the to square
-    placeMovedPieceOnBoard(is_w, toIndex, movedPieceType);
+    place_moved_piece_on_board(is_w, to_sq_idx, moved_piece_type);
 
     // Update occupied and empty squares bitmasks
     state_bitmasks_.update_occupied_and_empty_squares_bitmasks();
 
-    return moveResult;
+    return move_result;
 }
 
-void MoveMaker::makeCastleMove(bool is_w, bool is_kside)
+void MoveMaker::make_castle_move(bool is_w, bool is_kside)
 {
-    int fromKingInd, toKingInd, fromRookInd, toRookInd;
+    int from_king_sq_idx, to_king_sq_idx, from_rook_sq_idx, to_rook_sq_idx;
 
     if (is_w) {
-        fromKingInd = 3;
-        toKingInd = is_kside ? 1 : 5;
-        fromRookInd = is_kside ? 0 : 7;
-        toRookInd = is_kside ? 2 : 4;
+        from_king_sq_idx = 3;
+        to_king_sq_idx = is_kside ? 1 : 5;
+        from_rook_sq_idx = is_kside ? 0 : 7;
+        to_rook_sq_idx = is_kside ? 2 : 4;
 
-        bitboards_.clear_w_king_bit(fromKingInd);
-        bitboards_.set_w_king_bit(toKingInd);
-        bitboards_.clear_w_rooks_bit(fromRookInd);
-        bitboards_.set_w_rooks_bit(toRookInd);
+        bitboards_.clear_w_king_bit(from_king_sq_idx);
+        bitboards_.set_w_king_bit(to_king_sq_idx);
+        bitboards_.clear_w_rooks_bit(from_rook_sq_idx);
+        bitboards_.set_w_rooks_bit(to_rook_sq_idx);
 
-        state_bitmasks_.clear_w_pieces_bit(fromKingInd);
-        state_bitmasks_.set_w_pieces_bit(toKingInd);
-        state_bitmasks_.clear_w_pieces_bit(fromRookInd);
-        state_bitmasks_.set_w_pieces_bit(toRookInd);
+        state_bitmasks_.clear_w_pieces_bit(from_king_sq_idx);
+        state_bitmasks_.set_w_pieces_bit(to_king_sq_idx);
+        state_bitmasks_.clear_w_pieces_bit(from_rook_sq_idx);
+        state_bitmasks_.set_w_pieces_bit(to_rook_sq_idx);
 
-        piece_map_.set_piece_type_at_index(fromKingInd, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at_index(toKingInd, model::Piece::Type::W_KING);
-        piece_map_.set_piece_type_at_index(fromRookInd, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at_index(toRookInd, model::Piece::Type::W_ROOK);
+        piece_map_.set_piece_type_at_index(from_king_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_index(to_king_sq_idx, model::Piece::Type::W_KING);
+        piece_map_.set_piece_type_at_index(from_rook_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_index(to_rook_sq_idx, model::Piece::Type::W_ROOK);
     } else {
-        fromKingInd = 59;
-        toKingInd = is_kside ? 57 : 61;
-        fromRookInd = is_kside ? 56 : 63;
-        toRookInd = is_kside ? 58 : 60;
+        from_king_sq_idx = 59;
+        to_king_sq_idx = is_kside ? 57 : 61;
+        from_rook_sq_idx = is_kside ? 56 : 63;
+        to_rook_sq_idx = is_kside ? 58 : 60;
 
-        bitboards_.clear_b_king_bit(fromKingInd);
-        bitboards_.set_b_king_bit(toKingInd);
-        bitboards_.clear_b_rooks_bit(fromRookInd);
-        bitboards_.set_b_rooks_bit(toRookInd);
+        bitboards_.clear_b_king_bit(from_king_sq_idx);
+        bitboards_.set_b_king_bit(to_king_sq_idx);
+        bitboards_.clear_b_rooks_bit(from_rook_sq_idx);
+        bitboards_.set_b_rooks_bit(to_rook_sq_idx);
 
-        state_bitmasks_.clear_b_pieces_bit(fromKingInd);
-        state_bitmasks_.set_b_pieces_bit(toKingInd);
-        state_bitmasks_.clear_b_pieces_bit(fromRookInd);
-        state_bitmasks_.set_b_pieces_bit(toRookInd);
+        state_bitmasks_.clear_b_pieces_bit(from_king_sq_idx);
+        state_bitmasks_.set_b_pieces_bit(to_king_sq_idx);
+        state_bitmasks_.clear_b_pieces_bit(from_rook_sq_idx);
+        state_bitmasks_.set_b_pieces_bit(to_rook_sq_idx);
 
-        piece_map_.set_piece_type_at_index(fromKingInd, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at_index(toKingInd, model::Piece::Type::B_KING);
-        piece_map_.set_piece_type_at_index(fromRookInd, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at_index(toRookInd, model::Piece::Type::B_ROOK);
+        piece_map_.set_piece_type_at_index(from_king_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_index(to_king_sq_idx, model::Piece::Type::B_KING);
+        piece_map_.set_piece_type_at_index(from_rook_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_index(to_rook_sq_idx, model::Piece::Type::B_ROOK);
     }
 
     state_bitmasks_.update_occupied_and_empty_squares_bitmasks();
@@ -121,52 +121,52 @@ void MoveMaker::make_temporary_king_move(bool is_w, bool is_kside)
 }
 
 
-model::Piece::Type MoveMaker::removeMovedPieceFromBoard(bool is_w, int fromIndex) 
+model::Piece::Type MoveMaker::remove_moved_piece_from_board(bool is_w, int from_sq_idx) 
 {
     // Determine the piece type of the piece being moved
-    model::Piece::Type  movedPieceType = piece_map_.get_piece_type_at_index(fromIndex);
+    model::Piece::Type  moved_piece_type = piece_map_.get_piece_type_at_index(from_sq_idx);
 
     // Update zobrist hash
-    _zHasher.hash_square_piece_type(fromIndex, movedPieceType);
+    z_hasher_.hash_square_piece_type(from_sq_idx, moved_piece_type);
 
     // Clear the piece from bitboards, squarelookup and gamestate bitmasks
-    bitboards_.clear_piece_type_bit(fromIndex, movedPieceType);
-    piece_map_.set_piece_type_at_index(fromIndex, model::Piece::Type::EMPTY);
+    bitboards_.clear_piece_type_bit(from_sq_idx, moved_piece_type);
+    piece_map_.set_piece_type_at_index(from_sq_idx, model::Piece::Type::EMPTY);
 
-    is_w ? state_bitmasks_.clear_w_pieces_bit(fromIndex) 
-            : state_bitmasks_.clear_b_pieces_bit(fromIndex);
+    is_w ? state_bitmasks_.clear_w_pieces_bit(from_sq_idx) 
+            : state_bitmasks_.clear_b_pieces_bit(from_sq_idx);
 
-    return movedPieceType;
+    return moved_piece_type;
 }
 
-void MoveMaker::placeMovedPieceOnBoard(
+void MoveMaker::place_moved_piece_on_board(
     bool is_w, 
-    int toIndex, 
-    model::Piece::Type movedPieceType) 
+    int to_sq_idx, 
+    model::Piece::Type moved_piece_type) 
 {
-    bitboards_.set_piece_type_bit(toIndex, movedPieceType);
-    piece_map_.set_piece_type_at_index(toIndex, movedPieceType);
+    bitboards_.set_piece_type_bit(to_sq_idx, moved_piece_type);
+    piece_map_.set_piece_type_at_index(to_sq_idx, moved_piece_type);
 
-    _zHasher.hash_square_piece_type(toIndex, movedPieceType);
+    z_hasher_.hash_square_piece_type(to_sq_idx, moved_piece_type);
 
-    is_w ? state_bitmasks_.set_w_pieces_bit(toIndex) 
-            : state_bitmasks_.set_b_pieces_bit(toIndex);
+    is_w ? state_bitmasks_.set_w_pieces_bit(to_sq_idx) 
+            : state_bitmasks_.set_b_pieces_bit(to_sq_idx);
 }
 
-void MoveMaker::removeCapturedPieceFromBoard(bool isEP, bool is_w, int captureIndex, model::Piece::Type  capturedPieceType) {
+void MoveMaker::remove_captured_piece_from_board(bool is_ep, bool is_w, int capture_dq_idx, model::Piece::Type  captured_piece_type) {
     // Remove captured piece from board models
-    bitboards_.clear_piece_type_bit(captureIndex, capturedPieceType);
+    bitboards_.clear_piece_type_bit(capture_dq_idx, captured_piece_type);
 
-    is_w ? state_bitmasks_.clear_b_pieces_bit(captureIndex) 
-            : state_bitmasks_.clear_w_pieces_bit(captureIndex);
+    is_w ? state_bitmasks_.clear_b_pieces_bit(capture_dq_idx) 
+            : state_bitmasks_.clear_w_pieces_bit(capture_dq_idx);
 
-    _zHasher.hash_square_piece_type(captureIndex, capturedPieceType);
+    z_hasher_.hash_square_piece_type(capture_dq_idx, captured_piece_type);
 
     // Only clear from the squares lookup if the move was an ep capture
-    // because the capture index points to the square where the pawn was
+    // because the capture idx points to the square where the pawn was
     // and is now empty, the square we moved to will have been updated
-    if (isEP) {
-        piece_map_.set_piece_type_at_index(captureIndex, model::Piece::Type::EMPTY);
+    if (is_ep) {
+        piece_map_.set_piece_type_at_index(capture_dq_idx, model::Piece::Type::EMPTY);
     }
 }
 

@@ -41,7 +41,7 @@ public:
         int currentDepth, 
         const model::Move& move, 
         bool is_w, 
-        model::Piece::Type movedPieceType
+        model::Piece::Type moved_piece_type
     );
 
     void unsetCastlingRights(int currentDepth);
@@ -79,7 +79,7 @@ public:
     void handleNoCaptureCount(
         const model::Move& move, 
         int currentDepth, 
-        model::Piece::Type  movedPieceType
+        model::Piece::Type  moved_piece_type
     );
 
     void handleEnPessantMemory(

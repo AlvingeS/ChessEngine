@@ -55,8 +55,8 @@
 //         std::vector<model::Move> moves = movelist;
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
-//             moveGenerator.getBoard().makeMove(moves[i], true);
-//             moveGenerator.getBoard().unmakeMove(moves[i], true);
+//             moveGenerator.getBoard().make_move(moves[i], true);
+//             moveGenerator.getBoard().unmake_move(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
 //             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
@@ -71,8 +71,8 @@
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
-//             moveGenerator.getBoard().makeMove(moves[i], false);
-//             moveGenerator.getBoard().unmakeMove(moves[i], false);
+//             moveGenerator.getBoard().make_move(moves[i], false);
+//             moveGenerator.getBoard().unmake_move(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
 //             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
@@ -89,8 +89,8 @@
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
-//             moveGenerator.getBoard().makeMove(moves[i], true);
-//             moveGenerator.getBoard().unmakeMove(moves[i], true);
+//             moveGenerator.getBoard().make_move(moves[i], true);
+//             moveGenerator.getBoard().unmake_move(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
 //             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
@@ -106,8 +106,8 @@
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
-//             moveGenerator.getBoard().makeMove(moves[i], false);
-//             moveGenerator.getBoard().unmakeMove(moves[i], false);
+//             moveGenerator.getBoard().make_move(moves[i], false);
+//             moveGenerator.getBoard().unmake_move(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
 //             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
@@ -123,8 +123,8 @@
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
-//             moveGenerator.getBoard().makeMove(moves[i], true);
-//             moveGenerator.getBoard().unmakeMove(moves[i], true);
+//             moveGenerator.getBoard().make_move(moves[i], true);
+//             moveGenerator.getBoard().unmake_move(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
 //             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
@@ -140,8 +140,8 @@
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
-//             moveGenerator.getBoard().makeMove(moves[i], false);
-//             moveGenerator.getBoard().unmakeMove(moves[i], false);
+//             moveGenerator.getBoard().make_move(moves[i], false);
+//             moveGenerator.getBoard().unmake_move(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
 //             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
@@ -157,8 +157,8 @@
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
-//             moveGenerator.getBoard().makeMove(moves[i], true);
-//             moveGenerator.getBoard().unmakeMove(moves[i], true);
+//             moveGenerator.getBoard().make_move(moves[i], true);
+//             moveGenerator.getBoard().unmake_move(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
 //             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
@@ -174,8 +174,8 @@
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
-//             moveGenerator.getBoard().makeMove(moves[i], false);
-//             moveGenerator.getBoard().unmakeMove(moves[i], false);
+//             moveGenerator.getBoard().make_move(moves[i], false);
+//             moveGenerator.getBoard().unmake_move(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
 //             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
@@ -191,8 +191,8 @@
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
-//             moveGenerator.getBoard().makeMove(moves[i], true);
-//             moveGenerator.getBoard().unmakeMove(moves[i], true);
+//             moveGenerator.getBoard().make_move(moves[i], true);
+//             moveGenerator.getBoard().unmake_move(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
 //             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
@@ -208,8 +208,8 @@
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
-//             moveGenerator.getBoard().makeMove(moves[i], false);
-//             moveGenerator.getBoard().unmakeMove(moves[i], false);
+//             moveGenerator.getBoard().make_move(moves[i], false);
+//             moveGenerator.getBoard().unmake_move(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
 //             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
@@ -219,7 +219,7 @@
 //         io::Fen::setBoardFromFen(enPessant, bitboards, state_bitmasks, piece_map);
 
 //         // Make a double pawn push to enable en pessant
-//         moveGenerator.getBoard().makeMove(Move(51, 35, model::Move::DOUBLE_PAWN_PUSH_FLAG), false);
+//         moveGenerator.getBoard().make_move(Move(51, 35, model::Move::DOUBLE_PAWN_PUSH_FLAG), false);
 
 //         // Makes copies of the bitboards and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
@@ -229,8 +229,8 @@
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
-//             moveGenerator.getBoard().makeMove(moves[i], true);
-//             moveGenerator.getBoard().unmakeMove(moves[i], true);
+//             moveGenerator.getBoard().make_move(moves[i], true);
+//             moveGenerator.getBoard().unmake_move(moves[i], true);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
 //             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
@@ -240,7 +240,7 @@
 //         io::Fen::setBoardFromFen(enPessant, bitboards, state_bitmasks, piece_map);
 
 //         // Make a double pawn push to enable en pessant
-//         moveGenerator.getBoard().makeMove(Move(9, 17, model::Move::DOUBLE_PAWN_PUSH_FLAG), true);
+//         moveGenerator.getBoard().make_move(Move(9, 17, model::Move::DOUBLE_PAWN_PUSH_FLAG), true);
 
 //         // Makes copies of the bitboards and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
@@ -250,8 +250,8 @@
 //         std::vector<model::Move> moves = getMoves();
 
 //         for (int i = 0; i < movelist.get_move_index(); i++) {
-//             moveGenerator.getBoard().makeMove(moves[i], false);
-//             moveGenerator.getBoard().unmakeMove(moves[i], false);
+//             moveGenerator.getBoard().make_move(moves[i], false);
+//             moveGenerator.getBoard().unmake_move(moves[i], false);
 //             ASSERT_EQ(getBitboards(), bitboardsCopy);
 //             ASSERT_EQ(getPieceMap(), pieceMapCopy);
 //         }
@@ -267,12 +267,12 @@
 //         Move whiteARookMove = model::Move(7, 15, 0);
 //         Move whiteKingMove = model::Move(3, 2, 0);
 
-//         moveGenerator.getBoard().makeMove(whiteHRookMove, true);
-//         moveGenerator.getBoard().unmakeMove(whiteHRookMove, true);
-//         moveGenerator.getBoard().makeMove(whiteARookMove, true);
-//         moveGenerator.getBoard().unmakeMove(whiteARookMove, true);
-//         moveGenerator.getBoard().makeMove(whiteKingMove, true);
-//         moveGenerator.getBoard().unmakeMove(whiteKingMove, true);
+//         moveGenerator.getBoard().make_move(whiteHRookMove, true);
+//         moveGenerator.getBoard().unmake_move(whiteHRookMove, true);
+//         moveGenerator.getBoard().make_move(whiteARookMove, true);
+//         moveGenerator.getBoard().unmake_move(whiteARookMove, true);
+//         moveGenerator.getBoard().make_move(whiteKingMove, true);
+//         moveGenerator.getBoard().unmake_move(whiteKingMove, true);
 
 //         moveGenerator.resetMoves(movelist);
 //         moveGenerator.gen_castle_moves(true, movelist);
@@ -291,12 +291,12 @@
 //         Move blackARookMove = model::Move(63, 55, 0);
 //         Move blackKingMove = model::Move(59, 58, 0);
 
-//         moveGenerator.getBoard().makeMove(blackHRookMove, false);
-//         moveGenerator.getBoard().unmakeMove(blackHRookMove, false);
-//         moveGenerator.getBoard().makeMove(blackARookMove, false);
-//         moveGenerator.getBoard().unmakeMove(blackARookMove, false);
-//         moveGenerator.getBoard().makeMove(blackKingMove, false);
-//         moveGenerator.getBoard().unmakeMove(blackKingMove, false);
+//         moveGenerator.getBoard().make_move(blackHRookMove, false);
+//         moveGenerator.getBoard().unmake_move(blackHRookMove, false);
+//         moveGenerator.getBoard().make_move(blackARookMove, false);
+//         moveGenerator.getBoard().unmake_move(blackARookMove, false);
+//         moveGenerator.getBoard().make_move(blackKingMove, false);
+//         moveGenerator.getBoard().unmake_move(blackKingMove, false);
 
 //         moveGenerator.resetMoves(movelist);
 //         moveGenerator.gen_castle_moves(false, movelist);

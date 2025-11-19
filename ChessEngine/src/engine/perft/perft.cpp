@@ -13,7 +13,7 @@ perft::perft(int maxDepth)
       bitboards_(_board.bitboards),
       piece_map_(_board.piece_map),
       state_bitmasks_(_board.state_bitmasks),
-      _zHasher(_board.z_hasher),
+      z_hasher_(_board.z_hasher),
       _searchMemory(maxDepth),
       move_maker_(_board),
       move_retractor_(_board),
@@ -39,19 +39,19 @@ void perft::gen_moves(
     _moveGenerator.gen_moves(is_w, _movelists[currentDepth], ep_target_mask, castle_rights);
 }
 
-logic::MoveResult perft::makeMove(
+logic::MoveResult perft::make_move(
     model::Move move,
     bool is_w) 
 {
-    return move_maker_.makeMove(move, is_w);
+    return move_maker_.make_move(move, is_w);
 }
 
-void perft::unmakeMove(
+void perft::unmake_move(
     model::Move move,
     bool is_w,
     logic::MoveResult previousMoveResult)
 {
-    move_retractor_.unmakeMove(move, is_w, previousMoveResult);
+    move_retractor_.unmake_move(move, is_w, previousMoveResult);
 }
 
 void perft::debugPrint(bool verbose) const
@@ -171,7 +171,7 @@ void perft::minimax(
         }
 
         // Make the move and check if we are in any way left in check
-        logic::MoveResult moveResult = makeMove(currentMove, isMaximizer);
+        logic::MoveResult moveResult = make_move(currentMove, isMaximizer);
 
         if (checkCondition(
             currentDepth, 
@@ -188,7 +188,7 @@ void perft::minimax(
 
         if (_moveGenerator.in_check(isMaximizer)) {
             numIllegalMoves++;
-            unmakeMove(currentMove, isMaximizer, moveResult);
+            unmake_move(currentMove, isMaximizer, moveResult);
 
             if (checkCondition(
                 currentDepth, 
@@ -249,7 +249,7 @@ void perft::minimax(
             verbose
         );
 
-        unmakeMove(currentMove, isMaximizer, moveResult);
+        unmake_move(currentMove, isMaximizer, moveResult);
         _searchMemory.unsetCastlingRights(currentDepth);
         
         if (checkCondition(
@@ -310,7 +310,7 @@ void perft::recordPerftStats(
     // FIXME: This is temporary
     // if (_board.isDeadPosition() || 49 >= 50)
     // {
-    //     unmakeMove(currentMove, isMaximizer, currentDepth);
+    //     unmake_move(currentMove, isMaximizer, currentDepth);
     //     return;
     // }
     retFlag = false;

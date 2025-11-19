@@ -4,9 +4,9 @@
 
 namespace logic {
 
-model::Piece::Type MoveUtils::getPromotionPieceType(int promotionFlag, bool is_w) 
+model::Piece::Type MoveUtils::get_promotion_piece_type(int promo_flag, bool is_w) 
 {
-    switch(promotionFlag) {
+    switch(promo_flag) {
         case model::Move::KNIGHT_PROMO_FLAG:
             return is_w ?model::Piece::Type::W_KNIGHT :model::Piece::Type::B_KNIGHT;
             break;
@@ -36,11 +36,11 @@ model::Piece::Type MoveUtils::getPromotionPieceType(int promotionFlag, bool is_w
     return model::Piece::Type::EMPTY;
 }
 
-int MoveUtils::determineCaptureIndex(const model::Move& move, bool is_w, int toIndex)
+int MoveUtils::determine_capture_sq_idx(const model::Move& move, bool is_w, int to_sq_idx)
 {
-    return move.is_ep_capture() ? is_w ? toIndex - 8 
-                                        : toIndex + 8 
-                              : toIndex;
+    return move.is_ep_capture() ? is_w ? to_sq_idx - 8 
+                                        : to_sq_idx + 8 
+                              : to_sq_idx;
 }
     
 } // namespace logic

@@ -49,8 +49,8 @@ public:
         unsigned char castle_rights
     );
 
-    logic::MoveResult makeMove(model::Move move, bool is_w);
-    void unmakeMove(model::Move move, bool is_w, logic::MoveResult prevousMoveResult);
+    logic::MoveResult make_move(model::Move move, bool is_w);
+    void unmake_move(model::Move move, bool is_w, logic::MoveResult prevousMoveResult);
     void undoMove();
     
     int _numMoveGenCalls;
@@ -113,7 +113,7 @@ private:
     model::Bitboards& bitboards_;
     model::PieceMap& piece_map_;
     model::StateBitmasks& state_bitmasks_;
-    model::ZHasher& _zHasher;
+    model::ZHasher& z_hasher_;
     
     SearchMemory _searchMemory;
     logic::MoveMaker move_maker_;

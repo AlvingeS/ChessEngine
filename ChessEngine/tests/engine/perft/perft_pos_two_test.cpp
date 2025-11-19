@@ -30,9 +30,9 @@ TEST_F(perftPosTwo, perft_pos2)
 
         // Make dubug move
         // model::Move move = moveFromStrAndFlag("a2a3", 0);
-        // movePicker.makeMove(move, true);
+        // movePicker.make_move(move, true);
         // move = moveFromStrAndFlag("c7c6", 0);
-        // movePicker.makeMove(model::Move(0, 0, model::Move::QUEEN_CASTLE_FLAG), false);
+        // movePicker.make_move(model::Move(0, 0, model::Move::QUEEN_CASTLE_FLAG), false);
 
         int nDebugMoves = 0;
 

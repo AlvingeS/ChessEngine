@@ -20,27 +20,27 @@ public:
         model::Board& board
     );
     
-    void unmakeMove(
+    void unmake_move(
         const model::Move& move, 
-        bool wasWhite, 
+        bool was_w, 
         MoveResult previousMoveResults
     );
 
-    void revert_temporary_king_move(bool wasWhite, bool is_kside); 
+    void revert_temporary_king_move(bool was_w, bool is_kside); 
 
 private:
-    void unmakeCastleMove(bool wasWhite, bool is_kside);
+    void unmake_castle_move(bool was_w, bool is_kside);
 
-    model::Piece::Type  determineMovedPieceType(const model::Move& move, bool wasWhite, int toIndex) const;
+    model::Piece::Type  determine_moved_piece_type(const model::Move& move, bool was_w, int toIndex) const;
     
-    void removePreviouslyMovedPieceFromBoard(const model::Move& move, int toIndex, model::Piece::Type  previouslyMovedPieceType, bool wasWhite);
-    void placeBackCapturedPieceOnBoard(bool isEP, int captureIndex, int toIndex, bool wasWhite, model::Piece::Type  previouslyCapturedPieceType);
-    void placeBackMovedPieceOnBoard(bool wasWhite, int fromIndex, model::Piece::Type  movedPieceType);
+    void remove_previously_moved_piece_from_board(const model::Move& move, int toIndex, model::Piece::Type  previouslyMovedPieceType, bool was_w);
+    void place_back_captured_piece_on_board(bool is_ep, int captureIndex, int toIndex, bool was_w, model::Piece::Type  previouslyCapturedPieceType);
+    void place_back_moved_piece_on_board(bool was_w, int fromIndex, model::Piece::Type  moved_piece_type);
 
     model::Bitboards& bitboards_;
     model::StateBitmasks& state_bitmasks_;
     model::PieceMap& piece_map_;
-    const model::ZHasher& _zHasher;
+    const model::ZHasher& z_hasher_;
 };
 
 } // namespace logic

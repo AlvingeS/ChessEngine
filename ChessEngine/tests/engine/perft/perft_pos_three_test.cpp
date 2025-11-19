@@ -30,17 +30,17 @@ TEST_F(perftPosThree, perft_pos3)
         movePicker.setBoardFromFen(posThree);
 
         // model::Move move = moveFromStrAndFlag("a5a4", 0);
-        // movePicker.makeMove(move, true);
+        // movePicker.make_move(move, true);
         // move = moveFromStrAndFlag("h4g4", 0);
-        // movePicker.makeMove(move, false);
+        // movePicker.make_move(move, false);
         // move = moveFromStrAndFlag("a4b3", 0);
-        // movePicker.makeMove(move, true);
+        // movePicker.make_move(move, true);
         // move = moveFromStrAndFlag("g4f5", 0);
-        // movePicker.makeMove(move, false);
+        // movePicker.make_move(move, false);
         // move = moveFromStrAndFlag("b3c4", 0);
-        // movePicker.makeMove(move, true);
+        // movePicker.make_move(move, true);
         // move = moveFromStrAndFlag("f5e4", 0);
-        // movePicker.makeMove(move, false);
+        // movePicker.make_move(move, false);
 
         int nDebugMoves = 0;
 

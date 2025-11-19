@@ -39,7 +39,7 @@ void SearchMemory::setCastlingRights(
     int currentDepth, 
     const model::Move& move, 
     bool is_w, 
-    model::Piece::Type movedPieceType) 
+    model::Piece::Type moved_piece_type) 
 {
     if (move.is_any_castle()) {
         removeCastlingRightsForRemainingDepths(
@@ -48,7 +48,7 @@ void SearchMemory::setCastlingRights(
         );
     }
 
-    if (movedPieceType == model::Piece::Type::W_KING || movedPieceType == model::Piece::Type::B_KING) {
+    if (moved_piece_type == model::Piece::Type::W_KING || moved_piece_type == model::Piece::Type::B_KING) {
         if (is_w) {
             if (_castlingRights[currentDepth] & whiteBoth)
                 removeCastlingRightsForRemainingDepths(currentDepth, whiteBoth);
@@ -58,7 +58,7 @@ void SearchMemory::setCastlingRights(
         }
     }
 
-    if (movedPieceType == model::Piece::Type::W_ROOK || movedPieceType == model::Piece::Type::B_ROOK) {
+    if (moved_piece_type == model::Piece::Type::W_ROOK || moved_piece_type == model::Piece::Type::B_ROOK) {
         if (is_w) {
             if (move.get_bit_index_from() == 0) {
                 if (_castlingRights[currentDepth] & whiteKingSide)
@@ -96,7 +96,7 @@ void SearchMemory::overrideCastlingRights(unsigned char rights)
 void SearchMemory::handleNoCaptureCount(
     const model::Move& move, 
     int currentDepth, 
-    model::Piece::Type  movedPieceType)
+    model::Piece::Type  moved_piece_type)
 {
     // If the move is a capture, reset the no capture count
     if (move.is_any_capture()) {
@@ -105,7 +105,7 @@ void SearchMemory::handleNoCaptureCount(
     }
 
     // If the move is a pawn move, reset the no capture count
-    if (movedPieceType == model::Piece::Type::W_PAWN || movedPieceType == model::Piece::Type::B_PAWN) {
+    if (moved_piece_type == model::Piece::Type::W_PAWN || moved_piece_type == model::Piece::Type::B_PAWN) {
         resetNoCapturedOrPawnMoveCountAtDepth(currentDepth + 1);
         return;
     }
@@ -132,7 +132,7 @@ void SearchMemory::handleEnPessantMemory(
         setEnPessantTargetAtDepth(currentDepth + 1, enPessantTarget);
         
         // FIXME: Temporary because I don't know how to implement this haha
-        // _zHasher.hash_en_pessant_file(toIndex % 8);
+        // z_hasher_.hash_en_pessant_file(toIndex % 8);
     }
 }
 

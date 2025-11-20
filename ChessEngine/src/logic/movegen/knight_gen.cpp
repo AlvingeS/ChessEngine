@@ -9,13 +9,13 @@
 
 namespace logic {
 
-KnightGenerator::KnightGenerator(model::Board& board) 
+KnightGen::KnightGen(model::Board& board) 
     : bitboards_(board.bitboards)
     , occupancy_masks_(board.occupancy_masks)
     , knight_attack_table_(attack_tables::knight)
 {}
 
-void KnightGenerator::generate(bool is_w, model::Movelist& movelist) 
+void KnightGen::generate(bool is_w, model::Movelist& movelist) 
 {
     std::vector<int>& knight_sq_idxs = Containers::get_piece_position_indices();
     std::vector<int>& free_moves_sq_idxs = Containers::get_leaping_piece_free_moves_indices();

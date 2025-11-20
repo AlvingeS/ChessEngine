@@ -11,10 +11,10 @@ namespace model {
 
 namespace logic {
 
-class QueenGenerator {
+class QueenGen {
 
 public:
-    QueenGenerator(model::Board& board);
+    QueenGen(model::Board& board);
     
     void generate(
         bool is_w, 

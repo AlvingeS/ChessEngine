@@ -29,7 +29,7 @@ protected:
     engine::SearchMemory searchMemory;
     MoveMaker move_maker;
     MoveRetractor move_retractor;
-    MoveGenerator moveGenerator;
+    MoveGen moveGenerator;
     std::string startingPos;
     model::Movelist movelist;
 
@@ -42,12 +42,12 @@ protected:
           searchMemory(engine::SearchMemory(0)),
           move_maker(board),
           move_retractor(board),
-          moveGenerator(MoveGenerator(board, move_maker, move_retractor)),
+          moveGenerator(MoveGen(board, move_maker, move_retractor)),
           movelist(model::Movelist()) {}
 
     virtual void SetUp() override {
         // board = model::ChessBoard();
-        // moveGenerator = MoveGenerator(board);
+        // moveGenerator = MoveGen(board);
         attack_tables::init_attack_tables();
         startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";;
     }

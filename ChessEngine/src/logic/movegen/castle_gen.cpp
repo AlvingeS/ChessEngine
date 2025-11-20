@@ -14,7 +14,7 @@
 
 namespace logic {
 
-CastleGenerator::CastleGenerator(
+CastleGen::CastleGen(
     model::Board& board,
     logic::MoveMaker& move_maker, 
     logic::MoveRetractor& move_retractor, 
@@ -31,7 +31,7 @@ CastleGenerator::CastleGenerator(
     b_qside_castle_mask_ = masks::B_QSIDE_CASTLE_MASK;
 }
 
-void CastleGenerator::generate(
+void CastleGen::generate(
     bool is_w,
     model::Movelist& movelist,
     unsigned char castle_rights) 
@@ -55,7 +55,7 @@ void CastleGenerator::generate(
     }
 }
 
-bool CastleGenerator::king_and_rook_on_castle_squares(bool is_w, bool is_kside) const
+bool CastleGen::king_and_rook_on_castle_squares(bool is_w, bool is_kside) const
 {
     bool king_bit_enabled = is_w ? (bitboards_.get_w_king_bb() & (1ULL << 3)) != 0
                                   : (bitboards_.get_b_king_bb() & (1ULL << 59)) != 0;
@@ -70,17 +70,17 @@ bool CastleGenerator::king_and_rook_on_castle_squares(bool is_w, bool is_kside) 
                                  : (bitboards_.get_b_rooks_bb() & (1ULL << 63)) != 0);
 }
 
-void CastleGenerator::make_temporary_king_move(bool is_w, bool is_kside)
+void CastleGen::make_temporary_king_move(bool is_w, bool is_kside)
 {
     move_maker_.make_temporary_king_move(is_w, is_kside);
 }
 
-void CastleGenerator::revert_temporary_king_move(bool is_w, bool is_kside)
+void CastleGen::revert_temporary_king_move(bool is_w, bool is_kside)
 {
     move_retractor_.revert_temporary_king_move(is_w, is_kside);
 }
 
-void CastleGenerator::gen_single_castle_move(
+void CastleGen::gen_single_castle_move(
     bool is_w,
     bool is_kside,
     model::Movelist& movelist)

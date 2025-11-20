@@ -26,10 +26,10 @@ namespace logic {
 class MoveMaker;
 class MoveRetractor;
 
-class MoveGenerator {
+class MoveGen {
 
 public:
-    MoveGenerator(
+    MoveGen(
         model::Board& board,
         logic::MoveMaker& move_maker,
         logic::MoveRetractor& move_retractor
@@ -70,13 +70,13 @@ private:
     logic::MoveRetractor& move_retractor_;
     
     CheckDetection check_detection_;
-    RookGenerator rook_gen_;
+    RookGen rook_gen_;
     BishopGen bishop_gen_;
-    QueenGenerator queen_gen_;
-    KnightGenerator knight_gen_;
-    KingGenerator king_gen_;
-    PawnGenerator pawn_gen_;
-    CastleGenerator castle_gen_;
+    QueenGen queen_gen_;
+    KnightGen knight_gen_;
+    KingGen king_gen_;
+    PawnGen pawn_gen_;
+    CastleGen castle_gen_;
     
 };
 } // namespace logic

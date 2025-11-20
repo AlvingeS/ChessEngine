@@ -1,6 +1,6 @@
 // #include <gtest/gtest.h>
 
-// #include "game/movegen/MoveGenerator.h"
+// #include "game/movegen/MoveGen.h"
 // #include "game/move/Move.h"
 
 // #include <unordered_set>
@@ -12,7 +12,7 @@
 //     class MakeUnmakeMoveTest : public ::testing::Test {
 //         protected:
 //             ChessBoard board;
-//             MoveGenerator moveGenerator;
+//             MoveGen moveGenerator;
 //             std::string startingPos;
 //             std::string castling;
 //             std::string captures;
@@ -21,7 +21,7 @@
 //             std::string enPessant;
 //             std::vector<model::Move> movelist;
 
-//             MakeUnmakeMoveTest() : board(ChessBoard()), moveGenerator(MoveGenerator(board)) {}
+//             MakeUnmakeMoveTest() : board(ChessBoard()), moveGenerator(MoveGen(board)) {}
 
 //             virtual void SetUp() override {
 //                 castling = "r3k2r/8/8/8/8/8/8/R3K2R";
@@ -30,7 +30,7 @@
 //                 capturePromotion = "p1b5/1P6/8/8/8/8/6p1/5N1Q";
 //                 startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 //                 enPessant = "8/4p3/8/3P4/7p/8/6P1/8";
-//                 movelist = std::vector<model::Move>(movegen::MoveGenerator::MAX_LEGAL_MOVES);
+//                 movelist = std::vector<model::Move>(movegen::MoveGen::MAX_LEGAL_MOVES);
 //             }
 
 //             std::vector<model::Move> getMoves() {

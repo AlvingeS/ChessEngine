@@ -9,13 +9,13 @@
 
 namespace logic {
 
-RookGenerator::RookGenerator(model::Board& board)
+RookGen::RookGen(model::Board& board)
     : bitboards_(board.bitboards)
     , occupancy_masks_(board.occupancy_masks)
     , line_ray_attack_table_(attack_tables::line_ray)
 {}
 
-void RookGenerator::generate(
+void RookGen::generate(
     bool is_w,
     model::Movelist& movelist)
 {

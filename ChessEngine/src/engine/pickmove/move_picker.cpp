@@ -17,7 +17,7 @@ MovePicker::MovePicker(int maxDepth)
     , search_memory_(SearchMemory(maxDepth))
     , move_maker_(logic::MoveMaker(board_))
     , move_retractor_(logic::MoveRetractor(board_))
-    , move_generator_(logic::MoveGenerator(board_, move_maker_, move_retractor_))
+    , move_generator_(logic::MoveGen(board_, move_maker_, move_retractor_))
     , eval_(logic::Eval(board_))
     , max_depth_(maxDepth)
 {

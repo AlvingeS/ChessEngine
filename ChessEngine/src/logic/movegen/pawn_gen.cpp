@@ -10,7 +10,7 @@
 
 namespace logic {
 
-PawnGenerator::PawnGenerator(model::Board& board) 
+PawnGen::PawnGen(model::Board& board) 
     : bitboards_(board.bitboards)
     , occupancy_masks_(board.occupancy_masks)
     , w_pawn_quiet_attack_table_(attack_tables::w_pawn_quiet)
@@ -19,7 +19,7 @@ PawnGenerator::PawnGenerator(model::Board& board)
     , b_pawn_capture_attack_table_(attack_tables::b_pawn_capture)
 {}
 
-void PawnGenerator::generate(
+void PawnGen::generate(
     bool is_w,
     model::Movelist& movelist,
     bitmask ep_target_mask)
@@ -54,10 +54,10 @@ void PawnGenerator::generate(
 
         if (free_moves_idxs.size() == 2) {
             int single_step_idx = (is_w ? 0 : 1);
-            int double_step_index = (is_w ? 1 : 0);
+            int double_step_idx = (is_w ? 1 : 0);
             
             movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[single_step_idx], model::Move::QUITE_FLAG));
-            movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[double_step_index], model::Move::DOUBLE_PAWN_PUSH_FLAG));
+            movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[double_step_idx], model::Move::DOUBLE_PAWN_PUSH_FLAG));
 
         } else if (free_moves_idxs.size() == 1 && free_moves_idxs[0] == pawn_sq_idx + offset) {
             // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces

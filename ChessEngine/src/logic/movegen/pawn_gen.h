@@ -12,10 +12,10 @@ namespace model {
 
 namespace logic {
 
-class PawnGenerator {
+class PawnGen {
 
 public:
-    PawnGenerator(model::Board& board);
+    PawnGen(model::Board& board);
     
     void generate(
         bool is_w,

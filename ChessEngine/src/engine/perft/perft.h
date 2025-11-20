@@ -74,7 +74,7 @@ public:
         return max_depth_;
     }
 
-    const logic::MoveGenerator& get_move_generator() const
+    const logic::MoveGen& get_move_generator() const
     {
         return move_generator_;
     }
@@ -105,7 +105,7 @@ private:
     
     logic::MoveMaker move_maker_;
     logic::MoveRetractor move_retractor_;
-    logic::MoveGenerator move_generator_;
+    logic::MoveGen move_generator_;
     logic::Eval eval_;
     
     SearchMemory search_memory_;

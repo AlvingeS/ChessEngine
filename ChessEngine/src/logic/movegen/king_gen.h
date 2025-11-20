@@ -13,10 +13,10 @@ namespace model {
 
 namespace logic {
 
-class KingGenerator {
+class KingGen {
 
 public:
-    KingGenerator(model::Board& board);
+    KingGen(model::Board& board);
     void generate(bool is_w, model::Movelist& movelist);
 
 private:

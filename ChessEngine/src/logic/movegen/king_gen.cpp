@@ -9,14 +9,14 @@
 
 namespace logic {
 
-KingGenerator::KingGenerator(model::Board& board) 
+KingGen::KingGen(model::Board& board) 
     : bitboards_(board.bitboards)
     , occupancy_masks_(board.occupancy_masks)
     , king_attack_table_(attack_tables::king)
 {
 }
 
-void KingGenerator::generate(bool is_w, model::Movelist& movelist) 
+void KingGen::generate(bool is_w, model::Movelist& movelist) 
 {
     std::vector<int>& king_idxs = Containers::get_piece_position_indices();
     std::vector<int>& free_moves_sq_idxs = Containers::get_leaping_piece_free_moves_indices();

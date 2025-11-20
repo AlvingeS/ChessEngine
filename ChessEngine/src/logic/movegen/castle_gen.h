@@ -16,10 +16,10 @@ class MoveMaker;
 class MoveRetractor;
 class CheckDetection;
 
-class CastleGenerator {
+class CastleGen {
     
 public:
-    CastleGenerator(
+    CastleGen(
         model::Board& board,
         logic::MoveMaker& move_maker,
         logic::MoveRetractor& move_retractor,

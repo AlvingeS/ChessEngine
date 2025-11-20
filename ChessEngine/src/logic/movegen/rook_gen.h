@@ -11,10 +11,10 @@ namespace model {
 
 namespace logic {
 
-class RookGenerator {
+class RookGen {
 
 public:
-    RookGenerator(model::Board& board);
+    RookGen(model::Board& board);
     
     void generate(
         bool is_w,

@@ -12,7 +12,7 @@
 
 namespace logic {
 
-MoveGenerator::MoveGenerator(
+MoveGen::MoveGen(
     model::Board& board,
     logic::MoveMaker& move_maker,
     logic::MoveRetractor& move_retractor)
@@ -30,7 +30,7 @@ MoveGenerator::MoveGenerator(
     , castle_gen_(board, move_maker, move_retractor, &check_detection_)
 {}
 
-void MoveGenerator::gen_moves(
+void MoveGen::gen_moves(
     bool is_w,
     model::Movelist& movelist,
     bitmask ep_target_mask,
@@ -47,42 +47,42 @@ void MoveGenerator::gen_moves(
     movelist.add_null_move(); // Add a null move to the end of the move list
 }
 
-void MoveGenerator::gen_rook_moves(
+void MoveGen::gen_rook_moves(
     bool is_w,
     model::Movelist& movelist)
 {
     rook_gen_.generate(is_w, movelist);
 }
 
-void MoveGenerator::gen_bishop_moves(
+void MoveGen::gen_bishop_moves(
     bool is_w,
     model::Movelist& movelist)
 {
     bishop_gen_.generate(is_w, movelist);
 }
 
-void MoveGenerator::gen_queen_moves(
+void MoveGen::gen_queen_moves(
     bool is_w,
     model::Movelist& movelist)
 {
     queen_gen_.generate(is_w, movelist);;
 }
 
-void MoveGenerator::gen_knight_moves(
+void MoveGen::gen_knight_moves(
     bool is_w,
     model::Movelist& movelist)
 {
     knight_gen_.generate(is_w, movelist);
 }
 
-void MoveGenerator::gen_king_moves(
+void MoveGen::gen_king_moves(
     bool is_w,
     model::Movelist& movelist)
 {
     king_gen_.generate(is_w, movelist);
 }
 
-void MoveGenerator::gen_pawn_moves(
+void MoveGen::gen_pawn_moves(
     bool is_w,
     model::Movelist& movelist,
     bitmask ep_target_mask)
@@ -90,7 +90,7 @@ void MoveGenerator::gen_pawn_moves(
     pawn_gen_.generate(is_w, movelist, ep_target_mask);
 }
 
-void MoveGenerator::gen_castle_moves(
+void MoveGen::gen_castle_moves(
     bool is_w,
     model::Movelist& movelist,
     unsigned char castle_rights)
@@ -98,7 +98,7 @@ void MoveGenerator::gen_castle_moves(
     castle_gen_.generate(is_w, movelist, castle_rights);
 }
 
-bool MoveGenerator::in_check(bool is_w) {
+bool MoveGen::in_check(bool is_w) {
     return check_detection_.in_check(is_w);
 }
 

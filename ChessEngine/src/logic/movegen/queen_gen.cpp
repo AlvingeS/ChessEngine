@@ -9,14 +9,14 @@
 
 namespace logic {
 
-QueenGenerator::QueenGenerator(model::Board& board) 
+QueenGen::QueenGen(model::Board& board) 
     : bitboards_(board.bitboards)
     , occupancy_masks_(board.occupancy_masks)
     , line_ray_attack_table_(attack_tables::line_ray)
     , diag_ray_attack_table_(attack_tables::diag_ray)
 {}
 
-void QueenGenerator::generate(
+void QueenGen::generate(
     bool is_w,
     model::Movelist& movelist)
 {

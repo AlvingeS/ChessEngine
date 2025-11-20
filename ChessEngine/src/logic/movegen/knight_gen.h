@@ -12,10 +12,10 @@ namespace model {
 
 namespace logic {
 
-class KnightGenerator {
+class KnightGen {
 
 public:
-    KnightGenerator(model::Board& board);
+    KnightGen(model::Board& board);
     void generate(bool is_w, model::Movelist& movelist);
 
 private:

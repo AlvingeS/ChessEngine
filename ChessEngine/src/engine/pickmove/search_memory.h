@@ -46,14 +46,14 @@ public:
 
     void unset_castle_rights(int current_depth);
 
-    bitmask get_ep_target_at_depth(int depth) const
+    bitmask get_ep_target_mask_at_depth(int depth) const
     {
-        return ep_targets_[depth];
+        return ep_target_masks_[depth];
     }
 
-    void set_ep_target_at_depth(int depth, bitmask target) 
+    void set_ep_target_at_depth(int depth, bitmask ep_target_mask) 
     {
-        ep_targets_[depth] = target;
+        ep_target_masks_[depth] = ep_target_mask;
     }
 
     int get_no_captures_or_pawn_moves_count_at_depth(int depth) const
@@ -93,7 +93,7 @@ private:
     int max_depth_;
     std::vector<unsigned char> castle_rights_;
     std::vector<model::Piece::Type> last_captured_pieces_;
-    std::vector<bitmask> ep_targets_;
+    std::vector<bitmask> ep_target_masks_;
     std::vector<int> no_captures_or_pawn_moves_counts_;
 
     void remove_castle_rights_for_remaining_depths(

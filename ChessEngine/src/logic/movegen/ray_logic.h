@@ -8,17 +8,17 @@ namespace logic {
 struct RayLogic {
 
     static void add_moves_from_free_ray(
-        bitmask freeRay,
-        int bitIndexFrom,
+        bitmask free_ray,
+        int bit_index_from,
         model::Movelist& movelist
     );
 
     static void add_move_if_blocker_is_enemy(
         int blockerIndex,
         bool is_w,
-        int bitIndexFrom,
+        int bit_index_from,
         model::Movelist& movelist,
-        bitmask whitePiecesBitmask
+        bitmask w_pieces_mask
     );
 
     static void add_moves_between_blocker_and_piece_on_line_ray(
@@ -26,7 +26,7 @@ struct RayLogic {
         bool alongFile, 
         bool startFromBlocker, int rookRank, 
         int rookFile, 
-        int bitIndexFrom,
+        int bit_index_from,
         model::Movelist& movelist
     );
 
@@ -35,7 +35,7 @@ struct RayLogic {
         bool startFromBlocker, 
         int bishopRank, 
         int bishopFile, 
-        int bitIndexFrom,
+        int bit_index_from,
         model::Movelist& movelist
     );
     
@@ -48,8 +48,8 @@ struct RayLogic {
         int pieceRank,
         int pieceFile,
         model::Movelist& movelist,
-        bitmask whitePiecesBitmask,
-        bitmask occupiedPiecesBitmask
+        bitmask w_pieces_mask,
+        bitmask occupied_sqrs_mask
     );
     
     static void add_moves_from_diag_ray(
@@ -60,22 +60,22 @@ struct RayLogic {
         int pieceRank,
         int pieceFile,
         model::Movelist& movelist,
-        bitmask whitePiecesBitmask,
-        bitmask occupiedPiecesBitmask
+        bitmask w_pieces_mask,
+        bitmask occupied_sqrs_mask
     );
     
     static bool check_line_ray(
-        bitmask straightRay,
-        bool firstBlockerOnLSB,
-        bitmask opponentRooksAndQueens,
-        bitmask occupiedPiecesBitmask
+        bitmask line_ray,
+        bool first_blocker_on_lsb,
+        bitmask opp_rooks_and_queens_mask,
+        bitmask occupied_sqrs_mask
     );
     
     static bool check_diag_ray(
-        bitmask diagonalRay,
-        bool firstBlockerOnLSB,
-        bitmask opponentBishopsAndQueens,
-        bitmask occupiedPiecesBitmask
+        bitmask diag_ray,
+        bool first_blocker_on_lsb,
+        bitmask opp_bishops_and_queens_mask,
+        bitmask occupied_sqrs_mask
     );
 
 };

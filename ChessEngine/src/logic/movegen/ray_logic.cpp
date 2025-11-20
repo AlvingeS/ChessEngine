@@ -27,9 +27,9 @@ void RayLogic::add_move_if_blocker_is_enemy(
     bool is_w,
     int bit_index_from,
     model::Movelist& movelist,
-    bitmask white_pieces_bitmask)
+    bitmask w_pieces_mask)
 {
-    bool blocker_is_white = BitBasics::get_bit(white_pieces_bitmask, blocker_index);
+    bool blocker_is_white = BitBasics::get_bit(w_pieces_mask, blocker_index);
 
     if (blocker_is_white != is_w)
         movelist.add_move(model::Move(bit_index_from, blocker_index, model::Move::CAPTURE_FLAG));
@@ -113,22 +113,22 @@ void RayLogic::add_moves_from_line_ray(
     int piece_rank,
     int piece_file,
     model::Movelist& movelist,
-    bitmask white_pieces_bitmask,
-    bitmask occupied_pieces_bitmask) 
+    bitmask w_pieces_mask,
+    bitmask occupied_sqrs_mask) 
 {
-    bitmask blocker_bitmask = ray & occupied_pieces_bitmask;          
+    bitmask blocker_mask = ray & occupied_sqrs_mask;          
 
-    if (blocker_bitmask != 0) {
+    if (blocker_mask != 0) {
         int blocker_index = blocker_on_lsb
-                            ? BitBasics::lsb_index(blocker_bitmask)
-                            : BitBasics::msb_index(blocker_bitmask);
+                            ? BitBasics::lsb_index(blocker_mask)
+                            : BitBasics::msb_index(blocker_mask);
                                
         add_move_if_blocker_is_enemy(
             blocker_index,
             is_w,
             piece_index, 
             movelist,
-            white_pieces_bitmask
+            w_pieces_mask
         );
 
         add_moves_between_blocker_and_piece_on_line_ray(
@@ -154,22 +154,22 @@ void RayLogic::add_moves_from_diag_ray(
     int piece_rank,
     int piece_file,
     model::Movelist& movelist,
-    bitmask white_pieces_bitmask,
-    bitmask occupied_pieces_bitmask)
+    bitmask w_pieces_mask,
+    bitmask occupied_sqrs_mask)
 {
-    bitmask blocker_bitmask = ray & occupied_pieces_bitmask;
+    bitmask blocker_mask = ray & occupied_sqrs_mask;
 
-    if (blocker_bitmask != 0) {
+    if (blocker_mask != 0) {
         int blocker_index = blocker_on_lsb
-                            ? BitBasics::lsb_index(blocker_bitmask) 
-                            : BitBasics::msb_index(blocker_bitmask);
+                            ? BitBasics::lsb_index(blocker_mask) 
+                            : BitBasics::msb_index(blocker_mask);
 
         add_move_if_blocker_is_enemy(
             blocker_index, 
             is_w, 
             piece_index, 
             movelist,
-            white_pieces_bitmask
+            w_pieces_mask
         );
 
         add_moves_between_blocker_and_pice_on_diag_ray(
@@ -187,55 +187,55 @@ void RayLogic::add_moves_from_diag_ray(
 }
 
 bool RayLogic::check_line_ray(
-    bitmask straight_ray,
+    bitmask line_ray,
     bool first_blocker_on_lsb,
-    bitmask opponent_rooks_and_queens,
-    bitmask occupied_pieces_bitmask) 
+    bitmask opp_rooks_and_queens_mask,
+    bitmask occupied_sqrs_mask) 
 {
-    bitmask rooks_and_queens_blocker_bitmask = straight_ray & opponent_rooks_and_queens;
+    bitmask rooks_and_queens_blocker_mask = line_ray & opp_rooks_and_queens_mask;
     
-    if (rooks_and_queens_blocker_bitmask == 0ULL)
+    if (rooks_and_queens_blocker_mask == 0ULL)
         return false;
 
-    bitmask occupied_blocker_bitmask = straight_ray & occupied_pieces_bitmask;
+    bitmask blocker_mask = line_ray & occupied_sqrs_mask;
 
-    if (BitBasics::pop_count(occupied_blocker_bitmask) == 1)
+    if (BitBasics::pop_count(blocker_mask) == 1)
         return true;
 
     int occupied_blocker_index = first_blocker_on_lsb
-                                 ? BitBasics::lsb_index(occupied_blocker_bitmask)
-                                 : BitBasics::msb_index(occupied_blocker_bitmask);
+                                 ? BitBasics::lsb_index(blocker_mask)
+                                 : BitBasics::msb_index(blocker_mask);
 
     int rooks_and_queens_blocker_index = first_blocker_on_lsb
-                                         ? BitBasics::lsb_index(rooks_and_queens_blocker_bitmask)
-                                         : BitBasics::msb_index(rooks_and_queens_blocker_bitmask);
+                                         ? BitBasics::lsb_index(rooks_and_queens_blocker_mask)
+                                         : BitBasics::msb_index(rooks_and_queens_blocker_mask);
 
     return occupied_blocker_index == rooks_and_queens_blocker_index;
 }
 
 bool RayLogic::check_diag_ray(
-    bitmask diagonal_ray,
+    bitmask diag_ray,
     bool first_blocker_on_lsb,
-    bitmask opponent_bishops_and_queens,
-    bitmask occupied_pieces_bitmask)
+    bitmask opp_bishops_and_queens_mask,
+    bitmask occupied_sqrs_mask)
 {
-    bitmask bishops_and_queens_blocker_bitmask = diagonal_ray & opponent_bishops_and_queens;
+    bitmask bishops_and_queens_blocker_mask = diag_ray & opp_bishops_and_queens_mask;
 
-    if (bishops_and_queens_blocker_bitmask == 0)
+    if (bishops_and_queens_blocker_mask == 0)
         return false;
 
-    bitmask occupied_blocker_bitmask = diagonal_ray & occupied_pieces_bitmask;
+    bitmask blocker_mask = diag_ray & occupied_sqrs_mask;
 
-    if (BitBasics::pop_count(occupied_blocker_bitmask) == 1)
+    if (BitBasics::pop_count(blocker_mask) == 1)
         return true;
 
     int occupied_blocker_index = first_blocker_on_lsb
-                                 ? BitBasics::lsb_index(occupied_blocker_bitmask)
-                                 : BitBasics::msb_index(occupied_blocker_bitmask);
+                                 ? BitBasics::lsb_index(blocker_mask)
+                                 : BitBasics::msb_index(blocker_mask);
 
     int bishops_and_queens_blocker_index = first_blocker_on_lsb
-                                          ? BitBasics::lsb_index(bishops_and_queens_blocker_bitmask)
-                                          : BitBasics::msb_index(bishops_and_queens_blocker_bitmask);
+                                          ? BitBasics::lsb_index(bishops_and_queens_blocker_mask)
+                                          : BitBasics::msb_index(bishops_and_queens_blocker_mask);
 
     return occupied_blocker_index == bishops_and_queens_blocker_index;
 }

@@ -1,23 +1,23 @@
 namespace logic {
 
-inline bool BitBasics::get_bit(bitmask a, int i) 
+inline bool BitBasics::get_bit(bitmask mask, int i) 
 {
-    return (a >> i) & 1;
+    return (mask >> i) & 1;
 }
 
-inline int BitBasics::lsb_index(bitmask a) 
+inline int BitBasics::lsb_index(bitmask mask) 
 {
-    return __builtin_ctzll(a);
+    return __builtin_ctzll(mask);
 }   
 
-inline int BitBasics::msb_index(bitmask a) 
+inline int BitBasics::msb_index(bitmask mask) 
 {
-    return 63 - __builtin_clzll(a);
+    return 63 - __builtin_clzll(mask);
 }
 
-inline int BitBasics::pop_count(bitmask a) 
+inline int BitBasics::pop_count(bitmask mask) 
 {
-    return __builtin_popcountll(a);
+    return __builtin_popcountll(mask);
 }
 
 } // namespace logic

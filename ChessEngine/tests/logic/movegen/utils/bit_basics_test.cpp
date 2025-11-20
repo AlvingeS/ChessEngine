@@ -6,10 +6,10 @@ namespace logic {
 
 class BitBasicsTest : public ::testing::Test {
 protected:
-    bitmask a;
+    bitmask mask;
 
     void SetUp() override {
-        a = 0x000000000000FF00ULL;
+        mask = 0x000000000000FF00ULL;
     }
 };
 
@@ -17,28 +17,28 @@ protected:
 TEST_F(BitBasicsTest, getBit_A_Pos0_ShouldReturnFalse) 
 {
     bool expected = 0;
-    bool actual = BitBasics::get_bit(a, 0);
+    bool actual = BitBasics::get_bit(mask, 0);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(BitBasicsTest, getBit_A_Pos9_ShouldReturnTrue)
 {
     bool expected = 1;
-    bool actual = BitBasics::get_bit(a, 9);
+    bool actual = BitBasics::get_bit(mask, 9);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(BitBasicsTest, getBit_A_Pos15_ShouldReturnTrue) 
 {
     bool expected = 1;
-    bool actual = BitBasics::get_bit(a, 15);
+    bool actual = BitBasics::get_bit(mask, 15);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(BitBasicsTest, getBit_A_Pos16_ShouldReturnFalse) 
 {
     bool expected = 0;
-    bool actual = BitBasics::get_bit(a, 16);
+    bool actual = BitBasics::get_bit(mask, 16);
     ASSERT_EQ(expected, actual);
 }
 
@@ -46,7 +46,7 @@ TEST_F(BitBasicsTest, getBit_A_Pos16_ShouldReturnFalse)
 TEST_F(BitBasicsTest, indexOfLSB_A_ShouldReturn8) 
 {
     int expected = 8;
-    int actual = BitBasics::lsb_index(a);
+    int actual = BitBasics::lsb_index(mask);
     ASSERT_EQ(expected, actual);
 }
 
@@ -54,7 +54,7 @@ TEST_F(BitBasicsTest, indexOfLSB_A_ShouldReturn8)
 TEST_F(BitBasicsTest, indexOfMSB_A_ShouldReturn15) 
 {
     int expected = 15;
-    int actual = BitBasics::msb_index(a);
+    int actual = BitBasics::msb_index(mask);
     ASSERT_EQ(expected, actual);
 }
 

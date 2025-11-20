@@ -8,17 +8,17 @@ namespace logic {
 class ChessUtilsTest : public ::testing::Test 
 {
 protected:
-    bitmask a;
-    bitmask b;
-    bitmask c;
-    bitmask whitePieces;
-    bitmask blackPieces;
+    bitmask a_mask;
+    bitmask b_mask;
+    bitmask c_mask;
+    bitmask w_pieces_mask;
+    bitmask b_pieces_mask;
     void SetUp() override {
-        a = 0x0000000000FF0501;
-        b = 0x0000000000000000;
-        c = 0xFFFFFFFFFFFFFFFF;
-        whitePieces = 0x000000000000FFFFULL;
-        blackPieces = 0xFFFF000000000000ULL;
+        a_mask = 0x0000000000FF0501;
+        b_mask = 0x0000000000000000;
+        c_mask = 0xFFFFFFFFFFFFFFFF;
+        w_pieces_mask = 0x000000000000FFFFULL;
+        b_pieces_mask = 0xFFFF000000000000ULL;
     }
 };
 
@@ -211,7 +211,7 @@ TEST_F(ChessUtilsTest, getBitIndices_a_ShouldReturn0_8_10_16to23)
 {
     std::vector<int> expected = {0, 8, 10, 16, 17, 18, 19, 20, 21, 22, 23};
     std::vector<int> actual;
-    BitBasics::get_bit_indices(actual, a);
+    BitBasics::get_bit_indices(actual, a_mask);
     ASSERT_EQ(expected, actual);
 }
 
@@ -219,7 +219,7 @@ TEST_F(ChessUtilsTest, getBitIndices_b_ShouldReturnEmptyVector)
 {
     std::vector<int> expected = {};
     std::vector<int> actual;
-    BitBasics::get_bit_indices(actual, b);
+    BitBasics::get_bit_indices(actual, b_mask);
     ASSERT_EQ(expected, actual);
 }
 
@@ -233,7 +233,7 @@ TEST_F(ChessUtilsTest, getBitIndices_c_ShouldReturn0to63)
     }
     
     std::vector<int> actual;
-    BitBasics::get_bit_indices(actual, c);
+    BitBasics::get_bit_indices(actual, c_mask);
     ASSERT_EQ(expected, actual);
 }
 

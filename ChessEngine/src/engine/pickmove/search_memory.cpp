@@ -8,13 +8,13 @@ SearchMemory::SearchMemory(int maxDepth) : max_depth_(maxDepth)
 {
     castle_rights_.resize(max_depth_ + 1);
     last_captured_pieces_.resize(max_depth_ + 1);
-    ep_targets_.resize(max_depth_ + 1);
+    ep_target_masks_.resize(max_depth_ + 1);
     no_captures_or_pawn_moves_counts_.resize(max_depth_ + 1);
 
     for (int i = 0; i <= max_depth_; i++) {
         castle_rights_[i] = 0b1111;
         last_captured_pieces_[i] = model::Piece::Type::EMPTY;
-        ep_targets_[i] = 0ULL;
+        ep_target_masks_[i] = 0ULL;
         no_captures_or_pawn_moves_counts_[i] = 0;
     }
 }
@@ -126,10 +126,10 @@ void SearchMemory::handle_ep_memory(
     }
 
     if (move.is_double_pawn_push()) {
-        bitmask enPessantTarget = is_w ? (1ULL << (to_index - 8)) 
+        bitmask ep_target_mask = is_w ? (1ULL << (to_index - 8)) 
                                           : (1ULL << (to_index + 8));
 
-        set_ep_target_at_depth(current_depth + 1, enPessantTarget);
+        set_ep_target_at_depth(current_depth + 1, ep_target_mask);
         
         // FIXME: Temporary because I don't know how to implement this haha
         // z_hasher_.hash_en_pessant_file(to_index % 8);

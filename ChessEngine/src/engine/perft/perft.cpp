@@ -143,7 +143,7 @@ void perft::minimax(
     gen_moves(
         isMaximizer, 
         current_depth,
-        search_memory_.get_ep_target_at_depth(current_depth),
+        search_memory_.get_ep_target_mask_at_depth(current_depth),
         search_memory_.get_castling_rights_at_depth(current_depth)
     );
 

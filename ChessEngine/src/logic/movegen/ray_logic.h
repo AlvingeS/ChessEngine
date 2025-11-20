@@ -13,7 +13,7 @@ struct RayLogic {
         model::Movelist& movelist
     );
 
-    static void add_move_if_blocker_is_enemy(
+    static void add_move_if_blocker_is_opp(
         int blocker_idx,
         bool is_w,
         int bit_idx_from,

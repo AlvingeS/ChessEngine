@@ -29,10 +29,10 @@ void KingGen::generate(bool is_w, model::Movelist& movelist)
     bitmask attack_mask = king_attack_table_[king_sq_idx];
     bitmask free_moves_mask = attack_mask & occupancy_masks_.get_free_squares_mask();
     
-    bitmask enemy_pieces_mask = is_w ? occupancy_masks_.get_b_pieces_mask() 
+    bitmask opp_pieces_mask = is_w ? occupancy_masks_.get_b_pieces_mask() 
                                      : occupancy_masks_.get_w_pieces_mask();
 
-    bitmask capture_moves_mask = attack_mask & enemy_pieces_mask;
+    bitmask capture_moves_mask = attack_mask & opp_pieces_mask;
 
     BitBasics::get_bit_indices(free_moves_sq_idxs, free_moves_mask);
     BitBasics::get_bit_indices(capturable_moves_sq_idxs, capture_moves_mask);

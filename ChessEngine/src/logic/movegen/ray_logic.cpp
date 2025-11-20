@@ -22,7 +22,7 @@ void RayLogic::add_moves_from_free_ray(
     }
 }
 
-void RayLogic::add_move_if_blocker_is_enemy(
+void RayLogic::add_move_if_blocker_is_opp(
     int blocker_idx,
     bool is_w,
     int bit_idx_from,
@@ -123,7 +123,7 @@ void RayLogic::add_moves_from_line_ray(
                             ? BitBasics::lsb_idx(blocker_mask)
                             : BitBasics::msb_idx(blocker_mask);
                                
-        add_move_if_blocker_is_enemy(
+        add_move_if_blocker_is_opp(
             blocker_idx,
             is_w,
             piece_idx, 
@@ -164,7 +164,7 @@ void RayLogic::add_moves_from_diag_ray(
                             ? BitBasics::lsb_idx(blocker_mask) 
                             : BitBasics::msb_idx(blocker_mask);
 
-        add_move_if_blocker_is_enemy(
+        add_move_if_blocker_is_opp(
             blocker_idx, 
             is_w, 
             piece_idx, 

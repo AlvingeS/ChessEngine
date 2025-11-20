@@ -3,7 +3,7 @@
 #include "model/position/board.h"
 #include "model/move/movelist.h"
 
-#include "logic/movegen/bitmasks/pawn_bitmasks.h"
+#include "logic/attack_tables/attack_tables.h"
 #include "logic/movegen/utils/containers.h"
 #include "logic/movegen/utils/chess_utils.h"
 #include "logic/movegen/utils/bit_basics.h"
@@ -13,12 +13,11 @@ namespace logic {
 PawnGenerator::PawnGenerator(model::Board& board) 
     : bitboards_(board.bitboards)
     , state_bitmasks_(board.state_bitmasks)
-{
-    w_pawn_straight_move_masks_ = PawnBitmasks::get_all_straight_pawn_move_bitmasks(true);
-    w_pawn_capture_move_masks = PawnBitmasks::get_all_capture_pawn_move_bitmasks(true);
-    b_pawn_straight_move_masks_ = PawnBitmasks::get_all_straight_pawn_move_bitmasks(false);
-    b_pawn_capture_move_masks = PawnBitmasks::get_all_capture_pawn_move_bitmasks(false);
-}
+    , w_pawn_quiet_attack_table_(attack_tables::w_pawn_quiet)
+    , w_pawn_capture_attack_table_(attack_tables::w_pawn_capture)
+    , b_pawn_quiet_attack_table_(attack_tables::b_pawn_quiet)
+    , b_pawn_capture_attack_table_(attack_tables::b_pawn_capture)
+{}
 
 void PawnGenerator::generate(
     bool is_w,
@@ -34,11 +33,11 @@ void PawnGenerator::generate(
 
     for (int pawn_sq_idx : pawn_sq_idxs) {
 
-        bitmask attack_mask_straight = is_w ? w_pawn_straight_move_masks_[pawn_sq_idx]
-                                                  : b_pawn_straight_move_masks_[pawn_sq_idx];
+        bitmask attack_mask_straight = is_w ? w_pawn_quiet_attack_table_[pawn_sq_idx]
+                                                  : b_pawn_quiet_attack_table_[pawn_sq_idx];
 
-        bitmask attack_mask_diag = is_w ? w_pawn_capture_move_masks[pawn_sq_idx]
-                                                 : b_pawn_capture_move_masks[pawn_sq_idx];
+        bitmask attack_mask_diag = is_w ? w_pawn_capture_attack_table_[pawn_sq_idx]
+                                                 : b_pawn_capture_attack_table_[pawn_sq_idx];
 
         bitmask free_moves_mask = attack_mask_straight & state_bitmasks_.get_empty_squares_bitmask();
         

@@ -22,7 +22,8 @@ public:
 private:
     const model::Bitboards& bitboards_;
     const model::StateBitmasks& state_bitmasks_;
-    std::vector<bitmask> king_bitmasks_;
+    
+    attack_table& king_attack_table_;
 };
 
 } // namespace logic

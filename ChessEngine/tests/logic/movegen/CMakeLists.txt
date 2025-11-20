@@ -2,7 +2,6 @@ add_executable(movegen_tests)
 
 # Add test subdirectories
 add_subdirectory(utils)
-add_subdirectory(bitmasks)
 
 target_sources(movegen_tests PRIVATE
     rook_gen_test.cpp

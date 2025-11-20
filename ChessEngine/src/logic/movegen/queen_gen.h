@@ -1,6 +1,6 @@
 #pragma once
 
-#include "logic/movegen/bitmasks/ray_bitmasks.h"
+#include "logic/attack_tables/attack_tables.h"
 
 namespace model {
     class Movelist;
@@ -25,8 +25,8 @@ private:
     const model::Bitboards& bitboards_;
     const model::StateBitmasks& state_bitmasks_;
 
-    std::vector<RayBitmasks::StraightRays> line_ray_masks_;
-    std::vector<RayBitmasks::DiagonalRays> diag_ray_masks;
+    ray_attack_table& line_ray_attack_table_;
+    ray_attack_table& diag_ray_attack_table_;
 };
 
 } // namespace logic

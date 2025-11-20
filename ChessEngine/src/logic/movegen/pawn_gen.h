@@ -27,10 +27,10 @@ private:
     const model::Bitboards& bitboards_;
     const model::StateBitmasks& state_bitmasks_;
 
-    std::vector<bitmask> w_pawn_straight_move_masks_;
-    std::vector<bitmask> b_pawn_straight_move_masks_;
-    std::vector<bitmask> w_pawn_capture_move_masks;
-    std::vector<bitmask> b_pawn_capture_move_masks;
+    attack_table& w_pawn_quiet_attack_table_;
+    attack_table& w_pawn_capture_attack_table_;
+    attack_table& b_pawn_quiet_attack_table_;
+    attack_table& b_pawn_capture_attack_table_;
 };
 
 } // namespace logic

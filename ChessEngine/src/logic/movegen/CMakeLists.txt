@@ -12,6 +12,5 @@ add_library(movegen
 )
 
 add_subdirectory(utils)
-add_subdirectory(bitmasks)
 
-target_link_libraries(movegen PUBLIC move position pickmove cxx_setup)
+target_link_libraries(movegen PUBLIC move position attack_tables pickmove cxx_setup) # TODO: Remove dependency to pickmove!!!

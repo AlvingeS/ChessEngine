@@ -3,7 +3,7 @@
 #include "model/position/board.h"
 #include "model/move/movelist.h"
 
-#include "logic/movegen/bitmasks/knight_bitmasks.h"
+#include "logic/attack_tables/attack_tables.h"
 #include "logic/movegen/utils/containers.h"
 #include "logic/movegen/utils/bit_basics.h"
 
@@ -11,9 +11,9 @@ namespace logic {
 
 KnightGenerator::KnightGenerator(model::Board& board) 
     : bitboards_(board.bitboards)
-    , state_bitmasks_(board.state_bitmasks) {
-    knight_masks_ = KnightBitmasks::get_all_knight_bitmasks();
-}
+    , state_bitmasks_(board.state_bitmasks)
+    , knight_attack_table_(attack_tables::knight)
+{}
 
 void KnightGenerator::generate(bool is_w, model::Movelist& movelist) 
 {
@@ -25,7 +25,7 @@ void KnightGenerator::generate(bool is_w, model::Movelist& movelist)
                                                     : bitboards_.get_b_knights_bitboard());
 
     for (int knight_sq_idx : knight_sq_idxs) {
-        bitmask attack_mask = knight_masks_[knight_sq_idx];
+        bitmask attack_mask = knight_attack_table_[knight_sq_idx];
 
         bitmask free_moves_mask = attack_mask & state_bitmasks_.get_empty_squares_bitmask();
         

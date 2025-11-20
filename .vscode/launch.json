@@ -109,7 +109,7 @@
             "name": "DEBUG: Movegen tests",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/debug/ChessEngine/tests/movegen/movegen_tests",
+            "program": "${workspaceFolder}/build/debug/ChessEngine/tests/logic/movegen/movegen_tests",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

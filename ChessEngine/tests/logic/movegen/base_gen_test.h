@@ -48,6 +48,7 @@ protected:
     virtual void SetUp() override {
         // board = model::ChessBoard();
         // moveGenerator = MoveGenerator(board);
+        attack_tables::init_attack_tables();
         startingPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";;
     }
 

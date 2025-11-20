@@ -4,6 +4,7 @@
 
 #include "io/fen.h"
 
+#include "logic/attack_tables/attack_tables.h"
 #include "model/position/board.h"
 
 #include <cstdint>
@@ -51,6 +52,7 @@ protected:
 
     virtual void SetUp() override 
     {
+        logic::attack_tables::init_attack_tables();
         startPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         pos_two = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -";
         pos_three = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - -";

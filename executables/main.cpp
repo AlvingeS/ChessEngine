@@ -80,6 +80,7 @@ int main()
     auto start = std::chrono::high_resolution_clock::now();
 
     logic::Containers::init();
+    logic::attack_tables::init_attack_tables();
 
     int const MAX_DEPTH = 4;
 

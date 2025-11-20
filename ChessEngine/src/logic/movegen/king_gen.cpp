@@ -3,7 +3,7 @@
 #include "model/position/board.h"
 #include "model/move/movelist.h"
 
-#include "logic/movegen/bitmasks/king_bitmasks.h"
+#include "logic/attack_tables/attack_tables.h"
 #include "logic/movegen/utils/containers.h"
 #include "logic/movegen/utils/bit_basics.h"
 
@@ -12,8 +12,8 @@ namespace logic {
 KingGenerator::KingGenerator(model::Board& board) 
     : bitboards_(board.bitboards)
     , state_bitmasks_(board.state_bitmasks)
+    , king_attack_table_(attack_tables::king)
 {
-    king_bitmasks_ = KingBitmasks::get_all_king_bitmasks();
 }
 
 void KingGenerator::generate(bool is_w, model::Movelist& movelist) 
@@ -26,7 +26,7 @@ void KingGenerator::generate(bool is_w, model::Movelist& movelist)
                                               : bitboards_.get_b_king_bitboard());
 
     int king_sq_idx = king_idxs[0];
-    bitmask attack_mask = king_bitmasks_[king_sq_idx];
+    bitmask attack_mask = king_attack_table_[king_sq_idx];
     bitmask free_moves_mask = attack_mask & state_bitmasks_.get_empty_squares_bitmask();
     
     bitmask enemy_pieces_mask = is_w ? state_bitmasks_.get_b_pieces_bitmask() 

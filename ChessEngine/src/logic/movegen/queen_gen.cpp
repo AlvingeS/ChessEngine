@@ -12,10 +12,9 @@ namespace logic {
 QueenGenerator::QueenGenerator(model::Board& board) 
     : bitboards_(board.bitboards)
     , state_bitmasks_(board.state_bitmasks)
-{
-    line_ray_masks_ = RayBitmasks::get_all_straight_ray_bitmasks();
-    diag_ray_masks = RayBitmasks::get_all_diagonal_ray_bitmasks();
-}
+    , line_ray_attack_table_(attack_tables::line_ray)
+    , diag_ray_attack_table_(attack_tables::diag_ray)
+{}
 
 void QueenGenerator::generate(
     bool is_w,
@@ -27,14 +26,11 @@ void QueenGenerator::generate(
                                                : bitboards_.get_b_queens_bitboard());
 
     for (int queen_sq_idx : queen_sq_idxs) {
-        RayBitmasks::StraightRays straightRays = line_ray_masks_[queen_sq_idx];
-        RayBitmasks::DiagonalRays diagonalRays = diag_ray_masks[queen_sq_idx];
-        
         int rank = ChessUtils::rank_from_bit_index(queen_sq_idx);
         int file = ChessUtils::file_from_bit_index(queen_sq_idx);
 
         RayLogic::add_moves_from_line_ray(
-            straightRays.n,
+            line_ray_attack_table_[queen_sq_idx][LineDir::N],
             true,
             false,
             is_w,
@@ -47,7 +43,7 @@ void QueenGenerator::generate(
         );
 
         RayLogic::add_moves_from_line_ray(
-            straightRays.e,
+            line_ray_attack_table_[queen_sq_idx][LineDir::E],
             false,
             true,
             is_w,
@@ -60,7 +56,7 @@ void QueenGenerator::generate(
         );
 
         RayLogic::add_moves_from_line_ray(
-            straightRays.s,
+            line_ray_attack_table_[queen_sq_idx][LineDir::S],
             false,
             false,
             is_w,
@@ -73,7 +69,7 @@ void QueenGenerator::generate(
         );
 
         RayLogic::add_moves_from_line_ray(
-            straightRays.w,
+            line_ray_attack_table_[queen_sq_idx][LineDir::W],
             true,
             true,
             is_w,
@@ -86,7 +82,7 @@ void QueenGenerator::generate(
         );
 
         RayLogic::add_moves_from_diag_ray(
-            diagonalRays.ne,
+            diag_ray_attack_table_[queen_sq_idx][DiagDir::NE],
             true,
             is_w,
             queen_sq_idx,
@@ -98,7 +94,7 @@ void QueenGenerator::generate(
         );
 
         RayLogic::add_moves_from_diag_ray(
-            diagonalRays.se,
+            diag_ray_attack_table_[queen_sq_idx][DiagDir::SE],
             false,
             is_w,
             queen_sq_idx,
@@ -110,7 +106,7 @@ void QueenGenerator::generate(
         );
 
         RayLogic::add_moves_from_diag_ray(
-            diagonalRays.sw,
+            diag_ray_attack_table_[queen_sq_idx][DiagDir::SW],
             false,
             is_w,
             queen_sq_idx,
@@ -122,7 +118,7 @@ void QueenGenerator::generate(
         );
         
         RayLogic::add_moves_from_diag_ray(
-            diagonalRays.nw,
+            diag_ray_attack_table_[queen_sq_idx][DiagDir::NW],
             true,
             is_w,
             queen_sq_idx,

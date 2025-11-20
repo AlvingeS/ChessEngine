@@ -25,8 +25,8 @@ void BishopGen::generate(
 {
     std::vector<int>& bishop_sq_idxs = Containers::get_piece_position_indices();
 
-    BitBasics::get_bit_indices(bishop_sq_idxs, is_w ? bitboards_.get_w_bishops_bitboard()
-                                         : bitboards_.get_b_bishops_bitboard());
+    BitBasics::get_bit_indices(bishop_sq_idxs, is_w ? bitboards_.get_w_bishops_bb()
+                                         : bitboards_.get_b_bishops_bb());
 
     for (int bishop_sq_idx : bishop_sq_idxs) {
         int bishopRank = ChessUtils::rank_from_bit_index(bishop_sq_idx);

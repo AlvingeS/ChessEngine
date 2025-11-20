@@ -21,8 +21,8 @@ void RookGenerator::generate(
 {
     std::vector<int>& rook_sq_idxs = Containers::get_piece_position_indices();
 
-    BitBasics::get_bit_indices(rook_sq_idxs, is_w ? bitboards_.get_w_rooks_bitboard()
-                                       : bitboards_.get_b_rooks_bitboard());
+    BitBasics::get_bit_indices(rook_sq_idxs, is_w ? bitboards_.get_w_rooks_bb()
+                                       : bitboards_.get_b_rooks_bb());
 
     // Loop through all rooks and isolate them
     for (int rook_sq_idx : rook_sq_idxs) {

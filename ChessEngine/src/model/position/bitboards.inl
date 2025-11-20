@@ -1,28 +1,23 @@
 namespace model {
 
-inline const bitboard& Bitboards::get_bitboard_from_piece_type(Piece::Type piece_type) const 
+inline const bitboard& Bitboards::get_bb_from_piece_type(Piece::Type piece_type) const 
 {
-    return *(bitboards_[Piece::get_int_from_type(piece_type)]);
+    return *(bbs_[Piece::get_int_from_type(piece_type)]);
 }
 
-inline const bitboard& Bitboards::get_bitboard_from_index(int index) const 
+inline const bitboard& Bitboards::get_bb_from_index(int index) const 
 {
-    return *(bitboards_[index]);
-}
-
-inline bool Bitboards::piece_type_bit_is_set(int index, Piece::Type piece_type) const 
-{
-    return (*(bitboards_[Piece::get_int_from_type(piece_type)]) & (1ULL << index)) != 0;
+    return *(bbs_[index]);
 }
 
 inline void Bitboards::clear_piece_type_bit(int index, Piece::Type piece_type)
 {
-    *(bitboards_[Piece::get_int_from_type(piece_type)]) &= ~(1ULL << index);
+    *(bbs_[Piece::get_int_from_type(piece_type)]) &= ~(1ULL << index);
 }
 
 inline void Bitboards::set_piece_type_bit(int index, Piece::Type piece_type) 
 {
-    *(bitboards_[Piece::get_int_from_type(piece_type)]) |= (1ULL << index);
+    *(bbs_[Piece::get_int_from_type(piece_type)]) |= (1ULL << index);
 }
 
 }

@@ -15,7 +15,7 @@ void OccupancyMasks::fill_w_pieces_mask_from_bbs(const Bitboards& bbs)
 {
     bitmask w_pieces_mask = 0ULL;
     for (int i = 0; i < 6; i++) {
-        w_pieces_mask |= bbs.get_bitboard_from_index(i);
+        w_pieces_mask |= bbs.get_bb_from_index(i);
     }
 
     w_pieces_mask_ = w_pieces_mask;
@@ -25,7 +25,7 @@ void OccupancyMasks::fill_b_pieces_mask_from_bbs(const Bitboards& bbs)
 {
     bitmask b_pieces_mask = 0ULL;
     for (int i = 6; i < 12; i++) {
-        b_pieces_mask |= bbs.get_bitboard_from_index(i);
+        b_pieces_mask |= bbs.get_bb_from_index(i);
     }
 
     b_pieces_mask_ = b_pieces_mask;

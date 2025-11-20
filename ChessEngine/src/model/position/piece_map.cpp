@@ -13,7 +13,7 @@ void PieceMap::fill_piece_map_from_bitboards(const Bitboards& bitboards)
 
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 12; j++) {
-            if (bitboards.get_bitboard_from_index(j) & (1ULL << i)) {
+            if (bitboards.get_bb_from_index(j) & (1ULL << i)) {
                 piece_map_[i] = Piece::get_type_from_int(j);
                 break;
             }

@@ -24,12 +24,12 @@ bool CheckDetection::in_check(bool is_w) const
 {
     int king_sq_idx, opp_king_sq_idx, king_rank_diff, king_file_diff;
 
-    king_sq_idx = BitBasics::lsb_index(is_w ? bitboards_.get_w_king_bitboard()
-                                   : bitboards_.get_b_king_bitboard());
+    king_sq_idx = BitBasics::lsb_index(is_w ? bitboards_.get_w_king_bb()
+                                   : bitboards_.get_b_king_bb());
 
     // Check if any opponent rooks or queens are attacking the king
-    bitmask opponentRooksAndQueens = is_w ? bitboards_.get_b_rooks_bitboard() | bitboards_.get_b_queens_bitboard()
-                                             : bitboards_.get_w_rooks_bitboard() | bitboards_.get_w_queens_bitboard();
+    bitmask opponentRooksAndQueens = is_w ? bitboards_.get_b_rooks_bb() | bitboards_.get_b_queens_bb()
+                                             : bitboards_.get_w_rooks_bb() | bitboards_.get_w_queens_bb();
 
     if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq_idx][LineDir::N], true, opponentRooksAndQueens, state_bitmasks_.get_occupied_squares_mask()))
         return true;
@@ -44,8 +44,8 @@ bool CheckDetection::in_check(bool is_w) const
         return true;
 
     // Check if any opponent bishops or queens are attacking the king
-    bitmask opp_bishops_and_queens = is_w ? bitboards_.get_b_bishops_bitboard() | bitboards_.get_b_queens_bitboard() 
-                                               : bitboards_.get_w_bishops_bitboard() | bitboards_.get_w_queens_bitboard();
+    bitmask opp_bishops_and_queens = is_w ? bitboards_.get_b_bishops_bb() | bitboards_.get_b_queens_bb() 
+                                               : bitboards_.get_w_bishops_bb() | bitboards_.get_w_queens_bb();
 
     if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq_idx][DiagDir::NE], true, opp_bishops_and_queens, state_bitmasks_.get_occupied_squares_mask()))
         return true;
@@ -61,15 +61,15 @@ bool CheckDetection::in_check(bool is_w) const
 
     // Check if any opponent knights are attacking the king
     bitmask knight_attack_mask = knight_attack_table_[king_sq_idx];
-    bitmask opp_knights_mask = is_w ? bitboards_.get_b_knights_bitboard() 
-                                      : bitboards_.get_w_knights_bitboard();
+    bitmask opp_knights_mask = is_w ? bitboards_.get_b_knights_bb() 
+                                      : bitboards_.get_w_knights_bb();
 
     if ((knight_attack_mask & opp_knights_mask) != 0)
         return true;
     
     // Check if any opponent pawns are attacking the king
-    bitmask opp_pawns_mask = is_w ? bitboards_.get_b_pawns_bitboard() 
-                                    : bitboards_.get_w_pawns_bitboard();
+    bitmask opp_pawns_mask = is_w ? bitboards_.get_b_pawns_bb() 
+                                    : bitboards_.get_w_pawns_bb();
     
     bitmask pawn_capture_mask = is_w ? w_pawn_capture_attack_table_[king_sq_idx] 
                                      : b_pawn_capture_attack_table_[king_sq_idx];
@@ -78,8 +78,8 @@ bool CheckDetection::in_check(bool is_w) const
         return true;
 
     // Check if the king is in check from an adjacent king
-    opp_king_sq_idx = BitBasics::lsb_index(is_w ? bitboards_.get_b_king_bitboard()
-                                           : bitboards_.get_w_king_bitboard());
+    opp_king_sq_idx = BitBasics::lsb_index(is_w ? bitboards_.get_b_king_bb()
+                                           : bitboards_.get_w_king_bb());
 
     king_rank_diff = ChessUtils::abs(ChessUtils::rank_from_bit_index(king_sq_idx) - ChessUtils::rank_from_bit_index(opp_king_sq_idx));
     king_file_diff = ChessUtils::abs(ChessUtils::file_from_bit_index(king_sq_idx) - ChessUtils::file_from_bit_index(opp_king_sq_idx));

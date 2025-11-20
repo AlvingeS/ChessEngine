@@ -21,8 +21,8 @@ void KnightGenerator::generate(bool is_w, model::Movelist& movelist)
     std::vector<int>& free_moves_sq_idxs = Containers::get_leaping_piece_free_moves_indices();
     std::vector<int>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_indices();
 
-    BitBasics::get_bit_indices(knight_sq_idxs, is_w ? bitboards_.get_w_knights_bitboard()
-                                                    : bitboards_.get_b_knights_bitboard());
+    BitBasics::get_bit_indices(knight_sq_idxs, is_w ? bitboards_.get_w_knights_bb()
+                                                    : bitboards_.get_b_knights_bb());
 
     for (int knight_sq_idx : knight_sq_idxs) {
         bitmask attack_mask = knight_attack_table_[knight_sq_idx];

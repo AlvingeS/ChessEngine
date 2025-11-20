@@ -22,8 +22,8 @@ void KingGenerator::generate(bool is_w, model::Movelist& movelist)
     std::vector<int>& free_moves_sq_idxs = Containers::get_leaping_piece_free_moves_indices();
     std::vector<int>& capturable_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_indices();
     
-    BitBasics::get_bit_indices(king_idxs, is_w ? bitboards_.get_w_king_bitboard()
-                                              : bitboards_.get_b_king_bitboard());
+    BitBasics::get_bit_indices(king_idxs, is_w ? bitboards_.get_w_king_bb()
+                                              : bitboards_.get_b_king_bb());
 
     int king_sq_idx = king_idxs[0];
     bitmask attack_mask = king_attack_table_[king_sq_idx];

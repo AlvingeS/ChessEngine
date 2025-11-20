@@ -38,11 +38,11 @@ void BoardPrinter::fill_board(const model::Bitboards& bitboards)
     
     for (int i = 0; i < 12; i++) {
         model::Piece::Type piece_type = model::Piece::get_type_from_int(i);
-        bitmask bitboard = bitboards.get_bitboard_from_index(i);
+        bitboard bb = bitboards.get_bb_from_index(i);
         char piece_char = model::Piece::get_char_from_type(piece_type);
 
         for (int i = 0; i < 64; i++) {
-            if ((bitboard >> i) & 1) {
+            if ((bb >> i) & 1) {
                 int row = i / 8;
                 int col = i % 8;
                 board_[row][col] = piece_char;

@@ -22,8 +22,8 @@ void QueenGenerator::generate(
 {
     std::vector<int>& queen_sq_idxs = Containers::get_piece_position_indices();
 
-    BitBasics::get_bit_indices(queen_sq_idxs, is_w ? bitboards_.get_w_queens_bitboard()
-                                               : bitboards_.get_b_queens_bitboard());
+    BitBasics::get_bit_indices(queen_sq_idxs, is_w ? bitboards_.get_w_queens_bb()
+                                               : bitboards_.get_b_queens_bb());
 
     for (int queen_sq_idx : queen_sq_idxs) {
         int rank = ChessUtils::rank_from_bit_index(queen_sq_idx);

@@ -28,8 +28,8 @@ void PawnGenerator::generate(
     std::vector<int>& free_moves_idxs = Containers::get_leaping_piece_free_moves_indices();
     std::vector<int>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_indices();
 
-    BitBasics::get_bit_indices(pawn_sq_idxs, is_w ? bitboards_.get_w_pawns_bitboard()
-                                              : bitboards_.get_b_pawns_bitboard());
+    BitBasics::get_bit_indices(pawn_sq_idxs, is_w ? bitboards_.get_w_pawns_bb()
+                                              : bitboards_.get_b_pawns_bb());
 
     for (int pawn_sq_idx : pawn_sq_idxs) {
 

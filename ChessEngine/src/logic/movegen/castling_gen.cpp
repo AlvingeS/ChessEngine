@@ -57,17 +57,17 @@ void CastlingGenerator::generate(
 
 bool CastlingGenerator::king_and_rook_on_castling_squares(bool is_w, bool is_kside) const
 {
-    bool king_bit_enabled = is_w ? (bitboards_.get_w_king_bitboard() & (1ULL << 3)) != 0
-                                  : (bitboards_.get_b_king_bitboard() & (1ULL << 59)) != 0;
+    bool king_bit_enabled = is_w ? (bitboards_.get_w_king_bb() & (1ULL << 3)) != 0
+                                  : (bitboards_.get_b_king_bb() & (1ULL << 59)) != 0;
     
     if (!king_bit_enabled)
         return false;
 
     // Since we know that the king is present, we can return if the rook is present or not
-    return is_w ? (is_kside ? (bitboards_.get_w_rooks_bitboard() & (1ULL << 0)) != 0
-                                 : (bitboards_.get_w_rooks_bitboard() & (1ULL << 7)) != 0)
-                   : (is_kside ? (bitboards_.get_b_rooks_bitboard() & (1ULL << 56)) != 0
-                                 : (bitboards_.get_b_rooks_bitboard() & (1ULL << 63)) != 0);
+    return is_w ? (is_kside ? (bitboards_.get_w_rooks_bb() & (1ULL << 0)) != 0
+                                 : (bitboards_.get_w_rooks_bb() & (1ULL << 7)) != 0)
+                   : (is_kside ? (bitboards_.get_b_rooks_bb() & (1ULL << 56)) != 0
+                                 : (bitboards_.get_b_rooks_bb() & (1ULL << 63)) != 0);
 }
 
 void CastlingGenerator::make_temporary_king_move(bool is_w, bool is_kside)

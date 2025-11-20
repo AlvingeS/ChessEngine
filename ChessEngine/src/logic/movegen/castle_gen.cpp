@@ -1,4 +1,4 @@
-#include "logic/movegen/castling_gen.h"
+#include "logic/movegen/castle_gen.h"
 
 #include "model/masks.h"
 #include "model/position/board.h"
@@ -14,7 +14,7 @@
 
 namespace logic {
 
-CastlingGenerator::CastlingGenerator(
+CastleGenerator::CastleGenerator(
     model::Board& board,
     logic::MoveMaker& move_maker, 
     logic::MoveRetractor& move_retractor, 
@@ -31,7 +31,7 @@ CastlingGenerator::CastlingGenerator(
     b_qside_castle_mask_ = masks::B_QSIDE_CASTLE_MASK;
 }
 
-void CastlingGenerator::generate(
+void CastleGenerator::generate(
     bool is_w,
     model::Movelist& movelist,
     unsigned char castle_rights) 
@@ -55,7 +55,7 @@ void CastlingGenerator::generate(
     }
 }
 
-bool CastlingGenerator::king_and_rook_on_castling_squares(bool is_w, bool is_kside) const
+bool CastleGenerator::king_and_rook_on_castle_squares(bool is_w, bool is_kside) const
 {
     bool king_bit_enabled = is_w ? (bitboards_.get_w_king_bb() & (1ULL << 3)) != 0
                                   : (bitboards_.get_b_king_bb() & (1ULL << 59)) != 0;
@@ -70,17 +70,17 @@ bool CastlingGenerator::king_and_rook_on_castling_squares(bool is_w, bool is_ksi
                                  : (bitboards_.get_b_rooks_bb() & (1ULL << 63)) != 0);
 }
 
-void CastlingGenerator::make_temporary_king_move(bool is_w, bool is_kside)
+void CastleGenerator::make_temporary_king_move(bool is_w, bool is_kside)
 {
     move_maker_.make_temporary_king_move(is_w, is_kside);
 }
 
-void CastlingGenerator::revert_temporary_king_move(bool is_w, bool is_kside)
+void CastleGenerator::revert_temporary_king_move(bool is_w, bool is_kside)
 {
     move_retractor_.revert_temporary_king_move(is_w, is_kside);
 }
 
-void CastlingGenerator::gen_single_castle_move(
+void CastleGenerator::gen_single_castle_move(
     bool is_w,
     bool is_kside,
     model::Movelist& movelist)
@@ -95,7 +95,7 @@ void CastlingGenerator::gen_single_castle_move(
         return;
 
     // Check that the king and rook are on the correct squares
-    if (!king_and_rook_on_castling_squares(is_w, is_kside))
+    if (!king_and_rook_on_castle_squares(is_w, is_kside))
         return;
 
     // Check that we are not currently in check

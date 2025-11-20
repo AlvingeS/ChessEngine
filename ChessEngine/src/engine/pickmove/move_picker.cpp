@@ -192,7 +192,7 @@ void MovePicker::minimax(
         is_maximizer, 
         current_depth, 
         search_memory_.get_ep_target_mask_at_depth(current_depth),
-        search_memory_.get_castling_rights_at_depth(current_depth)
+        search_memory_.get_castle_rights_at_depth(current_depth)
     );
 
     num_move_gen_calls_++;

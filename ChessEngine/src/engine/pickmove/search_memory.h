@@ -20,7 +20,7 @@ class SearchMemory {
 public:
     SearchMemory(int maxDepth);
 
-    unsigned char get_castling_rights_at_depth(int depth) const
+    unsigned char get_castle_rights_at_depth(int depth) const
     {
         return castle_rights_[depth];
     }

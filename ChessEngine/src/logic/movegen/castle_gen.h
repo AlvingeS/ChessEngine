@@ -16,10 +16,10 @@ class MoveMaker;
 class MoveRetractor;
 class CheckDetection;
 
-class CastlingGenerator {
+class CastleGenerator {
     
 public:
-    CastlingGenerator(
+    CastleGenerator(
         model::Board& board,
         logic::MoveMaker& move_maker,
         logic::MoveRetractor& move_retractor,
@@ -52,7 +52,7 @@ private:
         model::Movelist& movelist
     );
 
-    bool king_and_rook_on_castling_squares(bool is_w, bool is_kside) const;
+    bool king_and_rook_on_castle_squares(bool is_w, bool is_kside) const;
     void make_temporary_king_move(bool is_w, bool is_kside);
     void revert_temporary_king_move(bool is_w, bool is_kside);
 };

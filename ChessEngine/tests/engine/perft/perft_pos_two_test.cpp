@@ -11,7 +11,7 @@ protected:
         PerftBase::SetUp();
     }
 
-    // Nodes, captures, epCaptures, castling, promotion, check, checkmate
+    // Nodes, captures, epCaptures, castle, promotion, check, checkmate
     std::unordered_map<int, std::vector<uint64_t>> expected_results {
         {0, {1,         0,          0,          0,          0,          0,          0}},
         {1, {48,        8,          0,          2,          0,          0,          0}},

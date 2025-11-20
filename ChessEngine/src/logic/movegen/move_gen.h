@@ -3,7 +3,7 @@
 #include "logic/movegen/pawn_gen.h"
 #include "logic/movegen/bishop_gen.h"
 #include "logic/movegen/knight_gen.h"
-#include "logic/movegen/castling_gen.h"
+#include "logic/movegen/castle_gen.h"
 #include "logic/movegen/rook_gen.h"
 #include "logic/movegen/queen_gen.h"
 #include "logic/movegen/king_gen.h"
@@ -76,7 +76,7 @@ private:
     KnightGenerator knight_gen_;
     KingGenerator king_gen_;
     PawnGenerator pawn_gen_;
-    CastlingGenerator castle_gen_;
+    CastleGenerator castle_gen_;
     
 };
 } // namespace logic

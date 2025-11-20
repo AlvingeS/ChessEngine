@@ -49,7 +49,7 @@ void ZHasher::compute_initial_hash()
             hash_square_piece_type(i, piece_type);
     }
 
-    // We know that we have castling rights, so we can just add them
+    // We know that we have castle rights, so we can just add them
     for (size_t i = 0; i < 4; i++) {
         hash_castle_rights(i);
     }

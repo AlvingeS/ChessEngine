@@ -9,7 +9,7 @@ namespace logic {
 
 MoveMaker::MoveMaker(model::Board& board)
     : bitboards_(board.bitboards) 
-    , state_bitmasks_(board.state_bitmasks)
+    , state_bitmasks_(board.occupancy_masks)
     , piece_map_(board.piece_map)
     , z_hasher_(board.z_hasher)
 {}
@@ -50,7 +50,7 @@ MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
     place_moved_piece_on_board(is_w, to_sq_idx, moved_piece_type);
 
     // Update occupied and empty squares bitmasks
-    state_bitmasks_.update_occupied_and_empty_squares_bitmasks();
+    state_bitmasks_.update_occupancy_masks();
 
     return move_result;
 }
@@ -101,7 +101,7 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
         piece_map_.set_piece_type_at_index(to_rook_sq_idx, model::Piece::Type::B_ROOK);
     }
 
-    state_bitmasks_.update_occupied_and_empty_squares_bitmasks();
+    state_bitmasks_.update_occupancy_masks();
 }
 
 void MoveMaker::make_temporary_king_move(bool is_w, bool is_kside)

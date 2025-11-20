@@ -23,7 +23,7 @@ class BaseGenerator : public ::testing::Test
 protected:
     model::Board board;
     model::Bitboards& bitboards;
-    model::StateBitmasks& state_bitmasks;
+    model::OccupancyMasks& occupancy_masks;
     model::PieceMap& piece_map;
     model::ZHasher& z_hasher;
     engine::SearchMemory searchMemory;
@@ -36,7 +36,7 @@ protected:
     BaseGenerator() 
         : board(),
           bitboards(board.bitboards),
-          state_bitmasks(board.state_bitmasks),
+          occupancy_masks(board.occupancy_masks),
           piece_map(board.piece_map),
           z_hasher(board.z_hasher),
           searchMemory(engine::SearchMemory(0)),

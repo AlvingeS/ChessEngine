@@ -6,7 +6,7 @@ namespace model {
     class Board;
     class Move;
     class Bitboards;
-    class StateBitmasks;
+    class OccupancyMasks;
     class PieceMap;
     class ZHasher;
 }
@@ -44,7 +44,7 @@ private:
     );
 
     model::Bitboards& bitboards_;
-    model::StateBitmasks& state_bitmasks_;
+    model::OccupancyMasks& state_bitmasks_;
     model::PieceMap& piece_map_;
     model::ZHasher& z_hasher_;
 };

@@ -11,7 +11,7 @@ namespace logic {
 
 KnightGenerator::KnightGenerator(model::Board& board) 
     : bitboards_(board.bitboards)
-    , state_bitmasks_(board.state_bitmasks)
+    , state_bitmasks_(board.occupancy_masks)
     , knight_attack_table_(attack_tables::knight)
 {}
 
@@ -27,10 +27,10 @@ void KnightGenerator::generate(bool is_w, model::Movelist& movelist)
     for (int knight_sq_idx : knight_sq_idxs) {
         bitmask attack_mask = knight_attack_table_[knight_sq_idx];
 
-        bitmask free_moves_mask = attack_mask & state_bitmasks_.get_empty_squares_bitmask();
+        bitmask free_moves_mask = attack_mask & state_bitmasks_.get_free_squares_mask();
         
-        bitmask opp_pieces_mask = is_w ? state_bitmasks_.get_b_pieces_bitmask()
-                                       : state_bitmasks_.get_w_pieces_bitmask();
+        bitmask opp_pieces_mask = is_w ? state_bitmasks_.get_b_pieces_mask()
+                                       : state_bitmasks_.get_w_pieces_mask();
         
         bitmask capture_moves_mask = attack_mask & opp_pieces_mask;
 

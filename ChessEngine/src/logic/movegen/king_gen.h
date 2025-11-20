@@ -6,7 +6,7 @@
 
 namespace model {
     class Bitboards;
-    class StateBitmasks;
+    class OccupancyMasks;
     class Board;
     class Movelist;
 }
@@ -21,7 +21,7 @@ public:
 
 private:
     const model::Bitboards& bitboards_;
-    const model::StateBitmasks& state_bitmasks_;
+    const model::OccupancyMasks& state_bitmasks_;
     
     attack_table& king_attack_table_;
 };

@@ -2,7 +2,7 @@
 
 #include "model/position/bitboards.h"
 #include "model/position/piece_map.h"
-#include "model/position/state_bitmasks.h"
+#include "model/position/occupancy_masks.h"
 #include "model/position/z_hasher.h"
 
 namespace model {
@@ -10,12 +10,12 @@ namespace model {
 struct Board {
     Bitboards bitboards;
     PieceMap piece_map;
-    StateBitmasks state_bitmasks;
+    OccupancyMasks occupancy_masks;
     ZHasher z_hasher;
 
     Board() 
         : piece_map(bitboards)
-        , state_bitmasks(bitboards)
+        , occupancy_masks(bitboards)
         , z_hasher(piece_map) 
     {}
 };

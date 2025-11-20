@@ -10,14 +10,14 @@ class BitboardsTest : public ::testing::Test
 {
 protected:
     Bitboards bitboards;
-    StateBitmasks state_bitmasks;
+    OccupancyMasks occupancy_masks;
     PieceMap piece_map;
 
     std::string fenOne;
 
     BitboardsTest()
         : bitboards(), 
-        state_bitmasks(bitboards), 
+        occupancy_masks(bitboards), 
         piece_map(bitboards), 
         fenOne("8/8/8/8/3Pp3/8/8/8") 
     {
@@ -130,7 +130,7 @@ TEST_F(BitboardsTest, ConstructorInit_BlackKing)
 TEST_F(BitboardsTest, getWhitePiecesbitboard_ShouldReturn0x000000000000FFFF) 
 {
     bitboard expected = 0x000000000000FFFFULL;
-    bitboard actual = state_bitmasks.get_w_pieces_bitmask();
+    bitboard actual = occupancy_masks.get_w_pieces_mask();
 
     ASSERT_EQ(expected, actual);
 }
@@ -138,7 +138,7 @@ TEST_F(BitboardsTest, getWhitePiecesbitboard_ShouldReturn0x000000000000FFFF)
 TEST_F(BitboardsTest, getBlackPiecesbitboard_ShouldReturn0xFFFF000000000000) 
 {
     bitboard expected = 0xFFFF000000000000ULL;
-    bitboard actual = state_bitmasks.get_b_pieces_bitmask();
+    bitboard actual = occupancy_masks.get_b_pieces_mask();
 
     ASSERT_EQ(expected, actual);
 }
@@ -178,7 +178,7 @@ TEST_F(BitboardsTest, fillPieceMapTest_ShouldReturnStartingPos)
 
 TEST_F(BitboardsTest, fillPieceMapFenOneTest_ShouldReturnTwoPieces) 
 {
-    io::Fen::set_board_from_fen(fenOne, bitboards, state_bitmasks, piece_map);
+    io::Fen::set_board_from_fen(fenOne, bitboards, occupancy_masks, piece_map);
 
     for (int i = 0; i < 64; i++) {
         if (i == 27) {

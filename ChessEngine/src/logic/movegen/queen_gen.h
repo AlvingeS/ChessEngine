@@ -6,7 +6,7 @@ namespace model {
     class Movelist;
     class Board;
     class Bitboards;
-    class StateBitmasks;
+    class OccupancyMasks;
 }
 
 namespace logic {
@@ -23,7 +23,7 @@ public:
 
 private:
     const model::Bitboards& bitboards_;
-    const model::StateBitmasks& state_bitmasks_;
+    const model::OccupancyMasks& state_bitmasks_;
 
     ray_attack_table& line_ray_attack_table_;
     ray_attack_table& diag_ray_attack_table_;

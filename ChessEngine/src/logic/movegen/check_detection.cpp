@@ -12,7 +12,7 @@ namespace logic {
 
 CheckDetection::CheckDetection(model::Board& board)
     : bitboards_(board.bitboards)
-    , state_bitmasks_(board.state_bitmasks)
+    , state_bitmasks_(board.occupancy_masks)
     , line_ray_attack_table_(attack_tables::line_ray)
     , diag_ray_attack_table_(attack_tables::diag_ray)
     , knight_attack_table_(attack_tables::knight)
@@ -31,32 +31,32 @@ bool CheckDetection::in_check(bool is_w) const
     bitmask opponentRooksAndQueens = is_w ? bitboards_.get_b_rooks_bitboard() | bitboards_.get_b_queens_bitboard()
                                              : bitboards_.get_w_rooks_bitboard() | bitboards_.get_w_queens_bitboard();
 
-    if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq_idx][LineDir::N], true, opponentRooksAndQueens, state_bitmasks_.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq_idx][LineDir::N], true, opponentRooksAndQueens, state_bitmasks_.get_occupied_squares_mask()))
         return true;
 
-    if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq_idx][LineDir::E], false, opponentRooksAndQueens, state_bitmasks_.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq_idx][LineDir::E], false, opponentRooksAndQueens, state_bitmasks_.get_occupied_squares_mask()))
         return true;
 
-    if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq_idx][LineDir::S], false, opponentRooksAndQueens, state_bitmasks_.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq_idx][LineDir::S], false, opponentRooksAndQueens, state_bitmasks_.get_occupied_squares_mask()))
         return true;
 
-    if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq_idx][LineDir::W], true, opponentRooksAndQueens, state_bitmasks_.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq_idx][LineDir::W], true, opponentRooksAndQueens, state_bitmasks_.get_occupied_squares_mask()))
         return true;
 
     // Check if any opponent bishops or queens are attacking the king
     bitmask opp_bishops_and_queens = is_w ? bitboards_.get_b_bishops_bitboard() | bitboards_.get_b_queens_bitboard() 
                                                : bitboards_.get_w_bishops_bitboard() | bitboards_.get_w_queens_bitboard();
 
-    if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq_idx][DiagDir::NE], true, opp_bishops_and_queens, state_bitmasks_.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq_idx][DiagDir::NE], true, opp_bishops_and_queens, state_bitmasks_.get_occupied_squares_mask()))
         return true;
 
-    if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq_idx][DiagDir::SE], false, opp_bishops_and_queens, state_bitmasks_.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq_idx][DiagDir::SE], false, opp_bishops_and_queens, state_bitmasks_.get_occupied_squares_mask()))
         return true;
 
-    if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq_idx][DiagDir::SW], false, opp_bishops_and_queens, state_bitmasks_.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq_idx][DiagDir::SW], false, opp_bishops_and_queens, state_bitmasks_.get_occupied_squares_mask()))
         return true;
 
-    if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq_idx][DiagDir::NW], true, opp_bishops_and_queens, state_bitmasks_.get_occupied_pieces_bitmask()))
+    if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq_idx][DiagDir::NW], true, opp_bishops_and_queens, state_bitmasks_.get_occupied_squares_mask()))
         return true;
 
     // Check if any opponent knights are attacking the king

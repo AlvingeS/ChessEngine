@@ -11,7 +11,7 @@ namespace logic {
 
 RookGenerator::RookGenerator(model::Board& board)
     : bitboards_(board.bitboards)
-    , state_bitmasks_(board.state_bitmasks)
+    , state_bitmasks_(board.occupancy_masks)
     , line_ray_attack_table_(attack_tables::line_ray)
 {}
 
@@ -38,8 +38,8 @@ void RookGenerator::generate(
             rank, 
             file, 
             movelist,
-            state_bitmasks_.get_w_pieces_bitmask(),
-            state_bitmasks_.get_occupied_pieces_bitmask()
+            state_bitmasks_.get_w_pieces_mask(),
+            state_bitmasks_.get_occupied_squares_mask()
         );
 
         RayLogic::add_moves_from_line_ray(
@@ -51,8 +51,8 @@ void RookGenerator::generate(
             rank, 
             file, 
             movelist,
-            state_bitmasks_.get_w_pieces_bitmask(),
-            state_bitmasks_.get_occupied_pieces_bitmask()
+            state_bitmasks_.get_w_pieces_mask(),
+            state_bitmasks_.get_occupied_squares_mask()
         );
 
         RayLogic::add_moves_from_line_ray(
@@ -64,8 +64,8 @@ void RookGenerator::generate(
             rank, 
             file, 
             movelist,
-            state_bitmasks_.get_w_pieces_bitmask(),
-            state_bitmasks_.get_occupied_pieces_bitmask()
+            state_bitmasks_.get_w_pieces_mask(),
+            state_bitmasks_.get_occupied_squares_mask()
         );
 
         RayLogic::add_moves_from_line_ray(
@@ -77,8 +77,8 @@ void RookGenerator::generate(
             rank, 
             file, 
             movelist,
-            state_bitmasks_.get_w_pieces_bitmask(),
-            state_bitmasks_.get_occupied_pieces_bitmask()
+            state_bitmasks_.get_w_pieces_mask(),
+            state_bitmasks_.get_occupied_squares_mask()
         );
     }
 }

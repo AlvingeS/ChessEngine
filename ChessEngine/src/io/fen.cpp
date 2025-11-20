@@ -7,7 +7,7 @@ namespace io {
 void Fen::set_board_from_fen(
     const std::string& fen, 
     model::Bitboards& bitboards, 
-    model::StateBitmasks& state_bitmasks, 
+    model::OccupancyMasks& occupancy_masks, 
     model::PieceMap& piece_map) 
 {
     bitboards.reset_bitboards();
@@ -30,9 +30,9 @@ void Fen::set_board_from_fen(
     }
 
     piece_map.fill_piece_map_from_bitboards(bitboards);
-    state_bitmasks.fill_b_pieces_bitmask_from_bitboards(bitboards);
-    state_bitmasks.fill_w_pieces_bitmask_from_bitboards(bitboards);
-    state_bitmasks.update_occupied_and_empty_squares_bitmasks();
+    occupancy_masks.fill_b_pieces_mask_from_bbs(bitboards);
+    occupancy_masks.fill_w_pieces_mask_from_bbs(bitboards);
+    occupancy_masks.update_occupancy_masks();
 }
 
 std::string Fen::get_fen_from_board(const model::PieceMap& piece_map)

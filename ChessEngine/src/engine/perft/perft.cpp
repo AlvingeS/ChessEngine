@@ -12,7 +12,7 @@ perft::perft(int maxDepth)
     : board_(),
       bitboards_(board_.bitboards),
       piece_map_(board_.piece_map),
-      state_bitmasks_(board_.state_bitmasks),
+      state_bitmasks_(board_.occupancy_masks),
       z_hasher_(board_.z_hasher),
       search_memory_(maxDepth),
       move_maker_(board_),

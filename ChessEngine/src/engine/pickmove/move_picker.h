@@ -104,14 +104,14 @@ public:
 
     bool diff_between_state_bitmasks() const
     {
-        return (state_bitmasks_.get_b_pieces_bitmask() | state_bitmasks_.get_w_pieces_bitmask()) != state_bitmasks_.get_occupied_pieces_bitmask();
+        return (state_bitmasks_.get_b_pieces_mask() | state_bitmasks_.get_w_pieces_mask()) != state_bitmasks_.get_occupied_squares_mask();
     }
     
 private:
     model::Board board_;
     model::Bitboards& bitboards_;
     model::PieceMap& piece_map_;
-    model::StateBitmasks& state_bitmasks_;
+    model::OccupancyMasks& state_bitmasks_;
     model::ZHasher& z_hasher_;
     
     SearchMemory search_memory_;

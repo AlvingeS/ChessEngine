@@ -8,7 +8,7 @@ namespace logic {
 MoveRetractor::MoveRetractor(
     model::Board& board
 ) : bitboards_(board.bitboards), 
-    state_bitmasks_(board.state_bitmasks), 
+    state_bitmasks_(board.occupancy_masks), 
     piece_map_(board.piece_map), 
     z_hasher_(board.z_hasher)
 {}
@@ -59,7 +59,7 @@ void MoveRetractor::unmake_castle_move(bool was_w, bool wasKingSide)
         piece_map_.set_piece_type_at_index(from_rook_sq_idx, model::Piece::Type::B_ROOK);
     }
 
-    state_bitmasks_.update_occupied_and_empty_squares_bitmasks();
+    state_bitmasks_.update_occupancy_masks();
 }
 
 void MoveRetractor::revert_temporary_king_move(bool was_w, bool is_kside) 
@@ -187,7 +187,7 @@ void MoveRetractor::unmake_move(
     // Place the moved piece back on the from square
     place_back_moved_piece_on_board(was_w, from_sq_idx, previously_moved_piece_type);
 
-    state_bitmasks_.update_occupied_and_empty_squares_bitmasks();
+    state_bitmasks_.update_occupancy_masks();
 }
 
 } // namespace logic

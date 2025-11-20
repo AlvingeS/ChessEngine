@@ -5,7 +5,7 @@
 namespace model {
     class Board;
     class Bitboards;
-    class StateBitmasks;
+    class OccupancyMasks;
     class PieceMap;
     class ZHasher;
 }
@@ -38,7 +38,7 @@ private:
     void place_back_moved_piece_on_board(bool was_w, int fromIndex, model::Piece::Type  moved_piece_type);
 
     model::Bitboards& bitboards_;
-    model::StateBitmasks& state_bitmasks_;
+    model::OccupancyMasks& state_bitmasks_;
     model::PieceMap& piece_map_;
     const model::ZHasher& z_hasher_;
 };

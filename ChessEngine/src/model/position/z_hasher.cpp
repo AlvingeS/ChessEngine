@@ -43,7 +43,7 @@ void ZHasher::compute_initial_hash()
     hash_ = 0;
 
     for (size_t i = 0; i < 64; i++) {
-        Piece::Type piece_type = piece_map_.get_piece_type_at_index(i);
+        Piece::Type piece_type = piece_map_.get_piece_type_at_idx(i);
 
         if (piece_type != Piece::Type::EMPTY)
             hash_square_piece_type(i, piece_type);

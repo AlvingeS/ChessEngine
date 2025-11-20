@@ -33,10 +33,10 @@ void MoveRetractor::unmake_castle_move(bool was_w, bool wasKingSide)
         occupancy_masks_.set_w_pieces_bit(from_rook_sq_idx);
         occupancy_masks_.clear_w_pieces_bit(to_rook_sq_idx);
 
-        piece_map_.set_piece_type_at_index(from_king_sq_idx, model::Piece::Type::W_KING);
-        piece_map_.set_piece_type_at_index(to_king_sq_idx, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at_index(from_rook_sq_idx, model::Piece::Type::W_ROOK);
-        piece_map_.set_piece_type_at_index(to_rook_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_idx(from_king_sq_idx, model::Piece::Type::W_KING);
+        piece_map_.set_piece_type_at_idx(to_king_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_idx(from_rook_sq_idx, model::Piece::Type::W_ROOK);
+        piece_map_.set_piece_type_at_idx(to_rook_sq_idx, model::Piece::Type::EMPTY);
     } else {
         from_king_sq_idx = 59;
         to_king_sq_idx = wasKingSide ? 57 : 61;
@@ -53,10 +53,10 @@ void MoveRetractor::unmake_castle_move(bool was_w, bool wasKingSide)
         occupancy_masks_.set_b_pieces_bit(from_rook_sq_idx);
         occupancy_masks_.clear_b_pieces_bit(to_rook_sq_idx);
 
-        piece_map_.set_piece_type_at_index(to_king_sq_idx, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at_index(from_king_sq_idx, model::Piece::Type::B_KING);
-        piece_map_.set_piece_type_at_index(to_rook_sq_idx, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at_index(from_rook_sq_idx, model::Piece::Type::B_ROOK);
+        piece_map_.set_piece_type_at_idx(to_king_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_idx(from_king_sq_idx, model::Piece::Type::B_KING);
+        piece_map_.set_piece_type_at_idx(to_rook_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_idx(from_rook_sq_idx, model::Piece::Type::B_ROOK);
     }
 
     occupancy_masks_.update_occupancy_masks();
@@ -109,11 +109,11 @@ void MoveRetractor::place_back_captured_piece_on_board(
     model::Piece::Type previously_captured_piece_type) 
 {
     bitboards_.set_piece_type_bit(capture_sq_idx, previously_captured_piece_type);
-    piece_map_.set_piece_type_at_index(capture_sq_idx, previously_captured_piece_type);
+    piece_map_.set_piece_type_at_idx(capture_sq_idx, previously_captured_piece_type);
 
     // If the move was an ep capture, the to square will be empty
     if (is_ep) {
-        piece_map_.set_piece_type_at_index(to_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_idx(to_sq_idx, model::Piece::Type::EMPTY);
     }
 
     was_w ? occupancy_masks_.set_b_pieces_bit(capture_sq_idx) 
@@ -126,7 +126,7 @@ void MoveRetractor::place_back_moved_piece_on_board(
     model::Piece::Type  moved_piece_type)
 {
     bitboards_.set_piece_type_bit(from_sq_idx, moved_piece_type);
-    piece_map_.set_piece_type_at_index(from_sq_idx, moved_piece_type);
+    piece_map_.set_piece_type_at_idx(from_sq_idx, moved_piece_type);
 
     was_w ? occupancy_masks_.set_w_pieces_bit(from_sq_idx) 
              : occupancy_masks_.set_b_pieces_bit(from_sq_idx);
@@ -144,7 +144,7 @@ model::Piece::Type MoveRetractor::determine_moved_piece_type(
     // Else, set the moved piece to the piece occupying the to square
     previously_moved_piece_type = move.is_any_promo() ? (was_w ? model::Piece::Type::W_PAWN
                                                              : model::Piece::Type::B_PAWN)
-                                                 : piece_map_.get_piece_type_at_index(to_sq_idx);
+                                                 : piece_map_.get_piece_type_at_idx(to_sq_idx);
 
     return previously_moved_piece_type;
 }
@@ -163,8 +163,8 @@ void MoveRetractor::unmake_move(
     // Get the from and to indices
     // Things get a bit tricky here because the move is being unmade, and so
     // we are "moving to" the from square and "moving from" the to square
-    int from_sq_idx = previousMove.get_bit_index_from();
-    int to_sq_idx = previousMove.get_bit_index_to();
+    int from_sq_idx = previousMove.get_bit_idx_from();
+    int to_sq_idx = previousMove.get_bit_idx_to();
 
     // Determine the piece type of the piece that was previously moved,
     // takes into consideration if the move was a promotion
@@ -181,7 +181,7 @@ void MoveRetractor::unmake_move(
         place_back_captured_piece_on_board(previousMove.is_ep_capture(), capture_sq_idx, to_sq_idx, was_w, previousMoveResults.captured_piece_type);
     } else {
         // If there was no capture, we place back an empty square on the to square
-        piece_map_.set_piece_type_at_index(to_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_idx(to_sq_idx, model::Piece::Type::EMPTY);
     }
 
     // Place the moved piece back on the from square

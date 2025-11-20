@@ -1,13 +1,13 @@
 namespace model {
 
-inline void OccupancyMasks::set_w_pieces_bit(int index) 
+inline void OccupancyMasks::set_w_pieces_bit(int idx) 
 {
-    w_pieces_mask_ |= (1ULL << index);
+    w_pieces_mask_ |= (1ULL << idx);
 }
 
-inline void OccupancyMasks::clear_w_pieces_bit(int index) 
+inline void OccupancyMasks::clear_w_pieces_bit(int idx) 
 {
-    w_pieces_mask_ &= ~(1ULL << index);
+    w_pieces_mask_ &= ~(1ULL << idx);
 }
 
 inline const bitmask& OccupancyMasks::get_w_pieces_mask() const 
@@ -15,14 +15,14 @@ inline const bitmask& OccupancyMasks::get_w_pieces_mask() const
     return w_pieces_mask_;
 }
 
-inline void OccupancyMasks::set_b_pieces_bit(int index) 
+inline void OccupancyMasks::set_b_pieces_bit(int idx) 
 {
-    b_pieces_mask_ |= (1ULL << index);
+    b_pieces_mask_ |= (1ULL << idx);
 }
 
-inline void OccupancyMasks::clear_b_pieces_bit(int index) 
+inline void OccupancyMasks::clear_b_pieces_bit(int idx) 
 {
-    b_pieces_mask_ &= ~(1ULL << index);
+    b_pieces_mask_ &= ~(1ULL << idx);
 }
 
 inline const bitmask& OccupancyMasks::get_b_pieces_mask() const 

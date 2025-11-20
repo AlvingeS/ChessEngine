@@ -16,14 +16,14 @@ inline void PerftData::increase_promo_count_at(int depth) { promo_count_[depth]+
 inline void PerftData::increase_check_count_at(int depth) { check_count_[depth]++; }
 inline void PerftData::increase_checkmate_count_at(int depth) { checkmate_count_[depth]++; }
 
-inline void PerftData::set_first_move_at(int firstMoveIndex, model::Move currentMove) 
+inline void PerftData::set_first_move_at(int first_move_idx, model::Move currentMove) 
 {
-    first_moves_[firstMoveIndex] = currentMove;
+    first_moves_[first_move_idx] = currentMove;
 }
 
-inline void PerftData::increase_node_count_per_first_move_at(int firstMoveIndex) 
+inline void PerftData::increase_node_count_per_first_move_at(int first_move_idx) 
 {
-    node_count_per_first_move_[firstMoveIndex]++;
+    node_count_per_first_move_[first_move_idx]++;
 }
 
 } // namespace engine

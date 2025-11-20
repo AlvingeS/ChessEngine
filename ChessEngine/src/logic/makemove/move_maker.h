@@ -27,19 +27,19 @@ private:
     
     model::Piece::Type remove_moved_piece_from_board(
         bool is_w, 
-        int fromIndex
+        int from_idx
     );
 
     void remove_captured_piece_from_board(
         bool is_ep, 
         bool is_w, 
-        int captureIndex, 
+        int capture_idx, 
         model::Piece::Type captured_piece_type
     );
 
     void place_moved_piece_on_board(
         bool is_w, 
-        int to_index,
+        int to_idx,
         model::Piece::Type moved_piece_type
     );
 

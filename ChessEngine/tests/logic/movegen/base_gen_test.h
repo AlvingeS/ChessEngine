@@ -56,9 +56,9 @@ protected:
         bitboards.reset_bitboards();
     }
 
-    void insertExpectedMoves(std::unordered_set<model::Move>& moves, int fromBitIndex, const std::vector<int>& toBitIndices, const std::vector<int>& flags) {
-        for (size_t i = 0; i < toBitIndices.size(); i++) {
-            moves.insert(model::Move(fromBitIndex, toBitIndices[i], flags[i]));
+    void insertExpectedMoves(std::unordered_set<model::Move>& moves, int from_bit_idx, const std::vector<int>& to_bit_idx, const std::vector<int>& flags) {
+        for (size_t i = 0; i < to_bit_idx.size(); i++) {
+            moves.insert(model::Move(from_bit_idx, to_bit_idx[i], flags[i]));
         }
     }
 

@@ -38,7 +38,7 @@ void BoardPrinter::fill_board(const model::Bitboards& bitboards)
     
     for (int i = 0; i < 12; i++) {
         model::Piece::Type piece_type = model::Piece::get_type_from_int(i);
-        bitboard bb = bitboards.get_bb_from_index(i);
+        bitboard bb = bitboards.get_bb_from_idx(i);
         char piece_char = model::Piece::get_char_from_type(piece_type);
 
         for (int i = 0; i < 64; i++) {
@@ -62,8 +62,8 @@ void BoardPrinter::print() const {
         std::cout << "|   ";  // Separate the two boards.
 
         for (int col = 7; col >= 0; col--) {  // Iterate again for bit indices.
-            int bitIndex = row * 8 + col;
-            std::cout << "| " << bitIndex << (bitIndex < 10 ? " " : "");  // Print the bit index, add extra space for single digit numbers.
+            int bit_idx = row * 8 + col;
+            std::cout << "| " << bit_idx << (bit_idx < 10 ? " " : "");  // Print the bit index, add extra space for single digit numbers.
         }
 
         std::cout << "|" << std::endl;  // End of the row.

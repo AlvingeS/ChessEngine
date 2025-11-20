@@ -25,7 +25,7 @@ public:
     void minimax(
         int current_depth,
         bool isMaximizer, 
-        int firstMoveIndex,
+        int first_move_idx,
         bool recPerftStats = true,
         const model::Move& lastMove = model::Move(),
         bool verbose = true
@@ -34,7 +34,7 @@ public:
     void record_perft_stats(
         bool isMaximizer,
         int current_depth,
-        int &firstMoveIndex,
+        int &first_move_idx,
         size_t i,
         const model::Move& currentMove,
         bool &ret_flag
@@ -58,7 +58,7 @@ public:
     bool check_condition(
         int current_depth,
         bool isMaximizer, 
-        int firstMoveIndex, 
+        int first_move_idx, 
         model::Move currentMove, 
         model::Move lastMove, 
         bool verbose, 

@@ -50,13 +50,13 @@ void PawnGenerator::generate(
         BitBasics::get_bit_indices(capture_moves_sq_idxs, capture_moves_mask);
 
         int offset = is_w ? 8 : -8;
-        bool can_promote = (is_w && ChessUtils::rank_from_bit_index(pawn_sq_idx) == 6) || (!is_w && ChessUtils::rank_from_bit_index(pawn_sq_idx) == 1);
+        bool can_promote = (is_w && ChessUtils::rank_from_bit_idx(pawn_sq_idx) == 6) || (!is_w && ChessUtils::rank_from_bit_idx(pawn_sq_idx) == 1);
 
         if (free_moves_idxs.size() == 2) {
-            int single_step_index = (is_w ? 0 : 1);
+            int single_step_idx = (is_w ? 0 : 1);
             int double_step_index = (is_w ? 1 : 0);
             
-            movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[single_step_index], model::Move::QUITE_FLAG));
+            movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[single_step_idx], model::Move::QUITE_FLAG));
             movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[double_step_index], model::Move::DOUBLE_PAWN_PUSH_FLAG));
 
         } else if (free_moves_idxs.size() == 1 && free_moves_idxs[0] == pawn_sq_idx + offset) {
@@ -84,7 +84,7 @@ void PawnGenerator::generate(
         }
 
         if ((attack_mask_diag & ep_target_mask) != 0) {
-            movelist.add_move(model::Move(pawn_sq_idx, BitBasics::lsb_index(attack_mask_diag & ep_target_mask), model::Move::EP_CAPTURE_FLAG));
+            movelist.add_move(model::Move(pawn_sq_idx, BitBasics::lsb_idx(attack_mask_diag & ep_target_mask), model::Move::EP_CAPTURE_FLAG));
         }
     }
 }

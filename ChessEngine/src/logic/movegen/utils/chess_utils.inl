@@ -36,12 +36,12 @@ inline bitmask ChessUtils::get_rank_mask(int rank)
     return RANK_MASK[rank];
 }
 
-inline int ChessUtils::rank_from_bit_index(int i) 
+inline int ChessUtils::rank_from_bit_idx(int i) 
 {
     return i / 8;
 }
 
-inline int ChessUtils::file_from_bit_index(int i) 
+inline int ChessUtils::file_from_bit_idx(int i) 
 {
     return i % 8;
 }

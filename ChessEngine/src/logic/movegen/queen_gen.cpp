@@ -26,8 +26,8 @@ void QueenGenerator::generate(
                                                : bitboards_.get_b_queens_bb());
 
     for (int queen_sq_idx : queen_sq_idxs) {
-        int rank = ChessUtils::rank_from_bit_index(queen_sq_idx);
-        int file = ChessUtils::file_from_bit_index(queen_sq_idx);
+        int rank = ChessUtils::rank_from_bit_idx(queen_sq_idx);
+        int file = ChessUtils::file_from_bit_idx(queen_sq_idx);
 
         RayLogic::add_moves_from_line_ray(
             line_ray_attack_table_[queen_sq_idx][LineDir::N],

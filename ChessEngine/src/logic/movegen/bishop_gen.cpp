@@ -29,8 +29,8 @@ void BishopGen::generate(
                                          : bitboards_.get_b_bishops_bb());
 
     for (int bishop_sq_idx : bishop_sq_idxs) {
-        int bishopRank = ChessUtils::rank_from_bit_index(bishop_sq_idx);
-        int bishopFile = ChessUtils::file_from_bit_index(bishop_sq_idx);
+        int bishopRank = ChessUtils::rank_from_bit_idx(bishop_sq_idx);
+        int bishopFile = ChessUtils::file_from_bit_idx(bishop_sq_idx);
 
         RayLogic::add_moves_from_diag_ray(diag_ray_attack_table_[bishop_sq_idx][DiagDir::NE], true, is_w, bishop_sq_idx, bishopRank, bishopFile, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_squares_mask());
         RayLogic::add_moves_from_diag_ray(diag_ray_attack_table_[bishop_sq_idx][DiagDir::SE], false, is_w, bishop_sq_idx, bishopRank, bishopFile, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_squares_mask());

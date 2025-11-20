@@ -42,26 +42,26 @@ TEST_F(BitBasicsTest, getBit_A_Pos16_ShouldReturnFalse)
     ASSERT_EQ(expected, actual);
 }
 
-// BitBasics::lsb_index tests
+// BitBasics::lsb_idx tests
 TEST_F(BitBasicsTest, indexOfLSB_A_ShouldReturn8) 
 {
     int expected = 8;
-    int actual = BitBasics::lsb_index(mask);
+    int actual = BitBasics::lsb_idx(mask);
     ASSERT_EQ(expected, actual);
 }
 
-// BitBasics::msb_index tests
+// BitBasics::msb_idx tests
 TEST_F(BitBasicsTest, indexOfMSB_A_ShouldReturn15) 
 {
     int expected = 15;
-    int actual = BitBasics::msb_index(mask);
+    int actual = BitBasics::msb_idx(mask);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(BitBasicsTest, indexOfMSB_0_ShouldReturnNeg1) 
 {
     int expected = -1;
-    int actual = BitBasics::msb_index(0ULL);
+    int actual = BitBasics::msb_idx(0ULL);
     ASSERT_EQ(expected, actual);
 }
 

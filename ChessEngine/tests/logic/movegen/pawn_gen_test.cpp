@@ -41,7 +41,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosWhite_ShouldReturn16Moves)
     insertExpectedMoves(expectedMoves, 14, {22, 30}, {0, model::Move::DOUBLE_PAWN_PUSH_FLAG});
     insertExpectedMoves(expectedMoves, 15, {23, 31}, {0, model::Move::DOUBLE_PAWN_PUSH_FLAG});
 
-    for (int i = 0; i < movelist.get_move_index(); i++) {
+    for (int i = 0; i < movelist.get_move_idx(); i++) {
         auto found = expectedMoves.find(movelist.get_move_at(i));
         ASSERT_TRUE(found != expectedMoves.end());
         expectedMoves.erase(found); // Remove found move from the set
@@ -66,7 +66,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosBlack_ShouldReturn16Moves)
     insertExpectedMoves(expectedMoves, 54, {46, 38}, {0, model::Move::DOUBLE_PAWN_PUSH_FLAG});
     insertExpectedMoves(expectedMoves, 55, {47, 39}, {0, model::Move::DOUBLE_PAWN_PUSH_FLAG});
 
-    for (int i = 0; i < movelist.get_move_index(); i++) {
+    for (int i = 0; i < movelist.get_move_idx(); i++) {
         auto found = expectedMoves.find(movelist.get_move_at(i));
         ASSERT_TRUE(found != expectedMoves.end());
         expectedMoves.erase(found); // Remove found move from the set
@@ -86,7 +86,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneWhite_ShouldReturn6Moves)
     insertExpectedMoves(expectedMoves, 10, {18, 26}, {0, model::Move::DOUBLE_PAWN_PUSH_FLAG});
     insertExpectedMoves(expectedMoves, 8, {16, 24}, {0, model::Move::DOUBLE_PAWN_PUSH_FLAG});
 
-    for (int i = 0; i < movelist.get_move_index(); i++) {
+    for (int i = 0; i < movelist.get_move_idx(); i++) {
         auto found = expectedMoves.find(movelist.get_move_at(i));
         ASSERT_TRUE(found != expectedMoves.end());
         expectedMoves.erase(found); // Remove found move from the set
@@ -106,7 +106,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneBlack_ShouldReturnXMoves)
     insertExpectedMoves(expectedMoves, 37, {28, 29}, {1, 0});
     insertExpectedMoves(expectedMoves, 23, {15}, {0});
 
-    for (int i = 0; i < movelist.get_move_index(); i++) {
+    for (int i = 0; i < movelist.get_move_idx(); i++) {
         auto found = expectedMoves.find(movelist.get_move_at(i));
         ASSERT_TRUE(found != expectedMoves.end());
         expectedMoves.erase(found); // Remove found move from the set
@@ -125,7 +125,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Mov
     std::unordered_set<model::Move> expectedMoves;
     insertExpectedMoves(expectedMoves, 36, {44, 43}, {0, model::Move::EP_CAPTURE_FLAG});
 
-    for (int i = 0; i < movelist.get_move_index(); i++) {
+    for (int i = 0; i < movelist.get_move_idx(); i++) {
         auto found = expectedMoves.find(movelist.get_move_at(i));
         ASSERT_TRUE(found != expectedMoves.end());
         expectedMoves.erase(found); // Remove found move from the set
@@ -144,7 +144,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForBlack_ShouldReturn2Mov
     std::unordered_set<model::Move> expectedMoves;
     insertExpectedMoves(expectedMoves, 30, {22, 23}, {0, model::Move::EP_CAPTURE_FLAG});
 
-    for (int i = 0; i < movelist.get_move_index(); i++) {
+    for (int i = 0; i < movelist.get_move_idx(); i++) {
         auto found = expectedMoves.find(movelist.get_move_at(i));
         ASSERT_TRUE(found != expectedMoves.end());
         expectedMoves.erase(found); // Remove found move from the set
@@ -164,7 +164,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12M
     insertExpectedMoves(expectedMoves, 53, {60, 60, 60, 60}, {model::Move::KNIGHT_PROMO_CAPTURE_FLAG, model::Move::BISHOP_PROMO_CAPTURE_FLAG, model::Move::ROOK_PROMO_CAPTURE_FLAG, model::Move::QUEEN_PROMO_CAPTURE_FLAG});
     insertExpectedMoves(expectedMoves, 49, {57, 57, 57, 57}, {model::Move::KNIGHT_PROMO_FLAG, model::Move::BISHOP_PROMO_FLAG, model::Move::ROOK_PROMO_FLAG, model::Move::QUEEN_PROMO_FLAG});
 
-    for (int i = 0; i < movelist.get_move_index(); i++) {
+    for (int i = 0; i < movelist.get_move_idx(); i++) {
         auto found = expectedMoves.find(movelist.get_move_at(i));
         ASSERT_TRUE(found != expectedMoves.end());
         expectedMoves.erase(found); // Remove found move from the set
@@ -184,7 +184,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12M
     insertExpectedMoves(expectedMoves, 14, {5, 5, 5, 5}, {model::Move::KNIGHT_PROMO_CAPTURE_FLAG, model::Move::BISHOP_PROMO_CAPTURE_FLAG, model::Move::ROOK_PROMO_CAPTURE_FLAG, model::Move::QUEEN_PROMO_CAPTURE_FLAG});
     insertExpectedMoves(expectedMoves, 14, {6, 6, 6, 6}, {model::Move::KNIGHT_PROMO_FLAG, model::Move::BISHOP_PROMO_FLAG, model::Move::ROOK_PROMO_FLAG, model::Move::QUEEN_PROMO_FLAG});
 
-    for (int i = 0; i < movelist.get_move_index(); i++) {
+    for (int i = 0; i < movelist.get_move_idx(); i++) {
         auto found = expectedMoves.find(movelist.get_move_at(i));
         ASSERT_TRUE(found != expectedMoves.end());
         expectedMoves.erase(found); // Remove found move from the set
@@ -200,7 +200,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenBuggedPawnTestWhite_ShouldNotRetur
 
     model::Movelist moves = getMoves();
 
-    for (int i = 0; i < movelist.get_move_index(); i++) {
+    for (int i = 0; i < movelist.get_move_idx(); i++) {
         ASSERT_NE(movelist.get_move_at(i), model::Move(46, 38, model::Move::QUITE_FLAG));
     }
 }

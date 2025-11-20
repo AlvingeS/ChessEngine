@@ -99,7 +99,7 @@ bool perft::too_many_pieces_on_board()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (piece_map_.get_piece_type_at_index(i) != model::Piece::Type::EMPTY) {
+        if (piece_map_.get_piece_type_at_idx(i) != model::Piece::Type::EMPTY) {
             count++;
         }
     }
@@ -110,7 +110,7 @@ bool perft::too_many_pieces_on_board()
 bool perft::check_condition(
     int current_depth,
     bool isMaximizer,
-    int firstMoveIndex, 
+    int first_move_idx, 
     model::Move currentMove, 
     model::Move lastMove, 
     bool verbose, 
@@ -118,21 +118,21 @@ bool perft::check_condition(
 {
     // return not board_.getKingMoved(false);
     // return too_many_pieces_on_board();
-    // return firstMoveIndex == 19 && currentMove.is_any_capture();
-    // return currentMove.get_bit_index_from() == 12 && currentMove.get_bit_index_to() == 12;
-    // return current_depth == 3 && firstMoveIndex == 0 && currentMove.get_bit_index_from() == 34 && currentMove.get_bit_index_to() == 27;
+    // return first_move_idx == 19 && currentMove.is_any_capture();
+    // return currentMove.get_bit_idx_from() == 12 && currentMove.get_bit_idx_to() == 12;
+    // return current_depth == 3 && first_move_idx == 0 && currentMove.get_bit_idx_from() == 34 && currentMove.get_bit_idx_to() == 27;
     // return currentMove.is_any_capture();
     // return true;
     return false;
     // return diff_between_occupancy_masks();
-    // return current_depth == 2 && firstMoveIndex == 0 && isMaximizer == true && currentMove.getMove() == 66;
+    // return current_depth == 2 && first_move_idx == 0 && isMaximizer == true && currentMove.getMove() == 66;
 }
 
 // TODO: Implement draw by repetition after implementing zobrist hashing
 void perft::minimax(
     int current_depth, 
     bool isMaximizer, 
-    int firstMoveIndex, 
+    int first_move_idx, 
     bool recPerftStats, 
     const model::Move& lastMove, 
     bool verbose)
@@ -160,7 +160,7 @@ void perft::minimax(
         if (check_condition(
             current_depth, 
             isMaximizer, 
-            firstMoveIndex, 
+            first_move_idx, 
             currentMove, 
             lastMove, 
             verbose, 
@@ -176,7 +176,7 @@ void perft::minimax(
         if (check_condition(
             current_depth, 
             isMaximizer, 
-            firstMoveIndex, 
+            first_move_idx, 
             currentMove, 
             lastMove, 
             verbose, 
@@ -193,7 +193,7 @@ void perft::minimax(
             if (check_condition(
                 current_depth, 
                 isMaximizer, 
-                firstMoveIndex, 
+                first_move_idx, 
                 currentMove, 
                 lastMove, 
                 verbose, 
@@ -221,7 +221,7 @@ void perft::minimax(
             current_depth,
             currentMove, 
             isMaximizer, 
-            piece_map_.get_piece_type_at_index(currentMove.get_bit_index_to())
+            piece_map_.get_piece_type_at_idx(currentMove.get_bit_idx_to())
         );
 
         if (recPerftStats) {
@@ -230,7 +230,7 @@ void perft::minimax(
             record_perft_stats(
                 isMaximizer, 
                 current_depth, 
-                firstMoveIndex, 
+                first_move_idx, 
                 i, 
                 currentMove, 
                 ret_flag
@@ -243,7 +243,7 @@ void perft::minimax(
         minimax(
             current_depth + 1, 
             !isMaximizer, 
-            firstMoveIndex, 
+            first_move_idx, 
             recPerftStats, 
             currentMove, 
             verbose
@@ -255,7 +255,7 @@ void perft::minimax(
         if (check_condition(
             current_depth, 
             isMaximizer, 
-            firstMoveIndex, 
+            first_move_idx, 
             currentMove, 
             lastMove, 
             verbose, 
@@ -272,7 +272,7 @@ void perft::minimax(
 void perft::record_perft_stats(
     bool isMaximizer, 
     int current_depth, 
-    int &firstMoveIndex, 
+    int &first_move_idx, 
     size_t i, 
     const model::Move& currentMove, 
     bool &ret_flag) 
@@ -283,10 +283,10 @@ void perft::record_perft_stats(
     }
 
     if (current_depth == 0) {
-        firstMoveIndex = i;
-        perft_data_.set_first_move_at(firstMoveIndex, currentMove);
+        first_move_idx = i;
+        perft_data_.set_first_move_at(first_move_idx, currentMove);
     } else if (current_depth == max_depth_ - 1) {
-        perft_data_.increase_node_count_per_first_move_at(firstMoveIndex);
+        perft_data_.increase_node_count_per_first_move_at(first_move_idx);
     }
 
     perft_data_.increase_node_count_at(current_depth + 1);

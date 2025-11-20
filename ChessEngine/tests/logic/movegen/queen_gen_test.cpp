@@ -25,7 +25,7 @@ TEST_F(MoveGeneratorQueenTest, genQueenMoves_fenOneBlack_ShouldReturnXMoves)
     insertExpectedMoves(expectedMoves, 42, {50, 49, 56, 41, 40, 33, 24, 34, 35, 28, 21, 43, 44, 45, 46, 47, 51, 60, 50}, {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0});
     insertExpectedMoves(expectedMoves, 30, {38, 46, 54, 62, 37, 44, 51, 29, 28, 27, 26, 25, 24, 21, 22, 14, 6, 23, 31}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0});
 
-    for (int i = 0; i < movelist.get_move_index(); i++) {
+    for (int i = 0; i < movelist.get_move_idx(); i++) {
         auto found = expectedMoves.find(movelist.get_move_at(i));
         ASSERT_TRUE(found != expectedMoves.end());
         expectedMoves.erase(found); // Remove found move from the set
@@ -44,7 +44,7 @@ TEST_F(MoveGeneratorQueenTest, genQueenMoves_fenOneWhite_ShouldReturnXMoves)
     insertExpectedMoves(expectedMoves, 21, {29, 37, 45, 28, 35, 42, 20, 19, 12, 3, 13, 5, 14, 7, 22, 23, 30}, {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1});
     insertExpectedMoves(expectedMoves, 18, {26, 25, 32, 17, 16, 9, 0, 10, 2, 11, 4, 19, 20, 27, 36, 45, 54, 63}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
 
-    for (int i = 0; i < movelist.get_move_index(); i++) {
+    for (int i = 0; i < movelist.get_move_idx(); i++) {
         auto found = expectedMoves.find(movelist.get_move_at(i));
         ASSERT_TRUE(found != expectedMoves.end());
         expectedMoves.erase(found); // Remove found move from the set
@@ -58,7 +58,7 @@ TEST_F(MoveGeneratorQueenTest, genQueenMoves_StartPosWhite_ShouldReturn0Moves)
     io::Fen::set_board_from_fen(startingPos, bitboards, occupancy_masks, piece_map);
     moveGenerator.gen_queen_moves(true, movelist);
 
-    ASSERT_EQ(movelist.get_move_index(), 0);
+    ASSERT_EQ(movelist.get_move_idx(), 0);
 }
 
 TEST_F(MoveGeneratorQueenTest, genQueenMoves_StartPosBlack_ShouldReturn0Moves) 
@@ -66,7 +66,7 @@ TEST_F(MoveGeneratorQueenTest, genQueenMoves_StartPosBlack_ShouldReturn0Moves)
     io::Fen::set_board_from_fen(startingPos, bitboards, occupancy_masks, piece_map);
     moveGenerator.gen_queen_moves(false, movelist);
 
-    ASSERT_EQ(movelist.get_move_index(), 0);
+    ASSERT_EQ(movelist.get_move_idx(), 0);
 }
 
 } // namespace logic

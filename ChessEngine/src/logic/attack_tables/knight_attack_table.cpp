@@ -33,7 +33,7 @@ void remove_wrap_around_from_attack_mask(bitmask& attack_mask, int sq_idx)
     bitmask h_file_mask = logic::ChessUtils::get_file_mask(0);
     bitmask all_files_except_gh_mask = ~(g_file_mask | h_file_mask);
 
-    switch (logic::ChessUtils::file_from_bit_index(sq_idx)) {
+    switch (logic::ChessUtils::file_from_bit_idx(sq_idx)) {
         case 0: // If knight is on file 0 (H), remove overlap that happened in A or B
             attack_mask &= all_files_except_ab_mask;
             break;

@@ -26,8 +26,8 @@ void RookGenerator::generate(
 
     // Loop through all rooks and isolate them
     for (int rook_sq_idx : rook_sq_idxs) {
-        int rank = ChessUtils::rank_from_bit_index(rook_sq_idx);
-        int file = ChessUtils::file_from_bit_index(rook_sq_idx);
+        int rank = ChessUtils::rank_from_bit_idx(rook_sq_idx);
+        int file = ChessUtils::file_from_bit_idx(rook_sq_idx);
 
         RayLogic::add_moves_from_line_ray(
             line_ray_attack_table_[rook_sq_idx][LineDir::N],

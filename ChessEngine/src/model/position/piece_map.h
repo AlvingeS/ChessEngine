@@ -12,9 +12,9 @@ class PieceMap {
 public:
     PieceMap(const Bitboards& bitboards);
 
-    Piece::Type get_piece_type_at_index(int index) const;
+    Piece::Type get_piece_type_at_idx(int idx) const;
     
-    void set_piece_type_at_index(int index, Piece::Type piece_type);
+    void set_piece_type_at_idx(int idx, Piece::Type piece_type);
     void fill_piece_map_from_bitboards(const Bitboards& bitboards);
 
 private:

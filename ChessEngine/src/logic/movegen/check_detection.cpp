@@ -24,7 +24,7 @@ bool CheckDetection::in_check(bool is_w) const
 {
     int king_sq_idx, opp_king_sq_idx, king_rank_diff, king_file_diff;
 
-    king_sq_idx = BitBasics::lsb_index(is_w ? bitboards_.get_w_king_bb()
+    king_sq_idx = BitBasics::lsb_idx(is_w ? bitboards_.get_w_king_bb()
                                    : bitboards_.get_b_king_bb());
 
     // Check if any opponent rooks or queens are attacking the king
@@ -78,11 +78,11 @@ bool CheckDetection::in_check(bool is_w) const
         return true;
 
     // Check if the king is in check from an adjacent king
-    opp_king_sq_idx = BitBasics::lsb_index(is_w ? bitboards_.get_b_king_bb()
+    opp_king_sq_idx = BitBasics::lsb_idx(is_w ? bitboards_.get_b_king_bb()
                                            : bitboards_.get_w_king_bb());
 
-    king_rank_diff = ChessUtils::abs(ChessUtils::rank_from_bit_index(king_sq_idx) - ChessUtils::rank_from_bit_index(opp_king_sq_idx));
-    king_file_diff = ChessUtils::abs(ChessUtils::file_from_bit_index(king_sq_idx) - ChessUtils::file_from_bit_index(opp_king_sq_idx));
+    king_rank_diff = ChessUtils::abs(ChessUtils::rank_from_bit_idx(king_sq_idx) - ChessUtils::rank_from_bit_idx(opp_king_sq_idx));
+    king_file_diff = ChessUtils::abs(ChessUtils::file_from_bit_idx(king_sq_idx) - ChessUtils::file_from_bit_idx(opp_king_sq_idx));
 
     int manhattan_distance = king_rank_diff + king_file_diff;
 

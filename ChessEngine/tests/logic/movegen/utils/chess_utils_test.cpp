@@ -138,35 +138,35 @@ TEST_F(ChessUtilsTest, getRankMask_Rank7_ShouldReturn0xFF00000000000000)
 TEST_F(ChessUtilsTest, rankFromBitIndex_Pos0_ShouldReturn0)
 {
     int expected = 0;
-    int actual = ChessUtils::rank_from_bit_index(0);
+    int actual = ChessUtils::rank_from_bit_idx(0);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(ChessUtilsTest, rankFromBitIndex_Pos7_ShouldReturn0)
 {
     int expected = 0;
-    int actual = ChessUtils::rank_from_bit_index(7);
+    int actual = ChessUtils::rank_from_bit_idx(7);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(ChessUtilsTest, rankFromBitIndex_Pos8_ShouldReturn1)
 {
     int expected = 1;
-    int actual = ChessUtils::rank_from_bit_index(8);
+    int actual = ChessUtils::rank_from_bit_idx(8);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(ChessUtilsTest, rankFromBitIndex_Pos15_ShouldReturn1)
 {
     int expected = 1;
-    int actual = ChessUtils::rank_from_bit_index(15);
+    int actual = ChessUtils::rank_from_bit_idx(15);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(ChessUtilsTest, rankFromBitIndex_Pos63_ShouldReturn7)
 {
     int expected = 7;
-    int actual = ChessUtils::rank_from_bit_index(63);
+    int actual = ChessUtils::rank_from_bit_idx(63);
     ASSERT_EQ(expected, actual);
 }
 
@@ -174,35 +174,35 @@ TEST_F(ChessUtilsTest, rankFromBitIndex_Pos63_ShouldReturn7)
 TEST_F(ChessUtilsTest, fileFromBitIndex_Pos0_ShouldReturn0)
 {
     int expected = 0;
-    int actual = ChessUtils::file_from_bit_index(0);
+    int actual = ChessUtils::file_from_bit_idx(0);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(ChessUtilsTest, fileFromBitIndex_Pos7_ShouldReturn7)
 {
     int expected = 7;
-    int actual = ChessUtils::file_from_bit_index(7);
+    int actual = ChessUtils::file_from_bit_idx(7);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(ChessUtilsTest, fileFromBitIndex_Pos8_ShouldReturn0)
 {
     int expected = 0;
-    int actual = ChessUtils::file_from_bit_index(8);
+    int actual = ChessUtils::file_from_bit_idx(8);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(ChessUtilsTest, fileFromBitIndex_Pos15_ShouldReturn7)
 {
     int expected = 7;
-    int actual = ChessUtils::file_from_bit_index(15);
+    int actual = ChessUtils::file_from_bit_idx(15);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(ChessUtilsTest, fileFromBitIndex_Pos63_ShouldReturn7)
 {
     int expected = 7;
-    int actual = ChessUtils::file_from_bit_index(63);
+    int actual = ChessUtils::file_from_bit_idx(63);
     ASSERT_EQ(expected, actual);
 }
 

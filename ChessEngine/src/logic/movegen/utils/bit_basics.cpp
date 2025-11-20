@@ -9,9 +9,9 @@ void BitBasics::get_bit_indices(std::vector<int>& indices, bitboard bb)
     indices.clear();
 
     while (bb != 0) {
-        int index = __builtin_ctzll(bb);
+        int idx = __builtin_ctzll(bb);
 
-        indices.push_back(index);
+        indices.push_back(idx);
 
         bb &= (bb - 1);
     }

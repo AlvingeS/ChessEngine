@@ -9,8 +9,8 @@ class Movelist {
 public:
     Movelist();
 
-    const Move& get_move_at(int index) const;
-    int get_move_index() const;
+    const Move& get_move_at(int idx) const;
+    int get_move_idx() const;
     
     void add_move(const Move& move);
     void add_null_move();
@@ -18,7 +18,7 @@ public:
     
 private:
     std::vector<Move> movelist_;
-    int move_index_;
+    int move_idx_;
 };
 
 } // namespace model

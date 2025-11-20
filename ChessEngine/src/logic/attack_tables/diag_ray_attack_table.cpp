@@ -6,8 +6,8 @@ namespace {
 
 bitmask get_ne_ray(int sq_idx) 
 {
-    int rank = logic::ChessUtils::rank_from_bit_index(sq_idx);
-    int file = logic::ChessUtils::file_from_bit_index(sq_idx);
+    int rank = logic::ChessUtils::rank_from_bit_idx(sq_idx);
+    int file = logic::ChessUtils::file_from_bit_idx(sq_idx);
 
     bitmask ne_ray = 0ULL;
 
@@ -22,8 +22,8 @@ bitmask get_ne_ray(int sq_idx)
 
 bitmask get_se_ray(int sq_idx) 
 {
-    int rank = logic::ChessUtils::rank_from_bit_index(sq_idx);
-    int file = logic::ChessUtils::file_from_bit_index(sq_idx);
+    int rank = logic::ChessUtils::rank_from_bit_idx(sq_idx);
+    int file = logic::ChessUtils::file_from_bit_idx(sq_idx);
 
     bitmask se_ray = 0ULL;
 
@@ -38,8 +38,8 @@ bitmask get_se_ray(int sq_idx)
 
 bitmask get_sw_ray(int sq_idx) 
 {
-    int rank = logic::ChessUtils::rank_from_bit_index(sq_idx);
-    int file = logic::ChessUtils::file_from_bit_index(sq_idx);
+    int rank = logic::ChessUtils::rank_from_bit_idx(sq_idx);
+    int file = logic::ChessUtils::file_from_bit_idx(sq_idx);
 
     bitmask sw_ray = 0ULL;
 
@@ -54,8 +54,8 @@ bitmask get_sw_ray(int sq_idx)
 
 bitmask get_nw_ray(int sq_idx) 
 {
-    int rank = logic::ChessUtils::rank_from_bit_index(sq_idx);
-    int file = logic::ChessUtils::file_from_bit_index(sq_idx);
+    int rank = logic::ChessUtils::rank_from_bit_idx(sq_idx);
+    int file = logic::ChessUtils::file_from_bit_idx(sq_idx);
 
     bitmask north_west_ray = 0ULL;
 

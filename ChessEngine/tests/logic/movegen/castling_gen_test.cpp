@@ -35,7 +35,7 @@
 //         std::unordered_set<model::Move> expectedMoves;
 //         insertExpectedMoves(expectedMoves, 0, {0, 0}, {model::Move::KING_CASTLE_FLAG, model::Move::QUEEN_CASTLE_FLAG});
 
-//         for (int i = 0; i < movelist.get_move_index(); i++) {
+//         for (int i = 0; i < movelist.get_move_idx(); i++) {
 //             auto found = expectedMoves.find(movelist.get_move_at(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
@@ -52,7 +52,7 @@
 //         std::unordered_set<model::Move> expectedMoves;
 //         insertExpectedMoves(expectedMoves, 0, {0, 0}, {model::Move::KING_CASTLE_FLAG, model::Move::QUEEN_CASTLE_FLAG});
 
-//         for (int i = 0; i < movelist.get_move_index(); i++) {
+//         for (int i = 0; i < movelist.get_move_idx(); i++) {
 //             auto found = expectedMoves.find(movelist.get_move_at(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
@@ -67,7 +67,7 @@
 //         moveGenerator.gen_castle_moves(true, movelist);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
-//         ASSERT_EQ(movelist.get_move_index(), 0);
+//         ASSERT_EQ(movelist.get_move_idx(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenThreeWhite_ShouldReturn1Moves) {
@@ -80,7 +80,7 @@
 
 //         insertExpectedMoves(expectedMoves, 0, {0}, {model::Move::QUEEN_CASTLE_FLAG});
 
-//         for (int i = 0; i < movelist.get_move_index(); i++) {
+//         for (int i = 0; i < movelist.get_move_idx(); i++) {
 //             auto found = expectedMoves.find(movelist.get_move_at(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
@@ -99,7 +99,7 @@
 
 //         insertExpectedMoves(expectedMoves, 0, {0}, {model::Move::KING_CASTLE_FLAG});
 
-//         for (int i = 0; i < movelist.get_move_index(); i++) {
+//         for (int i = 0; i < movelist.get_move_idx(); i++) {
 //             auto found = expectedMoves.find(movelist.get_move_at(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
@@ -113,7 +113,7 @@
 //         moveGenerator.gen_castle_moves(true, movelist);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
-//         ASSERT_EQ(movelist.get_move_index(), 0);
+//         ASSERT_EQ(movelist.get_move_idx(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteKingMoved_ShouldReturn0Moves) {
@@ -121,7 +121,7 @@
 //         moveGenerator.getBoard().setKingMoved(true, true);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
-//         ASSERT_EQ(movelist.get_move_index(), 0);
+//         ASSERT_EQ(movelist.get_move_idx(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackKingMoved_ShouldReturn0Moves) {
@@ -129,7 +129,7 @@
 //         moveGenerator.getBoard().setKingMoved(false, true);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
-//         ASSERT_EQ(movelist.get_move_index(), 0);
+//         ASSERT_EQ(movelist.get_move_idx(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteRookAMoved_ShouldReturn1Moves) {
@@ -142,7 +142,7 @@
 
 //         insertExpectedMoves(expectedMoves, 0, {0}, {model::Move::KING_CASTLE_FLAG});
 
-//         for (int i = 0; i < movelist.get_move_index(); i++) {
+//         for (int i = 0; i < movelist.get_move_idx(); i++) {
 //             auto found = expectedMoves.find(movelist.get_move_at(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
@@ -161,7 +161,7 @@
 
 //         insertExpectedMoves(expectedMoves, 0, {0}, {model::Move::KING_CASTLE_FLAG});
 
-//         for (int i = 0; i < movelist.get_move_index(); i++) {
+//         for (int i = 0; i < movelist.get_move_idx(); i++) {
 //             auto found = expectedMoves.find(movelist.get_move_at(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
@@ -180,7 +180,7 @@
 
 //         insertExpectedMoves(expectedMoves, 0, {0}, {model::Move::QUEEN_CASTLE_FLAG});
 
-//         for (int i = 0; i < movelist.get_move_index(); i++) {
+//         for (int i = 0; i < movelist.get_move_idx(); i++) {
 //             auto found = expectedMoves.find(movelist.get_move_at(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
@@ -199,7 +199,7 @@
 
 //         insertExpectedMoves(expectedMoves, 0, {0}, {model::Move::QUEEN_CASTLE_FLAG});
 
-//         for (int i = 0; i < movelist.get_move_index(); i++) {
+//         for (int i = 0; i < movelist.get_move_idx(); i++) {
 //             auto found = expectedMoves.find(movelist.get_move_at(i));
 //             ASSERT_TRUE(found != expectedMoves.end());
 //             expectedMoves.erase(found); // Remove found move from the set
@@ -212,34 +212,34 @@
 //         io::Fen::set_board_from_fen(bugFen, bitboards, occupancy_masks, piece_map);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
-//         ASSERT_EQ(movelist.get_move_index(), 0);
+//         ASSERT_EQ(movelist.get_move_idx(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingWhileInCheckWhiteFen_ShouldReturn0Moves) {
 //         io::Fen::set_board_from_fen(castlingWhileInCheckWhiteFen, bitboards, occupancy_masks, piece_map);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
-//         ASSERT_EQ(movelist.get_move_index(), 0);
+//         ASSERT_EQ(movelist.get_move_idx(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingWhileInCheckBlackFen_ShouldReturn0Moves) {
 //         io::Fen::set_board_from_fen(castlingWhileInCheckBlackFen, bitboards, occupancy_masks, piece_map);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
-//         ASSERT_EQ(movelist.get_move_index(), 0);
+//         ASSERT_EQ(movelist.get_move_idx(), 0);
 //         }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingThroughAttacksWhiteFenWhite_ShouldReturn0Moves) {
 //         io::Fen::set_board_from_fen(castlingThroughAttacksWhiteFen, bitboards, occupancy_masks, piece_map);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
-//         ASSERT_EQ(movelist.get_move_index(), 0);
+//         ASSERT_EQ(movelist.get_move_idx(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingThroughAttacksBlackFenBlack_ShouldReturn0Moves) {
 //         io::Fen::set_board_from_fen(castlingThroughAttacksBlackFen, bitboards, occupancy_masks, piece_map);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
-//         ASSERT_EQ(movelist.get_move_index(), 0);
+//         ASSERT_EQ(movelist.get_move_idx(), 0);
 //     }
 // }

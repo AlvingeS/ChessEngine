@@ -12,7 +12,7 @@ class ZHasher {
 
 public:
     ZHasher(PieceMap& piece_map);
-    void hash_square_piece_type(int square_index, Piece::Type piece_type);
+    void hash_square_piece_type(int sq_idx, Piece::Type piece_type);
     void hash_castle_rights(int castle_rights);
     void hash_en_pessant_file(int file);
     void hash_is_w(bool is_w);

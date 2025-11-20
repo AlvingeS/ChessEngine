@@ -25,8 +25,8 @@ MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
     }
 
     // Get the from and to indices
-    int from_sq_idx = move.get_bit_index_from();
-    int to_sq_idx = move.get_bit_index_to();
+    int from_sq_idx = move.get_bit_idx_from();
+    int to_sq_idx = move.get_bit_idx_to();
 
     // Pick up the piece from the from square and get the moved piece type
     model::Piece::Type moved_piece_type = remove_moved_piece_from_board(is_w, from_sq_idx);
@@ -35,7 +35,7 @@ MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
     if (move.is_any_capture()) {
         // Calculate idx of captured piece, might be EP
         int capture_dq_idx = MoveUtils::determine_capture_sq_idx(move, is_w, to_sq_idx);
-        model::Piece::Type captured_piece_type = piece_map_.get_piece_type_at_index(capture_dq_idx);
+        model::Piece::Type captured_piece_type = piece_map_.get_piece_type_at_idx(capture_dq_idx);
         remove_captured_piece_from_board(move.is_ep_capture(), is_w, capture_dq_idx, captured_piece_type);
         move_result.captured_piece_type = captured_piece_type;
     }
@@ -75,10 +75,10 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
         occupancy_masks_.clear_w_pieces_bit(from_rook_sq_idx);
         occupancy_masks_.set_w_pieces_bit(to_rook_sq_idx);
 
-        piece_map_.set_piece_type_at_index(from_king_sq_idx, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at_index(to_king_sq_idx, model::Piece::Type::W_KING);
-        piece_map_.set_piece_type_at_index(from_rook_sq_idx, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at_index(to_rook_sq_idx, model::Piece::Type::W_ROOK);
+        piece_map_.set_piece_type_at_idx(from_king_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_idx(to_king_sq_idx, model::Piece::Type::W_KING);
+        piece_map_.set_piece_type_at_idx(from_rook_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_idx(to_rook_sq_idx, model::Piece::Type::W_ROOK);
     } else {
         from_king_sq_idx = 59;
         to_king_sq_idx = is_kside ? 57 : 61;
@@ -95,10 +95,10 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
         occupancy_masks_.clear_b_pieces_bit(from_rook_sq_idx);
         occupancy_masks_.set_b_pieces_bit(to_rook_sq_idx);
 
-        piece_map_.set_piece_type_at_index(from_king_sq_idx, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at_index(to_king_sq_idx, model::Piece::Type::B_KING);
-        piece_map_.set_piece_type_at_index(from_rook_sq_idx, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at_index(to_rook_sq_idx, model::Piece::Type::B_ROOK);
+        piece_map_.set_piece_type_at_idx(from_king_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_idx(to_king_sq_idx, model::Piece::Type::B_KING);
+        piece_map_.set_piece_type_at_idx(from_rook_sq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_idx(to_rook_sq_idx, model::Piece::Type::B_ROOK);
     }
 
     occupancy_masks_.update_occupancy_masks();
@@ -124,14 +124,14 @@ void MoveMaker::make_temporary_king_move(bool is_w, bool is_kside)
 model::Piece::Type MoveMaker::remove_moved_piece_from_board(bool is_w, int from_sq_idx) 
 {
     // Determine the piece type of the piece being moved
-    model::Piece::Type  moved_piece_type = piece_map_.get_piece_type_at_index(from_sq_idx);
+    model::Piece::Type  moved_piece_type = piece_map_.get_piece_type_at_idx(from_sq_idx);
 
     // Update zobrist hash
     z_hasher_.hash_square_piece_type(from_sq_idx, moved_piece_type);
 
     // Clear the piece from bitboards, squarelookup and gamestate bitmasks
     bitboards_.clear_piece_type_bit(from_sq_idx, moved_piece_type);
-    piece_map_.set_piece_type_at_index(from_sq_idx, model::Piece::Type::EMPTY);
+    piece_map_.set_piece_type_at_idx(from_sq_idx, model::Piece::Type::EMPTY);
 
     is_w ? occupancy_masks_.clear_w_pieces_bit(from_sq_idx) 
             : occupancy_masks_.clear_b_pieces_bit(from_sq_idx);
@@ -145,7 +145,7 @@ void MoveMaker::place_moved_piece_on_board(
     model::Piece::Type moved_piece_type) 
 {
     bitboards_.set_piece_type_bit(to_sq_idx, moved_piece_type);
-    piece_map_.set_piece_type_at_index(to_sq_idx, moved_piece_type);
+    piece_map_.set_piece_type_at_idx(to_sq_idx, moved_piece_type);
 
     z_hasher_.hash_square_piece_type(to_sq_idx, moved_piece_type);
 
@@ -166,7 +166,7 @@ void MoveMaker::remove_captured_piece_from_board(bool is_ep, bool is_w, int capt
     // because the capture idx points to the square where the pawn was
     // and is now empty, the square we moved to will have been updated
     if (is_ep) {
-        piece_map_.set_piece_type_at_index(capture_dq_idx, model::Piece::Type::EMPTY);
+        piece_map_.set_piece_type_at_idx(capture_dq_idx, model::Piece::Type::EMPTY);
     }
 }
 

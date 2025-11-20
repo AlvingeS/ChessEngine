@@ -1,8 +1,8 @@
 namespace model {
 
-inline void ZHasher::hash_square_piece_type(int square_index, Piece::Type piece_type)
+inline void ZHasher::hash_square_piece_type(int sq_idx, Piece::Type piece_type)
 {
-    hash_ ^= random_board_piece_type_numbers_[square_index][static_cast<int>(piece_type)];
+    hash_ ^= random_board_piece_type_numbers_[sq_idx][static_cast<int>(piece_type)];
 }
 
 inline void ZHasher::hash_castle_rights(int castle_rights)

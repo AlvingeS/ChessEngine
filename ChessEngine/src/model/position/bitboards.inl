@@ -5,19 +5,19 @@ inline const bitboard& Bitboards::get_bb_from_piece_type(Piece::Type piece_type)
     return *(bbs_[Piece::get_int_from_type(piece_type)]);
 }
 
-inline const bitboard& Bitboards::get_bb_from_index(int index) const 
+inline const bitboard& Bitboards::get_bb_from_idx(int idx) const 
 {
-    return *(bbs_[index]);
+    return *(bbs_[idx]);
 }
 
-inline void Bitboards::clear_piece_type_bit(int index, Piece::Type piece_type)
+inline void Bitboards::clear_piece_type_bit(int idx, Piece::Type piece_type)
 {
-    *(bbs_[Piece::get_int_from_type(piece_type)]) &= ~(1ULL << index);
+    *(bbs_[Piece::get_int_from_type(piece_type)]) &= ~(1ULL << idx);
 }
 
-inline void Bitboards::set_piece_type_bit(int index, Piece::Type piece_type) 
+inline void Bitboards::set_piece_type_bit(int idx, Piece::Type piece_type) 
 {
-    *(bbs_[Piece::get_int_from_type(piece_type)]) |= (1ULL << index);
+    *(bbs_[Piece::get_int_from_type(piece_type)]) |= (1ULL << idx);
 }
 
 }

@@ -6,12 +6,12 @@ namespace model {
 
 Movelist::Movelist() {
     movelist_ = std::vector<Move>(constants::MAX_LEGAL_MOVES);
-    move_index_ = 0;
+    move_idx_ = 0;
 }
 
 void Movelist::add_move(const Move& move) {
-    movelist_[move_index_] = move;
-    move_index_++;
+    movelist_[move_idx_] = move;
+    move_idx_++;
 }
 
 } // namespace model

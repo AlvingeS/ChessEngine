@@ -4,8 +4,8 @@ inline Move::Move() {
     move_ = 0;
 }
 
-inline Move::Move(int bitIndexFrom, int bitIndexTo, int flag) {
-    move_ = ((flag & 0xf) << 12 | (bitIndexTo & 0x3f) << 6 | (bitIndexFrom & 0x3f));
+inline Move::Move(int bit_idx_from, int bit_idx_to, int flag) {
+    move_ = ((flag & 0xf) << 12 | (bit_idx_to & 0x3f) << 6 | (bit_idx_from & 0x3f));
 }
 
 inline Move::Move(const Move& move) {
@@ -32,11 +32,11 @@ inline bool Move::operator!=(const Move& move) const {
     return (move_ & 0xffff) != (move.move_ & 0xffff);
 }
 
-inline int Move::get_bit_index_from() const {
+inline int Move::get_bit_idx_from() const {
     return move_ & 0x3f;
 }
 
-inline int Move::get_bit_index_to() const {
+inline int Move::get_bit_idx_to() const {
     return (move_ >> 6) & 0x3f;
 }
 

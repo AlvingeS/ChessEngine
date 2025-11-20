@@ -11,7 +11,7 @@ namespace logic {
 
 KingGenerator::KingGenerator(model::Board& board) 
     : bitboards_(board.bitboards)
-    , state_bitmasks_(board.occupancy_masks)
+    , occupancy_masks_(board.occupancy_masks)
     , king_attack_table_(attack_tables::king)
 {
 }
@@ -27,10 +27,10 @@ void KingGenerator::generate(bool is_w, model::Movelist& movelist)
 
     int king_sq_idx = king_idxs[0];
     bitmask attack_mask = king_attack_table_[king_sq_idx];
-    bitmask free_moves_mask = attack_mask & state_bitmasks_.get_free_squares_mask();
+    bitmask free_moves_mask = attack_mask & occupancy_masks_.get_free_squares_mask();
     
-    bitmask enemy_pieces_mask = is_w ? state_bitmasks_.get_b_pieces_mask() 
-                                     : state_bitmasks_.get_w_pieces_mask();
+    bitmask enemy_pieces_mask = is_w ? occupancy_masks_.get_b_pieces_mask() 
+                                     : occupancy_masks_.get_w_pieces_mask();
 
     bitmask capture_moves_mask = attack_mask & enemy_pieces_mask;
 

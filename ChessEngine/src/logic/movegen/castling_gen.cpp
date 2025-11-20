@@ -20,7 +20,7 @@ CastlingGenerator::CastlingGenerator(
     logic::MoveRetractor& move_retractor, 
     CheckDetection* check_detection)
     : bitboards_(board.bitboards)
-    , state_bitmasks_(board.occupancy_masks)
+    , occupancy_masks_(board.occupancy_masks)
     , move_maker_(move_maker)
     , move_retractor_(move_retractor)
     , check_detection_(check_detection) 
@@ -91,7 +91,7 @@ void CastlingGenerator::gen_single_castle_move(
                                                   : (is_kside ? b_kside_castle_mask_
                                                                 : b_qside_castle_mask_);
     
-    if ((space_between_castlers_mask & state_bitmasks_.get_occupied_squares_mask()) != 0)
+    if ((space_between_castlers_mask & occupancy_masks_.get_occupied_squares_mask()) != 0)
         return;
 
     // Check that the king and rook are on the correct squares

@@ -8,7 +8,7 @@ namespace logic {
 MoveRetractor::MoveRetractor(
     model::Board& board
 ) : bitboards_(board.bitboards), 
-    state_bitmasks_(board.occupancy_masks), 
+    occupancy_masks_(board.occupancy_masks), 
     piece_map_(board.piece_map), 
     z_hasher_(board.z_hasher)
 {}
@@ -28,10 +28,10 @@ void MoveRetractor::unmake_castle_move(bool was_w, bool wasKingSide)
         bitboards_.clear_w_rooks_bit(to_rook_sq_idx);
         bitboards_.set_w_rooks_bit(from_rook_sq_idx);
 
-        state_bitmasks_.set_w_pieces_bit(from_king_sq_idx);
-        state_bitmasks_.clear_w_pieces_bit(to_king_sq_idx);
-        state_bitmasks_.set_w_pieces_bit(from_rook_sq_idx);
-        state_bitmasks_.clear_w_pieces_bit(to_rook_sq_idx);
+        occupancy_masks_.set_w_pieces_bit(from_king_sq_idx);
+        occupancy_masks_.clear_w_pieces_bit(to_king_sq_idx);
+        occupancy_masks_.set_w_pieces_bit(from_rook_sq_idx);
+        occupancy_masks_.clear_w_pieces_bit(to_rook_sq_idx);
 
         piece_map_.set_piece_type_at_index(from_king_sq_idx, model::Piece::Type::W_KING);
         piece_map_.set_piece_type_at_index(to_king_sq_idx, model::Piece::Type::EMPTY);
@@ -48,10 +48,10 @@ void MoveRetractor::unmake_castle_move(bool was_w, bool wasKingSide)
         bitboards_.set_b_rooks_bit(from_rook_sq_idx);
         bitboards_.clear_b_rooks_bit(to_rook_sq_idx);
 
-        state_bitmasks_.set_b_pieces_bit(from_king_sq_idx);
-        state_bitmasks_.clear_b_pieces_bit(to_king_sq_idx);
-        state_bitmasks_.set_b_pieces_bit(from_rook_sq_idx);
-        state_bitmasks_.clear_b_pieces_bit(to_rook_sq_idx);
+        occupancy_masks_.set_b_pieces_bit(from_king_sq_idx);
+        occupancy_masks_.clear_b_pieces_bit(to_king_sq_idx);
+        occupancy_masks_.set_b_pieces_bit(from_rook_sq_idx);
+        occupancy_masks_.clear_b_pieces_bit(to_rook_sq_idx);
 
         piece_map_.set_piece_type_at_index(to_king_sq_idx, model::Piece::Type::EMPTY);
         piece_map_.set_piece_type_at_index(from_king_sq_idx, model::Piece::Type::B_KING);
@@ -59,7 +59,7 @@ void MoveRetractor::unmake_castle_move(bool was_w, bool wasKingSide)
         piece_map_.set_piece_type_at_index(from_rook_sq_idx, model::Piece::Type::B_ROOK);
     }
 
-    state_bitmasks_.update_occupancy_masks();
+    occupancy_masks_.update_occupancy_masks();
 }
 
 void MoveRetractor::revert_temporary_king_move(bool was_w, bool is_kside) 
@@ -96,8 +96,8 @@ void MoveRetractor::remove_previously_moved_piece_from_board(
         bitboards_.clear_piece_type_bit(to_sq_idx, promotionPieceType);
     }
 
-    was_w ? state_bitmasks_.clear_w_pieces_bit(to_sq_idx) 
-             : state_bitmasks_.clear_b_pieces_bit(to_sq_idx);
+    was_w ? occupancy_masks_.clear_w_pieces_bit(to_sq_idx) 
+             : occupancy_masks_.clear_b_pieces_bit(to_sq_idx);
 }
 
 
@@ -116,8 +116,8 @@ void MoveRetractor::place_back_captured_piece_on_board(
         piece_map_.set_piece_type_at_index(to_sq_idx, model::Piece::Type::EMPTY);
     }
 
-    was_w ? state_bitmasks_.set_b_pieces_bit(capture_sq_idx) 
-             : state_bitmasks_.set_w_pieces_bit(capture_sq_idx);
+    was_w ? occupancy_masks_.set_b_pieces_bit(capture_sq_idx) 
+             : occupancy_masks_.set_w_pieces_bit(capture_sq_idx);
 }
 
 void MoveRetractor::place_back_moved_piece_on_board(
@@ -128,8 +128,8 @@ void MoveRetractor::place_back_moved_piece_on_board(
     bitboards_.set_piece_type_bit(from_sq_idx, moved_piece_type);
     piece_map_.set_piece_type_at_index(from_sq_idx, moved_piece_type);
 
-    was_w ? state_bitmasks_.set_w_pieces_bit(from_sq_idx) 
-             : state_bitmasks_.set_b_pieces_bit(from_sq_idx);
+    was_w ? occupancy_masks_.set_w_pieces_bit(from_sq_idx) 
+             : occupancy_masks_.set_b_pieces_bit(from_sq_idx);
 }
 
 model::Piece::Type MoveRetractor::determine_moved_piece_type(
@@ -187,7 +187,7 @@ void MoveRetractor::unmake_move(
     // Place the moved piece back on the from square
     place_back_moved_piece_on_board(was_w, from_sq_idx, previously_moved_piece_type);
 
-    state_bitmasks_.update_occupancy_masks();
+    occupancy_masks_.update_occupancy_masks();
 }
 
 } // namespace logic

@@ -34,7 +34,7 @@ public:
 
 private:
     const model::Bitboards& bitboards_;
-    const model::OccupancyMasks& state_bitmasks_;
+    const model::OccupancyMasks& occupancy_masks_;
     
     logic::MoveMaker& move_maker_;
     logic::MoveRetractor& move_retractor_;

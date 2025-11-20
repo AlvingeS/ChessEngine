@@ -15,7 +15,7 @@ namespace logic {
 
 BishopGen::BishopGen(model::Board& board) 
     : bitboards_(board.bitboards)
-    , state_bitmasks_(board.occupancy_masks)
+    , occupancy_masks_(board.occupancy_masks)
     , diag_ray_attack_table_(attack_tables::diag_ray)
 {}
 
@@ -32,10 +32,10 @@ void BishopGen::generate(
         int bishopRank = ChessUtils::rank_from_bit_index(bishop_sq_idx);
         int bishopFile = ChessUtils::file_from_bit_index(bishop_sq_idx);
 
-        RayLogic::add_moves_from_diag_ray(diag_ray_attack_table_[bishop_sq_idx][DiagDir::NE], true, is_w, bishop_sq_idx, bishopRank, bishopFile, movelist, state_bitmasks_.get_w_pieces_mask(), state_bitmasks_.get_occupied_squares_mask());
-        RayLogic::add_moves_from_diag_ray(diag_ray_attack_table_[bishop_sq_idx][DiagDir::SE], false, is_w, bishop_sq_idx, bishopRank, bishopFile, movelist, state_bitmasks_.get_w_pieces_mask(), state_bitmasks_.get_occupied_squares_mask());
-        RayLogic::add_moves_from_diag_ray(diag_ray_attack_table_[bishop_sq_idx][DiagDir::SW], false, is_w, bishop_sq_idx, bishopRank, bishopFile, movelist, state_bitmasks_.get_w_pieces_mask(), state_bitmasks_.get_occupied_squares_mask());
-        RayLogic::add_moves_from_diag_ray(diag_ray_attack_table_[bishop_sq_idx][DiagDir::NW], true, is_w, bishop_sq_idx, bishopRank, bishopFile, movelist, state_bitmasks_.get_w_pieces_mask(), state_bitmasks_.get_occupied_squares_mask());
+        RayLogic::add_moves_from_diag_ray(diag_ray_attack_table_[bishop_sq_idx][DiagDir::NE], true, is_w, bishop_sq_idx, bishopRank, bishopFile, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_squares_mask());
+        RayLogic::add_moves_from_diag_ray(diag_ray_attack_table_[bishop_sq_idx][DiagDir::SE], false, is_w, bishop_sq_idx, bishopRank, bishopFile, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_squares_mask());
+        RayLogic::add_moves_from_diag_ray(diag_ray_attack_table_[bishop_sq_idx][DiagDir::SW], false, is_w, bishop_sq_idx, bishopRank, bishopFile, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_squares_mask());
+        RayLogic::add_moves_from_diag_ray(diag_ray_attack_table_[bishop_sq_idx][DiagDir::NW], true, is_w, bishop_sq_idx, bishopRank, bishopFile, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_squares_mask());
     }
 }
 

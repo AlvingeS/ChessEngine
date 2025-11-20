@@ -25,7 +25,7 @@ public:
 
 private:
     const model::Bitboards& bitboards_;
-    const model::OccupancyMasks& state_bitmasks_;
+    const model::OccupancyMasks& occupancy_masks_;
 
     attack_table& w_pawn_quiet_attack_table_;
     attack_table& w_pawn_capture_attack_table_;

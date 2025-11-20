@@ -12,7 +12,7 @@ MovePicker::MovePicker(int maxDepth)
     : board_()
     , bitboards_(board_.bitboards)
     , piece_map_(board_.piece_map)
-    , state_bitmasks_(board_.occupancy_masks)
+    , occupancy_masks_(board_.occupancy_masks)
     , z_hasher_(board_.z_hasher)
     , search_memory_(SearchMemory(maxDepth))
     , move_maker_(logic::MoveMaker(board_))
@@ -171,7 +171,7 @@ bool MovePicker::check_condition(
     // return current_move.is_any_capture();
     // return true;
     return false;
-    // return diff_between_state_bitmasks();
+    // return diff_between_occupancy_masks();
     // return current_depth == 2 && first_move_idx == 0 && is_maximizer == true && current_move.getMove() == 66;
 }
 

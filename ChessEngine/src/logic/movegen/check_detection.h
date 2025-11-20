@@ -18,7 +18,7 @@ public:
 
 private:
     const model::Bitboards& bitboards_;
-    const model::OccupancyMasks& state_bitmasks_;
+    const model::OccupancyMasks& occupancy_masks_;
 
     ray_attack_table& line_ray_attack_table_;
     ray_attack_table& diag_ray_attack_table_;

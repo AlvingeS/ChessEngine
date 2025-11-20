@@ -12,7 +12,7 @@ namespace logic {
 
 PawnGenerator::PawnGenerator(model::Board& board) 
     : bitboards_(board.bitboards)
-    , state_bitmasks_(board.occupancy_masks)
+    , occupancy_masks_(board.occupancy_masks)
     , w_pawn_quiet_attack_table_(attack_tables::w_pawn_quiet)
     , w_pawn_capture_attack_table_(attack_tables::w_pawn_capture)
     , b_pawn_quiet_attack_table_(attack_tables::b_pawn_quiet)
@@ -39,10 +39,10 @@ void PawnGenerator::generate(
         bitmask attack_mask_diag = is_w ? w_pawn_capture_attack_table_[pawn_sq_idx]
                                                  : b_pawn_capture_attack_table_[pawn_sq_idx];
 
-        bitmask free_moves_mask = attack_mask_straight & state_bitmasks_.get_free_squares_mask();
+        bitmask free_moves_mask = attack_mask_straight & occupancy_masks_.get_free_squares_mask();
         
-        bitmask opp_pieces_mask = is_w ? state_bitmasks_.get_b_pieces_mask()
-                                      : state_bitmasks_.get_w_pieces_mask();
+        bitmask opp_pieces_mask = is_w ? occupancy_masks_.get_b_pieces_mask()
+                                      : occupancy_masks_.get_w_pieces_mask();
         
         bitmask capture_moves_mask = attack_mask_diag & opp_pieces_mask;
 

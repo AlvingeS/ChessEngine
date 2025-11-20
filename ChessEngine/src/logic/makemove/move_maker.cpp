@@ -9,7 +9,7 @@ namespace logic {
 
 MoveMaker::MoveMaker(model::Board& board)
     : bitboards_(board.bitboards) 
-    , state_bitmasks_(board.occupancy_masks)
+    , occupancy_masks_(board.occupancy_masks)
     , piece_map_(board.piece_map)
     , z_hasher_(board.z_hasher)
 {}
@@ -50,7 +50,7 @@ MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
     place_moved_piece_on_board(is_w, to_sq_idx, moved_piece_type);
 
     // Update occupied and empty squares bitmasks
-    state_bitmasks_.update_occupancy_masks();
+    occupancy_masks_.update_occupancy_masks();
 
     return move_result;
 }
@@ -70,10 +70,10 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
         bitboards_.clear_w_rooks_bit(from_rook_sq_idx);
         bitboards_.set_w_rooks_bit(to_rook_sq_idx);
 
-        state_bitmasks_.clear_w_pieces_bit(from_king_sq_idx);
-        state_bitmasks_.set_w_pieces_bit(to_king_sq_idx);
-        state_bitmasks_.clear_w_pieces_bit(from_rook_sq_idx);
-        state_bitmasks_.set_w_pieces_bit(to_rook_sq_idx);
+        occupancy_masks_.clear_w_pieces_bit(from_king_sq_idx);
+        occupancy_masks_.set_w_pieces_bit(to_king_sq_idx);
+        occupancy_masks_.clear_w_pieces_bit(from_rook_sq_idx);
+        occupancy_masks_.set_w_pieces_bit(to_rook_sq_idx);
 
         piece_map_.set_piece_type_at_index(from_king_sq_idx, model::Piece::Type::EMPTY);
         piece_map_.set_piece_type_at_index(to_king_sq_idx, model::Piece::Type::W_KING);
@@ -90,10 +90,10 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
         bitboards_.clear_b_rooks_bit(from_rook_sq_idx);
         bitboards_.set_b_rooks_bit(to_rook_sq_idx);
 
-        state_bitmasks_.clear_b_pieces_bit(from_king_sq_idx);
-        state_bitmasks_.set_b_pieces_bit(to_king_sq_idx);
-        state_bitmasks_.clear_b_pieces_bit(from_rook_sq_idx);
-        state_bitmasks_.set_b_pieces_bit(to_rook_sq_idx);
+        occupancy_masks_.clear_b_pieces_bit(from_king_sq_idx);
+        occupancy_masks_.set_b_pieces_bit(to_king_sq_idx);
+        occupancy_masks_.clear_b_pieces_bit(from_rook_sq_idx);
+        occupancy_masks_.set_b_pieces_bit(to_rook_sq_idx);
 
         piece_map_.set_piece_type_at_index(from_king_sq_idx, model::Piece::Type::EMPTY);
         piece_map_.set_piece_type_at_index(to_king_sq_idx, model::Piece::Type::B_KING);
@@ -101,7 +101,7 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
         piece_map_.set_piece_type_at_index(to_rook_sq_idx, model::Piece::Type::B_ROOK);
     }
 
-    state_bitmasks_.update_occupancy_masks();
+    occupancy_masks_.update_occupancy_masks();
 }
 
 void MoveMaker::make_temporary_king_move(bool is_w, bool is_kside)
@@ -133,8 +133,8 @@ model::Piece::Type MoveMaker::remove_moved_piece_from_board(bool is_w, int from_
     bitboards_.clear_piece_type_bit(from_sq_idx, moved_piece_type);
     piece_map_.set_piece_type_at_index(from_sq_idx, model::Piece::Type::EMPTY);
 
-    is_w ? state_bitmasks_.clear_w_pieces_bit(from_sq_idx) 
-            : state_bitmasks_.clear_b_pieces_bit(from_sq_idx);
+    is_w ? occupancy_masks_.clear_w_pieces_bit(from_sq_idx) 
+            : occupancy_masks_.clear_b_pieces_bit(from_sq_idx);
 
     return moved_piece_type;
 }
@@ -149,16 +149,16 @@ void MoveMaker::place_moved_piece_on_board(
 
     z_hasher_.hash_square_piece_type(to_sq_idx, moved_piece_type);
 
-    is_w ? state_bitmasks_.set_w_pieces_bit(to_sq_idx) 
-            : state_bitmasks_.set_b_pieces_bit(to_sq_idx);
+    is_w ? occupancy_masks_.set_w_pieces_bit(to_sq_idx) 
+            : occupancy_masks_.set_b_pieces_bit(to_sq_idx);
 }
 
 void MoveMaker::remove_captured_piece_from_board(bool is_ep, bool is_w, int capture_dq_idx, model::Piece::Type  captured_piece_type) {
     // Remove captured piece from board models
     bitboards_.clear_piece_type_bit(capture_dq_idx, captured_piece_type);
 
-    is_w ? state_bitmasks_.clear_b_pieces_bit(capture_dq_idx) 
-            : state_bitmasks_.clear_w_pieces_bit(capture_dq_idx);
+    is_w ? occupancy_masks_.clear_b_pieces_bit(capture_dq_idx) 
+            : occupancy_masks_.clear_w_pieces_bit(capture_dq_idx);
 
     z_hasher_.hash_square_piece_type(capture_dq_idx, captured_piece_type);
 

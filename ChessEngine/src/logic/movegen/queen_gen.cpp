@@ -11,7 +11,7 @@ namespace logic {
 
 QueenGenerator::QueenGenerator(model::Board& board) 
     : bitboards_(board.bitboards)
-    , state_bitmasks_(board.occupancy_masks)
+    , occupancy_masks_(board.occupancy_masks)
     , line_ray_attack_table_(attack_tables::line_ray)
     , diag_ray_attack_table_(attack_tables::diag_ray)
 {}
@@ -38,8 +38,8 @@ void QueenGenerator::generate(
             rank,
             file,
             movelist,
-            state_bitmasks_.get_w_pieces_mask(),
-            state_bitmasks_.get_occupied_squares_mask()
+            occupancy_masks_.get_w_pieces_mask(),
+            occupancy_masks_.get_occupied_squares_mask()
         );
 
         RayLogic::add_moves_from_line_ray(
@@ -51,8 +51,8 @@ void QueenGenerator::generate(
             rank,
             file,
             movelist,
-            state_bitmasks_.get_w_pieces_mask(),
-            state_bitmasks_.get_occupied_squares_mask()
+            occupancy_masks_.get_w_pieces_mask(),
+            occupancy_masks_.get_occupied_squares_mask()
         );
 
         RayLogic::add_moves_from_line_ray(
@@ -64,8 +64,8 @@ void QueenGenerator::generate(
             rank,
             file,
             movelist,
-            state_bitmasks_.get_w_pieces_mask(),
-            state_bitmasks_.get_occupied_squares_mask()
+            occupancy_masks_.get_w_pieces_mask(),
+            occupancy_masks_.get_occupied_squares_mask()
         );
 
         RayLogic::add_moves_from_line_ray(
@@ -77,8 +77,8 @@ void QueenGenerator::generate(
             rank,
             file,
             movelist,
-            state_bitmasks_.get_w_pieces_mask(),
-            state_bitmasks_.get_occupied_squares_mask()
+            occupancy_masks_.get_w_pieces_mask(),
+            occupancy_masks_.get_occupied_squares_mask()
         );
 
         RayLogic::add_moves_from_diag_ray(
@@ -89,8 +89,8 @@ void QueenGenerator::generate(
             rank,
             file,
             movelist,
-            state_bitmasks_.get_w_pieces_mask(),
-            state_bitmasks_.get_occupied_squares_mask()
+            occupancy_masks_.get_w_pieces_mask(),
+            occupancy_masks_.get_occupied_squares_mask()
         );
 
         RayLogic::add_moves_from_diag_ray(
@@ -101,8 +101,8 @@ void QueenGenerator::generate(
             rank,
             file,
             movelist,
-            state_bitmasks_.get_w_pieces_mask(),
-            state_bitmasks_.get_occupied_squares_mask()
+            occupancy_masks_.get_w_pieces_mask(),
+            occupancy_masks_.get_occupied_squares_mask()
         );
 
         RayLogic::add_moves_from_diag_ray(
@@ -113,8 +113,8 @@ void QueenGenerator::generate(
             rank,
             file,
             movelist,
-            state_bitmasks_.get_w_pieces_mask(),
-            state_bitmasks_.get_occupied_squares_mask()
+            occupancy_masks_.get_w_pieces_mask(),
+            occupancy_masks_.get_occupied_squares_mask()
         );
         
         RayLogic::add_moves_from_diag_ray(
@@ -125,8 +125,8 @@ void QueenGenerator::generate(
             rank,
             file,
             movelist,
-            state_bitmasks_.get_w_pieces_mask(),
-            state_bitmasks_.get_occupied_squares_mask()
+            occupancy_masks_.get_w_pieces_mask(),
+            occupancy_masks_.get_occupied_squares_mask()
         );
     }
 }

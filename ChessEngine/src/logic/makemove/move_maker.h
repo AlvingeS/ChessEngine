@@ -44,7 +44,7 @@ private:
     );
 
     model::Bitboards& bitboards_;
-    model::OccupancyMasks& state_bitmasks_;
+    model::OccupancyMasks& occupancy_masks_;
     model::PieceMap& piece_map_;
     model::ZHasher& z_hasher_;
 };

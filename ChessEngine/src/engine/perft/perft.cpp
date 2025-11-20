@@ -12,7 +12,7 @@ perft::perft(int maxDepth)
     : board_(),
       bitboards_(board_.bitboards),
       piece_map_(board_.piece_map),
-      state_bitmasks_(board_.occupancy_masks),
+      occupancy_masks_(board_.occupancy_masks),
       z_hasher_(board_.z_hasher),
       search_memory_(maxDepth),
       move_maker_(board_),
@@ -124,7 +124,7 @@ bool perft::check_condition(
     // return currentMove.is_any_capture();
     // return true;
     return false;
-    // return diff_between_state_bitmasks();
+    // return diff_between_occupancy_masks();
     // return current_depth == 2 && firstMoveIndex == 0 && isMaximizer == true && currentMove.getMove() == 66;
 }
 

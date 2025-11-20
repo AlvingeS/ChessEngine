@@ -94,7 +94,7 @@ public:
 
     void set_board_from_fen(const std::string& fen)
     {
-        io::Fen::set_board_from_fen(fen, bitboards_, state_bitmasks_, piece_map_);
+        io::Fen::set_board_from_fen(fen, bitboards_, occupancy_masks_, piece_map_);
     }
 
     std::string get_fen_from_board() const
@@ -102,16 +102,16 @@ public:
         return io::Fen::get_fen_from_board(piece_map_);
     }
 
-    bool diff_between_state_bitmasks() const
+    bool diff_between_occupancy_masks() const
     {
-        return (state_bitmasks_.get_b_pieces_mask() | state_bitmasks_.get_w_pieces_mask()) != state_bitmasks_.get_occupied_squares_mask();
+        return (occupancy_masks_.get_b_pieces_mask() | occupancy_masks_.get_w_pieces_mask()) != occupancy_masks_.get_occupied_squares_mask();
     }
     
 private:
     model::Board board_;
     model::Bitboards& bitboards_;
     model::PieceMap& piece_map_;
-    model::OccupancyMasks& state_bitmasks_;
+    model::OccupancyMasks& occupancy_masks_;
     model::ZHasher& z_hasher_;
     
     SearchMemory search_memory_;

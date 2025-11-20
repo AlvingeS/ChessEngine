@@ -29,9 +29,9 @@ void RayLogic::add_move_if_blocker_is_enemy(
     model::Movelist& movelist,
     bitmask w_pieces_mask)
 {
-    bool blocker_is_white = BitBasics::get_bit(w_pieces_mask, blocker_index);
+    bool blocker_is_w = BitBasics::get_bit(w_pieces_mask, blocker_index);
 
-    if (blocker_is_white != is_w)
+    if (blocker_is_w != is_w)
         movelist.add_move(model::Move(bit_index_from, blocker_index, model::Move::CAPTURE_FLAG));
 }
 

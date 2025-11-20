@@ -38,21 +38,21 @@ TEST_F(PerftPosTwo, perft_pos2)
 
         int depth = long_runs ? posTwoMaxDepth + 1 : posTwoMaxDepth;
         depth -= num_debug_moves;
-        bool white_to_start = num_debug_moves % 2 == 0;
+        bool w_to_start = num_debug_moves % 2 == 0;
 
         std::string debug_fen;
         if (num_debug_moves > 0) {
             debug_fen = move_picker.get_fen_from_board();
-            debug_fen += white_to_start ? " w" : " b";
+            debug_fen += w_to_start ? " w" : " b";
             debug_fen += " KQkq -";
         }
 
         std::unordered_map<std::string, uint64_t> stockfish_results = io::stockfish::get_perft_results(num_debug_moves > 0 ? debug_fen : pos_two, depth);
 
         move_picker.set_max_depth(depth);
-        move_picker.minimax(0, white_to_start, 0);
+        move_picker.minimax(0, w_to_start, 0);
         
-        std::unordered_map<std::string, uint64_t> first_move_counts = node_count_per_first_move_as_map(white_to_start);
+        std::unordered_map<std::string, uint64_t> first_move_counts = node_count_per_first_move_as_map(w_to_start);
         compare_first_move_counts_to_stockfish(first_move_counts, stockfish_results);
         
         if (num_debug_moves == 0) {

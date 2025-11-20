@@ -82,11 +82,11 @@ protected:
         }
     }
 
-    std::string move_to_str(model::Move move, bool whiteStarted) 
+    std::string move_to_str(model::Move move, bool w_started) 
     {
         if (move.is_any_castle()) {
-            return move.is_king_castle() ? (whiteStarted ? "e1g1" : "e8g8") 
-                                        : (whiteStarted ? "e1c1" : "e8c8");
+            return move.is_king_castle() ? (w_started ? "e1g1" : "e8g8") 
+                                        : (w_started ? "e1c1" : "e8c8");
         }
         
         int from = move.get_bit_index_from();
@@ -110,30 +110,30 @@ protected:
         if (move.is_any_promo()) {
             switch (move.get_flag()) {
                 case model::Move::KNIGHT_PROMO_FLAG:
-                    move_str += (whiteStarted) ? "n" : "N";
+                    move_str += (w_started) ? "n" : "N";
                     break;
                 case model::Move::BISHOP_PROMO_FLAG:
-                    move_str += (whiteStarted) ? "b" : "B";
+                    move_str += (w_started) ? "b" : "B";
                     break;
                 case model::Move::ROOK_PROMO_FLAG:
-                    move_str += (whiteStarted) ? "r" : "R";
+                    move_str += (w_started) ? "r" : "R";
                     break;
                 case model::Move::QUEEN_PROMO_FLAG:
-                    move_str += (whiteStarted) ? "q" : "Q";
+                    move_str += (w_started) ? "q" : "Q";
                     break;
                 default:
                     break;
                 case model::Move::KNIGHT_PROMO_CAPTURE_FLAG:
-                    move_str += (whiteStarted) ? "n" : "N";
+                    move_str += (w_started) ? "n" : "N";
                     break;
                 case model::Move::BISHOP_PROMO_CAPTURE_FLAG:
-                    move_str += (whiteStarted) ? "b" : "B";
+                    move_str += (w_started) ? "b" : "B";
                     break;
                 case model::Move::ROOK_PROMO_CAPTURE_FLAG:
-                    move_str += (whiteStarted) ? "r" : "R";
+                    move_str += (w_started) ? "r" : "R";
                     break;
                 case model::Move::QUEEN_PROMO_CAPTURE_FLAG:
-                    move_str += (whiteStarted) ? "q" : "Q";
+                    move_str += (w_started) ? "q" : "Q";
                     break;
             }
         }
@@ -162,14 +162,14 @@ protected:
         return model::Move(from_to.from, from_to.to, flag);
     }
 
-    std::unordered_map<std::string, uint64_t> node_count_per_first_move_as_map(bool whiteStarted) 
+    std::unordered_map<std::string, uint64_t> node_count_per_first_move_as_map(bool w_started) 
     {
         std::unordered_map<std::string, uint64_t> node_count_per_first_move_map{};
         int sum = 0;
 
         for (size_t i = 0; i < move_picker.node_count_per_first_move_.size(); i++) {
             if (move_picker.first_moves_[i].get_move() != 0) {
-                std::string move_str = move_to_str(move_picker.first_moves_[i], whiteStarted);
+                std::string move_str = move_to_str(move_picker.first_moves_[i], w_started);
                 std::string node_counts_str = std::to_string(move_picker.node_count_per_first_move_[i]);
                 std::string move_node_counts_str = move_str + ": " + node_counts_str;
                 node_count_per_first_move_map[move_str] = move_picker.node_count_per_first_move_[i];

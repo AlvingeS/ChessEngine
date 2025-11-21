@@ -29,7 +29,7 @@ ZHasher::ZHasher(PieceMap& piece_map)
 
     // Generate random numbers for en passant file table
     for (size_t i = 0; i < 8; i++) {
-        random_en_pessant_file_numbers_[i] = dis(gen);
+        random_ep_file_numbers_[i] = dis(gen);
     }
 
     // Generate random number for is white table

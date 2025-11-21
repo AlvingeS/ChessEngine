@@ -14,7 +14,7 @@ public:
     ZHasher(PieceMap& piece_map);
     void hash_square_piece_type(int sq_idx, Piece::Type piece_type);
     void hash_castle_rights(int castle_rights);
-    void hash_en_pessant_file(int file);
+    void hash_ep_file(int file);
     void hash_is_w(bool is_w);
 
 private:
@@ -29,7 +29,7 @@ private:
     //      3 - Black Queen side
     uint64_t random_castle_rights_numbers_[4];
     
-    uint64_t random_en_pessant_file_numbers_[8];
+    uint64_t random_ep_file_numbers_[8];
     uint64_t random_is_w_number_;
     uint64_t hash_;
 

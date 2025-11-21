@@ -10,9 +10,9 @@ inline void ZHasher::hash_castle_rights(int castle_rights)
     hash_ ^= random_castle_rights_numbers_[castle_rights];
 }
 
-inline void ZHasher::hash_en_pessant_file(int file)
+inline void ZHasher::hash_ep_file(int file)
 {
-    hash_ ^= random_en_pessant_file_numbers_[file];
+    hash_ ^= random_ep_file_numbers_[file];
 }
 
 inline void ZHasher::hash_is_w(bool is_w)

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "model/types.h"
 #include "logic/makemove/move_utils.h"
 
 namespace model {
@@ -27,19 +28,19 @@ private:
     
     model::Piece::Type remove_moved_piece_from_board(
         bool is_w, 
-        int from_idx
+        sq_idx from_sq
     );
 
     void remove_captured_piece_from_board(
         bool is_ep, 
         bool is_w, 
-        int capture_idx, 
+        sq_idx capture_sq, 
         model::Piece::Type captured_piece_type
     );
 
     void place_moved_piece_on_board(
         bool is_w, 
-        int to_idx,
+        sq_idx to_sq,
         model::Piece::Type moved_piece_type
     );
 

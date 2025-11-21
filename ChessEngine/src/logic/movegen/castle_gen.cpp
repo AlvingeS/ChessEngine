@@ -58,16 +58,16 @@ void CastleGen::generate(
 bool CastleGen::king_and_rook_on_castle_sqrs(bool is_w, bool is_kside) const
 {
     bool king_bit_enabled = is_w ? (bitboards_.get_w_king_bb() & (1ULL << 3)) != 0
-                                  : (bitboards_.get_b_king_bb() & (1ULL << 59)) != 0;
+                                 : (bitboards_.get_b_king_bb() & (1ULL << 59)) != 0;
     
     if (!king_bit_enabled)
         return false;
 
     // Since we know that the king is present, we can return if the rook is present or not
     return is_w ? (is_kside ? (bitboards_.get_w_rooks_bb() & (1ULL << 0)) != 0
-                                 : (bitboards_.get_w_rooks_bb() & (1ULL << 7)) != 0)
-                   : (is_kside ? (bitboards_.get_b_rooks_bb() & (1ULL << 56)) != 0
-                                 : (bitboards_.get_b_rooks_bb() & (1ULL << 63)) != 0);
+                            : (bitboards_.get_w_rooks_bb() & (1ULL << 7)) != 0)
+                : (is_kside ? (bitboards_.get_b_rooks_bb() & (1ULL << 56)) != 0
+                            : (bitboards_.get_b_rooks_bb() & (1ULL << 63)) != 0);
 }
 
 void CastleGen::make_temporary_king_move(bool is_w, bool is_kside)
@@ -87,9 +87,9 @@ void CastleGen::gen_single_castle_move(
 {                                                  
     // Check that there are no pieces between the king and rook
     bitmask space_between_castlers_mask = is_w ? (is_kside ? w_kside_castle_mask_ 
-                                                                : w_qside_castle_mask_)
-                                                  : (is_kside ? b_kside_castle_mask_
-                                                                : b_qside_castle_mask_);
+                                                           : w_qside_castle_mask_)
+                                               : (is_kside ? b_kside_castle_mask_
+                                                           : b_qside_castle_mask_);
     
     if ((space_between_castlers_mask & occupancy_masks_.get_occupied_sqrs_mask()) != 0)
         return;
@@ -113,7 +113,7 @@ void CastleGen::gen_single_castle_move(
     revert_temporary_king_move(is_w, is_kside);
 
     int move_flag = is_kside ? model::Move::KING_CASTLE_FLAG 
-                              : model::Move::QUEEN_CASTLE_FLAG;    
+                             : model::Move::QUEEN_CASTLE_FLAG;
 
     movelist.add_move(model::Move(0, 0, move_flag));
 }

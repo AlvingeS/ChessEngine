@@ -36,11 +36,11 @@ model::Piece::Type MoveUtils::get_promotion_piece_type(int promo_flag, bool is_w
     return model::Piece::Type::EMPTY;
 }
 
-int MoveUtils::determine_capture_sq_idx(const model::Move& move, bool is_w, int to_sq_idx)
+int MoveUtils::determine_capture_sq(const model::Move& move, bool is_w)
 {
-    return move.is_ep_capture() ? is_w ? to_sq_idx - 8 
-                                        : to_sq_idx + 8 
-                              : to_sq_idx;
+    return move.is_ep_capture() ? is_w ? move.get_to_sq() - 8 
+                                       : move.get_to_sq() + 8 
+                                : move.get_to_sq();
 }
     
 } // namespace logic

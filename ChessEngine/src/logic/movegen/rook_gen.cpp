@@ -19,22 +19,22 @@ void RookGen::generate(
     bool is_w,
     model::Movelist& movelist)
 {
-    std::vector<int>& rook_sq_idxs = Containers::get_piece_position_idxs();
+    std::vector<sq_idx>& rook_sqs = Containers::get_piece_position_idxs();
 
-    BitBasics::get_bit_idxs(rook_sq_idxs, is_w ? bitboards_.get_w_rooks_bb()
-                                       : bitboards_.get_b_rooks_bb());
+    BitBasics::get_bit_idxs(rook_sqs, is_w ? bitboards_.get_w_rooks_bb()
+                                           : bitboards_.get_b_rooks_bb());
 
     // Loop through all rooks and isolate them
-    for (int rook_sq_idx : rook_sq_idxs) {
-        int rank = ChessUtils::rank_from_bit_idx(rook_sq_idx);
-        int file = ChessUtils::file_from_bit_idx(rook_sq_idx);
+    for (int rook_sq : rook_sqs) {
+        int rank = ChessUtils::rank_from_sq(rook_sq);
+        int file = ChessUtils::file_from_sq(rook_sq);
 
         RayLogic::add_moves_from_line_ray(
-            line_ray_attack_table_[rook_sq_idx][LineDir::N],
+            line_ray_attack_table_[rook_sq][LineDir::N],
             true, 
             false, 
             is_w, 
-            rook_sq_idx, 
+            rook_sq, 
             rank, 
             file, 
             movelist,
@@ -43,11 +43,11 @@ void RookGen::generate(
         );
 
         RayLogic::add_moves_from_line_ray(
-            line_ray_attack_table_[rook_sq_idx][LineDir::E],
+            line_ray_attack_table_[rook_sq][LineDir::E],
             false, 
             true, 
             is_w, 
-            rook_sq_idx, 
+            rook_sq, 
             rank, 
             file, 
             movelist,
@@ -56,11 +56,11 @@ void RookGen::generate(
         );
 
         RayLogic::add_moves_from_line_ray(
-            line_ray_attack_table_[rook_sq_idx][LineDir::S],
+            line_ray_attack_table_[rook_sq][LineDir::S],
             false, 
             false, 
             is_w, 
-            rook_sq_idx, 
+            rook_sq, 
             rank, 
             file, 
             movelist,
@@ -69,11 +69,11 @@ void RookGen::generate(
         );
 
         RayLogic::add_moves_from_line_ray(
-            line_ray_attack_table_[rook_sq_idx][LineDir::W],
+            line_ray_attack_table_[rook_sq][LineDir::W],
             true, 
             true, 
             is_w, 
-            rook_sq_idx, 
+            rook_sq, 
             rank, 
             file, 
             movelist,

@@ -1,5 +1,6 @@
 namespace {
 
+    // TODO: Move to model/masks
     constexpr bitmask FILE_MASK[8] = {
         0x0101010101010101ULL,
         0x0202020202020202ULL,
@@ -36,14 +37,14 @@ inline bitmask ChessUtils::get_rank_mask(int rank)
     return RANK_MASK[rank];
 }
 
-inline int ChessUtils::rank_from_bit_idx(int i) 
+inline int ChessUtils::rank_from_sq(sq_idx sq) 
 {
-    return i / 8;
+    return sq / 8;
 }
 
-inline int ChessUtils::file_from_bit_idx(int i) 
+inline int ChessUtils::file_from_sq(sq_idx sq) 
 {
-    return i % 8;
+    return sq % 8;
 }
 
 inline int ChessUtils::abs(int n) {

@@ -20,21 +20,21 @@ void QueenGen::generate(
     bool is_w,
     model::Movelist& movelist)
 {
-    std::vector<int>& queen_sq_idxs = Containers::get_piece_position_idxs();
+    std::vector<int>& queen_sqs = Containers::get_piece_position_idxs();
 
-    BitBasics::get_bit_idxs(queen_sq_idxs, is_w ? bitboards_.get_w_queens_bb()
-                                               : bitboards_.get_b_queens_bb());
+    BitBasics::get_bit_idxs(queen_sqs, is_w ? bitboards_.get_w_queens_bb()
+                                            : bitboards_.get_b_queens_bb());
 
-    for (int queen_sq_idx : queen_sq_idxs) {
-        int rank = ChessUtils::rank_from_bit_idx(queen_sq_idx);
-        int file = ChessUtils::file_from_bit_idx(queen_sq_idx);
+    for (int queen_sq : queen_sqs) {
+        int rank = ChessUtils::rank_from_sq(queen_sq);
+        int file = ChessUtils::file_from_sq(queen_sq);
 
         RayLogic::add_moves_from_line_ray(
-            line_ray_attack_table_[queen_sq_idx][LineDir::N],
+            line_ray_attack_table_[queen_sq][LineDir::N],
             true,
             false,
             is_w,
-            queen_sq_idx,
+            queen_sq,
             rank,
             file,
             movelist,
@@ -43,11 +43,11 @@ void QueenGen::generate(
         );
 
         RayLogic::add_moves_from_line_ray(
-            line_ray_attack_table_[queen_sq_idx][LineDir::E],
+            line_ray_attack_table_[queen_sq][LineDir::E],
             false,
             true,
             is_w,
-            queen_sq_idx,
+            queen_sq,
             rank,
             file,
             movelist,
@@ -56,11 +56,11 @@ void QueenGen::generate(
         );
 
         RayLogic::add_moves_from_line_ray(
-            line_ray_attack_table_[queen_sq_idx][LineDir::S],
+            line_ray_attack_table_[queen_sq][LineDir::S],
             false,
             false,
             is_w,
-            queen_sq_idx,
+            queen_sq,
             rank,
             file,
             movelist,
@@ -69,11 +69,11 @@ void QueenGen::generate(
         );
 
         RayLogic::add_moves_from_line_ray(
-            line_ray_attack_table_[queen_sq_idx][LineDir::W],
+            line_ray_attack_table_[queen_sq][LineDir::W],
             true,
             true,
             is_w,
-            queen_sq_idx,
+            queen_sq,
             rank,
             file,
             movelist,
@@ -82,10 +82,10 @@ void QueenGen::generate(
         );
 
         RayLogic::add_moves_from_diag_ray(
-            diag_ray_attack_table_[queen_sq_idx][DiagDir::NE],
+            diag_ray_attack_table_[queen_sq][DiagDir::NE],
             true,
             is_w,
-            queen_sq_idx,
+            queen_sq,
             rank,
             file,
             movelist,
@@ -94,10 +94,10 @@ void QueenGen::generate(
         );
 
         RayLogic::add_moves_from_diag_ray(
-            diag_ray_attack_table_[queen_sq_idx][DiagDir::SE],
+            diag_ray_attack_table_[queen_sq][DiagDir::SE],
             false,
             is_w,
-            queen_sq_idx,
+            queen_sq,
             rank,
             file,
             movelist,
@@ -106,10 +106,10 @@ void QueenGen::generate(
         );
 
         RayLogic::add_moves_from_diag_ray(
-            diag_ray_attack_table_[queen_sq_idx][DiagDir::SW],
+            diag_ray_attack_table_[queen_sq][DiagDir::SW],
             false,
             is_w,
-            queen_sq_idx,
+            queen_sq,
             rank,
             file,
             movelist,
@@ -118,10 +118,10 @@ void QueenGen::generate(
         );
         
         RayLogic::add_moves_from_diag_ray(
-            diag_ray_attack_table_[queen_sq_idx][DiagDir::NW],
+            diag_ray_attack_table_[queen_sq][DiagDir::NW],
             true,
             is_w,
-            queen_sq_idx,
+            queen_sq,
             rank,
             file,
             movelist,

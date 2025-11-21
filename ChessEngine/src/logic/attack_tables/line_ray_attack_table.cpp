@@ -5,10 +5,10 @@
 
 namespace {
 
-bitmask get_n_ray(int sq_idx) 
+bitmask get_n_ray(sq_idx sq) 
 {
-    int rank = logic::ChessUtils::rank_from_bit_idx(sq_idx);
-    int file = logic::ChessUtils::file_from_bit_idx(sq_idx);
+    int rank = logic::ChessUtils::rank_from_sq(sq);
+    int file = logic::ChessUtils::file_from_sq(sq);
 
     bitmask n_ray = 0ULL;
 
@@ -19,10 +19,10 @@ bitmask get_n_ray(int sq_idx)
     return n_ray;
 }
 
-bitmask get_e_ray(int sq_idx) 
+bitmask get_e_ray(sq_idx sq) 
 {
-    int rank = logic::ChessUtils::rank_from_bit_idx(sq_idx);
-    int file = logic::ChessUtils::file_from_bit_idx(sq_idx);
+    int rank = logic::ChessUtils::rank_from_sq(sq);
+    int file = logic::ChessUtils::file_from_sq(sq);
 
     bitmask e_ray = 0ULL;
 
@@ -33,10 +33,10 @@ bitmask get_e_ray(int sq_idx)
     return e_ray;
 }
 
-bitmask get_s_ray(int sq_idx) 
+bitmask get_s_ray(sq_idx sq) 
 {
-    int rank = logic::ChessUtils::rank_from_bit_idx(sq_idx);
-    int file = logic::ChessUtils::file_from_bit_idx(sq_idx);
+    int rank = logic::ChessUtils::rank_from_sq(sq);
+    int file = logic::ChessUtils::file_from_sq(sq);
 
     bitmask s_ray = 0ULL;
 
@@ -47,10 +47,10 @@ bitmask get_s_ray(int sq_idx)
     return s_ray;
 }
 
-bitmask get_w_ray(int sq_idx) 
+bitmask get_w_ray(sq_idx sq) 
 {
-    int rank = logic::ChessUtils::rank_from_bit_idx(sq_idx);
-    int file = logic::ChessUtils::file_from_bit_idx(sq_idx);
+    int rank = logic::ChessUtils::rank_from_sq(sq);
+    int file = logic::ChessUtils::file_from_sq(sq);
 
     bitmask w_ray = 0ULL;
 
@@ -63,29 +63,29 @@ bitmask get_w_ray(int sq_idx)
 
 void fill_n_attack_table(ray_attack_table& line_ray_attack_table)
 {
-    for (int sq_idx = 0; sq_idx < 64; sq_idx++) {
-        line_ray_attack_table[sq_idx][LineDir::N] = get_n_ray(sq_idx);
+    for (sq_idx sq = 0; sq < 64; sq++) {
+        line_ray_attack_table[sq][LineDir::N] = get_n_ray(sq);
     }
 }
 
 void fill_e_attack_table(ray_attack_table& line_ray_attack_table)
 {
-    for (int sq_idx = 0; sq_idx < 64; sq_idx++) {
-        line_ray_attack_table[sq_idx][LineDir::E] = get_e_ray(sq_idx);
+    for (sq_idx sq = 0; sq < 64; sq++) {
+        line_ray_attack_table[sq][LineDir::E] = get_e_ray(sq);
     }
 }
 
 void fill_s_attack_table(ray_attack_table& line_ray_attack_table)
 {
-    for (int sq_idx = 0; sq_idx < 64; sq_idx++) {
-        line_ray_attack_table[sq_idx][LineDir::S] = get_s_ray(sq_idx);
+    for (sq_idx sq = 0; sq < 64; sq++) {
+        line_ray_attack_table[sq][LineDir::S] = get_s_ray(sq);
     }
 }
 
 void fill_w_attack_table(ray_attack_table& line_ray_attack_table)
 {
-    for (int sq_idx = 0; sq_idx < 64; sq_idx++) {
-        line_ray_attack_table[sq_idx][LineDir::W] = get_w_ray(sq_idx);
+    for (sq_idx sq = 0; sq < 64; sq++) {
+        line_ray_attack_table[sq][LineDir::W] = get_w_ray(sq);
     }
 }
 

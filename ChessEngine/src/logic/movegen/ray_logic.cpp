@@ -11,82 +11,82 @@ namespace logic {
 
 void RayLogic::add_moves_from_free_ray(
     bitmask free_ray,
-    int bit_idx_from,
+    sq_idx from_sq,
     model::Movelist& movelist)
 {
-    std::vector<int>& free_ray_idxs = Containers::get_sliding_piece_quiet_moves_idxs();
-    BitBasics::get_bit_idxs(free_ray_idxs, free_ray);
+    std::vector<int>& free_ray_sqs = Containers::get_sliding_piece_quiet_moves_idxs();
+    BitBasics::get_bit_idxs(free_ray_sqs, free_ray);
 
-    for (int bit_idx : free_ray_idxs) {
-        movelist.add_move(model::Move(bit_idx_from, bit_idx, model::Move::QUITE_FLAG));
+    for (sq_idx to_sq : free_ray_sqs) {
+        movelist.add_move(model::Move(from_sq, to_sq, model::Move::QUITE_FLAG));
     }
 }
 
 void RayLogic::add_move_if_blocker_is_opp(
-    int blocker_idx,
+    sq_idx blocker_sq,
     bool is_w,
-    int bit_idx_from,
+    sq_idx from_sq,
     model::Movelist& movelist,
     bitmask w_pieces_mask)
 {
-    bool blocker_is_w = BitBasics::get_bit(w_pieces_mask, blocker_idx);
+    bool blocker_is_w = BitBasics::get_bit(w_pieces_mask, blocker_sq);
 
     if (blocker_is_w != is_w)
-        movelist.add_move(model::Move(bit_idx_from, blocker_idx, model::Move::CAPTURE_FLAG));
+        movelist.add_move(model::Move(from_sq, blocker_sq, model::Move::CAPTURE_FLAG));
 }
 
 void RayLogic::add_moves_between_blocker_and_piece_on_line_ray(
-    int blocker_idx,
+    sq_idx blocker_sq,
     bool along_file,
     bool start_from_blocker,
     int rook_rank,
     int rook_file,
-    int bit_idx_from,
+    sq_idx from_sq,
     model::Movelist& movelist)
 {
     int start = start_from_blocker 
-                ? (along_file ? ChessUtils::file_from_bit_idx(blocker_idx) 
-                              : ChessUtils::rank_from_bit_idx(blocker_idx)) 
+                ? (along_file ? ChessUtils::file_from_sq(blocker_sq) 
+                              : ChessUtils::rank_from_sq(blocker_sq)) 
                 : (along_file ? rook_file 
                               : rook_rank);
                             
     int stop = start_from_blocker 
                ? (along_file ? rook_file 
                              : rook_rank) 
-               : (along_file ? ChessUtils::file_from_bit_idx(blocker_idx) 
-                             : ChessUtils::rank_from_bit_idx(blocker_idx));
+               : (along_file ? ChessUtils::file_from_sq(blocker_sq) 
+                             : ChessUtils::rank_from_sq(blocker_sq));
 
     for (int i = start - 1; i > stop; --i) {
-        int rank_or_file_idx = along_file ? rook_rank * 8 + i 
-                                            : i * 8 + rook_file;
+        sq_idx to_sq = along_file ? rook_rank * 8 + i 
+                               : i * 8 + rook_file;
         
-        movelist.add_move(model::Move(bit_idx_from, rank_or_file_idx, model::Move::QUITE_FLAG));
+        movelist.add_move(model::Move(from_sq, to_sq, model::Move::QUITE_FLAG));
     }
 }
 
 void RayLogic::add_moves_between_blocker_and_pice_on_diag_ray(
-    int blocker_idx,
+    sq_idx blocker_sq,
     bool start_from_blocker,
     int bishop_rank,
     int bishop_file,
-    int bit_idx_from,
+    sq_idx from_sq,
     model::Movelist& movelist)
 {
     int start_rank = start_from_blocker
-                     ? ChessUtils::rank_from_bit_idx(blocker_idx)
+                     ? ChessUtils::rank_from_sq(blocker_sq)
                      : bishop_rank;
 
     int start_file = start_from_blocker
-                     ? ChessUtils::file_from_bit_idx(blocker_idx)
+                     ? ChessUtils::file_from_sq(blocker_sq)
                      : bishop_file;
 
     int stop_rank = start_from_blocker
                     ? bishop_rank
-                    : ChessUtils::rank_from_bit_idx(blocker_idx);
+                    : ChessUtils::rank_from_sq(blocker_sq);
 
     int stop_file = start_from_blocker 
                     ? bishop_file
-                    : ChessUtils::file_from_bit_idx(blocker_idx);
+                    : ChessUtils::file_from_sq(blocker_sq);
 
     int rank_diff = start_rank - stop_rank;
     int file_diff = start_file - stop_file;
@@ -98,9 +98,9 @@ void RayLogic::add_moves_between_blocker_and_pice_on_diag_ray(
          i != stop_rank;
          i += rank_increment, j += file_increment) 
     {
-        int rank_or_file_idx = i * 8 + j;
+        sq_idx to_sq = i * 8 + j;
 
-        movelist.add_move(model::Move(bit_idx_from, rank_or_file_idx, model::Move::QUITE_FLAG));
+        movelist.add_move(model::Move(from_sq, to_sq, model::Move::QUITE_FLAG));
     }
 }
 
@@ -109,7 +109,7 @@ void RayLogic::add_moves_from_line_ray(
     bool blocker_on_lsb,
     bool along_file,
     bool is_w,
-    int piece_idx,
+    sq_idx piece_sq,
     int piece_rank,
     int piece_file,
     model::Movelist& movelist,
@@ -119,30 +119,30 @@ void RayLogic::add_moves_from_line_ray(
     bitmask blocker_mask = ray & occupied_sqrs_mask;          
 
     if (blocker_mask != 0) {
-        int blocker_idx = blocker_on_lsb
+        sq_idx blocker_sq = blocker_on_lsb
                             ? BitBasics::lsb_idx(blocker_mask)
                             : BitBasics::msb_idx(blocker_mask);
                                
         add_move_if_blocker_is_opp(
-            blocker_idx,
+            blocker_sq,
             is_w,
-            piece_idx, 
+            piece_sq, 
             movelist,
             w_pieces_mask
         );
 
         add_moves_between_blocker_and_piece_on_line_ray(
-            blocker_idx,
+            blocker_sq,
             along_file, 
             blocker_on_lsb, 
             piece_rank, 
             piece_file, 
-            piece_idx, 
+            piece_sq, 
             movelist
         );
 
     } else {
-        add_moves_from_free_ray(ray, piece_idx, movelist);
+        add_moves_from_free_ray(ray, piece_sq, movelist);
     }
 }
 
@@ -150,7 +150,7 @@ void RayLogic::add_moves_from_diag_ray(
     bitmask ray,
     bool blocker_on_lsb,
     bool is_w,
-    int piece_idx,
+    sq_idx piece_sq,
     int piece_rank,
     int piece_file,
     model::Movelist& movelist,
@@ -160,29 +160,29 @@ void RayLogic::add_moves_from_diag_ray(
     bitmask blocker_mask = ray & occupied_sqrs_mask;
 
     if (blocker_mask != 0) {
-        int blocker_idx = blocker_on_lsb
+        sq_idx blocker_sq = blocker_on_lsb
                             ? BitBasics::lsb_idx(blocker_mask) 
                             : BitBasics::msb_idx(blocker_mask);
 
         add_move_if_blocker_is_opp(
-            blocker_idx, 
+            blocker_sq, 
             is_w, 
-            piece_idx, 
+            piece_sq, 
             movelist,
             w_pieces_mask
         );
 
         add_moves_between_blocker_and_pice_on_diag_ray(
-            blocker_idx, 
+            blocker_sq, 
             blocker_on_lsb,
             piece_rank, 
             piece_file, 
-            piece_idx, 
+            piece_sq, 
             movelist
         );
 
     } else {
-        add_moves_from_free_ray(ray, piece_idx, movelist);
+        add_moves_from_free_ray(ray, piece_sq, movelist);
     }
 }
 

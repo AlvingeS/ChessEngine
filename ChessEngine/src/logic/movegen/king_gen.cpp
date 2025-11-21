@@ -18,31 +18,32 @@ KingGen::KingGen(model::Board& board)
 
 void KingGen::generate(bool is_w, model::Movelist& movelist) 
 {
-    std::vector<int>& king_idxs = Containers::get_piece_position_idxs();
-    std::vector<int>& quiet_moves_sq_idxs = Containers::get_leaping_piece_quiet_moves_idxs();
-    std::vector<int>& capturable_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_idxs();
+    std::vector<sq_idx>& king_sqs             = Containers::get_piece_position_idxs();
+    std::vector<sq_idx>& quiet_moves_sqs      = Containers::get_leaping_piece_quiet_moves_idxs();
+    std::vector<sq_idx>& capturable_moves_sqs = Containers::get_leaping_piece_capturable_moves_idxs();
     
-    BitBasics::get_bit_idxs(king_idxs, is_w ? bitboards_.get_w_king_bb()
-                                              : bitboards_.get_b_king_bb());
+    BitBasics::get_bit_idxs(king_sqs, is_w ? bitboards_.get_w_king_bb()
+                                           : bitboards_.get_b_king_bb());
 
-    int king_sq_idx = king_idxs[0];
-    bitmask attack_mask = king_attack_table_[king_sq_idx];
+    int king_sq_idx = king_sqs[0];
+
+    bitmask attack_mask      = king_attack_table_[king_sq_idx];
     bitmask quiet_moves_mask = attack_mask & occupancy_masks_.get_free_sqrs_mask();
     
     bitmask opp_pieces_mask = is_w ? occupancy_masks_.get_b_pieces_mask() 
-                                     : occupancy_masks_.get_w_pieces_mask();
+                                   : occupancy_masks_.get_w_pieces_mask();
 
     bitmask capture_moves_mask = attack_mask & opp_pieces_mask;
 
-    BitBasics::get_bit_idxs(quiet_moves_sq_idxs, quiet_moves_mask);
-    BitBasics::get_bit_idxs(capturable_moves_sq_idxs, capture_moves_mask);
+    BitBasics::get_bit_idxs(quiet_moves_sqs, quiet_moves_mask);
+    BitBasics::get_bit_idxs(capturable_moves_sqs, capture_moves_mask);
 
-    for (int sq_idx : quiet_moves_sq_idxs) {
-        movelist.add_move(model::Move(king_sq_idx, sq_idx, model::Move::QUITE_FLAG));
+    for (sq_idx to_sq : quiet_moves_sqs) {
+        movelist.add_move(model::Move(king_sq_idx, to_sq, model::Move::QUITE_FLAG));
     }
 
-    for (int sq_idx : capturable_moves_sq_idxs) {
-        movelist.add_move(model::Move(king_sq_idx, sq_idx, model::Move::CAPTURE_FLAG));
+    for (sq_idx to_sq : capturable_moves_sqs) {
+        movelist.add_move(model::Move(king_sq_idx, to_sq, model::Move::CAPTURE_FLAG));
     }
 }
 

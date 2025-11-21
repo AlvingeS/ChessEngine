@@ -4,10 +4,10 @@
 
 namespace {
 
-bitmask get_ne_ray(int sq_idx) 
+bitmask get_ne_ray(sq_idx sq) 
 {
-    int rank = logic::ChessUtils::rank_from_bit_idx(sq_idx);
-    int file = logic::ChessUtils::file_from_bit_idx(sq_idx);
+    int rank = logic::ChessUtils::rank_from_sq(sq);
+    int file = logic::ChessUtils::file_from_sq(sq);
 
     bitmask ne_ray = 0ULL;
 
@@ -20,10 +20,10 @@ bitmask get_ne_ray(int sq_idx)
     return ne_ray;
 }
 
-bitmask get_se_ray(int sq_idx) 
+bitmask get_se_ray(sq_idx sq) 
 {
-    int rank = logic::ChessUtils::rank_from_bit_idx(sq_idx);
-    int file = logic::ChessUtils::file_from_bit_idx(sq_idx);
+    int rank = logic::ChessUtils::rank_from_sq(sq);
+    int file = logic::ChessUtils::file_from_sq(sq);
 
     bitmask se_ray = 0ULL;
 
@@ -36,10 +36,10 @@ bitmask get_se_ray(int sq_idx)
     return se_ray;
 }
 
-bitmask get_sw_ray(int sq_idx) 
+bitmask get_sw_ray(sq_idx sq) 
 {
-    int rank = logic::ChessUtils::rank_from_bit_idx(sq_idx);
-    int file = logic::ChessUtils::file_from_bit_idx(sq_idx);
+    int rank = logic::ChessUtils::rank_from_sq(sq);
+    int file = logic::ChessUtils::file_from_sq(sq);
 
     bitmask sw_ray = 0ULL;
 
@@ -52,10 +52,10 @@ bitmask get_sw_ray(int sq_idx)
     return sw_ray;
 }
 
-bitmask get_nw_ray(int sq_idx) 
+bitmask get_nw_ray(sq_idx sq) 
 {
-    int rank = logic::ChessUtils::rank_from_bit_idx(sq_idx);
-    int file = logic::ChessUtils::file_from_bit_idx(sq_idx);
+    int rank = logic::ChessUtils::rank_from_sq(sq);
+    int file = logic::ChessUtils::file_from_sq(sq);
 
     bitmask north_west_ray = 0ULL;
 
@@ -70,29 +70,29 @@ bitmask get_nw_ray(int sq_idx)
 
 void fill_ne_attack_table(ray_attack_table& diag_ray_attack_table)
 {
-    for (int sq_idx = 0; sq_idx < 64; sq_idx++) {
-        diag_ray_attack_table[sq_idx][DiagDir::NE] = get_ne_ray(sq_idx);
+    for (sq_idx sq = 0; sq < 64; sq++) {
+        diag_ray_attack_table[sq][DiagDir::NE] = get_ne_ray(sq);
     }
 }
 
 void fill_se_attack_table(ray_attack_table& diag_ray_attack_table)
 {
-    for (int sq_idx = 0; sq_idx < 64; sq_idx++) {
-        diag_ray_attack_table[sq_idx][DiagDir::SE] = get_se_ray(sq_idx);
+    for (sq_idx sq = 0; sq < 64; sq++) {
+        diag_ray_attack_table[sq][DiagDir::SE] = get_se_ray(sq);
     }
 }
 
 void fill_sw_attack_table(ray_attack_table& diag_ray_attack_table)
 {
-    for (int sq_idx = 0; sq_idx < 64; sq_idx++) {
-        diag_ray_attack_table[sq_idx][DiagDir::SW] = get_sw_ray(sq_idx);
+    for (sq_idx sq = 0; sq < 64; sq++) {
+        diag_ray_attack_table[sq][DiagDir::SW] = get_sw_ray(sq);
     }
 }
 
 void fill_nw_attack_table(ray_attack_table& diag_ray_attack_table)
 {
-    for (int sq_idx = 0; sq_idx < 64; sq_idx++) {
-        diag_ray_attack_table[sq_idx][DiagDir::NW] = get_nw_ray(sq_idx);
+    for (sq_idx sq = 0; sq < 64; sq++) {
+        diag_ray_attack_table[sq][DiagDir::NW] = get_nw_ray(sq);
     }
 }
 

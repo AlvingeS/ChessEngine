@@ -49,7 +49,7 @@ std::string Fen::get_fen_from_board(const model::PieceMap& piece_map)
             fen += "/";
         }
 
-        model::Piece::Type type = piece_map.get_piece_type_at_idx(i);
+        model::Piece::Type type = piece_map.get_piece_type_at(i);
         if (type == model::Piece::Type::EMPTY) {
             empty_count++;
         } else {

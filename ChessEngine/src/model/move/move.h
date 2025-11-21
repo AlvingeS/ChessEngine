@@ -1,5 +1,6 @@
 #pragma once
 
+#include "model/types.h"
 #include <functional>
 
 namespace model {
@@ -25,7 +26,7 @@ public:
     static const int QUEEN_CASTLE_FLAG = 15;
     
     Move();
-    Move(int bit_idx_from, int bit_idx_to, int flag);
+    Move(sq_idx from_sq, sq_idx to_sq, int flag);
     Move(const Move& move);
 
     int get_move() const;
@@ -35,8 +36,8 @@ public:
     bool operator==(const Move& move) const;
     bool operator!=(const Move& move) const;
 
-    int get_bit_idx_from() const;
-    int get_bit_idx_to() const;
+    sq_idx get_from_sq() const;
+    sq_idx get_to_sq() const;
     bool is_quite() const;
     bool is_double_pawn_push() const;
     bool is_king_castle() const;
@@ -68,8 +69,8 @@ namespace std {
     template <>
     struct hash<model::Move> {
         size_t operator()(const model::Move& move) const {
-            size_t h1 = std::hash<int>()(move.get_bit_idx_from());
-            size_t h2 = std::hash<int>()(move.get_bit_idx_to());
+            size_t h1 = std::hash<int>()(move.get_from_sq());
+            size_t h2 = std::hash<int>()(move.get_to_sq());
             size_t h3 = std::hash<int>()(move.get_flag());
 
             return h1 ^ (h2 << 1) ^ (h3 << 2);

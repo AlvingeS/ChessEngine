@@ -89,8 +89,8 @@ protected:
                                         : (w_started ? "e1c1" : "e8c8");
         }
         
-        int from = move.get_bit_idx_from();
-        int to = move.get_bit_idx_to();
+        int from = move.get_from_sq();
+        int to = move.get_to_sq();
         
         int from_row = from / 8;
         int from_col = from % 8;

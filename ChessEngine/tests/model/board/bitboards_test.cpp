@@ -145,35 +145,35 @@ TEST_F(BitboardsTest, getBlackPiecesbitboard_ShouldReturn0xFFFF000000000000)
 
 TEST_F(BitboardsTest, fillPieceMapTest_ShouldReturnStartingPos) 
 {
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(0), Piece::Type::W_ROOK);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(1), Piece::Type::W_KNIGHT);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(2), Piece::Type::W_BISHOP);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(3), Piece::Type::W_KING);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(4), Piece::Type::W_QUEEN);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(5), Piece::Type::W_BISHOP);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(6), Piece::Type::W_KNIGHT);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(7), Piece::Type::W_ROOK);
+    ASSERT_EQ(piece_map.get_piece_type_at(0), Piece::Type::W_ROOK);
+    ASSERT_EQ(piece_map.get_piece_type_at(1), Piece::Type::W_KNIGHT);
+    ASSERT_EQ(piece_map.get_piece_type_at(2), Piece::Type::W_BISHOP);
+    ASSERT_EQ(piece_map.get_piece_type_at(3), Piece::Type::W_KING);
+    ASSERT_EQ(piece_map.get_piece_type_at(4), Piece::Type::W_QUEEN);
+    ASSERT_EQ(piece_map.get_piece_type_at(5), Piece::Type::W_BISHOP);
+    ASSERT_EQ(piece_map.get_piece_type_at(6), Piece::Type::W_KNIGHT);
+    ASSERT_EQ(piece_map.get_piece_type_at(7), Piece::Type::W_ROOK);
 
     for (int i = 8; i < 16; i++) {
-        ASSERT_EQ(piece_map.get_piece_type_at_idx(i), Piece::Type::W_PAWN);
+        ASSERT_EQ(piece_map.get_piece_type_at(i), Piece::Type::W_PAWN);
     }
 
     for (int i = 16; i < 48; i++) {
-        ASSERT_EQ(piece_map.get_piece_type_at_idx(i), Piece::Type::EMPTY);
+        ASSERT_EQ(piece_map.get_piece_type_at(i), Piece::Type::EMPTY);
     }
 
     for (int i = 48; i < 56; i++) {
-        ASSERT_EQ(piece_map.get_piece_type_at_idx(i), Piece::Type::B_PAWN);
+        ASSERT_EQ(piece_map.get_piece_type_at(i), Piece::Type::B_PAWN);
     }
 
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(56), Piece::Type::B_ROOK);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(57), Piece::Type::B_KNIGHT);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(58), Piece::Type::B_BISHOP);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(59), Piece::Type::B_KING);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(60), Piece::Type::B_QUEEN);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(61), Piece::Type::B_BISHOP);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(62), Piece::Type::B_KNIGHT);
-    ASSERT_EQ(piece_map.get_piece_type_at_idx(63), Piece::Type::B_ROOK);
+    ASSERT_EQ(piece_map.get_piece_type_at(56), Piece::Type::B_ROOK);
+    ASSERT_EQ(piece_map.get_piece_type_at(57), Piece::Type::B_KNIGHT);
+    ASSERT_EQ(piece_map.get_piece_type_at(58), Piece::Type::B_BISHOP);
+    ASSERT_EQ(piece_map.get_piece_type_at(59), Piece::Type::B_KING);
+    ASSERT_EQ(piece_map.get_piece_type_at(60), Piece::Type::B_QUEEN);
+    ASSERT_EQ(piece_map.get_piece_type_at(61), Piece::Type::B_BISHOP);
+    ASSERT_EQ(piece_map.get_piece_type_at(62), Piece::Type::B_KNIGHT);
+    ASSERT_EQ(piece_map.get_piece_type_at(63), Piece::Type::B_ROOK);
 }
 
 TEST_F(BitboardsTest, fillPieceMapFenOneTest_ShouldReturnTwoPieces) 
@@ -182,11 +182,11 @@ TEST_F(BitboardsTest, fillPieceMapFenOneTest_ShouldReturnTwoPieces)
 
     for (int i = 0; i < 64; i++) {
         if (i == 27) {
-            ASSERT_EQ(piece_map.get_piece_type_at_idx(i), Piece::Type::B_PAWN);
+            ASSERT_EQ(piece_map.get_piece_type_at(i), Piece::Type::B_PAWN);
         } else if (i == 28) {
-            ASSERT_EQ(piece_map.get_piece_type_at_idx(i), Piece::Type::W_PAWN);
+            ASSERT_EQ(piece_map.get_piece_type_at(i), Piece::Type::W_PAWN);
         } else {
-            ASSERT_EQ(piece_map.get_piece_type_at_idx(i), Piece::Type::EMPTY);
+            ASSERT_EQ(piece_map.get_piece_type_at(i), Piece::Type::EMPTY);
         }
     }
 }

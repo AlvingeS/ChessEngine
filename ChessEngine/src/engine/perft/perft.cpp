@@ -99,7 +99,7 @@ bool perft::too_many_pieces_on_board()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (piece_map_.get_piece_type_at_idx(i) != model::Piece::Type::EMPTY) {
+        if (piece_map_.get_piece_type_at(i) != model::Piece::Type::EMPTY) {
             count++;
         }
     }
@@ -119,8 +119,8 @@ bool perft::check_condition(
     // return not board_.getKingMoved(false);
     // return too_many_pieces_on_board();
     // return first_move_idx == 19 && currentMove.is_any_capture();
-    // return currentMove.get_bit_idx_from() == 12 && currentMove.get_bit_idx_to() == 12;
-    // return current_depth == 3 && first_move_idx == 0 && currentMove.get_bit_idx_from() == 34 && currentMove.get_bit_idx_to() == 27;
+    // return currentMove.get_from_sq() == 12 && currentMove.get_to_sq() == 12;
+    // return current_depth == 3 && first_move_idx == 0 && currentMove.get_from_sq() == 34 && currentMove.get_to_sq() == 27;
     // return currentMove.is_any_capture();
     // return true;
     return false;
@@ -221,7 +221,7 @@ void perft::minimax(
             current_depth,
             currentMove, 
             isMaximizer, 
-            piece_map_.get_piece_type_at_idx(currentMove.get_bit_idx_to())
+            piece_map_.get_piece_type_at(currentMove.get_to_sq())
         );
 
         if (recPerftStats) {

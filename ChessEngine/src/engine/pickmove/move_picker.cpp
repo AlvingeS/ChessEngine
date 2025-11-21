@@ -138,7 +138,7 @@ bool MovePicker::too_many_pieces_on_board()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (piece_map_.get_piece_type_at_idx(i) != model::Piece::Type::EMPTY) {
+        if (piece_map_.get_piece_type_at(i) != model::Piece::Type::EMPTY) {
             count++;
         }
     }
@@ -166,8 +166,8 @@ bool MovePicker::check_condition(
     // return not board_.getKingMoved(false);
     // return too_many_pieces_on_board();
     // return first_move_idx == 19 && current_move.is_any_capture();
-    // return current_move.get_bit_idx_from() == 12 && current_move.get_bit_idx_to() == 12;
-    // return current_depth == 3 && first_move_idx == 0 && current_move.get_bit_idx_from() == 34 && current_move.get_bit_idx_to() == 27;
+    // return current_move.get_from_sq() == 12 && current_move.get_to_sq() == 12;
+    // return current_depth == 3 && first_move_idx == 0 && current_move.get_from_sq() == 34 && current_move.get_to_sq() == 27;
     // return current_move.is_any_capture();
     // return true;
     return false;
@@ -267,7 +267,7 @@ void MovePicker::minimax(
             search_memory_.set_last_captured_piece_at_depth(current_depth, move_result.captured_piece_type);
         }
 
-        search_memory_.handle_ep_memory(current_move, is_maximizer, current_depth, current_move.get_bit_idx_to());
+        search_memory_.handle_ep_memory(current_move, is_maximizer, current_depth, current_move.get_to_sq());
         search_memory_.handle_no_capture_count(current_move, current_depth, move_result.moved_piece_type);
 
         // Move was legal, update castling rights
@@ -275,7 +275,7 @@ void MovePicker::minimax(
             current_depth,
             current_move, 
             is_maximizer, 
-            piece_map_.get_piece_type_at_idx(current_move.get_bit_idx_to())
+            piece_map_.get_piece_type_at(current_move.get_to_sq())
         );
 
         if (do_record_perft_stats) {

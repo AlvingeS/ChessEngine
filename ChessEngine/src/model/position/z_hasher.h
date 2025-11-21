@@ -1,6 +1,7 @@
 #pragma once
 
 #include "model/position/piece_type.h"
+#include "model/types.h"
 
 #include <cstdint>
 
@@ -12,7 +13,7 @@ class ZHasher {
 
 public:
     ZHasher(PieceMap& piece_map);
-    void hash_square_piece_type(int sq_idx, Piece::Type piece_type);
+    void hash_piece_type_at(sq_idx sq, Piece::Type piece_type);
     void hash_castle_rights(int castle_rights);
     void hash_ep_file(int file);
     void hash_is_w(bool is_w);

@@ -60,18 +60,18 @@ void SearchMemory::set_castle_rights(
 
     if (moved_piece_type == model::Piece::Type::W_ROOK || moved_piece_type == model::Piece::Type::B_ROOK) {
         if (is_w) {
-            if (move.get_bit_idx_from() == 0) {
+            if (move.get_from_sq() == 0) {
                 if (castle_rights_[current_depth] & w_kside_castle_rights)
                     remove_castle_rights_for_remaining_depths(current_depth, w_kside_castle_rights);
-            } else if (move.get_bit_idx_from() == 7) {
+            } else if (move.get_from_sq() == 7) {
                 if (castle_rights_[current_depth] & w_qside_castle_rights)
                     remove_castle_rights_for_remaining_depths(current_depth, w_qside_castle_rights);
             }
         } else {
-            if (move.get_bit_idx_from() == 56) {
+            if (move.get_from_sq() == 56) {
                 if (castle_rights_[current_depth] & b_kside_castle_rights)
                     remove_castle_rights_for_remaining_depths(current_depth, b_kside_castle_rights);
-            } else if (move.get_bit_idx_from() == 63) {
+            } else if (move.get_from_sq() == 63) {
                 if (castle_rights_[current_depth] & b_qside_castle_rights)
                     remove_castle_rights_for_remaining_depths(current_depth, b_qside_castle_rights);
             }

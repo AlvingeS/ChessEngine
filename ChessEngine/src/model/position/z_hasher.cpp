@@ -16,9 +16,9 @@ ZHasher::ZHasher(PieceMap& piece_map)
     std::uniform_int_distribution<uint64_t> dis(0, std::numeric_limits<uint64_t>::max());
 
     // Generate random numbers for board/piece table
-    for (size_t i = 0; i < 64; i++) {
+    for (sq_idx sq = 0; sq < 64; sq++) {
         for (size_t j = 0; j < 12; j++) {
-            random_board_piece_type_numbers_[i][j] = dis(gen);
+            random_board_piece_type_numbers_[sq][j] = dis(gen);
         }
     }
 
@@ -42,11 +42,11 @@ void ZHasher::compute_initial_hash()
 {
     hash_ = 0;
 
-    for (size_t i = 0; i < 64; i++) {
-        Piece::Type piece_type = piece_map_.get_piece_type_at_idx(i);
+    for (sq_idx sq = 0; sq < 64; sq++) {
+        Piece::Type piece_type = piece_map_.get_piece_type_at(sq);
 
         if (piece_type != Piece::Type::EMPTY)
-            hash_square_piece_type(i, piece_type);
+            hash_piece_type_at(sq, piece_type);
     }
 
     // We know that we have castle rights, so we can just add them

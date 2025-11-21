@@ -16,7 +16,7 @@ namespace engine {
 class PerftBase : public ::testing::Test 
 {
 
-struct from_to_bit_indices {
+struct from_to_bit_idxs {
     int from;
     int to;
 };
@@ -141,9 +141,9 @@ protected:
         return move_str;
     }
 
-    from_to_bit_indices translateStrToFromTo(std::string move_str) 
+    from_to_bit_idxs translateStrToFromTo(std::string move_str) 
     {
-        from_to_bit_indices from_to;
+        from_to_bit_idxs from_to;
 
         int from_row = move_str[1] - '1';
         int from_col = 8 - (move_str[0] - 'a') - 1;
@@ -158,7 +158,7 @@ protected:
 
     model::Move move_from_str_and_flag(std::string move_str, int flag) 
     {
-        from_to_bit_indices from_to = translateStrToFromTo(move_str);
+        from_to_bit_idxs from_to = translateStrToFromTo(move_str);
         return model::Move(from_to.from, from_to.to, flag);
     }
 

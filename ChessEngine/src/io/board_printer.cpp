@@ -61,7 +61,7 @@ void BoardPrinter::print() const {
 
         std::cout << "|   ";  // Separate the two boards.
 
-        for (int col = 7; col >= 0; col--) {  // Iterate again for bit indices.
+        for (int col = 7; col >= 0; col--) {  // Iterate again for bit idxs.
             int bit_idx = row * 8 + col;
             std::cout << "| " << bit_idx << (bit_idx < 10 ? " " : "");  // Print the bit index, add extra space for single digit numbers.
         }

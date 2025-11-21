@@ -20,9 +20,9 @@ void QueenGen::generate(
     bool is_w,
     model::Movelist& movelist)
 {
-    std::vector<int>& queen_sq_idxs = Containers::get_piece_position_indices();
+    std::vector<int>& queen_sq_idxs = Containers::get_piece_position_idxs();
 
-    BitBasics::get_bit_indices(queen_sq_idxs, is_w ? bitboards_.get_w_queens_bb()
+    BitBasics::get_bit_idxs(queen_sq_idxs, is_w ? bitboards_.get_w_queens_bb()
                                                : bitboards_.get_b_queens_bb());
 
     for (int queen_sq_idx : queen_sq_idxs) {

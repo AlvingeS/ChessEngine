@@ -24,11 +24,11 @@ void PawnGen::generate(
     model::Movelist& movelist,
     bitmask ep_target_mask)
 {
-    std::vector<int>& pawn_sq_idxs = Containers::get_piece_position_indices();
-    std::vector<int>& quiet_moves_idxs = Containers::get_leaping_piece_quiet_moves_indices();
-    std::vector<int>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_indices();
+    std::vector<int>& pawn_sq_idxs = Containers::get_piece_position_idxs();
+    std::vector<int>& quiet_moves_idxs = Containers::get_leaping_piece_quiet_moves_idxs();
+    std::vector<int>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_idxs();
 
-    BitBasics::get_bit_indices(pawn_sq_idxs, is_w ? bitboards_.get_w_pawns_bb()
+    BitBasics::get_bit_idxs(pawn_sq_idxs, is_w ? bitboards_.get_w_pawns_bb()
                                               : bitboards_.get_b_pawns_bb());
 
     for (int pawn_sq_idx : pawn_sq_idxs) {
@@ -46,8 +46,8 @@ void PawnGen::generate(
         
         bitmask capture_moves_mask = attack_mask_diag & opp_pieces_mask;
 
-        BitBasics::get_bit_indices(quiet_moves_idxs, quiet_moves_mask);
-        BitBasics::get_bit_indices(capture_moves_sq_idxs, capture_moves_mask);
+        BitBasics::get_bit_idxs(quiet_moves_idxs, quiet_moves_mask);
+        BitBasics::get_bit_idxs(capture_moves_sq_idxs, capture_moves_mask);
 
         int offset = is_w ? 8 : -8;
         bool can_promote = (is_w && ChessUtils::rank_from_bit_idx(pawn_sq_idx) == 6) || (!is_w && ChessUtils::rank_from_bit_idx(pawn_sq_idx) == 1);

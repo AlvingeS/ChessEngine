@@ -4,14 +4,14 @@
 
 namespace logic {
 
-void BitBasics::get_bit_indices(std::vector<int>& indices, bitboard bb)
+void BitBasics::get_bit_idxs(std::vector<int>& idxs, bitboard bb)
 { 
-    indices.clear();
+    idxs.clear();
 
     while (bb != 0) {
         int idx = __builtin_ctzll(bb);
 
-        indices.push_back(idx);
+        idxs.push_back(idx);
 
         bb &= (bb - 1);
     }

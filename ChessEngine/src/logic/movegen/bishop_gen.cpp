@@ -23,9 +23,9 @@ void BishopGen::generate(
     bool is_w,
     model::Movelist& movelist)
 {
-    std::vector<int>& bishop_sq_idxs = Containers::get_piece_position_indices();
+    std::vector<int>& bishop_sq_idxs = Containers::get_piece_position_idxs();
 
-    BitBasics::get_bit_indices(bishop_sq_idxs, is_w ? bitboards_.get_w_bishops_bb()
+    BitBasics::get_bit_idxs(bishop_sq_idxs, is_w ? bitboards_.get_w_bishops_bb()
                                          : bitboards_.get_b_bishops_bb());
 
     for (int bishop_sq_idx : bishop_sq_idxs) {

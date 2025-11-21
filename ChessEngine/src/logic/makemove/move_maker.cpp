@@ -24,7 +24,7 @@ MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
         return move_result;
     }
 
-    // Get the from and to indices
+    // Get the from and to idxs
     int from_sq_idx = move.get_bit_idx_from();
     int to_sq_idx = move.get_bit_idx_to();
 

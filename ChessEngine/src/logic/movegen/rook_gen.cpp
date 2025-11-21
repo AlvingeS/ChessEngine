@@ -19,9 +19,9 @@ void RookGen::generate(
     bool is_w,
     model::Movelist& movelist)
 {
-    std::vector<int>& rook_sq_idxs = Containers::get_piece_position_indices();
+    std::vector<int>& rook_sq_idxs = Containers::get_piece_position_idxs();
 
-    BitBasics::get_bit_indices(rook_sq_idxs, is_w ? bitboards_.get_w_rooks_bb()
+    BitBasics::get_bit_idxs(rook_sq_idxs, is_w ? bitboards_.get_w_rooks_bb()
                                        : bitboards_.get_b_rooks_bb());
 
     // Loop through all rooks and isolate them

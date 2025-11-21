@@ -207,23 +207,23 @@ TEST_F(ChessUtilsTest, fileFromBitIndex_Pos63_ShouldReturn7)
 }
 
 
-TEST_F(ChessUtilsTest, getBitIndices_a_ShouldReturn0_8_10_16to23)
+TEST_F(ChessUtilsTest, getBitidxs_a_ShouldReturn0_8_10_16to23)
 {
     std::vector<int> expected = {0, 8, 10, 16, 17, 18, 19, 20, 21, 22, 23};
     std::vector<int> actual;
-    BitBasics::get_bit_indices(actual, a_mask);
+    BitBasics::get_bit_idxs(actual, a_mask);
     ASSERT_EQ(expected, actual);
 }
 
-TEST_F(ChessUtilsTest, getBitIndices_b_ShouldReturnEmptyVector)
+TEST_F(ChessUtilsTest, getBitidxs_b_ShouldReturnEmptyVector)
 {
     std::vector<int> expected = {};
     std::vector<int> actual;
-    BitBasics::get_bit_indices(actual, b_mask);
+    BitBasics::get_bit_idxs(actual, b_mask);
     ASSERT_EQ(expected, actual);
 }
 
-TEST_F(ChessUtilsTest, getBitIndices_c_ShouldReturn0to63)
+TEST_F(ChessUtilsTest, getBitidxs_c_ShouldReturn0to63)
 {
     std::vector<int> expected = {};
 
@@ -233,7 +233,7 @@ TEST_F(ChessUtilsTest, getBitIndices_c_ShouldReturn0to63)
     }
     
     std::vector<int> actual;
-    BitBasics::get_bit_indices(actual, c_mask);
+    BitBasics::get_bit_idxs(actual, c_mask);
     ASSERT_EQ(expected, actual);
 }
 

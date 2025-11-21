@@ -160,7 +160,7 @@ void MoveRetractor::unmake_move(
         return;
     }
 
-    // Get the from and to indices
+    // Get the from and to idxs
     // Things get a bit tricky here because the move is being unmade, and so
     // we are "moving to" the from square and "moving from" the to square
     int from_sq_idx = previousMove.get_bit_idx_from();

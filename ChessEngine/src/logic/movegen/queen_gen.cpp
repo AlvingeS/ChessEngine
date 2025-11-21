@@ -39,7 +39,7 @@ void QueenGen::generate(
             file,
             movelist,
             occupancy_masks_.get_w_pieces_mask(),
-            occupancy_masks_.get_occupied_squares_mask()
+            occupancy_masks_.get_occupied_sqrs_mask()
         );
 
         RayLogic::add_moves_from_line_ray(
@@ -52,7 +52,7 @@ void QueenGen::generate(
             file,
             movelist,
             occupancy_masks_.get_w_pieces_mask(),
-            occupancy_masks_.get_occupied_squares_mask()
+            occupancy_masks_.get_occupied_sqrs_mask()
         );
 
         RayLogic::add_moves_from_line_ray(
@@ -65,7 +65,7 @@ void QueenGen::generate(
             file,
             movelist,
             occupancy_masks_.get_w_pieces_mask(),
-            occupancy_masks_.get_occupied_squares_mask()
+            occupancy_masks_.get_occupied_sqrs_mask()
         );
 
         RayLogic::add_moves_from_line_ray(
@@ -78,7 +78,7 @@ void QueenGen::generate(
             file,
             movelist,
             occupancy_masks_.get_w_pieces_mask(),
-            occupancy_masks_.get_occupied_squares_mask()
+            occupancy_masks_.get_occupied_sqrs_mask()
         );
 
         RayLogic::add_moves_from_diag_ray(
@@ -90,7 +90,7 @@ void QueenGen::generate(
             file,
             movelist,
             occupancy_masks_.get_w_pieces_mask(),
-            occupancy_masks_.get_occupied_squares_mask()
+            occupancy_masks_.get_occupied_sqrs_mask()
         );
 
         RayLogic::add_moves_from_diag_ray(
@@ -102,7 +102,7 @@ void QueenGen::generate(
             file,
             movelist,
             occupancy_masks_.get_w_pieces_mask(),
-            occupancy_masks_.get_occupied_squares_mask()
+            occupancy_masks_.get_occupied_sqrs_mask()
         );
 
         RayLogic::add_moves_from_diag_ray(
@@ -114,7 +114,7 @@ void QueenGen::generate(
             file,
             movelist,
             occupancy_masks_.get_w_pieces_mask(),
-            occupancy_masks_.get_occupied_squares_mask()
+            occupancy_masks_.get_occupied_sqrs_mask()
         );
         
         RayLogic::add_moves_from_diag_ray(
@@ -126,7 +126,7 @@ void QueenGen::generate(
             file,
             movelist,
             occupancy_masks_.get_w_pieces_mask(),
-            occupancy_masks_.get_occupied_squares_mask()
+            occupancy_masks_.get_occupied_sqrs_mask()
         );
     }
 }

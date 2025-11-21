@@ -55,7 +55,7 @@ void CastleGen::generate(
     }
 }
 
-bool CastleGen::king_and_rook_on_castle_squares(bool is_w, bool is_kside) const
+bool CastleGen::king_and_rook_on_castle_sqrs(bool is_w, bool is_kside) const
 {
     bool king_bit_enabled = is_w ? (bitboards_.get_w_king_bb() & (1ULL << 3)) != 0
                                   : (bitboards_.get_b_king_bb() & (1ULL << 59)) != 0;
@@ -91,11 +91,11 @@ void CastleGen::gen_single_castle_move(
                                                   : (is_kside ? b_kside_castle_mask_
                                                                 : b_qside_castle_mask_);
     
-    if ((space_between_castlers_mask & occupancy_masks_.get_occupied_squares_mask()) != 0)
+    if ((space_between_castlers_mask & occupancy_masks_.get_occupied_sqrs_mask()) != 0)
         return;
 
     // Check that the king and rook are on the correct squares
-    if (!king_and_rook_on_castle_squares(is_w, is_kside))
+    if (!king_and_rook_on_castle_sqrs(is_w, is_kside))
         return;
 
     // Check that we are not currently in check

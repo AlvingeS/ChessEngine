@@ -27,7 +27,7 @@ void KnightGen::generate(bool is_w, model::Movelist& movelist)
     for (int knight_sq_idx : knight_sq_idxs) {
         bitmask attack_mask = knight_attack_table_[knight_sq_idx];
 
-        bitmask quiet_moves_mask = attack_mask & occupancy_masks_.get_free_squares_mask();
+        bitmask quiet_moves_mask = attack_mask & occupancy_masks_.get_free_sqrs_mask();
         
         bitmask opp_pieces_mask = is_w ? occupancy_masks_.get_b_pieces_mask()
                                        : occupancy_masks_.get_w_pieces_mask();

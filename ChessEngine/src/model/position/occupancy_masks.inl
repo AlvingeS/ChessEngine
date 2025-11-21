@@ -30,12 +30,12 @@ inline const bitmask& OccupancyMasks::get_b_pieces_mask() const
     return b_pieces_mask_;
 }
 
-inline const bitmask& OccupancyMasks::get_occupied_squares_mask() const 
+inline const bitmask& OccupancyMasks::get_occupied_sqrs_mask() const 
 {
     return occupied_sqrs_mask_;
 }
 
-inline const bitmask& OccupancyMasks::get_free_squares_mask() const 
+inline const bitmask& OccupancyMasks::get_free_sqrs_mask() const 
 {
     return free_sqrs_mask_;
 }

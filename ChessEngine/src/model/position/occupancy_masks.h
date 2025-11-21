@@ -13,8 +13,8 @@ public:
 
     const bitmask& get_w_pieces_mask() const;
     const bitmask& get_b_pieces_mask() const;
-    const bitmask& get_occupied_squares_mask() const;
-    const bitmask& get_free_squares_mask() const;
+    const bitmask& get_occupied_sqrs_mask() const;
+    const bitmask& get_free_sqrs_mask() const;
     
     void set_w_pieces_bit(int sq_idx);
     void clear_w_pieces_bit(int sq_idx);

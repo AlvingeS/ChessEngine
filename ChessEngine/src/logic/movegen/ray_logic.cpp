@@ -14,7 +14,7 @@ void RayLogic::add_moves_from_free_ray(
     int bit_idx_from,
     model::Movelist& movelist)
 {
-    std::vector<int>& free_ray_indices = Containers::get_sliding_piece_free_moves_indices();
+    std::vector<int>& free_ray_indices = Containers::get_sliding_piece_quiet_moves_indices();
     BitBasics::get_bit_indices(free_ray_indices, free_ray);
 
     for (int bit_idx : free_ray_indices) {

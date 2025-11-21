@@ -18,7 +18,7 @@ KnightGen::KnightGen(model::Board& board)
 void KnightGen::generate(bool is_w, model::Movelist& movelist) 
 {
     std::vector<int>& knight_sq_idxs = Containers::get_piece_position_indices();
-    std::vector<int>& free_moves_sq_idxs = Containers::get_leaping_piece_free_moves_indices();
+    std::vector<int>& quiet_moves_sq_idxs = Containers::get_leaping_piece_quiet_moves_indices();
     std::vector<int>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_indices();
 
     BitBasics::get_bit_indices(knight_sq_idxs, is_w ? bitboards_.get_w_knights_bb()
@@ -27,18 +27,18 @@ void KnightGen::generate(bool is_w, model::Movelist& movelist)
     for (int knight_sq_idx : knight_sq_idxs) {
         bitmask attack_mask = knight_attack_table_[knight_sq_idx];
 
-        bitmask free_moves_mask = attack_mask & occupancy_masks_.get_free_squares_mask();
+        bitmask quiet_moves_mask = attack_mask & occupancy_masks_.get_free_squares_mask();
         
         bitmask opp_pieces_mask = is_w ? occupancy_masks_.get_b_pieces_mask()
                                        : occupancy_masks_.get_w_pieces_mask();
         
         bitmask capture_moves_mask = attack_mask & opp_pieces_mask;
 
-        BitBasics::get_bit_indices(free_moves_sq_idxs, free_moves_mask);
+        BitBasics::get_bit_indices(quiet_moves_sq_idxs, quiet_moves_mask);
         BitBasics::get_bit_indices(capture_moves_sq_idxs, capture_moves_mask);
 
-        for (int free_move_sq_idx : free_moves_sq_idxs) {
-            movelist.add_move(model::Move(knight_sq_idx, free_move_sq_idx, model::Move::QUITE_FLAG));
+        for (int quiet_move_sq_idx : quiet_moves_sq_idxs) {
+            movelist.add_move(model::Move(knight_sq_idx, quiet_move_sq_idx, model::Move::QUITE_FLAG));
         }
 
         for (int capture_move_sq_idx : capture_moves_sq_idxs) {

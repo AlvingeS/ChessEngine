@@ -1,13 +1,13 @@
 namespace logic {
 
-inline std::vector<int>& Containers::get_sliding_piece_free_moves_indices()
+inline std::vector<int>& Containers::get_sliding_piece_quiet_moves_indices()
 {
-    return sliding_piece_free_moves_indices_;
+    return sliding_piece_quiet_moves_indices_;
 }
 
-inline std::vector<int>& Containers::get_leaping_piece_free_moves_indices()
+inline std::vector<int>& Containers::get_leaping_piece_quiet_moves_indices()
 {
-    return leaping_piece_free_moves_indices_;
+    return leaping_piece_quiet_moves_indices_;
 }
 
 inline std::vector<int>& Containers::get_sliding_piece_capturable_moves_indices()

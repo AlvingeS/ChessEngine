@@ -25,7 +25,7 @@ void PawnGen::generate(
     bitmask ep_target_mask)
 {
     std::vector<int>& pawn_sq_idxs = Containers::get_piece_position_indices();
-    std::vector<int>& free_moves_idxs = Containers::get_leaping_piece_free_moves_indices();
+    std::vector<int>& quiet_moves_idxs = Containers::get_leaping_piece_quiet_moves_indices();
     std::vector<int>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_indices();
 
     BitBasics::get_bit_indices(pawn_sq_idxs, is_w ? bitboards_.get_w_pawns_bb()
@@ -39,36 +39,36 @@ void PawnGen::generate(
         bitmask attack_mask_diag = is_w ? w_pawn_capture_attack_table_[pawn_sq_idx]
                                                  : b_pawn_capture_attack_table_[pawn_sq_idx];
 
-        bitmask free_moves_mask = attack_mask_straight & occupancy_masks_.get_free_squares_mask();
+        bitmask quiet_moves_mask = attack_mask_straight & occupancy_masks_.get_free_squares_mask();
         
         bitmask opp_pieces_mask = is_w ? occupancy_masks_.get_b_pieces_mask()
                                       : occupancy_masks_.get_w_pieces_mask();
         
         bitmask capture_moves_mask = attack_mask_diag & opp_pieces_mask;
 
-        BitBasics::get_bit_indices(free_moves_idxs, free_moves_mask);
+        BitBasics::get_bit_indices(quiet_moves_idxs, quiet_moves_mask);
         BitBasics::get_bit_indices(capture_moves_sq_idxs, capture_moves_mask);
 
         int offset = is_w ? 8 : -8;
         bool can_promote = (is_w && ChessUtils::rank_from_bit_idx(pawn_sq_idx) == 6) || (!is_w && ChessUtils::rank_from_bit_idx(pawn_sq_idx) == 1);
 
-        if (free_moves_idxs.size() == 2) {
+        if (quiet_moves_idxs.size() == 2) {
             int single_step_idx = (is_w ? 0 : 1);
             int double_step_idx = (is_w ? 1 : 0);
             
-            movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[single_step_idx], model::Move::QUITE_FLAG));
-            movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[double_step_idx], model::Move::DOUBLE_PAWN_PUSH_FLAG));
+            movelist.add_move(model::Move(pawn_sq_idx, quiet_moves_idxs[single_step_idx], model::Move::QUITE_FLAG));
+            movelist.add_move(model::Move(pawn_sq_idx, quiet_moves_idxs[double_step_idx], model::Move::DOUBLE_PAWN_PUSH_FLAG));
 
-        } else if (free_moves_idxs.size() == 1 && free_moves_idxs[0] == pawn_sq_idx + offset) {
+        } else if (quiet_moves_idxs.size() == 1 && quiet_moves_idxs[0] == pawn_sq_idx + offset) {
             // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces
             if (can_promote) {
-                movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[0], model::Move::KNIGHT_PROMO_FLAG));
-                movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[0], model::Move::BISHOP_PROMO_FLAG));
-                movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[0], model::Move::ROOK_PROMO_FLAG));
-                movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[0], model::Move::QUEEN_PROMO_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, quiet_moves_idxs[0], model::Move::KNIGHT_PROMO_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, quiet_moves_idxs[0], model::Move::BISHOP_PROMO_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, quiet_moves_idxs[0], model::Move::ROOK_PROMO_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, quiet_moves_idxs[0], model::Move::QUEEN_PROMO_FLAG));
             
             } else {
-                movelist.add_move(model::Move(pawn_sq_idx, free_moves_idxs[0], model::Move::QUITE_FLAG));
+                movelist.add_move(model::Move(pawn_sq_idx, quiet_moves_idxs[0], model::Move::QUITE_FLAG));
             }
         }
 

@@ -22,7 +22,7 @@ class BaseGenerator : public ::testing::Test
 {
 protected:
     model::Board board;
-    model::Bitboards& bitboards;
+    model::Bitboards& bbs;
     model::OccupancyMasks& occupancy_masks;
     model::PieceMap& piece_map;
     model::ZHasher& z_hasher;
@@ -35,7 +35,7 @@ protected:
 
     BaseGenerator() 
         : board(),
-          bitboards(board.bitboards),
+          bbs(board.bbs),
           occupancy_masks(board.occupancy_masks),
           piece_map(board.piece_map),
           z_hasher(board.z_hasher),
@@ -53,7 +53,7 @@ protected:
     }
 
     virtual void TearDown() override {
-        bitboards.reset_bitboards();
+        bbs.reset_bitboards();
     }
 
     void insertExpectedMoves(std::unordered_set<model::Move>& moves, int from_bit_idx, const std::vector<int>& to_bit_idx, const std::vector<int>& flags) {

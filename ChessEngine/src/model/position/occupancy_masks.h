@@ -9,7 +9,7 @@ class Bitboards;
 class OccupancyMasks {
 
 public:
-    OccupancyMasks(const Bitboards& bitboards);
+    OccupancyMasks(const Bitboards& bbs);
 
     const bitmask& get_w_pieces_mask() const;
     const bitmask& get_b_pieces_mask() const;

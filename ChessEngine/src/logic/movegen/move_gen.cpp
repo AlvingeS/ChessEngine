@@ -16,7 +16,7 @@ MoveGen::MoveGen(
     model::Board& board,
     logic::MoveMaker& move_maker,
     logic::MoveRetractor& move_retractor)
-    : bbs_(board.bitboards)
+    : bbs_(board.bbs)
     , occupancy_masks_(board.occupancy_masks)
     , move_maker_(move_maker)
     , move_retractor_(move_retractor)

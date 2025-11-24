@@ -42,7 +42,7 @@ int main()
             2.063s ~ 3.300M nodes/s ~ 1.3% SF
 
         - 2024-05-08
-            Refactored acessing bitboards to use pointers directly instead of lookup
+            Refactored acessing bbs to use pointers directly instead of lookup
             1.940s ~ 3.471M nodes/s ~ 1.4% SF
 
             Removed castling logic that I had forgotten about, it is all handled by the move_picker

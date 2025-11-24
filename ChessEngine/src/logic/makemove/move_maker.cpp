@@ -8,7 +8,7 @@
 namespace logic {
 
 MoveMaker::MoveMaker(model::Board& board)
-    : bbs_(board.bitboards) 
+    : bbs_(board.bbs) 
     , occupancy_masks_(board.occupancy_masks)
     , piece_map_(board.piece_map)
     , z_hasher_(board.z_hasher)
@@ -130,7 +130,7 @@ model::Piece::Type MoveMaker::remove_moved_piece_from_board(bool is_w, sq_idx fr
     // Update zobrist hash
     z_hasher_.hash_piece_type_at(from_sq, moved_piece_type);
 
-    // Clear the piece from bitboards, squarelookup and gamestate bitmasks
+    // Clear the piece from bbs, squarelookup and gamestate bitmasks
     bbs_.clear_piece_type_bit(from_sq, moved_piece_type);
     piece_map_.set_piece_type_at(from_sq, model::Piece::Type::EMPTY);
 

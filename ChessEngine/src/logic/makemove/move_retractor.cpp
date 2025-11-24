@@ -7,7 +7,7 @@ namespace logic {
 
 MoveRetractor::MoveRetractor(
     model::Board& board
-) : bbs_(board.bitboards), 
+) : bbs_(board.bbs), 
     occupancy_masks_(board.occupancy_masks), 
     piece_map_(board.piece_map), 
     z_hasher_(board.z_hasher)
@@ -154,7 +154,7 @@ void MoveRetractor::unmake_move(
     bool was_w, 
     MoveResult previous_move_result) 
 {
-    // If the move is a castle, update the bitboards and return
+    // If the move is a castle, update the bbs and return
     if (previous_move.is_any_castle()) {
         unmake_castle_move(was_w, previous_move.is_king_castle());
         return;

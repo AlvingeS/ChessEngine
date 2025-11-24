@@ -10,7 +10,7 @@
 namespace logic {
 
 KingGen::KingGen(model::Board& board) 
-    : bbs_(board.bitboards)
+    : bbs_(board.bbs)
     , occupancy_masks_(board.occupancy_masks)
     , king_attack_table_(attack_tables::king)
 {

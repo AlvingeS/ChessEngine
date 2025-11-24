@@ -11,7 +11,7 @@
 namespace logic {
 
 PawnGen::PawnGen(model::Board& board) 
-    : bbs_(board.bitboards)
+    : bbs_(board.bbs)
     , occupancy_masks_(board.occupancy_masks)
     , w_pawn_quiet_attack_table_(attack_tables::w_pawn_quiet)
     , w_pawn_capture_attack_table_(attack_tables::w_pawn_capture)

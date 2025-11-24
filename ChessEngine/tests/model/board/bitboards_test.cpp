@@ -9,16 +9,16 @@ namespace model {
 class BitboardsTest : public ::testing::Test 
 {
 protected:
-    Bitboards bitboards;
+    Bitboards bbs;
     OccupancyMasks occupancy_masks;
     PieceMap piece_map;
 
     std::string fenOne;
 
     BitboardsTest()
-        : bitboards(), 
-        occupancy_masks(bitboards), 
-        piece_map(bitboards), 
+        : bbs(), 
+        occupancy_masks(bbs), 
+        piece_map(bbs), 
         fenOne("8/8/8/8/3Pp3/8/8/8") 
     {
         // Constructor body if needed
@@ -34,7 +34,7 @@ protected:
 TEST_F(BitboardsTest, ConstructorInit_WhitePawn) 
 {
     bitboard expected = 0x000000000000FF00ULL;
-    bitboard actual = bitboards.get_bb_from_piece_type(Piece::Type::W_PAWN);
+    bitboard actual = bbs.get_bb_from_piece_type(Piece::Type::W_PAWN);
 
     ASSERT_EQ(expected, actual);
 }
@@ -42,7 +42,7 @@ TEST_F(BitboardsTest, ConstructorInit_WhitePawn)
 TEST_F(BitboardsTest, ConstructorInit_WhiteKnight) 
 {
     bitboard expected = 0x0000000000000042ULL;
-    bitboard actual = bitboards.get_bb_from_piece_type(Piece::Type::W_KNIGHT);
+    bitboard actual = bbs.get_bb_from_piece_type(Piece::Type::W_KNIGHT);
 
     ASSERT_EQ(expected, actual);
 }
@@ -50,7 +50,7 @@ TEST_F(BitboardsTest, ConstructorInit_WhiteKnight)
 TEST_F(BitboardsTest, ConstructorInit_WhiteBishop) 
 {
     bitboard expected = 0x0000000000000024ULL;
-    bitboard actual = bitboards.get_bb_from_piece_type(Piece::Type::W_BISHOP);
+    bitboard actual = bbs.get_bb_from_piece_type(Piece::Type::W_BISHOP);
 
     ASSERT_EQ(expected, actual);
 }
@@ -58,7 +58,7 @@ TEST_F(BitboardsTest, ConstructorInit_WhiteBishop)
 TEST_F(BitboardsTest, ConstructorInit_WhiteRook) 
 {
     bitboard expected = 0x0000000000000081ULL;
-    bitboard actual = bitboards.get_bb_from_piece_type(Piece::Type::W_ROOK);
+    bitboard actual = bbs.get_bb_from_piece_type(Piece::Type::W_ROOK);
 
     ASSERT_EQ(expected, actual);
 }
@@ -66,7 +66,7 @@ TEST_F(BitboardsTest, ConstructorInit_WhiteRook)
 TEST_F(BitboardsTest, ConstructorInit_WhiteQueen) 
 {
     bitboard expected = 0x0000000000000010ULL;
-    bitboard actual = bitboards.get_bb_from_piece_type(Piece::Type::W_QUEEN);
+    bitboard actual = bbs.get_bb_from_piece_type(Piece::Type::W_QUEEN);
 
     ASSERT_EQ(expected, actual);
 }
@@ -74,7 +74,7 @@ TEST_F(BitboardsTest, ConstructorInit_WhiteQueen)
 TEST_F(BitboardsTest, ConstructorInit_WhiteKing) 
 {
     bitboard expected = 0x0000000000000008ULL;
-    bitboard actual = bitboards.get_bb_from_piece_type(Piece::Type::W_KING);
+    bitboard actual = bbs.get_bb_from_piece_type(Piece::Type::W_KING);
 
     ASSERT_EQ(expected, actual);
 }
@@ -82,7 +82,7 @@ TEST_F(BitboardsTest, ConstructorInit_WhiteKing)
 TEST_F(BitboardsTest, ConstructorInit_BlackPawn) 
 {
     bitboard expected = 0x00FF000000000000ULL;
-    bitboard actual = bitboards.get_bb_from_piece_type(Piece::Type::B_PAWN);
+    bitboard actual = bbs.get_bb_from_piece_type(Piece::Type::B_PAWN);
 
     ASSERT_EQ(expected, actual);
 }
@@ -90,7 +90,7 @@ TEST_F(BitboardsTest, ConstructorInit_BlackPawn)
 TEST_F(BitboardsTest, ConstructorInit_BlackKnight) 
 {
     bitboard expected = 0x4200000000000000ULL;
-    bitboard actual = bitboards.get_bb_from_piece_type(Piece::Type::B_KNIGHT);
+    bitboard actual = bbs.get_bb_from_piece_type(Piece::Type::B_KNIGHT);
 
     ASSERT_EQ(expected, actual);
 }
@@ -98,7 +98,7 @@ TEST_F(BitboardsTest, ConstructorInit_BlackKnight)
 TEST_F(BitboardsTest, ConstructorInit_BlackBishop) 
 {
     bitboard expected = 0x2400000000000000ULL;
-    bitboard actual = bitboards.get_bb_from_piece_type(Piece::Type::B_BISHOP);
+    bitboard actual = bbs.get_bb_from_piece_type(Piece::Type::B_BISHOP);
 
     ASSERT_EQ(expected, actual);
 }
@@ -106,7 +106,7 @@ TEST_F(BitboardsTest, ConstructorInit_BlackBishop)
 TEST_F(BitboardsTest, ConstructorInit_BlackRook) 
 {
     bitboard expected = 0x8100000000000000ULL;
-    bitboard actual = bitboards.get_bb_from_piece_type(Piece::Type::B_ROOK);
+    bitboard actual = bbs.get_bb_from_piece_type(Piece::Type::B_ROOK);
 
     ASSERT_EQ(expected, actual);
 }
@@ -114,7 +114,7 @@ TEST_F(BitboardsTest, ConstructorInit_BlackRook)
 TEST_F(BitboardsTest, ConstructorInit_BlackQueen) 
 {
     bitboard expected = 0x1000000000000000ULL;
-    bitboard actual = bitboards.get_bb_from_piece_type(Piece::Type::B_QUEEN);
+    bitboard actual = bbs.get_bb_from_piece_type(Piece::Type::B_QUEEN);
 
     ASSERT_EQ(expected, actual);
 }
@@ -122,7 +122,7 @@ TEST_F(BitboardsTest, ConstructorInit_BlackQueen)
 TEST_F(BitboardsTest, ConstructorInit_BlackKing) 
 {
     bitboard expected = 0x0800000000000000ULL;
-    bitboard actual = bitboards.get_bb_from_piece_type(Piece::Type::B_KING);
+    bitboard actual = bbs.get_bb_from_piece_type(Piece::Type::B_KING);
 
     ASSERT_EQ(expected, actual);
 }
@@ -178,7 +178,7 @@ TEST_F(BitboardsTest, fillPieceMapTest_ShouldReturnStartingPos)
 
 TEST_F(BitboardsTest, fillPieceMapFenOneTest_ShouldReturnTwoPieces) 
 {
-    io::Fen::set_board_from_fen(fenOne, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenOne, bbs, occupancy_masks, piece_map);
 
     for (int i = 0; i < 64; i++) {
         if (i == 27) {

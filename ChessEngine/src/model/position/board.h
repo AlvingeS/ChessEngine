@@ -8,14 +8,14 @@
 namespace model {
 
 struct Board {
-    Bitboards bitboards;
+    Bitboards bbs;
     PieceMap piece_map;
     OccupancyMasks occupancy_masks;
     ZHasher z_hasher;
 
     Board() 
-        : piece_map(bitboards)
-        , occupancy_masks(bitboards)
+        : piece_map(bbs)
+        , occupancy_masks(bbs)
         , z_hasher(piece_map) 
     {}
 };

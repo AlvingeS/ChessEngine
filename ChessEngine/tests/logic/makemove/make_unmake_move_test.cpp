@@ -49,7 +49,7 @@
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_StartingPositionWhite) {
 //         moveGenerator.gen_moves(true, movelist);
 
-//         // Makes copies of the bitboards and piece_map
+//         // Makes copies of the bbs and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = movelist;
@@ -65,7 +65,7 @@
 //         TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_StartingPositionBlack) {
 //         moveGenerator.gen_moves(false, movelist);
 
-//         // Makes copies of the bitboards and piece_map
+//         // Makes copies of the bbs and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
@@ -80,10 +80,10 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesWhite) {
-//         io::Fen::set_board_from_fen(captures, bitboards, occupancy_masks, piece_map);
+//         io::Fen::set_board_from_fen(captures, bbs, occupancy_masks, piece_map);
 //         moveGenerator.gen_moves(true, movelist);
 
-//         // Makes copies of the bitboards and piece_map
+//         // Makes copies of the bbs and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
@@ -97,10 +97,10 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesBlack) {
-//         io::Fen::set_board_from_fen(captures, bitboards, occupancy_masks, piece_map);
+//         io::Fen::set_board_from_fen(captures, bbs, occupancy_masks, piece_map);
 //         moveGenerator.gen_moves(false, movelist);
 
-//         // Makes copies of the bitboards and piece_map
+//         // Makes copies of the bbs and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
@@ -114,10 +114,10 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingWhite) {
-//         io::Fen::set_board_from_fen(castling, bitboards, occupancy_masks, piece_map);
+//         io::Fen::set_board_from_fen(castling, bbs, occupancy_masks, piece_map);
 //         moveGenerator.gen_moves(true, movelist);
 
-//         // Makes copies of the bitboards and piece_map
+//         // Makes copies of the bbs and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
@@ -131,10 +131,10 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingBlack) {
-//         io::Fen::set_board_from_fen(castling, bitboards, occupancy_masks, piece_map);
+//         io::Fen::set_board_from_fen(castling, bbs, occupancy_masks, piece_map);
 //         moveGenerator.gen_moves(false, movelist);
 
-//         // Makes copies of the bitboards and piece_map
+//         // Makes copies of the bbs and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
@@ -148,10 +148,10 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionWhite) {
-//         io::Fen::set_board_from_fen(normalPromotion, bitboards, occupancy_masks, piece_map);
+//         io::Fen::set_board_from_fen(normalPromotion, bbs, occupancy_masks, piece_map);
 //         moveGenerator.gen_moves(true, movelist);
 
-//         // Makes copies of the bitboards and piece_map
+//         // Makes copies of the bbs and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
@@ -165,10 +165,10 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionBlack) {
-//         io::Fen::set_board_from_fen(normalPromotion, bitboards, occupancy_masks, piece_map);
+//         io::Fen::set_board_from_fen(normalPromotion, bbs, occupancy_masks, piece_map);
 //         moveGenerator.gen_moves(false, movelist);
 
-//         // Makes copies of the bitboards and piece_map
+//         // Makes copies of the bbs and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
@@ -182,10 +182,10 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionWhite) {
-//         io::Fen::set_board_from_fen(capturePromotion, bitboards, occupancy_masks, piece_map);
+//         io::Fen::set_board_from_fen(capturePromotion, bbs, occupancy_masks, piece_map);
 //         moveGenerator.gen_moves(true, movelist);
 
-//         // Makes copies of the bitboards and piece_map
+//         // Makes copies of the bbs and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
@@ -199,10 +199,10 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionBlack) {
-//         io::Fen::set_board_from_fen(capturePromotion, bitboards, occupancy_masks, piece_map);
+//         io::Fen::set_board_from_fen(capturePromotion, bbs, occupancy_masks, piece_map);
 //         moveGenerator.gen_moves(false, movelist);
 
-//         // Makes copies of the bitboards and piece_map
+//         // Makes copies of the bbs and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
 //         std::vector<model::Move> moves = getMoves();
@@ -216,12 +216,12 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_EnPessantWhite) {
-//         io::Fen::set_board_from_fen(enPessant, bitboards, occupancy_masks, piece_map);
+//         io::Fen::set_board_from_fen(enPessant, bbs, occupancy_masks, piece_map);
 
 //         // Make a double pawn push to enable en pessant
 //         moveGenerator.getBoard().make_move(Move(51, 35, model::Move::DOUBLE_PAWN_PUSH_FLAG), false);
 
-//         // Makes copies of the bitboards and piece_map
+//         // Makes copies of the bbs and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
         
@@ -237,12 +237,12 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_EnPessantBlack) {
-//         io::Fen::set_board_from_fen(enPessant, bitboards, occupancy_masks, piece_map);
+//         io::Fen::set_board_from_fen(enPessant, bbs, occupancy_masks, piece_map);
 
 //         // Make a double pawn push to enable en pessant
 //         moveGenerator.getBoard().make_move(Move(9, 17, model::Move::DOUBLE_PAWN_PUSH_FLAG), true);
 
-//         // Makes copies of the bitboards and piece_map
+//         // Makes copies of the bbs and piece_map
 //         std::vector<bitboard> bitboardsCopy = getBitboards();
 //         std::vector<Piece::Type> pieceMapCopy = getPieceMap();
         
@@ -258,7 +258,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsWhite) {
-//         io::Fen::set_board_from_fen(castling, bitboards, occupancy_masks, piece_map);
+//         io::Fen::set_board_from_fen(castling, bbs, occupancy_masks, piece_map);
 
 //         moveGenerator.gen_castle_moves(true, movelist);
 //         std::vector<model::Move> castlingMoves = getMoves();
@@ -282,7 +282,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsBlack) {
-//         io::Fen::set_board_from_fen(castling, bitboards, occupancy_masks, piece_map);
+//         io::Fen::set_board_from_fen(castling, bbs, occupancy_masks, piece_map);
 
 //         moveGenerator.gen_castle_moves(false, movelist);
 //         std::vector<model::Move> castlingMoves = getMoves();

@@ -30,109 +30,109 @@ protected:
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenPawnChecksWhite_ShouldReturnTrue) 
 {
-    io::Fen::set_board_from_fen(fenPawnChecks, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenPawnChecks, bbs, occupancy_masks, piece_map);
     ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenPawnChecksBlack_ShouldReturnTrue)
 {
-    io::Fen::set_board_from_fen(fenPawnChecks, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenPawnChecks, bbs, occupancy_masks, piece_map);
     ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenKnightChecksWhite_ShouldReturnTrue)
 {
-    io::Fen::set_board_from_fen(fenKnightChecks, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenKnightChecks, bbs, occupancy_masks, piece_map);
     ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenKnightChecksBlack_ShouldReturnTrue)
 {
-    io::Fen::set_board_from_fen(fenKnightChecks, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenKnightChecks, bbs, occupancy_masks, piece_map);
     ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksTrueWhite_ShouldReturnTrue)
 {
-    io::Fen::set_board_from_fen(fenBishopChecksTrue, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenBishopChecksTrue, bbs, occupancy_masks, piece_map);
     ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksTrueBlack_ShouldReturnTrue)
 {
-    io::Fen::set_board_from_fen(fenBishopChecksTrue, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenBishopChecksTrue, bbs, occupancy_masks, piece_map);
     ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksFalseWhite_ShouldReturnFalse)
 {
-    io::Fen::set_board_from_fen(fenBishopChecksFalse, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenBishopChecksFalse, bbs, occupancy_masks, piece_map);
     ASSERT_FALSE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksFalseBlack_ShouldReturnFalse)
 {
-    io::Fen::set_board_from_fen(fenBishopChecksFalse, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenBishopChecksFalse, bbs, occupancy_masks, piece_map);
     ASSERT_FALSE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksTrueWhite_ShouldReturnTrue)
 {
-    io::Fen::set_board_from_fen(fenRookChecksTrue, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenRookChecksTrue, bbs, occupancy_masks, piece_map);
     ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksTrueBlack_ShouldReturnTrue)
 {
-    io::Fen::set_board_from_fen(fenRookChecksTrue, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenRookChecksTrue, bbs, occupancy_masks, piece_map);
     ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksFalseWhite_ShouldReturnFalse)
 {
-    io::Fen::set_board_from_fen(fenRookChecksFalse, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenRookChecksFalse, bbs, occupancy_masks, piece_map);
     ASSERT_FALSE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksFalseBlack_ShouldReturnFalse)
 {
-    io::Fen::set_board_from_fen(fenRookChecksFalse, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenRookChecksFalse, bbs, occupancy_masks, piece_map);
     ASSERT_FALSE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksTrueWhite_ShouldReturnTrue)
 {
-    io::Fen::set_board_from_fen(fenQueenChecksTrue, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenQueenChecksTrue, bbs, occupancy_masks, piece_map);
     ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksTrueBlack_ShouldReturnTrue)
 {
-    io::Fen::set_board_from_fen(fenQueenChecksTrue, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenQueenChecksTrue, bbs, occupancy_masks, piece_map);
     ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksFalseWhite_ShouldReturnFalse)
 {
-    io::Fen::set_board_from_fen(fenQueenChecksFalse, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenQueenChecksFalse, bbs, occupancy_masks, piece_map);
     ASSERT_FALSE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksFalseBlack_ShouldReturnFalse)
 {
-    io::Fen::set_board_from_fen(fenQueenChecksFalse, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(fenQueenChecksFalse, bbs, occupancy_masks, piece_map);
     ASSERT_FALSE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_startingPosWhite_ShouldReturnFalse)
 {
-    io::Fen::set_board_from_fen(startingPos, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(startingPos, bbs, occupancy_masks, piece_map);
     ASSERT_FALSE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_startingPosBlack_ShouldReturnFalse)
 {
-    io::Fen::set_board_from_fen(startingPos, bitboards, occupancy_masks, piece_map);
+    io::Fen::set_board_from_fen(startingPos, bbs, occupancy_masks, piece_map);
     ASSERT_FALSE(moveGenerator.in_check(false));
 }
 

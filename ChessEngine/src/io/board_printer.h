@@ -10,8 +10,8 @@ namespace io {
 class BoardPrinter {
 
 public:
-    BoardPrinter(const model::Bitboards& bitboards);
-    void fill_board(const model::Bitboards& bitboards);
+    BoardPrinter(const model::Bitboards& bbs);
+    void fill_board(const model::Bitboards& bbs);
     void print() const;
 
 private:

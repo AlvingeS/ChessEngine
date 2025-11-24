@@ -14,7 +14,7 @@
 namespace logic {
 
 BishopGen::BishopGen(model::Board& board) 
-    : bbs_(board.bitboards)
+    : bbs_(board.bbs)
     , occupancy_masks_(board.occupancy_masks)
     , diag_ray_attack_table_(attack_tables::diag_ray)
 {}

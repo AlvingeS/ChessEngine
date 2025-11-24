@@ -6,9 +6,9 @@
 
 namespace io {
 
-BoardPrinter::BoardPrinter(const model::Bitboards& bitboards) 
+BoardPrinter::BoardPrinter(const model::Bitboards& bbs) 
 {
-    fill_board(bitboards);
+    fill_board(bbs);
 }
 
 bool BoardPrinter::is_valid_piece(model::Piece::Type piece_type) 
@@ -32,13 +32,13 @@ bool BoardPrinter::is_valid_piece(model::Piece::Type piece_type)
     }
 }
 
-void BoardPrinter::fill_board(const model::Bitboards& bitboards) 
+void BoardPrinter::fill_board(const model::Bitboards& bbs) 
 {
     board_ = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
     
     for (int i = 0; i < 12; i++) {
         model::Piece::Type piece_type = model::Piece::get_type_from_int(i);
-        bitboard bb = bitboards.get_bb_from_idx(i);
+        bitboard bb = bbs.get_bb_from_idx(i);
         char piece_char = model::Piece::get_char_from_type(piece_type);
 
         for (sq_idx sq = 0; sq < 64; sq++) {

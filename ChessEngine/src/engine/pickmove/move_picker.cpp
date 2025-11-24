@@ -10,7 +10,7 @@ namespace engine {
 
 MovePicker::MovePicker(int maxDepth) 
     : board_()
-    , bbs_(board_.bitboards)
+    , bbs_(board_.bbs)
     , piece_map_(board_.piece_map)
     , occupancy_masks_(board_.occupancy_masks)
     , z_hasher_(board_.z_hasher)

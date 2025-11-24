@@ -11,7 +11,7 @@ static const int ROOK_VALUE = 5000;
 static const int QUEEN_VALUE = 9000;
 
 Eval::Eval(model::Board& board) 
-    : bbs_(board.bitboards) 
+    : bbs_(board.bbs) 
 {}
 
 float Eval::evaluate() {

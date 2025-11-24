@@ -10,7 +10,7 @@
 namespace logic {
 
 KnightGen::KnightGen(model::Board& board) 
-    : bbs_(board.bitboards)
+    : bbs_(board.bbs)
     , occupancy_masks_(board.occupancy_masks)
     , knight_attack_table_(attack_tables::knight)
 {}

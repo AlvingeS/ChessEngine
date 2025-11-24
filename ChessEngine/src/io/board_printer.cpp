@@ -41,10 +41,10 @@ void BoardPrinter::fill_board(const model::Bitboards& bitboards)
         bitboard bb = bitboards.get_bb_from_idx(i);
         char piece_char = model::Piece::get_char_from_type(piece_type);
 
-        for (int i = 0; i < 64; i++) {
-            if ((bb >> i) & 1) {
-                int row = i / 8;
-                int col = i % 8;
+        for (sq_idx sq = 0; sq < 64; sq++) {
+            if ((bb >> sq) & 1) {
+                int row = sq / 8;
+                int col = sq % 8;
                 board_[row][col] = piece_char;
             }
         }

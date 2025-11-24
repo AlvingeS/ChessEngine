@@ -40,8 +40,8 @@ std::string Fen::get_fen_from_board(const model::PieceMap& piece_map)
     std::string fen = "";
     int empty_count = 0;
 
-    for (int i = 63; i >= 0; i--) {
-        if ((i + 1) % 8 == 0 && i != 63) {
+    for (sq_idx sq = 63; sq >= 0; sq--) {
+        if ((sq + 1) % 8 == 0 && sq != 63) {
             if (empty_count != 0) {
                 fen += std::to_string(empty_count);
                 empty_count = 0;
@@ -49,7 +49,7 @@ std::string Fen::get_fen_from_board(const model::PieceMap& piece_map)
             fen += "/";
         }
 
-        model::Piece::Type type = piece_map.get_piece_type_at(i);
+        model::Piece::Type type = piece_map.get_piece_type_at(sq);
         if (type == model::Piece::Type::EMPTY) {
             empty_count++;
         } else {

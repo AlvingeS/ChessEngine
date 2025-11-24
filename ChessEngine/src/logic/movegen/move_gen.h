@@ -63,7 +63,7 @@ public:
     bool in_check(bool is_w);
 
 private:
-    const model::Bitboards& bitboards_;
+    const model::Bitboards& bbs_;
     const model::OccupancyMasks& occupancy_masks_;
     
     logic::MoveMaker& move_maker_;

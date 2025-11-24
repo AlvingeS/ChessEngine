@@ -10,7 +10,7 @@
 namespace logic {
 
 QueenGen::QueenGen(model::Board& board) 
-    : bitboards_(board.bitboards)
+    : bbs_(board.bitboards)
     , occupancy_masks_(board.occupancy_masks)
     , line_ray_attack_table_(attack_tables::line_ray)
     , diag_ray_attack_table_(attack_tables::diag_ray)
@@ -22,8 +22,8 @@ void QueenGen::generate(
 {
     std::vector<int>& queen_sqs = Containers::get_piece_position_idxs();
 
-    BitBasics::get_bit_idxs(queen_sqs, is_w ? bitboards_.get_w_queens_bb()
-                                            : bitboards_.get_b_queens_bb());
+    BitBasics::get_bit_idxs(queen_sqs, is_w ? bbs_.get_w_queens_bb()
+                                            : bbs_.get_b_queens_bb());
 
     for (int queen_sq : queen_sqs) {
         int rank = ChessUtils::rank_from_sq(queen_sq);

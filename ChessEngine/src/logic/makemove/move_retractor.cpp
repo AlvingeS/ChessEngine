@@ -7,7 +7,7 @@ namespace logic {
 
 MoveRetractor::MoveRetractor(
     model::Board& board
-) : bitboards_(board.bitboards), 
+) : bbs_(board.bitboards), 
     occupancy_masks_(board.occupancy_masks), 
     piece_map_(board.piece_map), 
     z_hasher_(board.z_hasher)
@@ -23,10 +23,10 @@ void MoveRetractor::unmake_castle_move(bool was_w, bool wasKingSide)
         rook_from_sq = wasKingSide ? 0 : 7;
         rook_to_sq = wasKingSide ? 2 : 4;
         
-        bitboards_.clear_w_king_bit(king_to_sq);
-        bitboards_.set_w_king_bit(king_from_sq);
-        bitboards_.clear_w_rooks_bit(rook_to_sq);
-        bitboards_.set_w_rooks_bit(rook_from_sq);
+        bbs_.clear_w_king_bit(king_to_sq);
+        bbs_.set_w_king_bit(king_from_sq);
+        bbs_.clear_w_rooks_bit(rook_to_sq);
+        bbs_.set_w_rooks_bit(rook_from_sq);
 
         occupancy_masks_.set_w_pieces_bit(king_from_sq);
         occupancy_masks_.clear_w_pieces_bit(king_to_sq);
@@ -43,10 +43,10 @@ void MoveRetractor::unmake_castle_move(bool was_w, bool wasKingSide)
         rook_from_sq = wasKingSide ? 56 : 63;
         rook_to_sq = wasKingSide ? 58 : 60;
 
-        bitboards_.set_b_king_bit(king_from_sq);
-        bitboards_.clear_b_king_bit(king_to_sq);
-        bitboards_.set_b_rooks_bit(rook_from_sq);
-        bitboards_.clear_b_rooks_bit(rook_to_sq);
+        bbs_.set_b_king_bit(king_from_sq);
+        bbs_.clear_b_king_bit(king_to_sq);
+        bbs_.set_b_rooks_bit(rook_from_sq);
+        bbs_.clear_b_rooks_bit(rook_to_sq);
 
         occupancy_masks_.set_b_pieces_bit(king_from_sq);
         occupancy_masks_.clear_b_pieces_bit(king_to_sq);
@@ -70,11 +70,11 @@ void MoveRetractor::revert_temporary_king_move(bool was_w, bool is_kside)
     sq_idx to_sq = was_w ? 3 : 59;
 
     if (was_w) {
-        bitboards_.clear_w_king_bit(from_sq);
-        bitboards_.set_w_king_bit(to_sq);
+        bbs_.clear_w_king_bit(from_sq);
+        bbs_.set_w_king_bit(to_sq);
     } else {
-        bitboards_.clear_b_king_bit(from_sq);
-        bitboards_.set_b_king_bit(to_sq);
+        bbs_.clear_b_king_bit(from_sq);
+        bbs_.set_b_king_bit(to_sq);
     }
 }
 
@@ -90,10 +90,10 @@ void MoveRetractor::remove_previously_moved_piece_from_board(
     // If the move was not a promotion, remove the piece in the bitboard
     // Else, remove the bit for the promoted piece
     if (not move.is_any_promo()) {
-        bitboards_.clear_piece_type_bit(to_sq, previously_moved_piece_type);
+        bbs_.clear_piece_type_bit(to_sq, previously_moved_piece_type);
     } else {
         model::Piece::Type promotionPieceType = MoveUtils::get_promotion_piece_type(move.get_flag(), was_w);
-        bitboards_.clear_piece_type_bit(to_sq, promotionPieceType);
+        bbs_.clear_piece_type_bit(to_sq, promotionPieceType);
     }
 
     was_w ? occupancy_masks_.clear_w_pieces_bit(to_sq) 
@@ -108,7 +108,7 @@ void MoveRetractor::place_back_captured_piece_on_board(
     bool was_w,
     model::Piece::Type previously_captured_piece_type) 
 {
-    bitboards_.set_piece_type_bit(capture_sq, previously_captured_piece_type);
+    bbs_.set_piece_type_bit(capture_sq, previously_captured_piece_type);
     piece_map_.set_piece_type_at(capture_sq, previously_captured_piece_type);
 
     // If the move was an ep capture, the to square will be empty
@@ -125,7 +125,7 @@ void MoveRetractor::place_back_moved_piece_on_board(
     sq_idx from_sq, 
     model::Piece::Type  moved_piece_type)
 {
-    bitboards_.set_piece_type_bit(from_sq, moved_piece_type);
+    bbs_.set_piece_type_bit(from_sq, moved_piece_type);
     piece_map_.set_piece_type_at(from_sq, moved_piece_type);
 
     was_w ? occupancy_masks_.set_w_pieces_bit(from_sq) 

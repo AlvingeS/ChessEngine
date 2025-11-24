@@ -8,7 +8,7 @@
 namespace logic {
 
 MoveMaker::MoveMaker(model::Board& board)
-    : bitboards_(board.bitboards) 
+    : bbs_(board.bitboards) 
     , occupancy_masks_(board.occupancy_masks)
     , piece_map_(board.piece_map)
     , z_hasher_(board.z_hasher)
@@ -67,10 +67,10 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
         rook_from_sq = is_kside ? 0 : 7;
         rook_to_sq   = is_kside ? 2 : 4;
 
-        bitboards_.clear_w_king_bit(king_from_sq);
-        bitboards_.set_w_king_bit(king_to_sq);
-        bitboards_.clear_w_rooks_bit(rook_from_sq);
-        bitboards_.set_w_rooks_bit(rook_to_sq);
+        bbs_.clear_w_king_bit(king_from_sq);
+        bbs_.set_w_king_bit(king_to_sq);
+        bbs_.clear_w_rooks_bit(rook_from_sq);
+        bbs_.set_w_rooks_bit(rook_to_sq);
 
         occupancy_masks_.clear_w_pieces_bit(king_from_sq);
         occupancy_masks_.set_w_pieces_bit(king_to_sq);
@@ -87,10 +87,10 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
         rook_from_sq = is_kside ? 56 : 63;
         rook_to_sq   = is_kside ? 58 : 60;
 
-        bitboards_.clear_b_king_bit(king_from_sq);
-        bitboards_.set_b_king_bit(king_to_sq);
-        bitboards_.clear_b_rooks_bit(rook_from_sq);
-        bitboards_.set_b_rooks_bit(rook_to_sq);
+        bbs_.clear_b_king_bit(king_from_sq);
+        bbs_.set_b_king_bit(king_to_sq);
+        bbs_.clear_b_rooks_bit(rook_from_sq);
+        bbs_.set_b_rooks_bit(rook_to_sq);
 
         occupancy_masks_.clear_b_pieces_bit(king_from_sq);
         occupancy_masks_.set_b_pieces_bit(king_to_sq);
@@ -113,11 +113,11 @@ void MoveMaker::make_temporary_king_move(bool is_w, bool is_kside)
                               : (is_w ? 4 : 60);
 
     if (is_w) {
-        bitboards_.clear_w_king_bit(from_sq);
-        bitboards_.set_w_king_bit(to_sq);
+        bbs_.clear_w_king_bit(from_sq);
+        bbs_.set_w_king_bit(to_sq);
     } else {
-        bitboards_.clear_b_king_bit(from_sq);
-        bitboards_.set_b_king_bit(to_sq);
+        bbs_.clear_b_king_bit(from_sq);
+        bbs_.set_b_king_bit(to_sq);
     }
 }
 
@@ -131,7 +131,7 @@ model::Piece::Type MoveMaker::remove_moved_piece_from_board(bool is_w, sq_idx fr
     z_hasher_.hash_piece_type_at(from_sq, moved_piece_type);
 
     // Clear the piece from bitboards, squarelookup and gamestate bitmasks
-    bitboards_.clear_piece_type_bit(from_sq, moved_piece_type);
+    bbs_.clear_piece_type_bit(from_sq, moved_piece_type);
     piece_map_.set_piece_type_at(from_sq, model::Piece::Type::EMPTY);
 
     is_w ? occupancy_masks_.clear_w_pieces_bit(from_sq) 
@@ -145,7 +145,7 @@ void MoveMaker::place_moved_piece_on_board(
     sq_idx to_sq, 
     model::Piece::Type moved_piece_type) 
 {
-    bitboards_.set_piece_type_bit(to_sq, moved_piece_type);
+    bbs_.set_piece_type_bit(to_sq, moved_piece_type);
     piece_map_.set_piece_type_at(to_sq, moved_piece_type);
 
     z_hasher_.hash_piece_type_at(to_sq, moved_piece_type);
@@ -156,7 +156,7 @@ void MoveMaker::place_moved_piece_on_board(
 
 void MoveMaker::remove_captured_piece_from_board(bool is_ep, bool is_w, sq_idx capture_sq, model::Piece::Type  captured_piece_type) {
     // Remove captured piece from board models
-    bitboards_.clear_piece_type_bit(capture_sq, captured_piece_type);
+    bbs_.clear_piece_type_bit(capture_sq, captured_piece_type);
 
     is_w ? occupancy_masks_.clear_b_pieces_bit(capture_sq) 
          : occupancy_masks_.clear_w_pieces_bit(capture_sq);

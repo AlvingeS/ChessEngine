@@ -44,7 +44,7 @@ private:
         model::Piece::Type moved_piece_type
     );
 
-    model::Bitboards& bitboards_;
+    model::Bitboards& bbs_;
     model::OccupancyMasks& occupancy_masks_;
     model::PieceMap& piece_map_;
     model::ZHasher& z_hasher_;

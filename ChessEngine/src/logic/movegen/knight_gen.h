@@ -19,7 +19,7 @@ public:
     void generate(bool is_w, model::Movelist& movelist);
 
 private:
-    const model::Bitboards& bitboards_;
+    const model::Bitboards& bbs_;
     const model::OccupancyMasks& occupancy_masks_;
     
     attack_table& knight_attack_table_;

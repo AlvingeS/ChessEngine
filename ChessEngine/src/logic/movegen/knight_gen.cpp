@@ -10,7 +10,7 @@
 namespace logic {
 
 KnightGen::KnightGen(model::Board& board) 
-    : bitboards_(board.bitboards)
+    : bbs_(board.bitboards)
     , occupancy_masks_(board.occupancy_masks)
     , knight_attack_table_(attack_tables::knight)
 {}
@@ -21,8 +21,8 @@ void KnightGen::generate(bool is_w, model::Movelist& movelist)
     std::vector<sq_idx>& quiet_moves_sqs   = Containers::get_leaping_piece_quiet_moves_idxs();
     std::vector<sq_idx>& capture_moves_sqs = Containers::get_leaping_piece_capturable_moves_idxs();
 
-    BitBasics::get_bit_idxs(knight_sqs, is_w ? bitboards_.get_w_knights_bb()
-                                             : bitboards_.get_b_knights_bb());
+    BitBasics::get_bit_idxs(knight_sqs, is_w ? bbs_.get_w_knights_bb()
+                                             : bbs_.get_b_knights_bb());
 
     for (int knight_sq : knight_sqs) {
         bitmask attack_mask = knight_attack_table_[knight_sq];

@@ -94,7 +94,7 @@ public:
 
     void set_board_from_fen(const std::string& fen)
     {
-        io::Fen::set_board_from_fen(fen, bitboards_, occupancy_masks_, piece_map_);
+        io::Fen::set_board_from_fen(fen, bbs_, occupancy_masks_, piece_map_);
     }
 
     std::string get_fen_from_board() const
@@ -109,7 +109,7 @@ public:
     
 private:
     model::Board board_;
-    model::Bitboards& bitboards_;
+    model::Bitboards& bbs_;
     model::PieceMap& piece_map_;
     model::OccupancyMasks& occupancy_masks_;
     model::ZHasher& z_hasher_;

@@ -10,7 +10,7 @@
 namespace logic {
 
 RookGen::RookGen(model::Board& board)
-    : bitboards_(board.bitboards)
+    : bbs_(board.bitboards)
     , occupancy_masks_(board.occupancy_masks)
     , line_ray_attack_table_(attack_tables::line_ray)
 {}
@@ -21,8 +21,8 @@ void RookGen::generate(
 {
     std::vector<sq_idx>& rook_sqs = Containers::get_piece_position_idxs();
 
-    BitBasics::get_bit_idxs(rook_sqs, is_w ? bitboards_.get_w_rooks_bb()
-                                           : bitboards_.get_b_rooks_bb());
+    BitBasics::get_bit_idxs(rook_sqs, is_w ? bbs_.get_w_rooks_bb()
+                                           : bbs_.get_b_rooks_bb());
 
     // Loop through all rooks and isolate them
     for (int rook_sq : rook_sqs) {

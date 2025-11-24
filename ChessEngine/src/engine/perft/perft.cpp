@@ -10,7 +10,7 @@ namespace engine {
 
 perft::perft(int maxDepth)
     : board_(),
-      bitboards_(board_.bitboards),
+      bbs_(board_.bitboards),
       piece_map_(board_.piece_map),
       occupancy_masks_(board_.occupancy_masks),
       z_hasher_(board_.z_hasher),
@@ -57,7 +57,7 @@ void perft::unmake_move(
 void perft::debug_print(bool verbose) const
 {
     if (verbose) {
-        io::BoardPrinter boardPrinter = io::BoardPrinter(bitboards_);
+        io::BoardPrinter boardPrinter = io::BoardPrinter(bbs_);
         boardPrinter.print();
     }
 }

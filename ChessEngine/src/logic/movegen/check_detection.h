@@ -17,7 +17,7 @@ public:
     bool in_check(bool is_w) const;
 
 private:
-    const model::Bitboards& bitboards_;
+    const model::Bitboards& bbs_;
     const model::OccupancyMasks& occupancy_masks_;
 
     ray_attack_table& line_ray_attack_table_;

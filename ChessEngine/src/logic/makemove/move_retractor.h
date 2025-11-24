@@ -38,7 +38,7 @@ private:
     void place_back_captured_piece_on_board(bool is_ep, int capture_idx, sq_idx to_sq, bool was_w, model::Piece::Type  previous_captured_piece_type);
     void place_back_moved_piece_on_board(bool was_w, sq_idx from_sq, model::Piece::Type  moved_piece_type);
 
-    model::Bitboards& bitboards_;
+    model::Bitboards& bbs_;
     model::OccupancyMasks& occupancy_masks_;
     model::PieceMap& piece_map_;
     const model::ZHasher& z_hasher_;

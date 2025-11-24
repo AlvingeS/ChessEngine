@@ -14,7 +14,7 @@
 namespace logic {
 
 BishopGen::BishopGen(model::Board& board) 
-    : bitboards_(board.bitboards)
+    : bbs_(board.bitboards)
     , occupancy_masks_(board.occupancy_masks)
     , diag_ray_attack_table_(attack_tables::diag_ray)
 {}
@@ -25,8 +25,8 @@ void BishopGen::generate(
 {
     std::vector<sq_idx>& bishop_sqs = Containers::get_piece_position_idxs();
 
-    BitBasics::get_bit_idxs(bishop_sqs, is_w ? bitboards_.get_w_bishops_bb()
-                                             : bitboards_.get_b_bishops_bb());
+    BitBasics::get_bit_idxs(bishop_sqs, is_w ? bbs_.get_w_bishops_bb()
+                                             : bbs_.get_b_bishops_bb());
 
     for (sq_idx sq : bishop_sqs) {
         int rank = ChessUtils::rank_from_sq(sq);

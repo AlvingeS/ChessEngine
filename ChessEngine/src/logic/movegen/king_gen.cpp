@@ -10,7 +10,7 @@
 namespace logic {
 
 KingGen::KingGen(model::Board& board) 
-    : bitboards_(board.bitboards)
+    : bbs_(board.bitboards)
     , occupancy_masks_(board.occupancy_masks)
     , king_attack_table_(attack_tables::king)
 {
@@ -22,8 +22,8 @@ void KingGen::generate(bool is_w, model::Movelist& movelist)
     std::vector<sq_idx>& quiet_moves_sqs      = Containers::get_leaping_piece_quiet_moves_idxs();
     std::vector<sq_idx>& capturable_moves_sqs = Containers::get_leaping_piece_capturable_moves_idxs();
     
-    BitBasics::get_bit_idxs(king_sqs, is_w ? bitboards_.get_w_king_bb()
-                                           : bitboards_.get_b_king_bb());
+    BitBasics::get_bit_idxs(king_sqs, is_w ? bbs_.get_w_king_bb()
+                                           : bbs_.get_b_king_bb());
 
     int king_sq_idx = king_sqs[0];
 

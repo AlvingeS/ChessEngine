@@ -11,7 +11,7 @@
 namespace logic {
 
 PawnGen::PawnGen(model::Board& board) 
-    : bitboards_(board.bitboards)
+    : bbs_(board.bitboards)
     , occupancy_masks_(board.occupancy_masks)
     , w_pawn_quiet_attack_table_(attack_tables::w_pawn_quiet)
     , w_pawn_capture_attack_table_(attack_tables::w_pawn_capture)
@@ -28,8 +28,8 @@ void PawnGen::generate(
     std::vector<sq_idx>& quiet_moves_idxs      = Containers::get_leaping_piece_quiet_moves_idxs();
     std::vector<sq_idx>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_idxs();
 
-    BitBasics::get_bit_idxs(pawn_sqs, is_w ? bitboards_.get_w_pawns_bb()
-                                           : bitboards_.get_b_pawns_bb());
+    BitBasics::get_bit_idxs(pawn_sqs, is_w ? bbs_.get_w_pawns_bb()
+                                           : bbs_.get_b_pawns_bb());
 
     for (int pawn_sq : pawn_sqs) {
 

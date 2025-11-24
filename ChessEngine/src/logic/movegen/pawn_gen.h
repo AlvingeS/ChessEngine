@@ -24,7 +24,7 @@ public:
     );
 
 private:
-    const model::Bitboards& bitboards_;
+    const model::Bitboards& bbs_;
     const model::OccupancyMasks& occupancy_masks_;
 
     attack_table& w_pawn_quiet_attack_table_;

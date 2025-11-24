@@ -19,7 +19,7 @@ CastleGen::CastleGen(
     logic::MoveMaker& move_maker, 
     logic::MoveRetractor& move_retractor, 
     CheckDetection* check_detection)
-    : bitboards_(board.bitboards)
+    : bbs_(board.bitboards)
     , occupancy_masks_(board.occupancy_masks)
     , move_maker_(move_maker)
     , move_retractor_(move_retractor)
@@ -57,17 +57,17 @@ void CastleGen::generate(
 
 bool CastleGen::king_and_rook_on_castle_sqrs(bool is_w, bool is_kside) const
 {
-    bool king_bit_enabled = is_w ? (bitboards_.get_w_king_bb() & (1ULL << 3)) != 0
-                                 : (bitboards_.get_b_king_bb() & (1ULL << 59)) != 0;
+    bool king_bit_enabled = is_w ? (bbs_.get_w_king_bb() & (1ULL << 3)) != 0
+                                 : (bbs_.get_b_king_bb() & (1ULL << 59)) != 0;
     
     if (!king_bit_enabled)
         return false;
 
     // Since we know that the king is present, we can return if the rook is present or not
-    return is_w ? (is_kside ? (bitboards_.get_w_rooks_bb() & (1ULL << 0)) != 0
-                            : (bitboards_.get_w_rooks_bb() & (1ULL << 7)) != 0)
-                : (is_kside ? (bitboards_.get_b_rooks_bb() & (1ULL << 56)) != 0
-                            : (bitboards_.get_b_rooks_bb() & (1ULL << 63)) != 0);
+    return is_w ? (is_kside ? (bbs_.get_w_rooks_bb() & (1ULL << 0)) != 0
+                            : (bbs_.get_w_rooks_bb() & (1ULL << 7)) != 0)
+                : (is_kside ? (bbs_.get_b_rooks_bb() & (1ULL << 56)) != 0
+                            : (bbs_.get_b_rooks_bb() & (1ULL << 63)) != 0);
 }
 
 void CastleGen::make_temporary_king_move(bool is_w, bool is_kside)

@@ -1,6 +1,6 @@
 #include "logic/attack_tables/king_attack_table.h"
 
-#include "logic/movegen/utils/chess_utils.h"
+#include "logic/utils.h"
 
 namespace 
 {
@@ -25,10 +25,10 @@ bitmask get_king_attack_mask(sq_idx sq)
 // Applies reversed file masks to attack_mask to prevent looping around the board
 void remove_wrap_around_from_attack_mask(bitmask& attack_mask, sq_idx sq) 
 {
-    bitmask all_files_except_a_mask = ~logic::chess_utils::get_file_mask(7);
-    bitmask all_files_except_h_mask = ~logic::chess_utils::get_file_mask(0);
+    bitmask all_files_except_a_mask = ~logic::utils::get_file_mask(7);
+    bitmask all_files_except_h_mask = ~logic::utils::get_file_mask(0);
 
-    switch (logic::chess_utils::file_from_sq(sq)) {
+    switch (logic::utils::file_from_sq(sq)) {
         case 0: // If king is on file 0 (H), remove overlap that happened in A
             attack_mask &= all_files_except_a_mask;
             break;

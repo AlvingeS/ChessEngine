@@ -11,7 +11,7 @@
 #include "model/move/movelist.h"
 #include "logic/makemove/move_maker.h"
 #include "logic/makemove/move_retractor.h"
-#include "logic/makemove/move_utils.h"
+#include "logic/utils.h"
 #include "model/move/move.h"
 #include "io/fen.h"
 
@@ -49,8 +49,8 @@ public:
         unsigned char castle_rights
     );
 
-    logic::MoveResult make_move(model::Move move, bool is_w);
-    void unmake_move(model::Move move, bool is_w, logic::MoveResult prevousMoveResult);
+    logic::utils::MoveResult make_move(model::Move move, bool is_w);
+    void unmake_move(model::Move move, bool is_w, logic::utils::MoveResult prevousMoveResult);
     
     int num_move_gen_calls_;
     int total_nodes_;

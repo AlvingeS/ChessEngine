@@ -2,8 +2,8 @@
 #include "engine/pickmove/move_picker.h"
 #include "engine/perft/perft.h"
 #include "io/board_printer.h"
-#include "logic/movegen/utils/chess_utils.h"
-#include "logic/movegen/utils/containers.h"
+#include "logic/utils.h"
+#include "logic/movegen/containers.h"
 
 #include <iostream>
 #include <chrono>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "model/types.h"
-#include "logic/makemove/move_utils.h"
+#include "logic/utils.h"
 
 namespace model {
     class Board;
@@ -19,7 +19,7 @@ class MoveMaker {
 public:
     MoveMaker(model::Board& board);
     
-    MoveResult make_move(const model::Move& move, bool is_w);
+    utils::MoveResult make_move(const model::Move& move, bool is_w);
     
     void make_temporary_king_move(bool is_w, bool is_kside);
 

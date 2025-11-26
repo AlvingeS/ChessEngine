@@ -39,7 +39,7 @@ void perft::gen_moves(
     move_generator_.gen_moves(is_w, move_lists_[current_depth], ep_target_mask, castle_rights);
 }
 
-logic::MoveResult perft::make_move(
+logic::utils::MoveResult perft::make_move(
     model::Move move,
     bool is_w) 
 {
@@ -49,7 +49,7 @@ logic::MoveResult perft::make_move(
 void perft::unmake_move(
     model::Move move,
     bool is_w,
-    logic::MoveResult previousMoveResult)
+    logic::utils::MoveResult previousMoveResult)
 {
     move_retractor_.unmake_move(move, is_w, previousMoveResult);
 }
@@ -171,7 +171,7 @@ void perft::minimax(
         }
 
         // Make the move and check if we are in any way left in check
-        logic::MoveResult move_result = make_move(currentMove, isMaximizer);
+        logic::utils::MoveResult move_result = make_move(currentMove, isMaximizer);
 
         if (check_condition(
             current_depth, 

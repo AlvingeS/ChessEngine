@@ -4,8 +4,8 @@
 #include "model/move/movelist.h"
 
 #include "logic/attack_tables/attack_tables.h"
-#include "logic/movegen/utils/containers.h"
-#include "logic/movegen/utils/bits.h"
+#include "logic/movegen/containers.h"
+#include "logic/utils.h"
 
 namespace logic {
 
@@ -22,7 +22,7 @@ void KingGen::generate(bool is_w, model::Movelist& movelist)
     std::vector<sq_idx>& quiet_moves_sqs      = Containers::get_leaping_piece_quiet_moves_idxs();
     std::vector<sq_idx>& capturable_moves_sqs = Containers::get_leaping_piece_capturable_moves_idxs();
     
-    bits::get_bit_idxs(king_sqs, is_w ? bbs_.get_w_king_bb()
+    utils::get_bit_idxs(king_sqs, is_w ? bbs_.get_w_king_bb()
                                            : bbs_.get_b_king_bb());
 
     int king_sq_idx = king_sqs[0];
@@ -35,8 +35,8 @@ void KingGen::generate(bool is_w, model::Movelist& movelist)
 
     bitmask capture_moves_mask = attack_mask & opp_pieces_mask;
 
-    bits::get_bit_idxs(quiet_moves_sqs, quiet_moves_mask);
-    bits::get_bit_idxs(capturable_moves_sqs, capture_moves_mask);
+    utils::get_bit_idxs(quiet_moves_sqs, quiet_moves_mask);
+    utils::get_bit_idxs(capturable_moves_sqs, capture_moves_mask);
 
     for (sq_idx to_sq : quiet_moves_sqs) {
         movelist.add_move(model::Move(king_sq_idx, to_sq, model::Move::QUITE_FLAG));

@@ -92,7 +92,7 @@ void MoveRetractor::remove_previously_moved_piece_from_board(
     if (not move.is_any_promo()) {
         bbs_.clear_piece_type_bit(to_sq, previously_moved_piece_type);
     } else {
-        model::Piece::Type promotionPieceType = move_utils::get_promotion_piece_type(move.get_flag(), was_w);
+        model::Piece::Type promotionPieceType = utils::get_promotion_piece_type(move.get_flag(), was_w);
         bbs_.clear_piece_type_bit(to_sq, promotionPieceType);
     }
 
@@ -152,7 +152,7 @@ model::Piece::Type MoveRetractor::determine_moved_piece_type(
 void MoveRetractor::unmake_move(
     const model::Move& previous_move, 
     bool was_w, 
-    MoveResult previous_move_result) 
+    utils::MoveResult previous_move_result) 
 {
     // If the move is a castle, update the bbs and return
     if (previous_move.is_any_castle()) {
@@ -176,7 +176,7 @@ void MoveRetractor::unmake_move(
     // We place back the captured piece if there was one
     if (previous_move.is_any_capture()) {
        // Calculate the index of the previously captured piece, might be EP
-        sq_idx capture_sq = move_utils::determine_capture_sq(previous_move, was_w);
+        sq_idx capture_sq = utils::determine_capture_sq(previous_move, was_w);
 
         place_back_captured_piece_on_board(previous_move.is_ep_capture(), capture_sq, to_sq, was_w, previous_move_result.captured_piece_type);
     } else {

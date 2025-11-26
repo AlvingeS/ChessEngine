@@ -1,4 +1,4 @@
-#include "logic/movegen/utils/containers.h"
+#include "logic/movegen/containers.h"
 
 namespace logic {
 

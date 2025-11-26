@@ -80,7 +80,7 @@ void MovePicker::gen_moves(
     move_generator_.gen_moves(is_w, move_lists_[current_depth], ep_target_mask, castle_rights);
 }
 
-logic::MoveResult MovePicker::make_move(model::Move move, bool is_w) 
+logic::utils::MoveResult MovePicker::make_move(model::Move move, bool is_w) 
 {
     return move_maker_.make_move(move, is_w);
 }
@@ -88,7 +88,7 @@ logic::MoveResult MovePicker::make_move(model::Move move, bool is_w)
 void MovePicker::unmake_move(
     model::Move move,
     bool is_w,
-    logic::MoveResult previousMoveResult)
+    logic::utils::MoveResult previousMoveResult)
 {
     move_retractor_.unmake_move(move, is_w, previousMoveResult);
 }
@@ -219,7 +219,7 @@ void MovePicker::minimax(
         }
 
         // Make the move and check if we are in any way left in check
-        logic::MoveResult move_result = make_move(current_move, is_maximizer);
+        logic::utils::MoveResult move_result = make_move(current_move, is_maximizer);
 
         if (check_condition(
             current_depth, 

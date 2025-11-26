@@ -3,8 +3,8 @@
 #include "model/position/board.h"
 
 #include "logic/movegen/rays.h"
-#include "logic/movegen/utils/chess_utils.h"
-#include "logic/movegen/utils/bits.h"
+#include "logic/utils.h"
+#include "logic/utils.h"
 #include "logic/attack_tables/attack_tables.h"
 #include "logic/attack_tables/attack_tables.h"
 
@@ -25,7 +25,7 @@ bool CheckDetection::in_check(bool is_w) const
     sq_idx king_sq, opp_king_sq;
     int king_rank_diff, king_file_diff;
 
-    king_sq = bits::lsb_idx(is_w ? bbs_.get_w_king_bb()
+    king_sq = utils::lsb_idx(is_w ? bbs_.get_w_king_bb()
                                       : bbs_.get_b_king_bb());
 
     // Check if any opponent rooks or queens are attacking the king
@@ -79,11 +79,11 @@ bool CheckDetection::in_check(bool is_w) const
         return true;
 
     // Check if the king is in check from an adjacent king
-    opp_king_sq = bits::lsb_idx(is_w ? bbs_.get_b_king_bb()
+    opp_king_sq = utils::lsb_idx(is_w ? bbs_.get_b_king_bb()
                                           : bbs_.get_w_king_bb());
 
-    king_rank_diff = chess_utils::abs(chess_utils::rank_from_sq(king_sq) - chess_utils::rank_from_sq(opp_king_sq));
-    king_file_diff = chess_utils::abs(chess_utils::file_from_sq(king_sq) - chess_utils::file_from_sq(opp_king_sq));
+    king_rank_diff = utils::abs(utils::rank_from_sq(king_sq) - utils::rank_from_sq(opp_king_sq));
+    king_file_diff = utils::abs(utils::file_from_sq(king_sq) - utils::file_from_sq(opp_king_sq));
 
     int manhattan_distance = king_rank_diff + king_file_diff;
 

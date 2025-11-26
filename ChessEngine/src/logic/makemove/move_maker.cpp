@@ -1,6 +1,6 @@
 #include "logic/makemove/move_maker.h"
 
-#include "logic/makemove/move_utils.h"
+#include "logic/utils.h"
 
 #include "model/position/board.h"
 #include "model/move/move.h"
@@ -14,9 +14,9 @@ MoveMaker::MoveMaker(model::Board& board)
     , z_hasher_(board.z_hasher)
 {}
 
-MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
+utils::MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
 {
-    auto move_result = MoveResult();
+    auto move_result = utils::MoveResult();
 
     // If the move is a castle, update and return
     if (move.is_any_castle()) {
@@ -34,7 +34,7 @@ MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
     // If the move is a capture, handle memory and remove the captured piece
     if (move.is_any_capture()) {
         // Calculate sq of captured piece, might be EP
-        sq_idx capture_sq = move_utils::determine_capture_sq(move, is_w);
+        sq_idx capture_sq = utils::determine_capture_sq(move, is_w);
 
         model::Piece::Type captured_piece_type = piece_map_.get_piece_type_at(capture_sq);
         remove_captured_piece_from_board(move.is_ep_capture(), is_w, capture_sq, captured_piece_type);
@@ -44,7 +44,7 @@ MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
 
     // Update the moved piece type if the move is a promotion    
     if (move.is_any_promo())
-        moved_piece_type = move_utils::get_promotion_piece_type(move.get_flag(), is_w);
+        moved_piece_type = utils::get_promotion_piece_type(move.get_flag(), is_w);
 
     move_result.moved_piece_type = moved_piece_type;
 

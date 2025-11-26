@@ -47,8 +47,8 @@ public:
         unsigned char castle_rights
     );
 
-    logic::MoveResult make_move(model::Move move, bool is_w);
-    void unmake_move(model::Move move, bool is_w, logic::MoveResult previousMoveResult);
+    logic::utils::MoveResult make_move(model::Move move, bool is_w);
+    void unmake_move(model::Move move, bool is_w, logic::utils::MoveResult previousMoveResult);
     
     int num_move_gen_calls_;
     int total_nodes_;

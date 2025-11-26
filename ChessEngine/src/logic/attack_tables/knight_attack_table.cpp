@@ -1,6 +1,6 @@
 #include "logic/attack_tables/knight_attack_table.h"
 
-#include "logic/movegen/utils/chess_utils.h"
+#include "logic/utils.h"
 
 namespace 
 {
@@ -25,15 +25,15 @@ bitmask get_knight_attack_mask(sq_idx sq)
 // Applies reversed file masks to attack_mask to prevent looping around the board
 void remove_wrap_around_from_attack_mask(bitmask& attack_mask, sq_idx sq) 
 {
-    bitmask a_file_mask = logic::chess_utils::get_file_mask(7);
-    bitmask b_file_mask = logic::chess_utils::get_file_mask(6);
+    bitmask a_file_mask = logic::utils::get_file_mask(7);
+    bitmask b_file_mask = logic::utils::get_file_mask(6);
     bitmask all_files_except_ab_mask = ~(a_file_mask | b_file_mask);
 
-    bitmask g_file_mask = logic::chess_utils::get_file_mask(1);
-    bitmask h_file_mask = logic::chess_utils::get_file_mask(0);
+    bitmask g_file_mask = logic::utils::get_file_mask(1);
+    bitmask h_file_mask = logic::utils::get_file_mask(0);
     bitmask all_files_except_gh_mask = ~(g_file_mask | h_file_mask);
 
-    switch (logic::chess_utils::file_from_sq(sq)) {
+    switch (logic::utils::file_from_sq(sq)) {
         case 0: // If knight is on file 0 (H), remove overlap that happened in A or B
             attack_mask &= all_files_except_ab_mask;
             break;

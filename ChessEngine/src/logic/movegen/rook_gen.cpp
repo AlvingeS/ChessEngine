@@ -3,9 +3,9 @@
 #include "model/position/board.h"
 
 #include "logic/movegen/rays.h"
-#include "logic/movegen/utils/containers.h"
-#include "logic/movegen/utils/chess_utils.h"
-#include "logic/movegen/utils/bits.h"
+#include "logic/movegen/containers.h"
+#include "logic/utils.h"
+#include "logic/utils.h"
 
 namespace logic {
 
@@ -21,13 +21,13 @@ void RookGen::generate(
 {
     std::vector<sq_idx>& rook_sqs = Containers::get_piece_position_idxs();
 
-    bits::get_bit_idxs(rook_sqs, is_w ? bbs_.get_w_rooks_bb()
+    utils::get_bit_idxs(rook_sqs, is_w ? bbs_.get_w_rooks_bb()
                                            : bbs_.get_b_rooks_bb());
 
     // Loop through all rooks and isolate them
     for (int rook_sq : rook_sqs) {
-        int rank = chess_utils::rank_from_sq(rook_sq);
-        int file = chess_utils::file_from_sq(rook_sq);
+        int rank = utils::rank_from_sq(rook_sq);
+        int file = utils::file_from_sq(rook_sq);
 
         rays::add_moves_from_line_ray(
             line_ray_attack_table_[rook_sq][LineDir::N],

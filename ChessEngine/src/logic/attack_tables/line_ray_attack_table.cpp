@@ -1,14 +1,14 @@
 #include "logic/attack_tables/line_ray_attack_table.h"
 
-#include "logic/movegen/utils/chess_utils.h"
+#include "logic/utils.h"
 
 
 namespace {
 
 bitmask get_n_ray(sq_idx sq) 
 {
-    int rank = logic::chess_utils::rank_from_sq(sq);
-    int file = logic::chess_utils::file_from_sq(sq);
+    int rank = logic::utils::rank_from_sq(sq);
+    int file = logic::utils::file_from_sq(sq);
 
     bitmask n_ray = 0ULL;
 
@@ -21,8 +21,8 @@ bitmask get_n_ray(sq_idx sq)
 
 bitmask get_e_ray(sq_idx sq) 
 {
-    int rank = logic::chess_utils::rank_from_sq(sq);
-    int file = logic::chess_utils::file_from_sq(sq);
+    int rank = logic::utils::rank_from_sq(sq);
+    int file = logic::utils::file_from_sq(sq);
 
     bitmask e_ray = 0ULL;
 
@@ -35,8 +35,8 @@ bitmask get_e_ray(sq_idx sq)
 
 bitmask get_s_ray(sq_idx sq) 
 {
-    int rank = logic::chess_utils::rank_from_sq(sq);
-    int file = logic::chess_utils::file_from_sq(sq);
+    int rank = logic::utils::rank_from_sq(sq);
+    int file = logic::utils::file_from_sq(sq);
 
     bitmask s_ray = 0ULL;
 
@@ -49,8 +49,8 @@ bitmask get_s_ray(sq_idx sq)
 
 bitmask get_w_ray(sq_idx sq) 
 {
-    int rank = logic::chess_utils::rank_from_sq(sq);
-    int file = logic::chess_utils::file_from_sq(sq);
+    int rank = logic::utils::rank_from_sq(sq);
+    int file = logic::utils::file_from_sq(sq);
 
     bitmask w_ray = 0ULL;
 

@@ -3,9 +3,9 @@
 #include "model/position/board.h"
 
 #include "logic/movegen/rays.h"
-#include "logic/movegen/utils/containers.h"
-#include "logic/movegen/utils/bits.h"
-#include "logic/movegen/utils/chess_utils.h"
+#include "logic/movegen/containers.h"
+#include "logic/utils.h"
+#include "logic/utils.h"
 
 namespace logic {
 
@@ -22,12 +22,12 @@ void QueenGen::generate(
 {
     std::vector<int>& queen_sqs = Containers::get_piece_position_idxs();
 
-    bits::get_bit_idxs(queen_sqs, is_w ? bbs_.get_w_queens_bb()
+    utils::get_bit_idxs(queen_sqs, is_w ? bbs_.get_w_queens_bb()
                                             : bbs_.get_b_queens_bb());
 
     for (int queen_sq : queen_sqs) {
-        int rank = chess_utils::rank_from_sq(queen_sq);
-        int file = chess_utils::file_from_sq(queen_sq);
+        int rank = utils::rank_from_sq(queen_sq);
+        int file = utils::file_from_sq(queen_sq);
 
         rays::add_moves_from_line_ray(
             line_ray_attack_table_[queen_sq][LineDir::N],

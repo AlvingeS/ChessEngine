@@ -1,10 +1,10 @@
 #include "logic/movegen/castle_gen.h"
 
-#include "model/masks.h"
 #include "model/position/board.h"
 
-#include "logic/movegen/utils/chess_utils.h"
+#include "logic/utils.h"
 #include "logic/movegen/check_detection.h"
+#include "logic/masks.h"
 
 #include "logic/makemove/move_maker.h"
 #include "logic/makemove/move_retractor.h"

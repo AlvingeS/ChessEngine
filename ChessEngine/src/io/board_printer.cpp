@@ -1,6 +1,6 @@
 #include "io/board_printer.h"
 
-#include "logic/movegen/utils/bits.h"
+#include "logic/utils.h"
 
 #include <iostream>
 

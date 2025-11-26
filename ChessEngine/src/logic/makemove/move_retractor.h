@@ -1,6 +1,6 @@
 #pragma once
 
-#include "logic/makemove/move_utils.h"
+#include "logic/utils.h"
 #include "model/types.h"
 
 namespace model {
@@ -24,7 +24,7 @@ public:
     void unmake_move(
         const model::Move& move, 
         bool was_w, 
-        MoveResult previous_move_result
+        utils::MoveResult previous_move_result
     );
 
     void revert_temporary_king_move(bool was_w, bool is_kside); 

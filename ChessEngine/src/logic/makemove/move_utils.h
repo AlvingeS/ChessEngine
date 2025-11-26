@@ -18,12 +18,11 @@ struct MoveResult {
     }
 };
 
-struct MoveUtils {
-    
-    static model::Piece::Type get_promotion_piece_type(int promotionFlag, bool is_w);
-    static int determine_capture_sq(const model::Move& move, bool is_w);
+namespace move_utils {
 
-};
+model::Piece::Type get_promotion_piece_type(int promotionFlag, bool is_w);
+int determine_capture_sq(const model::Move& move, bool is_w);
 
+} // namespace move_utils
 
 } // namespace logic

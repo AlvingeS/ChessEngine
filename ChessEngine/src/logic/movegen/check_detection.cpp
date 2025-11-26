@@ -2,9 +2,9 @@
 
 #include "model/position/board.h"
 
-#include "logic/movegen/ray_logic.h"
+#include "logic/movegen/rays.h"
 #include "logic/movegen/utils/chess_utils.h"
-#include "logic/movegen/utils/bit_basics.h"
+#include "logic/movegen/utils/bits.h"
 #include "logic/attack_tables/attack_tables.h"
 #include "logic/attack_tables/attack_tables.h"
 
@@ -25,39 +25,39 @@ bool CheckDetection::in_check(bool is_w) const
     sq_idx king_sq, opp_king_sq;
     int king_rank_diff, king_file_diff;
 
-    king_sq = BitBasics::lsb_idx(is_w ? bbs_.get_w_king_bb()
+    king_sq = bits::lsb_idx(is_w ? bbs_.get_w_king_bb()
                                       : bbs_.get_b_king_bb());
 
     // Check if any opponent rooks or queens are attacking the king
     bitmask opp_rooks_and_queens_mask = is_w ? bbs_.get_b_rooks_bb() | bbs_.get_b_queens_bb()
                                              : bbs_.get_w_rooks_bb() | bbs_.get_w_queens_bb();
 
-    if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq][LineDir::N], true, opp_rooks_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
+    if (rays::check_line_ray(line_ray_attack_table_[king_sq][LineDir::N], true, opp_rooks_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
         return true;
 
-    if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq][LineDir::E], false, opp_rooks_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
+    if (rays::check_line_ray(line_ray_attack_table_[king_sq][LineDir::E], false, opp_rooks_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
         return true;
 
-    if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq][LineDir::S], false, opp_rooks_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
+    if (rays::check_line_ray(line_ray_attack_table_[king_sq][LineDir::S], false, opp_rooks_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
         return true;
 
-    if (RayLogic::check_line_ray(line_ray_attack_table_[king_sq][LineDir::W], true, opp_rooks_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
+    if (rays::check_line_ray(line_ray_attack_table_[king_sq][LineDir::W], true, opp_rooks_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
         return true;
 
     // Check if any opponent bishops or queens are attacking the king
     bitmask opp_bishops_and_queens_mask = is_w ? bbs_.get_b_bishops_bb() | bbs_.get_b_queens_bb() 
                                                : bbs_.get_w_bishops_bb() | bbs_.get_w_queens_bb();
 
-    if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq][DiagDir::NE], true, opp_bishops_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
+    if (rays::check_diag_ray(diag_ray_attack_table_[king_sq][DiagDir::NE], true, opp_bishops_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
         return true;
 
-    if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq][DiagDir::SE], false, opp_bishops_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
+    if (rays::check_diag_ray(diag_ray_attack_table_[king_sq][DiagDir::SE], false, opp_bishops_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
         return true;
 
-    if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq][DiagDir::SW], false, opp_bishops_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
+    if (rays::check_diag_ray(diag_ray_attack_table_[king_sq][DiagDir::SW], false, opp_bishops_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
         return true;
 
-    if (RayLogic::check_diag_ray(diag_ray_attack_table_[king_sq][DiagDir::NW], true, opp_bishops_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
+    if (rays::check_diag_ray(diag_ray_attack_table_[king_sq][DiagDir::NW], true, opp_bishops_and_queens_mask, occupancy_masks_.get_occupied_sqrs_mask()))
         return true;
 
     // Check if any opponent knights are attacking the king
@@ -79,11 +79,11 @@ bool CheckDetection::in_check(bool is_w) const
         return true;
 
     // Check if the king is in check from an adjacent king
-    opp_king_sq = BitBasics::lsb_idx(is_w ? bbs_.get_b_king_bb()
+    opp_king_sq = bits::lsb_idx(is_w ? bbs_.get_b_king_bb()
                                           : bbs_.get_w_king_bb());
 
-    king_rank_diff = ChessUtils::abs(ChessUtils::rank_from_sq(king_sq) - ChessUtils::rank_from_sq(opp_king_sq));
-    king_file_diff = ChessUtils::abs(ChessUtils::file_from_sq(king_sq) - ChessUtils::file_from_sq(opp_king_sq));
+    king_rank_diff = chess_utils::abs(chess_utils::rank_from_sq(king_sq) - chess_utils::rank_from_sq(opp_king_sq));
+    king_file_diff = chess_utils::abs(chess_utils::file_from_sq(king_sq) - chess_utils::file_from_sq(opp_king_sq));
 
     int manhattan_distance = king_rank_diff + king_file_diff;
 

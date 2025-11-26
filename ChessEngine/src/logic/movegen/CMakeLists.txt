@@ -7,7 +7,7 @@ add_library(movegen
     king_gen.cpp
     pawn_gen.cpp
     castle_gen.cpp
-    ray_logic.cpp
+    rays.cpp
     check_detection.cpp
 )
 

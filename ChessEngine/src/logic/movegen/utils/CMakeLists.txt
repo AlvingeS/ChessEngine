@@ -1,5 +1,5 @@
 target_sources(movegen PRIVATE
-    bit_basics.cpp
+    bits.cpp
     containers.cpp
     chess_utils.cpp
 )

@@ -2,7 +2,7 @@
 
 namespace logic {
 
-int ChessUtils::manhattan_distance(int i, int j) 
+int chess_utils::manhattan_distance(int i, int j) 
 {
     int rank_diff = rank_from_sq(i) - rank_from_sq(j);
     int file_diff = file_from_sq(i) - file_from_sq(j);

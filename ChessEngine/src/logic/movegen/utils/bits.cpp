@@ -1,10 +1,10 @@
-#include "logic/movegen/utils/bit_basics.h"
+#include "logic/movegen/utils/bits.h"
 
 #include <bitset>
 
-namespace logic {
+namespace logic::bits {
 
-void BitBasics::get_bit_idxs(std::vector<int>& idxs, bitboard bb)
+void get_bit_idxs(std::vector<int>& idxs, bitboard bb)
 { 
     idxs.clear();
 
@@ -17,4 +17,4 @@ void BitBasics::get_bit_idxs(std::vector<int>& idxs, bitboard bb)
     }
 }
 
-} // namespace logic
+} // namespace logic::bits

@@ -3,20 +3,16 @@
 #include "model/types.h"
 #include "model/position/piece_type.h"
 
-namespace logic {
+namespace logic::chess_utils {
     
-struct ChessUtils {
-    
-    static bitmask get_file_mask(int file);
-    static bitmask get_rank_mask(int rank);
-    static int rank_from_sq(sq_idx sq);
-    static int file_from_sq(sq_idx sq);
-    
-    static int abs(int n);
-    static int manhattan_distance(int i, int j);
+bitmask get_file_mask(int file);
+bitmask get_rank_mask(int rank);
+int rank_from_sq(sq_idx sq);
+int file_from_sq(sq_idx sq);
 
-};
+int abs(int n);
+int manhattan_distance(int i, int j);
 
-} // namespace logic
+} // namespace logic::chess_utils
 
 #include "logic/movegen/utils/chess_utils.inl"

@@ -8,7 +8,7 @@
 #include "logic/movegen/queen_gen.h"
 #include "logic/movegen/king_gen.h"
 #include "logic/movegen/check_detection.h"
-#include "logic/movegen/utils/bit_basics.h"
+#include "logic/movegen/utils/bits.h"
 
 namespace model {
     class Board;

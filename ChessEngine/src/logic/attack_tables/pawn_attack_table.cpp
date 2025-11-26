@@ -70,10 +70,10 @@ bitmask get_b_pawn_capture_attack_mask(sq_idx sq)
 // Applies reversed file masks to attack_mask to prevent looping around the board
 void remove_wrap_around_from_capture_attack_mask(bitmask& capture_attack_mask, sq_idx sq) 
 {
-    bitmask all_files_except_a_mask = ~logic::ChessUtils::get_file_mask(7);
-    bitmask all_files_except_h_mask = ~logic::ChessUtils::get_file_mask(0);
+    bitmask all_files_except_a_mask = ~logic::chess_utils::get_file_mask(7);
+    bitmask all_files_except_h_mask = ~logic::chess_utils::get_file_mask(0);
 
-    switch (logic::ChessUtils::file_from_sq(sq)) {
+    switch (logic::chess_utils::file_from_sq(sq)) {
         case 0: // If pawn is on file 0 (H), remove overlap that happened in A
             capture_attack_mask &= all_files_except_a_mask;
             break;

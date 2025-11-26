@@ -2,9 +2,9 @@
 
 #include "model/position/board.h"
 
-#include "logic/movegen/ray_logic.h"
+#include "logic/movegen/rays.h"
 #include "logic/movegen/utils/containers.h"
-#include "logic/movegen/utils/bit_basics.h"
+#include "logic/movegen/utils/bits.h"
 #include "logic/movegen/utils/chess_utils.h"
 
 namespace logic {
@@ -22,14 +22,14 @@ void QueenGen::generate(
 {
     std::vector<int>& queen_sqs = Containers::get_piece_position_idxs();
 
-    BitBasics::get_bit_idxs(queen_sqs, is_w ? bbs_.get_w_queens_bb()
+    bits::get_bit_idxs(queen_sqs, is_w ? bbs_.get_w_queens_bb()
                                             : bbs_.get_b_queens_bb());
 
     for (int queen_sq : queen_sqs) {
-        int rank = ChessUtils::rank_from_sq(queen_sq);
-        int file = ChessUtils::file_from_sq(queen_sq);
+        int rank = chess_utils::rank_from_sq(queen_sq);
+        int file = chess_utils::file_from_sq(queen_sq);
 
-        RayLogic::add_moves_from_line_ray(
+        rays::add_moves_from_line_ray(
             line_ray_attack_table_[queen_sq][LineDir::N],
             true,
             false,
@@ -42,7 +42,7 @@ void QueenGen::generate(
             occupancy_masks_.get_occupied_sqrs_mask()
         );
 
-        RayLogic::add_moves_from_line_ray(
+        rays::add_moves_from_line_ray(
             line_ray_attack_table_[queen_sq][LineDir::E],
             false,
             true,
@@ -55,7 +55,7 @@ void QueenGen::generate(
             occupancy_masks_.get_occupied_sqrs_mask()
         );
 
-        RayLogic::add_moves_from_line_ray(
+        rays::add_moves_from_line_ray(
             line_ray_attack_table_[queen_sq][LineDir::S],
             false,
             false,
@@ -68,7 +68,7 @@ void QueenGen::generate(
             occupancy_masks_.get_occupied_sqrs_mask()
         );
 
-        RayLogic::add_moves_from_line_ray(
+        rays::add_moves_from_line_ray(
             line_ray_attack_table_[queen_sq][LineDir::W],
             true,
             true,
@@ -81,7 +81,7 @@ void QueenGen::generate(
             occupancy_masks_.get_occupied_sqrs_mask()
         );
 
-        RayLogic::add_moves_from_diag_ray(
+        rays::add_moves_from_diag_ray(
             diag_ray_attack_table_[queen_sq][DiagDir::NE],
             true,
             is_w,
@@ -93,7 +93,7 @@ void QueenGen::generate(
             occupancy_masks_.get_occupied_sqrs_mask()
         );
 
-        RayLogic::add_moves_from_diag_ray(
+        rays::add_moves_from_diag_ray(
             diag_ray_attack_table_[queen_sq][DiagDir::SE],
             false,
             is_w,
@@ -105,7 +105,7 @@ void QueenGen::generate(
             occupancy_masks_.get_occupied_sqrs_mask()
         );
 
-        RayLogic::add_moves_from_diag_ray(
+        rays::add_moves_from_diag_ray(
             diag_ray_attack_table_[queen_sq][DiagDir::SW],
             false,
             is_w,
@@ -117,7 +117,7 @@ void QueenGen::generate(
             occupancy_masks_.get_occupied_sqrs_mask()
         );
         
-        RayLogic::add_moves_from_diag_ray(
+        rays::add_moves_from_diag_ray(
             diag_ray_attack_table_[queen_sq][DiagDir::NW],
             true,
             is_w,

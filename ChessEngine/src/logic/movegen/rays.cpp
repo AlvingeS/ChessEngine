@@ -1,41 +1,41 @@
-#include "logic/movegen/ray_logic.h"
+#include "logic/movegen/rays.h"
 
 #include "model/move/movelist.h"
 #include "model/move/move.h"
 
 #include "logic/movegen/utils/containers.h"
 #include "logic/movegen/utils/chess_utils.h"
-#include "logic/movegen/utils/bit_basics.h"
+#include "logic/movegen/utils/bits.h"
 
-namespace logic {
+namespace logic::rays {
 
-void RayLogic::add_moves_from_free_ray(
+void add_moves_from_free_ray(
     bitmask free_ray,
     sq_idx from_sq,
     model::Movelist& movelist)
 {
     std::vector<int>& free_ray_sqs = Containers::get_sliding_piece_quiet_moves_idxs();
-    BitBasics::get_bit_idxs(free_ray_sqs, free_ray);
+    bits::get_bit_idxs(free_ray_sqs, free_ray);
 
     for (sq_idx to_sq : free_ray_sqs) {
         movelist.add_move(model::Move(from_sq, to_sq, model::Move::QUITE_FLAG));
     }
 }
 
-void RayLogic::add_move_if_blocker_is_opp(
+void add_move_if_blocker_is_opp(
     sq_idx blocker_sq,
     bool is_w,
     sq_idx from_sq,
     model::Movelist& movelist,
     bitmask w_pieces_mask)
 {
-    bool blocker_is_w = BitBasics::get_bit(w_pieces_mask, blocker_sq);
+    bool blocker_is_w = bits::get_bit(w_pieces_mask, blocker_sq);
 
     if (blocker_is_w != is_w)
         movelist.add_move(model::Move(from_sq, blocker_sq, model::Move::CAPTURE_FLAG));
 }
 
-void RayLogic::add_moves_between_blocker_and_piece_on_line_ray(
+void add_moves_between_blocker_and_piece_on_line_ray(
     sq_idx blocker_sq,
     bool along_file,
     bool start_from_blocker,
@@ -45,16 +45,16 @@ void RayLogic::add_moves_between_blocker_and_piece_on_line_ray(
     model::Movelist& movelist)
 {
     int start = start_from_blocker 
-                ? (along_file ? ChessUtils::file_from_sq(blocker_sq) 
-                              : ChessUtils::rank_from_sq(blocker_sq)) 
+                ? (along_file ? chess_utils::file_from_sq(blocker_sq) 
+                              : chess_utils::rank_from_sq(blocker_sq)) 
                 : (along_file ? rook_file 
                               : rook_rank);
                             
     int stop = start_from_blocker 
                ? (along_file ? rook_file 
                              : rook_rank) 
-               : (along_file ? ChessUtils::file_from_sq(blocker_sq) 
-                             : ChessUtils::rank_from_sq(blocker_sq));
+               : (along_file ? chess_utils::file_from_sq(blocker_sq) 
+                             : chess_utils::rank_from_sq(blocker_sq));
 
     for (int i = start - 1; i > stop; --i) {
         sq_idx to_sq = along_file ? rook_rank * 8 + i 
@@ -64,7 +64,7 @@ void RayLogic::add_moves_between_blocker_and_piece_on_line_ray(
     }
 }
 
-void RayLogic::add_moves_between_blocker_and_pice_on_diag_ray(
+void add_moves_between_blocker_and_pice_on_diag_ray(
     sq_idx blocker_sq,
     bool start_from_blocker,
     int bishop_rank,
@@ -73,20 +73,20 @@ void RayLogic::add_moves_between_blocker_and_pice_on_diag_ray(
     model::Movelist& movelist)
 {
     int start_rank = start_from_blocker
-                     ? ChessUtils::rank_from_sq(blocker_sq)
+                     ? chess_utils::rank_from_sq(blocker_sq)
                      : bishop_rank;
 
     int start_file = start_from_blocker
-                     ? ChessUtils::file_from_sq(blocker_sq)
+                     ? chess_utils::file_from_sq(blocker_sq)
                      : bishop_file;
 
     int stop_rank = start_from_blocker
                     ? bishop_rank
-                    : ChessUtils::rank_from_sq(blocker_sq);
+                    : chess_utils::rank_from_sq(blocker_sq);
 
     int stop_file = start_from_blocker 
                     ? bishop_file
-                    : ChessUtils::file_from_sq(blocker_sq);
+                    : chess_utils::file_from_sq(blocker_sq);
 
     int rank_diff = start_rank - stop_rank;
     int file_diff = start_file - stop_file;
@@ -104,7 +104,7 @@ void RayLogic::add_moves_between_blocker_and_pice_on_diag_ray(
     }
 }
 
-void RayLogic::add_moves_from_line_ray(
+void add_moves_from_line_ray(
     bitmask ray,
     bool blocker_on_lsb,
     bool along_file,
@@ -120,8 +120,8 @@ void RayLogic::add_moves_from_line_ray(
 
     if (blockers_mask != 0) {
         sq_idx blocker_sq = blocker_on_lsb
-                            ? BitBasics::lsb_idx(blockers_mask)
-                            : BitBasics::msb_idx(blockers_mask);
+                            ? bits::lsb_idx(blockers_mask)
+                            : bits::msb_idx(blockers_mask);
                                
         add_move_if_blocker_is_opp(
             blocker_sq,
@@ -146,7 +146,7 @@ void RayLogic::add_moves_from_line_ray(
     }
 }
 
-void RayLogic::add_moves_from_diag_ray(
+void add_moves_from_diag_ray(
     bitmask ray,
     bool blocker_on_lsb,
     bool is_w,
@@ -161,8 +161,8 @@ void RayLogic::add_moves_from_diag_ray(
 
     if (blockers_mask != 0) {
         sq_idx blocker_sq = blocker_on_lsb
-                            ? BitBasics::lsb_idx(blockers_mask) 
-                            : BitBasics::msb_idx(blockers_mask);
+                            ? bits::lsb_idx(blockers_mask) 
+                            : bits::msb_idx(blockers_mask);
 
         add_move_if_blocker_is_opp(
             blocker_sq, 
@@ -186,7 +186,7 @@ void RayLogic::add_moves_from_diag_ray(
     }
 }
 
-bool RayLogic::check_line_ray(
+bool check_line_ray(
     bitmask line_ray,
     bool is_w,
     bitmask opp_rooks_and_queens_mask,
@@ -202,19 +202,19 @@ bool RayLogic::check_line_ray(
 
     // We know opp_rooks_and_queens_blocker-mask != 0ULL, so if there is only
     // one blocker, then it must be an opponent rook/queen and we must be in check
-    if (BitBasics::pop_count(blockers_mask) == 1)
+    if (bits::pop_count(blockers_mask) == 1)
         return true;
 
-    sq_idx first_blocker_sq = is_w ? BitBasics::lsb_idx(blockers_mask) 
-                                   : BitBasics::msb_idx(blockers_mask);
+    sq_idx first_blocker_sq = is_w ? bits::lsb_idx(blockers_mask) 
+                                   : bits::msb_idx(blockers_mask);
 
-    sq_idx first_opp_rook_or_queen_sq = is_w ? BitBasics::lsb_idx(opp_rooks_and_queens_blocker_mask)
-                                             : BitBasics::msb_idx(opp_rooks_and_queens_blocker_mask);
+    sq_idx first_opp_rook_or_queen_sq = is_w ? bits::lsb_idx(opp_rooks_and_queens_blocker_mask)
+                                             : bits::msb_idx(opp_rooks_and_queens_blocker_mask);
 
     return first_blocker_sq == first_opp_rook_or_queen_sq;
 }
 
-bool RayLogic::check_diag_ray(
+bool check_diag_ray(
     bitmask diag_ray,
     bool is_w,
     bitmask opp_bishops_and_queens_mask,
@@ -230,14 +230,14 @@ bool RayLogic::check_diag_ray(
 
     // We know opp_rooks_and_queens_blocker-mask != 0ULL, so if there is only
     // one blocker, then it must be an opponent rook/queen and we must be in check
-    if (BitBasics::pop_count(blockers_mask) == 1)
+    if (bits::pop_count(blockers_mask) == 1)
         return true;
 
-    sq_idx first_blocker_sq = is_w ? BitBasics::lsb_idx(blockers_mask)
-                                   : BitBasics::msb_idx(blockers_mask);
+    sq_idx first_blocker_sq = is_w ? bits::lsb_idx(blockers_mask)
+                                   : bits::msb_idx(blockers_mask);
 
-    int first_opp_bishop_or_queen_sq = is_w ? BitBasics::lsb_idx(opp_bishops_and_queens_blocker_mask)
-                                            : BitBasics::msb_idx(opp_bishops_and_queens_blocker_mask);
+    int first_opp_bishop_or_queen_sq = is_w ? bits::lsb_idx(opp_bishops_and_queens_blocker_mask)
+                                            : bits::msb_idx(opp_bishops_and_queens_blocker_mask);
 
     return first_blocker_sq == first_opp_bishop_or_queen_sq;
 }

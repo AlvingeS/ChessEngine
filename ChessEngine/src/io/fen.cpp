@@ -2,9 +2,9 @@
 
 #include "model/position/piece_type.h"
 
-namespace io {
+namespace io::fen {
 
-void Fen::set_board_from_fen(
+void set_board_from_fen(
     const std::string& fen, 
     model::Bitboards& bbs, 
     model::OccupancyMasks& occupancy_masks, 
@@ -35,7 +35,7 @@ void Fen::set_board_from_fen(
     occupancy_masks.update_occupancy_masks();
 }
 
-std::string Fen::get_fen_from_board(const model::PieceMap& piece_map)
+std::string get_fen_from_board(const model::PieceMap& piece_map)
 {
     std::string fen = "";
     int empty_count = 0;
@@ -64,4 +64,4 @@ std::string Fen::get_fen_from_board(const model::PieceMap& piece_map)
     return fen;
 }
 
-} // namespace io
+} // namespace io::fen

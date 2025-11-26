@@ -17,7 +17,7 @@ protected:
 
 TEST_F(MoveGeneratorQueenTest, genQueenMoves_fenOneBlack_ShouldReturnXMoves) 
 {
-    io::Fen::set_board_from_fen(fenOne, bbs, occupancy_masks, piece_map);
+    io::fen::set_board_from_fen(fenOne, bbs, occupancy_masks, piece_map);
     moveGenerator.gen_queen_moves(false, movelist);
 
     model::Movelist moves = getMoves();
@@ -36,7 +36,7 @@ TEST_F(MoveGeneratorQueenTest, genQueenMoves_fenOneBlack_ShouldReturnXMoves)
 
 TEST_F(MoveGeneratorQueenTest, genQueenMoves_fenOneWhite_ShouldReturnXMoves) 
 {
-    io::Fen::set_board_from_fen(fenOne, bbs, occupancy_masks, piece_map);
+    io::fen::set_board_from_fen(fenOne, bbs, occupancy_masks, piece_map);
     moveGenerator.gen_queen_moves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -55,7 +55,7 @@ TEST_F(MoveGeneratorQueenTest, genQueenMoves_fenOneWhite_ShouldReturnXMoves)
 
 TEST_F(MoveGeneratorQueenTest, genQueenMoves_StartPosWhite_ShouldReturn0Moves) 
 {
-    io::Fen::set_board_from_fen(startingPos, bbs, occupancy_masks, piece_map);
+    io::fen::set_board_from_fen(startingPos, bbs, occupancy_masks, piece_map);
     moveGenerator.gen_queen_moves(true, movelist);
 
     ASSERT_EQ(movelist.get_move_idx(), 0);
@@ -63,7 +63,7 @@ TEST_F(MoveGeneratorQueenTest, genQueenMoves_StartPosWhite_ShouldReturn0Moves)
 
 TEST_F(MoveGeneratorQueenTest, genQueenMoves_StartPosBlack_ShouldReturn0Moves) 
 {
-    io::Fen::set_board_from_fen(startingPos, bbs, occupancy_masks, piece_map);
+    io::fen::set_board_from_fen(startingPos, bbs, occupancy_masks, piece_map);
     moveGenerator.gen_queen_moves(false, movelist);
 
     ASSERT_EQ(movelist.get_move_idx(), 0);

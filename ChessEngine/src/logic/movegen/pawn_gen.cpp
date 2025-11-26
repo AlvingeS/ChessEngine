@@ -6,7 +6,7 @@
 #include "logic/attack_tables/attack_tables.h"
 #include "logic/movegen/utils/containers.h"
 #include "logic/movegen/utils/chess_utils.h"
-#include "logic/movegen/utils/bit_basics.h"
+#include "logic/movegen/utils/bits.h"
 
 namespace logic {
 
@@ -28,7 +28,7 @@ void PawnGen::generate(
     std::vector<sq_idx>& quiet_moves_idxs      = Containers::get_leaping_piece_quiet_moves_idxs();
     std::vector<sq_idx>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_idxs();
 
-    BitBasics::get_bit_idxs(pawn_sqs, is_w ? bbs_.get_w_pawns_bb()
+    bits::get_bit_idxs(pawn_sqs, is_w ? bbs_.get_w_pawns_bb()
                                            : bbs_.get_b_pawns_bb());
 
     for (int pawn_sq : pawn_sqs) {
@@ -46,11 +46,11 @@ void PawnGen::generate(
         
         bitmask capture_moves_mask = attack_mask_diag & opp_pieces_mask;
 
-        BitBasics::get_bit_idxs(quiet_moves_idxs, quiet_moves_mask);
-        BitBasics::get_bit_idxs(capture_moves_sq_idxs, capture_moves_mask);
+        bits::get_bit_idxs(quiet_moves_idxs, quiet_moves_mask);
+        bits::get_bit_idxs(capture_moves_sq_idxs, capture_moves_mask);
 
         int offset = is_w ? 8 : -8;
-        bool can_promote = (is_w && ChessUtils::rank_from_sq(pawn_sq) == 6) || (!is_w && ChessUtils::rank_from_sq(pawn_sq) == 1);
+        bool can_promote = (is_w && chess_utils::rank_from_sq(pawn_sq) == 6) || (!is_w && chess_utils::rank_from_sq(pawn_sq) == 1);
 
         if (quiet_moves_idxs.size() == 2) {
             int single_step_idx = (is_w ? 0 : 1);
@@ -84,7 +84,7 @@ void PawnGen::generate(
         }
 
         if ((attack_mask_diag & ep_target_mask) != 0) {
-            movelist.add_move(model::Move(pawn_sq, BitBasics::lsb_idx(attack_mask_diag & ep_target_mask), model::Move::EP_CAPTURE_FLAG));
+            movelist.add_move(model::Move(pawn_sq, bits::lsb_idx(attack_mask_diag & ep_target_mask), model::Move::EP_CAPTURE_FLAG));
         }
     }
 }

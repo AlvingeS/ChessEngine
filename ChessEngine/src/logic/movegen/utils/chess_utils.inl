@@ -25,30 +25,30 @@ namespace {
 
 } // namespace 
 
-namespace logic {
+namespace logic::chess_utils {
 
-inline bitmask ChessUtils::get_file_mask(int file) 
+inline bitmask get_file_mask(int file) 
 {
     return FILE_MASK[file];
 }
 
-inline bitmask ChessUtils::get_rank_mask(int rank) 
+inline bitmask get_rank_mask(int rank) 
 {
     return RANK_MASK[rank];
 }
 
-inline int ChessUtils::rank_from_sq(sq_idx sq) 
+inline int rank_from_sq(sq_idx sq) 
 {
     return sq / 8;
 }
 
-inline int ChessUtils::file_from_sq(sq_idx sq) 
+inline int file_from_sq(sq_idx sq) 
 {
     return sq % 8;
 }
 
-inline int ChessUtils::abs(int n) {
+inline int abs(int n) {
     return (n < 0) ? -n : n;
 }
 
-} // namespace logic
+} // namespace logic::chess_utils

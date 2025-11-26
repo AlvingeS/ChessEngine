@@ -81,12 +81,12 @@ public:
 
     void set_board_from_fen(const std::string& fen)
     {
-        io::Fen::set_board_from_fen(fen, bbs_, occupancy_masks_, piece_map_);
+        io::fen::set_board_from_fen(fen, bbs_, occupancy_masks_, piece_map_);
     }
 
     std::string get_fen_from_board() const
     {
-        return io::Fen::get_fen_from_board(piece_map_);
+        return io::fen::get_fen_from_board(piece_map_);
     }
 
     bool diff_between_occupancy_masks() const

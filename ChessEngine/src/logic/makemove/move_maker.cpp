@@ -34,7 +34,7 @@ MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
     // If the move is a capture, handle memory and remove the captured piece
     if (move.is_any_capture()) {
         // Calculate sq of captured piece, might be EP
-        sq_idx capture_sq = MoveUtils::determine_capture_sq(move, is_w);
+        sq_idx capture_sq = move_utils::determine_capture_sq(move, is_w);
 
         model::Piece::Type captured_piece_type = piece_map_.get_piece_type_at(capture_sq);
         remove_captured_piece_from_board(move.is_ep_capture(), is_w, capture_sq, captured_piece_type);
@@ -44,7 +44,7 @@ MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
 
     // Update the moved piece type if the move is a promotion    
     if (move.is_any_promo())
-        moved_piece_type = MoveUtils::get_promotion_piece_type(move.get_flag(), is_w);
+        moved_piece_type = move_utils::get_promotion_piece_type(move.get_flag(), is_w);
 
     move_result.moved_piece_type = moved_piece_type;
 

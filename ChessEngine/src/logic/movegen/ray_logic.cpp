@@ -116,12 +116,12 @@ void RayLogic::add_moves_from_line_ray(
     bitmask w_pieces_mask,
     bitmask occupied_sqrs_mask) 
 {
-    bitmask blocker_mask = ray & occupied_sqrs_mask;          
+    bitmask blockers_mask = ray & occupied_sqrs_mask;          
 
-    if (blocker_mask != 0) {
+    if (blockers_mask != 0) {
         sq_idx blocker_sq = blocker_on_lsb
-                            ? BitBasics::lsb_idx(blocker_mask)
-                            : BitBasics::msb_idx(blocker_mask);
+                            ? BitBasics::lsb_idx(blockers_mask)
+                            : BitBasics::msb_idx(blockers_mask);
                                
         add_move_if_blocker_is_opp(
             blocker_sq,
@@ -157,12 +157,12 @@ void RayLogic::add_moves_from_diag_ray(
     bitmask w_pieces_mask,
     bitmask occupied_sqrs_mask)
 {
-    bitmask blocker_mask = ray & occupied_sqrs_mask;
+    bitmask blockers_mask = ray & occupied_sqrs_mask;
 
-    if (blocker_mask != 0) {
+    if (blockers_mask != 0) {
         sq_idx blocker_sq = blocker_on_lsb
-                            ? BitBasics::lsb_idx(blocker_mask) 
-                            : BitBasics::msb_idx(blocker_mask);
+                            ? BitBasics::lsb_idx(blockers_mask) 
+                            : BitBasics::msb_idx(blockers_mask);
 
         add_move_if_blocker_is_opp(
             blocker_sq, 
@@ -188,56 +188,58 @@ void RayLogic::add_moves_from_diag_ray(
 
 bool RayLogic::check_line_ray(
     bitmask line_ray,
-    bool first_blocker_on_lsb,
+    bool is_w,
     bitmask opp_rooks_and_queens_mask,
     bitmask occupied_sqrs_mask) 
 {
-    bitmask rooks_and_queens_blocker_mask = line_ray & opp_rooks_and_queens_mask;
+    bitmask opp_rooks_and_queens_blocker_mask = line_ray & opp_rooks_and_queens_mask;
     
-    if (rooks_and_queens_blocker_mask == 0ULL)
+    // If no blocker is an opponent rook or queen, we cannot be in check from line ray
+    if (opp_rooks_and_queens_blocker_mask == 0ULL)
         return false;
 
-    bitmask blocker_mask = line_ray & occupied_sqrs_mask;
+    bitmask blockers_mask = line_ray & occupied_sqrs_mask;
 
-    if (BitBasics::pop_count(blocker_mask) == 1)
+    // We know opp_rooks_and_queens_blocker-mask != 0ULL, so if there is only
+    // one blocker, then it must be an opponent rook/queen and we must be in check
+    if (BitBasics::pop_count(blockers_mask) == 1)
         return true;
 
-    int occupied_blocker_idx = first_blocker_on_lsb
-                                 ? BitBasics::lsb_idx(blocker_mask)
-                                 : BitBasics::msb_idx(blocker_mask);
+    sq_idx first_blocker_sq = is_w ? BitBasics::lsb_idx(blockers_mask) 
+                                   : BitBasics::msb_idx(blockers_mask);
 
-    int rooks_and_queens_blocker_idx = first_blocker_on_lsb
-                                         ? BitBasics::lsb_idx(rooks_and_queens_blocker_mask)
-                                         : BitBasics::msb_idx(rooks_and_queens_blocker_mask);
+    sq_idx first_opp_rook_or_queen_sq = is_w ? BitBasics::lsb_idx(opp_rooks_and_queens_blocker_mask)
+                                             : BitBasics::msb_idx(opp_rooks_and_queens_blocker_mask);
 
-    return occupied_blocker_idx == rooks_and_queens_blocker_idx;
+    return first_blocker_sq == first_opp_rook_or_queen_sq;
 }
 
 bool RayLogic::check_diag_ray(
     bitmask diag_ray,
-    bool first_blocker_on_lsb,
+    bool is_w,
     bitmask opp_bishops_and_queens_mask,
     bitmask occupied_sqrs_mask)
 {
-    bitmask bishops_and_queens_blocker_mask = diag_ray & opp_bishops_and_queens_mask;
+    bitmask opp_bishops_and_queens_blocker_mask = diag_ray & opp_bishops_and_queens_mask;
 
-    if (bishops_and_queens_blocker_mask == 0)
+    // If no blocker is an opponent bishop or queen, we cannot be in check from diag ray
+    if (opp_bishops_and_queens_blocker_mask == 0)
         return false;
 
-    bitmask blocker_mask = diag_ray & occupied_sqrs_mask;
+    bitmask blockers_mask = diag_ray & occupied_sqrs_mask;
 
-    if (BitBasics::pop_count(blocker_mask) == 1)
+    // We know opp_rooks_and_queens_blocker-mask != 0ULL, so if there is only
+    // one blocker, then it must be an opponent rook/queen and we must be in check
+    if (BitBasics::pop_count(blockers_mask) == 1)
         return true;
 
-    int occupied_blocker_idx = first_blocker_on_lsb
-                                 ? BitBasics::lsb_idx(blocker_mask)
-                                 : BitBasics::msb_idx(blocker_mask);
+    sq_idx first_blocker_sq = is_w ? BitBasics::lsb_idx(blockers_mask)
+                                   : BitBasics::msb_idx(blockers_mask);
 
-    int bishops_and_queens_blocker_idx = first_blocker_on_lsb
-                                          ? BitBasics::lsb_idx(bishops_and_queens_blocker_mask)
-                                          : BitBasics::msb_idx(bishops_and_queens_blocker_mask);
+    int first_opp_bishop_or_queen_sq = is_w ? BitBasics::lsb_idx(opp_bishops_and_queens_blocker_mask)
+                                            : BitBasics::msb_idx(opp_bishops_and_queens_blocker_mask);
 
-    return occupied_blocker_idx == bishops_and_queens_blocker_idx;
+    return first_blocker_sq == first_opp_bishop_or_queen_sq;
 }
 
 } // namespace logic

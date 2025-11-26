@@ -86,7 +86,7 @@ public:
             const model::Move& move, 
             bool is_w, 
             int current_depth, 
-            int to_idx
+            sq_idx to_sq
     );
 
 private:

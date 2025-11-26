@@ -118,7 +118,7 @@ void SearchMemory::handle_ep_memory(
     const model::Move& move, 
     bool is_w, 
     int current_depth, 
-    int to_idx) 
+    sq_idx to_sq) 
 {
     if (not move.is_double_pawn_push()) {
         set_ep_target_at_depth(current_depth + 1, 0ULL);
@@ -126,13 +126,13 @@ void SearchMemory::handle_ep_memory(
     }
 
     if (move.is_double_pawn_push()) {
-        bitmask ep_target_mask = is_w ? (1ULL << (to_idx - 8)) 
-                                          : (1ULL << (to_idx + 8));
+        bitmask ep_target_mask = is_w ? (1ULL << (to_sq - 8)) 
+                                          : (1ULL << (to_sq + 8));
 
         set_ep_target_at_depth(current_depth + 1, ep_target_mask);
         
         // FIXME: Temporary because I don't know how to implement this haha
-        // z_hasher_.hash_ep_file(to_idx % 8);
+        // z_hasher_.hash_ep_file(to_sq % 8);
     }
 }
 

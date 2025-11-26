@@ -32,10 +32,10 @@ void BishopGen::generate(
         int rank = utils::rank_from_sq(sq);
         int file = utils::file_from_sq(sq);
 
-        rays::add_moves_from_diag_ray(diag_ray_attack_table_[sq][DiagDir::NE], true, is_w, sq, rank, file, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_sqrs_mask());
-        rays::add_moves_from_diag_ray(diag_ray_attack_table_[sq][DiagDir::SE], false, is_w, sq, rank, file, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_sqrs_mask());
-        rays::add_moves_from_diag_ray(diag_ray_attack_table_[sq][DiagDir::SW], false, is_w, sq, rank, file, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_sqrs_mask());
-        rays::add_moves_from_diag_ray(diag_ray_attack_table_[sq][DiagDir::NW], true, is_w, sq, rank, file, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_sqrs_mask());
+        rays::add_moves_from_diag_ray(diag_ray_attack_table_[sq][DiagDir::NE], true, is_w, sq, rank, file, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_squares_mask());
+        rays::add_moves_from_diag_ray(diag_ray_attack_table_[sq][DiagDir::SE], false, is_w, sq, rank, file, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_squares_mask());
+        rays::add_moves_from_diag_ray(diag_ray_attack_table_[sq][DiagDir::SW], false, is_w, sq, rank, file, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_squares_mask());
+        rays::add_moves_from_diag_ray(diag_ray_attack_table_[sq][DiagDir::NW], true, is_w, sq, rank, file, movelist, occupancy_masks_.get_w_pieces_mask(), occupancy_masks_.get_occupied_squares_mask());
     }
 }
 

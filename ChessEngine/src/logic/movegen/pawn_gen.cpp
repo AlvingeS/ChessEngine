@@ -39,7 +39,7 @@ void PawnGen::generate(
         bitmask attack_mask_diag = is_w ? w_pawn_capture_attack_table_[pawn_sq]
                                         : b_pawn_capture_attack_table_[pawn_sq];
 
-        bitmask quiet_moves_mask = attack_mask_straight & occupancy_masks_.get_free_sqrs_mask();
+        bitmask quiet_moves_mask = attack_mask_straight & occupancy_masks_.get_free_squares_mask();
         
         bitmask opp_pieces_mask = is_w ? occupancy_masks_.get_b_pieces_mask()
                                        : occupancy_masks_.get_w_pieces_mask();

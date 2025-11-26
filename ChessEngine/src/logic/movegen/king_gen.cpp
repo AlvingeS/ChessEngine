@@ -28,7 +28,7 @@ void KingGen::generate(bool is_w, model::Movelist& movelist)
     int king_sq_idx = king_sqs[0];
 
     bitmask attack_mask      = king_attack_table_[king_sq_idx];
-    bitmask quiet_moves_mask = attack_mask & occupancy_masks_.get_free_sqrs_mask();
+    bitmask quiet_moves_mask = attack_mask & occupancy_masks_.get_free_squares_mask();
     
     bitmask opp_pieces_mask = is_w ? occupancy_masks_.get_b_pieces_mask() 
                                    : occupancy_masks_.get_w_pieces_mask();

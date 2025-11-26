@@ -30,24 +30,24 @@ inline const bitmask& OccupancyMasks::get_b_pieces_mask() const
     return b_pieces_mask_;
 }
 
-inline const bitmask& OccupancyMasks::get_occupied_sqrs_mask() const 
+inline const bitmask& OccupancyMasks::get_occupied_squares_mask() const 
 {
-    return occupied_sqrs_mask_;
+    return occupied_squares_mask_;
 }
 
-inline const bitmask& OccupancyMasks::get_free_sqrs_mask() const 
+inline const bitmask& OccupancyMasks::get_free_squares_mask() const 
 {
-    return free_sqrs_mask_;
+    return free_squares_mask_;
 }
 
-inline void OccupancyMasks::update_occupied_sqrs_mask() 
+inline void OccupancyMasks::update_occupied_squares_mask() 
 {
-    occupied_sqrs_mask_ = w_pieces_mask_ | b_pieces_mask_;
+    occupied_squares_mask_ = w_pieces_mask_ | b_pieces_mask_;
 }
 
-inline void OccupancyMasks::update_free_sqrs_mask() 
+inline void OccupancyMasks::update_free_squares_mask() 
 {
-    free_sqrs_mask_ = ~occupied_sqrs_mask_;
+    free_squares_mask_ = ~occupied_squares_mask_;
 }
 
 } // namespace model

@@ -114,9 +114,9 @@ void add_moves_from_line_ray(
     int piece_file,
     model::Movelist& movelist,
     bitmask w_pieces_mask,
-    bitmask occupied_sqrs_mask) 
+    bitmask occupied_squares_mask) 
 {
-    bitmask blockers_mask = ray & occupied_sqrs_mask;          
+    bitmask blockers_mask = ray & occupied_squares_mask;          
 
     if (blockers_mask != 0) {
         sq_idx blocker_sq = blocker_on_lsb
@@ -155,9 +155,9 @@ void add_moves_from_diag_ray(
     int piece_file,
     model::Movelist& movelist,
     bitmask w_pieces_mask,
-    bitmask occupied_sqrs_mask)
+    bitmask occupied_squares_mask)
 {
-    bitmask blockers_mask = ray & occupied_sqrs_mask;
+    bitmask blockers_mask = ray & occupied_squares_mask;
 
     if (blockers_mask != 0) {
         sq_idx blocker_sq = blocker_on_lsb
@@ -190,7 +190,7 @@ bool check_line_ray(
     bitmask line_ray,
     bool is_w,
     bitmask opp_rooks_and_queens_mask,
-    bitmask occupied_sqrs_mask) 
+    bitmask occupied_squares_mask) 
 {
     bitmask opp_rooks_and_queens_blocker_mask = line_ray & opp_rooks_and_queens_mask;
     
@@ -198,7 +198,7 @@ bool check_line_ray(
     if (opp_rooks_and_queens_blocker_mask == 0ULL)
         return false;
 
-    bitmask blockers_mask = line_ray & occupied_sqrs_mask;
+    bitmask blockers_mask = line_ray & occupied_squares_mask;
 
     // We know opp_rooks_and_queens_blocker-mask != 0ULL, so if there is only
     // one blocker, then it must be an opponent rook/queen and we must be in check
@@ -218,7 +218,7 @@ bool check_diag_ray(
     bitmask diag_ray,
     bool is_w,
     bitmask opp_bishops_and_queens_mask,
-    bitmask occupied_sqrs_mask)
+    bitmask occupied_squares_mask)
 {
     bitmask opp_bishops_and_queens_blocker_mask = diag_ray & opp_bishops_and_queens_mask;
 
@@ -226,7 +226,7 @@ bool check_diag_ray(
     if (opp_bishops_and_queens_blocker_mask == 0)
         return false;
 
-    bitmask blockers_mask = diag_ray & occupied_sqrs_mask;
+    bitmask blockers_mask = diag_ray & occupied_squares_mask;
 
     // We know opp_rooks_and_queens_blocker-mask != 0ULL, so if there is only
     // one blocker, then it must be an opponent rook/queen and we must be in check

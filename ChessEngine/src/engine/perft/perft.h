@@ -91,7 +91,7 @@ public:
 
     bool diff_between_occupancy_masks() const
     {
-        return (occupancy_masks_.get_b_pieces_mask() | occupancy_masks_.get_w_pieces_mask()) != occupancy_masks_.get_occupied_sqrs_mask();
+        return (occupancy_masks_.get_b_pieces_mask() | occupancy_masks_.get_w_pieces_mask()) != occupancy_masks_.get_occupied_squares_mask();
     }
 
     

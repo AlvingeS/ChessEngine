@@ -47,7 +47,7 @@ void add_moves_from_line_ray(
     int pieceFile,
     model::Movelist& movelist,
     bitmask w_pieces_mask,
-    bitmask occupied_sqrs_mask
+    bitmask occupied_squares_mask
 );
 
 void add_moves_from_diag_ray(
@@ -59,21 +59,21 @@ void add_moves_from_diag_ray(
     int pieceFile,
     model::Movelist& movelist,
     bitmask w_pieces_mask,
-    bitmask occupied_sqrs_mask
+    bitmask occupied_squares_mask
 );
 
 bool check_line_ray(
     bitmask line_ray,
     bool first_blocker_on_lsb,
     bitmask opp_rooks_and_queens_mask,
-    bitmask occupied_sqrs_mask
+    bitmask occupied_squares_mask
 );
 
 bool check_diag_ray(
     bitmask diag_ray,
     bool first_blocker_on_lsb,
     bitmask opp_bishops_and_queens_mask,
-    bitmask occupied_sqrs_mask
+    bitmask occupied_squares_mask
 );
 
 } // namespace logic::rays

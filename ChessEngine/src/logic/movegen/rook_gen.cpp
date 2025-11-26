@@ -39,7 +39,7 @@ void RookGen::generate(
             file, 
             movelist,
             occupancy_masks_.get_w_pieces_mask(),
-            occupancy_masks_.get_occupied_sqrs_mask()
+            occupancy_masks_.get_occupied_squares_mask()
         );
 
         rays::add_moves_from_line_ray(
@@ -52,7 +52,7 @@ void RookGen::generate(
             file, 
             movelist,
             occupancy_masks_.get_w_pieces_mask(),
-            occupancy_masks_.get_occupied_sqrs_mask()
+            occupancy_masks_.get_occupied_squares_mask()
         );
 
         rays::add_moves_from_line_ray(
@@ -65,7 +65,7 @@ void RookGen::generate(
             file, 
             movelist,
             occupancy_masks_.get_w_pieces_mask(),
-            occupancy_masks_.get_occupied_sqrs_mask()
+            occupancy_masks_.get_occupied_squares_mask()
         );
 
         rays::add_moves_from_line_ray(
@@ -78,7 +78,7 @@ void RookGen::generate(
             file, 
             movelist,
             occupancy_masks_.get_w_pieces_mask(),
-            occupancy_masks_.get_occupied_sqrs_mask()
+            occupancy_masks_.get_occupied_squares_mask()
         );
     }
 }

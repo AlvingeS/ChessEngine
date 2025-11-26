@@ -33,8 +33,8 @@ void OccupancyMasks::fill_b_pieces_mask_from_bbs(const Bitboards& bbs)
 
 void OccupancyMasks::update_occupancy_masks() 
 {
-    update_occupied_sqrs_mask();
-    update_free_sqrs_mask();
+    update_occupied_squares_mask();
+    update_free_squares_mask();
 }
 
 } // namespace model

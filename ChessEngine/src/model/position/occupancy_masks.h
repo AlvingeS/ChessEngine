@@ -13,8 +13,8 @@ public:
 
     const bitmask& get_w_pieces_mask() const;
     const bitmask& get_b_pieces_mask() const;
-    const bitmask& get_occupied_sqrs_mask() const;
-    const bitmask& get_free_sqrs_mask() const;
+    const bitmask& get_occupied_squares_mask() const;
+    const bitmask& get_free_squares_mask() const;
     
     void set_w_pieces_bit(sq_idx sq);
     void clear_w_pieces_bit(sq_idx sq);
@@ -25,13 +25,13 @@ public:
     void fill_b_pieces_mask_from_bbs(const Bitboards& bbs);
 
 private:
-    void update_occupied_sqrs_mask();
-    void update_free_sqrs_mask();
+    void update_occupied_squares_mask();
+    void update_free_squares_mask();
 
     bitmask w_pieces_mask_;
     bitmask b_pieces_mask_;
-    bitmask occupied_sqrs_mask_;
-    bitmask free_sqrs_mask_;
+    bitmask occupied_squares_mask_;
+    bitmask free_squares_mask_;
 };
 
 } // namespace model

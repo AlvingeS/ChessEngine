@@ -5,10 +5,15 @@
 namespace logic::masks 
 {
 
-static constexpr bitmask W_KSIDE_CASTLE_MASK  = 0x000000000000006ULL;
-static constexpr bitmask W_QSIDE_CASTLE_MASK  = 0x0000000000000070ULL;
-static constexpr bitmask B_KSIDE_CASTLE_MASK  = 0x0600000000000000ULL;
-static constexpr bitmask B_QSIDE_CASTLE_MASK  = 0x7000000000000000ULL;
+static constexpr bitmask W_KSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK  = 0x000000000000006ULL;
+static constexpr bitmask W_QSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK  = 0x0000000000000070ULL;
+static constexpr bitmask B_KSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK  = 0x0600000000000000ULL;
+static constexpr bitmask B_QSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK  = 0x7000000000000000ULL;
+
+static constexpr castle_rights W_KSIDE_CASTLE_RIGHTS_MASK = 0b0001;
+static constexpr castle_rights W_QSIDE_CASTLE_RIGHTS_MASK = 0b0010;
+static constexpr castle_rights B_KSIDE_CASTLE_RIGHTS_MASK = 0b0100;
+static constexpr castle_rights B_QSIDE_CASTLE_RIGHTS_MASK = 0b1000;
 
 static constexpr bitmask FILE_MASK[8] = {
     0x0101010101010101ULL,
@@ -31,5 +36,7 @@ static constexpr bitmask RANK_MASK[8] = {
     0x00FF000000000000ULL,
     0xFF00000000000000ULL
 };
+
+
 
 } // namespace logic::masks

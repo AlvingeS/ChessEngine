@@ -24,33 +24,30 @@ CastleGen::CastleGen(
     , move_maker_(move_maker)
     , move_retractor_(move_retractor)
     , check_detection_(check_detection) 
-{
-    w_kside_castle_mask_ = masks::W_KSIDE_CASTLE_MASK;
-    w_qside_castle_mask_ = masks::W_QSIDE_CASTLE_MASK;
-    b_kside_castle_mask_ = masks::B_KSIDE_CASTLE_MASK;
-    b_qside_castle_mask_ = masks::B_QSIDE_CASTLE_MASK;
-}
+{}
 
 void CastleGen::generate(
     bool is_w,
     model::Movelist& movelist,
-    unsigned char castle_rights) 
+    castle_rights cr) 
 {
-    if (castle_rights == 0) {
+    if (cr == 0) {
         return;
     }
     
+    // We can generate up to two castle moves depedent on the side and
+    // respective castle rights
     if (is_w) {
-        if (castle_rights & 0b0001)
+        if (cr & masks::W_KSIDE_CASTLE_RIGHTS_MASK)
             gen_single_castle_move(is_w, true, movelist);
 
-        if (castle_rights & 0b0010)
+        if (cr & masks::W_QSIDE_CASTLE_RIGHTS_MASK)
             gen_single_castle_move(is_w, false, movelist);
     } else {
-        if (castle_rights & 0b0100)
+        if (cr & masks::B_KSIDE_CASTLE_RIGHTS_MASK)
             gen_single_castle_move(is_w, true, movelist);
 
-        if (castle_rights & 0b1000)
+        if (cr & masks::B_QSIDE_CASTLE_RIGHTS_MASK)
             gen_single_castle_move(is_w, false, movelist);
     }
 }
@@ -86,10 +83,10 @@ void CastleGen::gen_single_castle_move(
     model::Movelist& movelist)
 {                                                  
     // Check that there are no pieces between the king and rook
-    bitmask space_between_castlers_mask = is_w ? (is_kside ? w_kside_castle_mask_ 
-                                                           : w_qside_castle_mask_)
-                                               : (is_kside ? b_kside_castle_mask_
-                                                           : b_qside_castle_mask_);
+    bitmask space_between_castlers_mask = is_w ? (is_kside ? masks::W_KSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK 
+                                                           : masks::W_QSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK)
+                                               : (is_kside ? masks::B_KSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK
+                                                           : masks::B_QSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK);
     
     if ((space_between_castlers_mask & occupancy_masks_.get_occupied_squares_mask()) != 0)
         return;

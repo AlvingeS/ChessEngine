@@ -41,11 +41,6 @@ private:
     
     CheckDetection* check_detection_;
 
-    bitmask w_kside_castle_mask_;
-    bitmask w_qside_castle_mask_;
-    bitmask b_kside_castle_mask_;
-    bitmask b_qside_castle_mask_;
-
     void gen_single_castle_move(
         bool is_w,
         bool is_kside,

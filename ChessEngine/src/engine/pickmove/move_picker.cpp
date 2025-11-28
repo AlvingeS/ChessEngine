@@ -81,9 +81,9 @@ logic::utils::MoveResult MovePicker::make_move(model::Move move, bool is_w)
 void MovePicker::unmake_move(
     model::Move move,
     bool is_w,
-    logic::utils::MoveResult previousMoveResult)
+    logic::utils::MoveResult previous_move_result)
 {
-    move_retractor_.unmake_move(move, is_w, previousMoveResult);
+    move_retractor_.unmake_move(move, is_w, previous_move_result);
 }
 
 void MovePicker::debug_print(bool verbose) const

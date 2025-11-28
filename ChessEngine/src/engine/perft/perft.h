@@ -48,7 +48,7 @@ public:
     );
 
     logic::utils::MoveResult make_move(model::Move move, bool is_w);
-    void unmake_move(model::Move move, bool is_w, logic::utils::MoveResult previousMoveResult);
+    void unmake_move(model::Move move, bool is_w, logic::utils::MoveResult previous_move_result);
     
     int num_move_gen_calls_;
     int total_nodes_;

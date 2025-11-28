@@ -20,4 +20,4 @@ inline void Bitboards::set_piece_type_bit(sq_idx sq, Piece::Type piece_type)
     *(bbs_[Piece::get_int_from_type(piece_type)]) |= (1ULL << sq);
 }
 
-}
+} // namespace model

@@ -1,4 +1,4 @@
-#include "model/position/board.h"
+#include "model/position/bitboards.h"
 
 namespace model {
 

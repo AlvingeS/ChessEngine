@@ -14,7 +14,7 @@ class ZHasher {
 public:
     ZHasher(PieceMap& piece_map);
     void hash_piece_type_at(sq_idx sq, Piece::Type piece_type);
-    void hash_castle_rights(int castle_rights);
+    void hash_castle_rights(castle_rights c_rights);
     void hash_ep_file(int file);
     void hash_is_w(bool is_w);
 

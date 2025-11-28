@@ -1,6 +1,6 @@
 #include "logic/eval/eval.h"
 
-#include "model/position/board.h"
+#include "model/position/position.h"
 
 namespace logic {
 
@@ -10,8 +10,8 @@ static const int BISHOP_VALUE = 3000;
 static const int ROOK_VALUE = 5000;
 static const int QUEEN_VALUE = 9000;
 
-Eval::Eval(model::Board& board) 
-    : bbs_(board.bbs) 
+Eval::Eval(const model::Position& pos) 
+    : pos_(pos) 
 {}
 
 float Eval::evaluate() {

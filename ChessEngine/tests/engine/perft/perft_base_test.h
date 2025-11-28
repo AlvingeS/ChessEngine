@@ -5,7 +5,7 @@
 #include "io/fen.h"
 
 #include "logic/attack_tables/attack_tables.h"
-#include "model/position/board.h"
+#include "model/position/position.h"
 
 #include <cstdint>
 #include <gtest/gtest.h>
@@ -31,7 +31,7 @@ protected:
 
     // Long run should be depth 5
     bool enable_pos_2_test = true;
-    int posTwoMaxDepth = 4;
+    int posTwomax_depth = 4;
 
     // Long run should be depth 7
     bool enable_pos_3_test = true;

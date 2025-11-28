@@ -6,11 +6,9 @@ namespace io::fen {
 
 void set_board_from_fen(
     const std::string& fen, 
-    model::Bitboards& bbs, 
-    model::OccupancyMasks& occupancy_masks, 
-    model::PieceMap& piece_map) 
+    model::Position& pos) 
 {
-    bbs.reset_bitboards();
+    pos.bbs.reset_bitboards();
 
     int rank = 7;
     int file = 0;
@@ -24,15 +22,15 @@ void set_board_from_fen(
             file += c - '0';
         } else {
             model::Piece::Type type = model::Piece::get_type_from_char(c);
-            bbs.set_piece_type_bit(rank * 8 + 7 - file, type);
+            pos.bbs.set_piece_type_bit(rank * 8 + 7 - file, type);
             file++;
         }
     }
 
-    piece_map.fill_piece_map_from_bitboards(bbs);
-    occupancy_masks.fill_b_pieces_mask_from_bbs(bbs);
-    occupancy_masks.fill_w_pieces_mask_from_bbs(bbs);
-    occupancy_masks.update_occupancy_masks();
+    pos.piece_map.fill_piece_map_from_bitboards(pos.bbs);
+    pos.occ_masks.fill_b_pieces_mask_from_bbs(pos.bbs);
+    pos.occ_masks.fill_w_pieces_mask_from_bbs(pos.bbs);
+    pos.occ_masks.update_occupancy_masks();
 }
 
 std::string get_fen_from_board(const model::PieceMap& piece_map)

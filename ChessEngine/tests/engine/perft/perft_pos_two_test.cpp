@@ -36,7 +36,7 @@ TEST_F(PerftPosTwo, perft_pos2)
 
         int num_debug_moves = 0;
 
-        int depth = long_runs ? posTwoMaxDepth + 1 : posTwoMaxDepth;
+        int depth = long_runs ? posTwomax_depth + 1 : posTwomax_depth;
         depth -= num_debug_moves;
         bool w_to_start = num_debug_moves % 2 == 0;
 

@@ -7,7 +7,7 @@ namespace engine {
 class PerftData {
 
 public:
-    PerftData(int maxDepth);
+    PerftData(int max_depth);
 
     long sum_nodes_to_depth(int depth) const;
     void reset_node_counts();

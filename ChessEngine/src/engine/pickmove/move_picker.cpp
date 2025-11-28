@@ -2,24 +2,20 @@
 
 #include "io/board_printer.h"
 #include "model/constants.h"
+#include "logic/masks.h"
 
 #include <cstdlib>
 #include <iostream>
 
 namespace engine {
 
-MovePicker::MovePicker(int maxDepth) 
-    : board_()
-    , bbs_(board_.bbs)
-    , piece_map_(board_.piece_map)
-    , occupancy_masks_(board_.occupancy_masks)
-    , z_hasher_(board_.z_hasher)
-    , search_memory_(SearchMemory(maxDepth))
-    , move_maker_(logic::MoveMaker(board_))
-    , move_retractor_(logic::MoveRetractor(board_))
-    , move_generator_(logic::MoveGen(board_, move_maker_, move_retractor_))
-    , eval_(logic::Eval(board_))
-    , max_depth_(maxDepth)
+MovePicker::MovePicker(int max_depth) 
+    : pos_(model::Position())
+    , move_maker_(logic::MoveMaker(pos_))
+    , move_retractor_(logic::MoveRetractor(pos_))
+    , move_generator_(logic::MoveGen(pos_, move_maker_, move_retractor_))
+    , eval_(logic::Eval(pos_))
+    , max_depth_(max_depth)
 {
     num_move_gen_calls_ = 0;
     total_nodes_ = 0;
@@ -32,6 +28,7 @@ MovePicker::MovePicker(int maxDepth)
         first_moves_[i] = model::Move();
     }
 
+    undo_stack_.resize(max_depth_);
     move_lists_.resize(max_depth_);
     no_captures_or_pawn_moves_counts_.resize(max_depth_);
 
@@ -64,32 +61,10 @@ long MovePicker::sum_nodes_to_depth(int depth) const {
     return sum;
 }
 
-void MovePicker::gen_moves(
-    bool is_w,
-    int current_depth,
-    bitmask ep_target_mask,
-    unsigned char castle_rights) 
-{
-    move_generator_.gen_moves(is_w, move_lists_[current_depth], ep_target_mask, castle_rights);
-}
-
-logic::utils::MoveResult MovePicker::make_move(model::Move move, bool is_w) 
-{
-    return move_maker_.make_move(move, is_w);
-}
-
-void MovePicker::unmake_move(
-    model::Move move,
-    bool is_w,
-    logic::utils::MoveResult previous_move_result)
-{
-    move_retractor_.unmake_move(move, is_w, previous_move_result);
-}
-
 void MovePicker::debug_print(bool verbose) const
 {
     if (verbose) {
-        io::BoardPrinter boardPrinter = io::BoardPrinter(bbs_);
+        io::BoardPrinter boardPrinter = io::BoardPrinter(pos_.bbs);
         boardPrinter.print();
     }
 }
@@ -131,7 +106,7 @@ bool MovePicker::too_many_pieces_on_board()
 {
     int count = 0;
     for (int i = 0; i < 64; i++) {
-        if (piece_map_.get_piece_type_at(i) != model::Piece::Type::EMPTY) {
+        if (pos_.piece_map.get_piece_type_at(i) != model::Piece::Type::EMPTY) {
             count++;
         }
     }
@@ -181,67 +156,30 @@ void MovePicker::minimax(
         return;
     }
 
-    gen_moves(
+    move_generator_.gen_moves(
         is_maximizer, 
-        current_depth, 
-        search_memory_.get_ep_target_mask_at_depth(current_depth),
-        search_memory_.get_castle_rights_at_depth(current_depth)
+        move_lists_[current_depth]
     );
 
     num_move_gen_calls_++;
     
     size_t num_illegal_moves = 0;
 
-    for (size_t i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
+    for (size_t i = 0; i < constants::MAX_LEGAL_MOVES; i++) { // If I just do auto move : blah blah wont that keep track of the moves instead of movelists?
         model::Move current_move = move_lists_[current_depth].get_move_at(i);
 
+        // End of moves
         if (current_move.get_move() == 0) {
             break;
         }
 
-        if (check_condition(
-            current_depth, 
-            is_maximizer, 
-            first_move_idx, 
-            current_move, 
-            last_move, 
-            verbose, 
-            i)) 
-        {
-            debug_print(verbose);
-        }
+        //  Make move
+        undo_stack_[current_depth] = move_maker_.make_move(current_move, is_maximizer);
 
-        // Make the move and check if we are in any way left in check
-        logic::utils::MoveResult move_result = make_move(current_move, is_maximizer);
-
-        if (check_condition(
-            current_depth, 
-            is_maximizer, 
-            first_move_idx, 
-            current_move, 
-            last_move, 
-            verbose, 
-            i)) 
-        {
-            debug_print(verbose);
-        }
-
-        // FIXME: Move generator should not be queried for this
+        // Check if move is legal, unmake otherwise
         if (move_generator_.in_check(is_maximizer)) {
             num_illegal_moves++;
-            unmake_move(current_move, is_maximizer, move_result);
-
-            if (check_condition(
-                current_depth, 
-                is_maximizer, 
-                first_move_idx, 
-                current_move, 
-                last_move, 
-                verbose, 
-                i)) 
-            {
-                debug_print(verbose);
-            }
+            move_retractor_.unmake_move(current_move, is_maximizer, undo_stack_[current_depth]);
 
             if (num_illegal_moves == i + 1 && move_lists_[current_depth].get_move_at(i + 1).get_move() == 0) {
                 bool was_in_check = move_generator_.in_check(is_maximizer);
@@ -256,16 +194,7 @@ void MovePicker::minimax(
             continue;
         }
 
-        search_memory_.handle_ep_memory(current_move, is_maximizer, current_depth, current_move.get_to_sq());
-        search_memory_.handle_no_capture_count(current_move, current_depth, move_result.moved_piece_type);
-
         // Move was legal, update castling rights
-        search_memory_.set_castle_rights(
-            current_depth,
-            current_move, 
-            is_maximizer, 
-            piece_map_.get_piece_type_at(current_move.get_to_sq())
-        );
 
         if (do_record_perft_stats) {
             bool ret_flag;
@@ -292,28 +221,11 @@ void MovePicker::minimax(
             verbose
         );
 
-        unmake_move(current_move, is_maximizer, move_result);
-        search_memory_.unset_castle_rights(current_depth);
-
-        if (current_move.is_double_pawn_push()) {
-            search_memory_.set_ep_target_at_depth(current_depth + 1, 0ULL);
-        }
+        move_retractor_.unmake_move(current_move, is_maximizer, undo_stack_[current_depth]);
     
-        if (not current_move.is_any_capture() && (move_result.captured_piece_type != model::Piece::Type::W_PAWN && move_result.moved_piece_type != model::Piece::Type::B_PAWN)) {
-            search_memory_.decrement_no_captures_or_pawn_moves_count_at_depth(current_depth + 1);
-        }
-
-        if (check_condition(
-            current_depth, 
-            is_maximizer, 
-            first_move_idx, 
-            current_move, 
-            last_move, 
-            verbose, 
-            i)) 
-        {
-            debug_print(verbose);
-        }
+        // if (not current_move.is_any_capture() && (move_result.captured_piece_type != model::Piece::Type::W_PAWN && move_result.moved_piece_type != model::Piece::Type::B_PAWN)) {
+        //     search_memory_.decrement_no_captures_or_pawn_moves_count_at_depth(current_depth + 1);
+        // }
     }
 
     return;

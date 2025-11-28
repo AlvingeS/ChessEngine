@@ -1,11 +1,10 @@
 #pragma once
+
 #include "logic/attack_tables/attack_tables.h"
 
 namespace model {
     class Movelist;
-    class Board;
-    class Bitboards;
-    class OccupancyMasks;
+    class Position;
 }
 
 namespace logic {
@@ -13,17 +12,12 @@ namespace logic {
 class BishopGen {
 
 public:
-    BishopGen(model::Board& board);
+    BishopGen(const model::Position& pos);
     
-    void generate(
-        bool is_w, 
-        model::Movelist& movelist
-    );
+    void generate(bool is_w, model::Movelist& movelist);
 
 private:
-    const model::Bitboards& bbs_;
-    const model::OccupancyMasks& occupancy_masks_;
-
+    const model::Position& pos_;
     ray_attack_table& diag_ray_attack_table_;
 };
 

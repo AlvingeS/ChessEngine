@@ -14,6 +14,10 @@ static constexpr castle_rights W_KSIDE_CASTLE_RIGHTS_MASK = 0b0001;
 static constexpr castle_rights W_QSIDE_CASTLE_RIGHTS_MASK = 0b0010;
 static constexpr castle_rights B_KSIDE_CASTLE_RIGHTS_MASK = 0b0100;
 static constexpr castle_rights B_QSIDE_CASTLE_RIGHTS_MASK = 0b1000;
+static constexpr castle_rights W_BOTH_SIDES_CASTLE_RIGHTS_MASK = 0b0011;
+static constexpr castle_rights B_BOTH_SIDES_CASTLE_RIGHTS_MASK = 0b1100;
+static constexpr castle_rights NO_CASTLE_RIGHTS_MASK = 0b1100;
+
 
 static constexpr bitmask FILE_MASK[8] = {
     0x0101010101010101ULL,

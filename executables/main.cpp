@@ -1,6 +1,6 @@
 #include "logic/movegen/move_gen.h"
 #include "engine/pickmove/move_picker.h"
-#include "engine/perft/perft.h"
+// #include "engine/perft/perft.h"
 #include "io/board_printer.h"
 #include "logic/utils.h"
 #include "logic/movegen/containers.h"

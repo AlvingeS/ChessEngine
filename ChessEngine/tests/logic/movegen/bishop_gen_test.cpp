@@ -17,7 +17,7 @@ protected:
 
 TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneWhite_ShouldReturn18Moves) 
 {
-    io::fen::set_board_from_fen(fenOne, bbs, occupancy_masks, piece_map);
+    io::fen::set_board_from_fen(fenOne, pos);
     moveGenerator.gen_bishop_moves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -36,7 +36,7 @@ TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneWhite_ShouldReturn18Moves)
 
 TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneBlack_ShouldReturn18Moves) 
 {
-    io::fen::set_board_from_fen(fenOne, bbs, occupancy_masks, piece_map);
+    io::fen::set_board_from_fen(fenOne, pos);
     moveGenerator.gen_bishop_moves(false, movelist);
 
     model::Movelist moves = getMoves();
@@ -55,7 +55,7 @@ TEST_F(MoveGeneratorBishopTest, genBishopMoves_fenOneBlack_ShouldReturn18Moves)
 
 TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosWhite_ShouldReturn0Moves) 
 {
-    io::fen::set_board_from_fen(startingPos, bbs, occupancy_masks, piece_map);
+    io::fen::set_board_from_fen(startingPos, pos);
     moveGenerator.gen_bishop_moves(true, movelist);
 
     ASSERT_EQ(movelist.get_move_idx(), 0);
@@ -63,7 +63,7 @@ TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosWhite_ShouldReturn0Mov
 
 TEST_F(MoveGeneratorBishopTest, genBishopMoves_startingPosBlack_ShouldReturn0Moves) 
 {
-    io::fen::set_board_from_fen(startingPos, bbs, occupancy_masks, piece_map);
+    io::fen::set_board_from_fen(startingPos, pos);
     moveGenerator.gen_bishop_moves(false, movelist);;
 
     ASSERT_EQ(movelist.get_move_idx(), 0);

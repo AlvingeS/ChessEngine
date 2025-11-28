@@ -1,18 +1,17 @@
 #pragma once
 
-#include "engine/pickmove/search_memory.h"
-
 #include "logic/eval/eval.h"
+#include "logic/makemove/undo_info.h"
 
-#include "model/position/board.h"
+#include "model/position/position.h"
+#include "model/move/move.h"
 
-#include "model/position/piece_map.h"
 #include "logic/movegen/move_gen.h"
 #include "model/move/movelist.h"
 #include "logic/makemove/move_maker.h"
 #include "logic/makemove/move_retractor.h"
 #include "logic/utils.h"
-#include "model/move/move.h"
+
 #include "io/fen.h"
 
 #include <string>
@@ -22,7 +21,7 @@ namespace engine {
 class MovePicker {
 
 public:
-    MovePicker(int maxDepth);
+    MovePicker(int max_depth);
     
     void minimax(
         int current_depth,
@@ -41,16 +40,6 @@ public:
         const model::Move& current_move,
         bool &ret_flag
     );
-
-    void gen_moves(
-        bool is_w,
-        int current_depth,
-        bitmask ep_target_mask, 
-        unsigned char castle_rights
-    );
-
-    logic::utils::MoveResult make_move(model::Move move, bool is_w);
-    void unmake_move(model::Move move, bool is_w, logic::utils::MoveResult prevousMoveResult);
     
     int num_move_gen_calls_;
     int total_nodes_;
@@ -78,9 +67,9 @@ public:
         size_t i
     ) const;
 
-    void set_max_depth(int maxDepth) 
+    void set_max_depth(int max_depth) 
     {
-        max_depth_ = maxDepth;
+        max_depth_ = max_depth;
     }
 
     int get_max_depth() const {
@@ -94,27 +83,21 @@ public:
 
     void set_board_from_fen(const std::string& fen)
     {
-        io::fen::set_board_from_fen(fen, bbs_, occupancy_masks_, piece_map_);
+        io::fen::set_board_from_fen(fen, pos_);
     }
 
     std::string get_fen_from_board() const
     {
-        return io::fen::get_fen_from_board(piece_map_);
+        return io::fen::get_fen_from_board(pos_.piece_map);
     }
 
     bool diff_between_occupancy_masks() const
     {
-        return (occupancy_masks_.get_b_pieces_mask() | occupancy_masks_.get_w_pieces_mask()) != occupancy_masks_.get_occupied_squares_mask();
+        return (pos_.occ_masks.get_b_pieces_mask() | pos_.occ_masks.get_w_pieces_mask()) != pos_.occ_masks.get_occupied_squares_mask();
     }
-    
+
 private:
-    model::Board board_;
-    model::Bitboards& bbs_;
-    model::PieceMap& piece_map_;
-    model::OccupancyMasks& occupancy_masks_;
-    model::ZHasher& z_hasher_;
-    
-    SearchMemory search_memory_;
+    model::Position pos_;
     logic::MoveMaker move_maker_;
     logic::MoveRetractor move_retractor_;
     logic::MoveGen move_generator_;
@@ -124,6 +107,7 @@ private:
     int pseudo_legal_moves_count_;
     std::vector<model::Movelist> move_lists_;
     std::vector<int> no_captures_or_pawn_moves_counts_; 
+    std::vector<logic::UndoInfo> undo_stack_;
 
     bool too_many_pieces_on_board();
 };

@@ -80,7 +80,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesWhite) {
-//         io::fen::set_board_from_fen(captures, bbs, occupancy_masks, piece_map);
+//         io::fen::set_board_from_fen(captures, pos);
 //         moveGenerator.gen_moves(true, movelist);
 
 //         // Makes copies of the bbs and piece_map
@@ -97,7 +97,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturesBlack) {
-//         io::fen::set_board_from_fen(captures, bbs, occupancy_masks, piece_map);
+//         io::fen::set_board_from_fen(captures, pos);
 //         moveGenerator.gen_moves(false, movelist);
 
 //         // Makes copies of the bbs and piece_map
@@ -114,7 +114,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingWhite) {
-//         io::fen::set_board_from_fen(castling, bbs, occupancy_masks, piece_map);
+//         io::fen::set_board_from_fen(castling, pos);
 //         moveGenerator.gen_moves(true, movelist);
 
 //         // Makes copies of the bbs and piece_map
@@ -131,7 +131,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingBlack) {
-//         io::fen::set_board_from_fen(castling, bbs, occupancy_masks, piece_map);
+//         io::fen::set_board_from_fen(castling, pos);
 //         moveGenerator.gen_moves(false, movelist);
 
 //         // Makes copies of the bbs and piece_map
@@ -148,7 +148,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionWhite) {
-//         io::fen::set_board_from_fen(normalPromotion, bbs, occupancy_masks, piece_map);
+//         io::fen::set_board_from_fen(normalPromotion, pos);
 //         moveGenerator.gen_moves(true, movelist);
 
 //         // Makes copies of the bbs and piece_map
@@ -165,7 +165,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_NormalPromotionBlack) {
-//         io::fen::set_board_from_fen(normalPromotion, bbs, occupancy_masks, piece_map);
+//         io::fen::set_board_from_fen(normalPromotion, pos);
 //         moveGenerator.gen_moves(false, movelist);
 
 //         // Makes copies of the bbs and piece_map
@@ -182,7 +182,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionWhite) {
-//         io::fen::set_board_from_fen(capturePromotion, bbs, occupancy_masks, piece_map);
+//         io::fen::set_board_from_fen(capturePromotion, pos);
 //         moveGenerator.gen_moves(true, movelist);
 
 //         // Makes copies of the bbs and piece_map
@@ -199,7 +199,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CapturePromotionBlack) {
-//         io::fen::set_board_from_fen(capturePromotion, bbs, occupancy_masks, piece_map);
+//         io::fen::set_board_from_fen(capturePromotion, pos);
 //         moveGenerator.gen_moves(false, movelist);
 
 //         // Makes copies of the bbs and piece_map
@@ -216,7 +216,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_EnPessantWhite) {
-//         io::fen::set_board_from_fen(enPessant, bbs, occupancy_masks, piece_map);
+//         io::fen::set_board_from_fen(enPessant, pos);
 
 //         // Make a double pawn push to enable en pessant
 //         moveGenerator.getBoard().make_move(Move(51, 35, model::Move::DOUBLE_PAWN_PUSH_FLAG), false);
@@ -237,7 +237,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_EnPessantBlack) {
-//         io::fen::set_board_from_fen(enPessant, bbs, occupancy_masks, piece_map);
+//         io::fen::set_board_from_fen(enPessant, pos);
 
 //         // Make a double pawn push to enable en pessant
 //         moveGenerator.getBoard().make_move(Move(9, 17, model::Move::DOUBLE_PAWN_PUSH_FLAG), true);
@@ -258,7 +258,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsWhite) {
-//         io::fen::set_board_from_fen(castling, bbs, occupancy_masks, piece_map);
+//         io::fen::set_board_from_fen(castling, pos);
 
 //         moveGenerator.gen_castle_moves(true, movelist);
 //         std::vector<model::Move> castlingMoves = getMoves();
@@ -282,7 +282,7 @@
 //     }
 
 //     TEST_F(MakeUnmakeMoveTest, MakeUnmakeMove_CastlingRightsBlack) {
-//         io::fen::set_board_from_fen(castling, bbs, occupancy_masks, piece_map);
+//         io::fen::set_board_from_fen(castling, pos);
 
 //         moveGenerator.gen_castle_moves(false, movelist);
 //         std::vector<model::Move> castlingMoves = getMoves();

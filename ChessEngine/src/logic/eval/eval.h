@@ -1,8 +1,7 @@
 #pragma once
 
 namespace model {
-    class Board;
-    class Bitboards;
+    class Position;
 }
 
 namespace logic {
@@ -10,12 +9,12 @@ namespace logic {
 class Eval {
 
 public:
-    Eval(model::Board& board);
+    Eval(const model::Position& pos);
     
     float evaluate();
 
 private:
-    model::Bitboards& bbs_;
+    const model::Position& pos_;
 };
 
 } // namespace logic

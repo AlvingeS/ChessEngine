@@ -1,6 +1,6 @@
 #include "logic/movegen/pawn_gen.h"
 
-#include "model/position/board.h"
+#include "model/position/position.h"
 #include "model/move/movelist.h"
 
 #include "logic/attack_tables/attack_tables.h"
@@ -10,39 +10,34 @@
 
 namespace logic {
 
-PawnGen::PawnGen(model::Board& board) 
-    : bbs_(board.bbs)
-    , occupancy_masks_(board.occupancy_masks)
+PawnGen::PawnGen(const model::Position& pos) 
+    : pos_(pos)   
     , w_pawn_quiet_attack_table_(attack_tables::w_pawn_quiet)
     , w_pawn_capture_attack_table_(attack_tables::w_pawn_capture)
     , b_pawn_quiet_attack_table_(attack_tables::b_pawn_quiet)
     , b_pawn_capture_attack_table_(attack_tables::b_pawn_capture)
 {}
 
-void PawnGen::generate(
-    bool is_w,
-    model::Movelist& movelist,
-    bitmask ep_target_mask)
+void PawnGen::generate(bool is_w, model::Movelist& movelist)
 {
     std::vector<sq_idx>& pawn_sqs              = Containers::get_piece_position_idxs();
     std::vector<sq_idx>& quiet_moves_idxs      = Containers::get_leaping_piece_quiet_moves_idxs();
     std::vector<sq_idx>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_idxs();
 
-    utils::get_bit_idxs(pawn_sqs, is_w ? bbs_.get_w_pawns_bb()
-                                           : bbs_.get_b_pawns_bb());
+    utils::get_bit_idxs(pawn_sqs, is_w ? pos_.bbs.get_w_pawns_bb()
+                                       : pos_.bbs.get_b_pawns_bb());
 
     for (int pawn_sq : pawn_sqs) {
-
         bitmask attack_mask_straight = is_w ? w_pawn_quiet_attack_table_[pawn_sq]
                                             : b_pawn_quiet_attack_table_[pawn_sq];
 
         bitmask attack_mask_diag = is_w ? w_pawn_capture_attack_table_[pawn_sq]
                                         : b_pawn_capture_attack_table_[pawn_sq];
 
-        bitmask quiet_moves_mask = attack_mask_straight & occupancy_masks_.get_free_squares_mask();
+        bitmask quiet_moves_mask = attack_mask_straight & pos_.occ_masks.get_free_squares_mask();
         
-        bitmask opp_pieces_mask = is_w ? occupancy_masks_.get_b_pieces_mask()
-                                       : occupancy_masks_.get_w_pieces_mask();
+        bitmask opp_pieces_mask = is_w ? pos_.occ_masks.get_b_pieces_mask()
+                                       : pos_.occ_masks.get_w_pieces_mask();
         
         bitmask capture_moves_mask = attack_mask_diag & opp_pieces_mask;
 
@@ -83,8 +78,8 @@ void PawnGen::generate(
             }
         }
 
-        if ((attack_mask_diag & ep_target_mask) != 0) {
-            movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(attack_mask_diag & ep_target_mask), model::Move::EP_CAPTURE_FLAG));
+        if ((attack_mask_diag & pos_.ep_target_mask) != 0) {
+            movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(attack_mask_diag & pos_.ep_target_mask), model::Move::EP_CAPTURE_FLAG));
         }
     }
 }

@@ -12,7 +12,6 @@ protected:
     std::string fenEnPessantForBlackTest;
     std::string fenPromotionTest;
     std::string fenBuggedPawnTest;
-    // ponder::perft::SearchMemory searchMemory;
 
     void SetUp() override {
         BaseGenerator::SetUp();
@@ -21,14 +20,13 @@ protected:
         fenEnPessantForBlackTest = "rnbqkbnr/8/8/8/Pp6/8/1PPPPPPP/RNBQKBNR";
         fenPromotionTest = "3q4/2P3P1/8/8/8/8/1p5p/2N5";
         fenBuggedPawnTest = "rnbqkb1r/pppppppp/7n/8/8/2N4N/PPPPPPPP/R1BQKB1R";
-        // searchMemory = ponder::perft::SearchMemory(0);
     }
 };
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosWhite_ShouldReturn16Moves) 
 {
-    io::fen::set_board_from_fen(startingPos, bbs, occupancy_masks, piece_map);
-    moveGenerator.gen_pawn_moves(true, movelist, 0);
+    io::fen::set_board_from_fen(startingPos, pos);
+    moveGenerator.gen_pawn_moves(true, movelist);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -52,8 +50,8 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosWhite_ShouldReturn16Moves)
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosBlack_ShouldReturn16Moves) 
 {
-    io::fen::set_board_from_fen(startingPos, bbs, occupancy_masks, piece_map);
-    moveGenerator.gen_pawn_moves(false, movelist, 0);
+    io::fen::set_board_from_fen(startingPos, pos);
+    moveGenerator.gen_pawn_moves(false, movelist);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -77,8 +75,8 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosBlack_ShouldReturn16Moves)
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneWhite_ShouldReturn6Moves) 
 {
-    io::fen::set_board_from_fen(fenOne, bbs, occupancy_masks, piece_map);
-    moveGenerator.gen_pawn_moves(true, movelist, 0);
+    io::fen::set_board_from_fen(fenOne, pos);
+    moveGenerator.gen_pawn_moves(true, movelist);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -97,8 +95,8 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneWhite_ShouldReturn6Moves)
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneBlack_ShouldReturnXMoves) 
 {
-    io::fen::set_board_from_fen(fenOne, bbs, occupancy_masks, piece_map);
-    moveGenerator.gen_pawn_moves(false, movelist, 0);
+    io::fen::set_board_from_fen(fenOne, pos);
+    moveGenerator.gen_pawn_moves(false, movelist);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -117,9 +115,9 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneBlack_ShouldReturnXMoves)
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Moves) 
 {
-    io::fen::set_board_from_fen(fenEnPessantForWhiteTest, bbs, occupancy_masks, piece_map);
+    io::fen::set_board_from_fen(fenEnPessantForWhiteTest, pos);
     // moveGenerator.getBoard().setEnPessantTargetAtIndex(43);
-    moveGenerator.gen_pawn_moves(true, movelist, 0);
+    moveGenerator.gen_pawn_moves(true, movelist);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -136,9 +134,9 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Mov
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForBlack_ShouldReturn2Moves) 
 {
-    io::fen::set_board_from_fen(fenEnPessantForBlackTest, bbs, occupancy_masks, piece_map);
+    io::fen::set_board_from_fen(fenEnPessantForBlackTest, pos);
     // moveGenerator.getBoard().setEnPessantTargetAtIndex(23);
-    moveGenerator.gen_pawn_moves(false, movelist, 0);
+    moveGenerator.gen_pawn_moves(false, movelist);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -155,8 +153,8 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForBlack_ShouldReturn2Mov
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12Moves) 
 {
-    io::fen::set_board_from_fen(fenPromotionTest, bbs, occupancy_masks, piece_map);
-    moveGenerator.gen_pawn_moves(true, movelist, 0);
+    io::fen::set_board_from_fen(fenPromotionTest, pos);
+    moveGenerator.gen_pawn_moves(true, movelist);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -175,8 +173,8 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12M
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12Moves) 
 {
-    io::fen::set_board_from_fen(fenPromotionTest, bbs, occupancy_masks, piece_map);
-    moveGenerator.gen_pawn_moves(false, movelist, 0);
+    io::fen::set_board_from_fen(fenPromotionTest, pos);
+    moveGenerator.gen_pawn_moves(false, movelist);
 
     model::Movelist moves = getMoves();
     std::unordered_set<model::Move> expectedMoves;
@@ -195,8 +193,8 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12M
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenBuggedPawnTestWhite_ShouldNotReturnh6) 
 {
-    io::fen::set_board_from_fen(fenBuggedPawnTest, bbs, occupancy_masks, piece_map);
-    moveGenerator.gen_pawn_moves(false, movelist, 0);
+    io::fen::set_board_from_fen(fenBuggedPawnTest, pos);
+    moveGenerator.gen_pawn_moves(false, movelist);
 
     model::Movelist moves = getMoves();
 

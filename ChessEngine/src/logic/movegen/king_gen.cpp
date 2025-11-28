@@ -1,6 +1,6 @@
 #include "logic/movegen/king_gen.h"
 
-#include "model/position/board.h"
+#include "model/position/position.h"
 #include "model/move/movelist.h"
 
 #include "logic/attack_tables/attack_tables.h"
@@ -9,12 +9,10 @@
 
 namespace logic {
 
-KingGen::KingGen(model::Board& board) 
-    : bbs_(board.bbs)
-    , occupancy_masks_(board.occupancy_masks)
+KingGen::KingGen(const model::Position& pos)
+    : pos_(pos)
     , king_attack_table_(attack_tables::king)
-{
-}
+{}
 
 void KingGen::generate(bool is_w, model::Movelist& movelist) 
 {
@@ -22,16 +20,16 @@ void KingGen::generate(bool is_w, model::Movelist& movelist)
     std::vector<sq_idx>& quiet_moves_sqs      = Containers::get_leaping_piece_quiet_moves_idxs();
     std::vector<sq_idx>& capturable_moves_sqs = Containers::get_leaping_piece_capturable_moves_idxs();
     
-    utils::get_bit_idxs(king_sqs, is_w ? bbs_.get_w_king_bb()
-                                           : bbs_.get_b_king_bb());
+    utils::get_bit_idxs(king_sqs, is_w ? pos_.bbs.get_w_king_bb()
+                                       : pos_.bbs.get_b_king_bb());
 
     int king_sq_idx = king_sqs[0];
 
     bitmask attack_mask      = king_attack_table_[king_sq_idx];
-    bitmask quiet_moves_mask = attack_mask & occupancy_masks_.get_free_squares_mask();
+    bitmask quiet_moves_mask = attack_mask & pos_.occ_masks.get_free_squares_mask();
     
-    bitmask opp_pieces_mask = is_w ? occupancy_masks_.get_b_pieces_mask() 
-                                   : occupancy_masks_.get_w_pieces_mask();
+    bitmask opp_pieces_mask = is_w ? pos_.occ_masks.get_b_pieces_mask() 
+                                   : pos_.occ_masks.get_w_pieces_mask();
 
     bitmask capture_moves_mask = attack_mask & opp_pieces_mask;
 

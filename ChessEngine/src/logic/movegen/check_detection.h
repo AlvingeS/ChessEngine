@@ -3,9 +3,7 @@
 #include "logic/attack_tables/attack_tables.h"
 
 namespace model {
-    class Board;
-    class Bitboards;
-    class OccupancyMasks;
+    class Position;
 }
 
 namespace logic {
@@ -13,13 +11,11 @@ namespace logic {
 class CheckDetection {
 
 public:
-    CheckDetection(model::Board& board);
+    CheckDetection(const model::Position& pos);
     bool in_check(bool is_w) const;
 
 private:
-    const model::Bitboards& bbs_;
-    const model::OccupancyMasks& occupancy_masks_;
-
+    const model::Position& pos_;
     ray_attack_table& line_ray_attack_table_;
     ray_attack_table& diag_ray_attack_table_;
     attack_table& knight_attack_table_;

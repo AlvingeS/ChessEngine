@@ -1,13 +1,10 @@
 #pragma once
 
 #include "model/types.h"
-#include <vector>
 
 namespace model {
     class Movelist;
-    class Board;
-    class Bitboards;
-    class OccupancyMasks;
+    class Position;
 }
 
 namespace logic {
@@ -15,13 +12,11 @@ namespace logic {
 class KnightGen {
 
 public:
-    KnightGen(model::Board& board);
+    KnightGen(const model::Position& pos);
     void generate(bool is_w, model::Movelist& movelist);
 
 private:
-    const model::Bitboards& bbs_;
-    const model::OccupancyMasks& occupancy_masks_;
-    
+    const model::Position& pos_;
     attack_table& knight_attack_table_;
 };
 

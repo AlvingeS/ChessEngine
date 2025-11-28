@@ -1,13 +1,10 @@
 #pragma once
 
 #include "model/types.h"
-#include <vector>
 
 namespace model {
-    class Board;
     class Movelist;
-    class Bitboards;
-    class OccupancyMasks;
+    class Position;
 }
 
 namespace logic {
@@ -15,18 +12,12 @@ namespace logic {
 class PawnGen {
 
 public:
-    PawnGen(model::Board& board);
+    PawnGen(const model::Position& position);
     
-    void generate(
-        bool is_w,
-        model::Movelist& movelist,
-        bitmask ep_target_mask
-    );
+    void generate(bool is_w, model::Movelist& movelist);
 
 private:
-    const model::Bitboards& bbs_;
-    const model::OccupancyMasks& occupancy_masks_;
-
+    const model::Position& pos_;
     attack_table& w_pawn_quiet_attack_table_;
     attack_table& w_pawn_capture_attack_table_;
     attack_table& b_pawn_quiet_attack_table_;

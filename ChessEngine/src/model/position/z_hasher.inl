@@ -5,9 +5,9 @@ inline void ZHasher::hash_piece_type_at(sq_idx sq, Piece::Type piece_type)
     hash_ ^= random_board_piece_type_numbers_[sq][static_cast<int>(piece_type)];
 }
 
-inline void ZHasher::hash_castle_rights(int castle_rights)
+inline void ZHasher::hash_castle_rights(castle_rights c_rights)
 {
-    hash_ ^= random_castle_rights_numbers_[castle_rights];
+    hash_ ^= random_castle_rights_numbers_[c_rights];
 }
 
 inline void ZHasher::hash_ep_file(int file)

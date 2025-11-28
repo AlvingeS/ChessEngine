@@ -4,9 +4,7 @@
 
 namespace model {
     class Movelist;
-    class Board;
-    class Bitboards;
-    class OccupancyMasks;
+    class Position;
 }
 
 namespace logic {
@@ -14,17 +12,12 @@ namespace logic {
 class QueenGen {
 
 public:
-    QueenGen(model::Board& board);
+    QueenGen(const model::Position& pos);
     
-    void generate(
-        bool is_w, 
-        model::Movelist& movelist
-    );
+    void generate(bool is_w, model::Movelist& movelist);
 
 private:
-    const model::Bitboards& bbs_;
-    const model::OccupancyMasks& occupancy_masks_;
-
+    const model::Position& pos_;
     ray_attack_table& line_ray_attack_table_;
     ray_attack_table& diag_ray_attack_table_;
 };

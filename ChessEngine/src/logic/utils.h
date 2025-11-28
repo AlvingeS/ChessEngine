@@ -31,15 +31,5 @@ int manhattan_distance(int i, int j);
 model::Piece::Type get_promotion_piece_type(int promotionFlag, bool is_w);
 int determine_capture_sq(const model::Move& move, bool is_w);
 
-struct MoveResult {
-    model::Piece::Type captured_piece_type;
-    model::Piece::Type moved_piece_type;
-
-    MoveResult() {
-        captured_piece_type = model::Piece::Type::EMPTY;
-        moved_piece_type    = model::Piece::Type::EMPTY;
-    }
-};
-
 } // namespace logic::utils
 #include "logic/utils.inl"

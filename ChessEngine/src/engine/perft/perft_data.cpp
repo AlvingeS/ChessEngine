@@ -4,8 +4,8 @@
 
 namespace engine {
 
-PerftData::PerftData(int maxDepth)
-    : max_depth_(maxDepth)
+PerftData::PerftData(int max_depth)
+    : max_depth_(max_depth)
 {
     node_count_per_first_move_.resize(constants::MAX_LEGAL_MOVES);
     first_moves_.resize(constants::MAX_LEGAL_MOVES);

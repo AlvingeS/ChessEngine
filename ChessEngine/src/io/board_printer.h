@@ -1,7 +1,7 @@
 #pragma once
 
 #include "model/types.h"
-#include "model/position/board.h"
+#include "model/position/position.h"
 
 #include <vector>
 

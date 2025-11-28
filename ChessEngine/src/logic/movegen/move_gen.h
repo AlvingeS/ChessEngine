@@ -11,14 +11,8 @@
 #include "logic/utils.h"
 
 namespace model {
-    class Board;
-    class Bitboards;
-    class OccupancyMasks;
     class Movelist;
-}
-
-namespace engine {
-    class SearchMemory;
+    class Position;
 }
 
 namespace logic {
@@ -30,16 +24,14 @@ class MoveGen {
 
 public:
     MoveGen(
-        model::Board& board,
+        const model::Position& position,
         logic::MoveMaker& move_maker,
         logic::MoveRetractor& move_retractor
     );
 
     void gen_moves(
         bool is_w,
-        model::Movelist& movelist,
-        bitmask ep_target_mask,
-        unsigned char castle_rights
+        model::Movelist& movelist
     );
     
     void gen_rook_moves(bool is_w, model::Movelist& movelist);
@@ -47,25 +39,13 @@ public:
     void gen_queen_moves(bool is_w, model::Movelist& movelist);
     void gen_knight_moves(bool is_w, model::Movelist& movelist);
     void gen_king_moves(bool is_w, model::Movelist& movelist);
-    
-    void gen_pawn_moves(
-        bool is_w,
-        model::Movelist& movelist,
-        bitmask ep_target_mask
-    );
-
-    void gen_castle_moves(
-        bool is_w,
-        model::Movelist& movelist,
-        unsigned char castle_rights
-    );
+    void gen_pawn_moves(bool is_w, model::Movelist& movelist);
+    void gen_castle_moves(bool is_w, model::Movelist& movelist);
     
     bool in_check(bool is_w);
 
 private:
-    const model::Bitboards& bbs_;
-    const model::OccupancyMasks& occupancy_masks_;
-    
+    const model::Position& pos_;    
     logic::MoveMaker& move_maker_;
     logic::MoveRetractor& move_retractor_;
     

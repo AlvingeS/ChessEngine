@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include "model/position/board.h"
+#include "model/position/position.h"
 #include "model/move/move.h"
 #include "model/move/movelist.h"
 #include "logic/movegen/move_gen.h"
@@ -10,7 +10,6 @@
 #include "logic/makemove/move_maker.h"
 #include "logic/makemove/move_retractor.h"
 
-#include "engine/pickmove/search_memory.h"
 #include "io/fen.h"
 
 
@@ -21,29 +20,20 @@ namespace logic {
 class BaseGenerator : public ::testing::Test 
 {
 protected:
-    model::Board board;
-    model::Bitboards& bbs;
-    model::OccupancyMasks& occupancy_masks;
-    model::PieceMap& piece_map;
-    model::ZHasher& z_hasher;
-    engine::SearchMemory searchMemory;
+    model::Position pos;
     MoveMaker move_maker;
     MoveRetractor move_retractor;
     MoveGen moveGenerator;
     std::string startingPos;
     model::Movelist movelist;
 
-    BaseGenerator() 
-        : board(),
-          bbs(board.bbs),
-          occupancy_masks(board.occupancy_masks),
-          piece_map(board.piece_map),
-          z_hasher(board.z_hasher),
-          searchMemory(engine::SearchMemory(0)),
-          move_maker(board),
-          move_retractor(board),
-          moveGenerator(MoveGen(board, move_maker, move_retractor)),
-          movelist(model::Movelist()) {}
+    BaseGenerator()
+          : pos(model::Position())
+          , move_maker(pos)
+          , move_retractor(pos)
+          , moveGenerator(MoveGen(pos, move_maker, move_retractor))
+          , movelist(model::Movelist()) 
+    {}
 
     virtual void SetUp() override {
         // board = model::ChessBoard();
@@ -53,7 +43,7 @@ protected:
     }
 
     virtual void TearDown() override {
-        bbs.reset_bitboards();
+        pos.bbs.reset_bitboards();
     }
 
     void insertExpectedMoves(std::unordered_set<model::Move>& moves, sq_idx from_sq, const std::vector<sq_idx>& to_sqs, const std::vector<int>& flags) {

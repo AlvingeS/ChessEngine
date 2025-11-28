@@ -1,35 +1,33 @@
 #pragma once
 
 #include "model/types.h"
+#include "model/position/piece_type.h"
 #include "logic/utils.h"
+#include "logic/makemove/undo_info.h"
 
 namespace model {
-    class Board;
     class Move;
-    class Bitboards;
-    class OccupancyMasks;
-    class PieceMap;
-    class ZHasher;
-}
+    class Position;
+} // namespace model
 
 namespace logic {
 
 class MoveMaker {
 
 public:
-    MoveMaker(model::Board& board);
+    MoveMaker(model::Position& pos);
     
-    utils::MoveResult make_move(const model::Move& move, bool is_w);
+    UndoInfo make_move(const model::Move& move, bool is_w);
     
     void make_temporary_king_move(bool is_w, bool is_kside);
 
 private:
+    void update_ep_target_mask(const model::Move& move, bool is_w);
+    void update_castle_rights(const model::Move& move, bool is_w, model::Piece::Type captured_piece_type);
     void make_castle_move(bool is_w, bool is_kside);
-    
-    model::Piece::Type remove_moved_piece_from_board(
-        bool is_w, 
-        sq_idx from_sq
-    );
+    void store_state(UndoInfo& undo_info);
+
+    model::Piece::Type remove_moved_piece_from_board(bool is_w, sq_idx from_sq);
 
     void remove_captured_piece_from_board(
         bool is_ep, 
@@ -44,10 +42,7 @@ private:
         model::Piece::Type moved_piece_type
     );
 
-    model::Bitboards& bbs_;
-    model::OccupancyMasks& occupancy_masks_;
-    model::PieceMap& piece_map_;
-    model::ZHasher& z_hasher_;
+    model::Position& pos_;
 };
 
 } // namespace logic

@@ -2,12 +2,8 @@
 
 #include "model/types.h"
 
-#include <vector>
-
 namespace model {
-    class Bitboards;
-    class OccupancyMasks;
-    class Board;
+    class Position;
     class Movelist;
 }
 
@@ -16,13 +12,12 @@ namespace logic {
 class KingGen {
 
 public:
-    KingGen(model::Board& board);
+    KingGen(const model::Position& pos);
+
     void generate(bool is_w, model::Movelist& movelist);
 
 private:
-    const model::Bitboards& bbs_;
-    const model::OccupancyMasks& occupancy_masks_;
-    
+    const model::Position& pos_;    
     attack_table& king_attack_table_;
 };
 

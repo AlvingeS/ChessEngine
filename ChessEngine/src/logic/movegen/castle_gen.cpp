@@ -1,6 +1,6 @@
 #include "logic/movegen/castle_gen.h"
 
-#include "model/position/board.h"
+#include "model/position/position.h"
 
 #include "logic/utils.h"
 #include "logic/movegen/check_detection.h"
@@ -15,56 +15,52 @@
 namespace logic {
 
 CastleGen::CastleGen(
-    model::Board& board,
+    const model::Position& pos,
     logic::MoveMaker& move_maker, 
     logic::MoveRetractor& move_retractor, 
     CheckDetection* check_detection)
-    : bbs_(board.bbs)
-    , occupancy_masks_(board.occupancy_masks)
+    : pos_(pos)
     , move_maker_(move_maker)
     , move_retractor_(move_retractor)
     , check_detection_(check_detection) 
 {}
 
-void CastleGen::generate(
-    bool is_w,
-    model::Movelist& movelist,
-    castle_rights cr) 
+void CastleGen::generate(bool is_w, model::Movelist& movelist) 
 {
-    if (cr == 0) {
+    if (pos_.c_rights == 0) {
         return;
     }
     
     // We can generate up to two castle moves depedent on the side and
     // respective castle rights
     if (is_w) {
-        if (cr & masks::W_KSIDE_CASTLE_RIGHTS_MASK)
+        if (pos_.c_rights & masks::W_KSIDE_CASTLE_RIGHTS_MASK)
             gen_single_castle_move(is_w, true, movelist);
 
-        if (cr & masks::W_QSIDE_CASTLE_RIGHTS_MASK)
+        if (pos_.c_rights & masks::W_QSIDE_CASTLE_RIGHTS_MASK)
             gen_single_castle_move(is_w, false, movelist);
     } else {
-        if (cr & masks::B_KSIDE_CASTLE_RIGHTS_MASK)
+        if (pos_.c_rights & masks::B_KSIDE_CASTLE_RIGHTS_MASK)
             gen_single_castle_move(is_w, true, movelist);
 
-        if (cr & masks::B_QSIDE_CASTLE_RIGHTS_MASK)
+        if (pos_.c_rights & masks::B_QSIDE_CASTLE_RIGHTS_MASK)
             gen_single_castle_move(is_w, false, movelist);
     }
 }
 
 bool CastleGen::king_and_rook_on_castle_squares(bool is_w, bool is_kside) const
 {
-    bool king_bit_enabled = is_w ? (bbs_.get_w_king_bb() & (1ULL << 3)) != 0
-                                 : (bbs_.get_b_king_bb() & (1ULL << 59)) != 0;
+    bool king_bit_enabled = is_w ? (pos_.bbs.get_w_king_bb() & (1ULL << 3)) != 0
+                                 : (pos_.bbs.get_b_king_bb() & (1ULL << 59)) != 0;
     
     if (!king_bit_enabled)
         return false;
 
     // Since we know that the king is present, we can return if the rook is present or not
-    return is_w ? (is_kside ? (bbs_.get_w_rooks_bb() & (1ULL << 0)) != 0
-                            : (bbs_.get_w_rooks_bb() & (1ULL << 7)) != 0)
-                : (is_kside ? (bbs_.get_b_rooks_bb() & (1ULL << 56)) != 0
-                            : (bbs_.get_b_rooks_bb() & (1ULL << 63)) != 0);
+    return is_w ? (is_kside ? (pos_.bbs.get_w_rooks_bb() & (1ULL << 0)) != 0
+                            : (pos_.bbs.get_w_rooks_bb() & (1ULL << 7)) != 0)
+                : (is_kside ? (pos_.bbs.get_b_rooks_bb() & (1ULL << 56)) != 0
+                            : (pos_.bbs.get_b_rooks_bb() & (1ULL << 63)) != 0);
 }
 
 void CastleGen::make_temporary_king_move(bool is_w, bool is_kside)
@@ -88,7 +84,7 @@ void CastleGen::gen_single_castle_move(
                                                : (is_kside ? masks::B_KSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK
                                                            : masks::B_QSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK);
     
-    if ((space_between_castlers_mask & occupancy_masks_.get_occupied_squares_mask()) != 0)
+    if ((space_between_castlers_mask & pos_.occ_masks.get_occupied_squares_mask()) != 0)
         return;
 
     // Check that the king and rook are on the correct squares

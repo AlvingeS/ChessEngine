@@ -1,27 +1,31 @@
 #include "logic/makemove/move_maker.h"
 
-#include "logic/utils.h"
-
-#include "model/position/board.h"
+#include "model/position/position.h"
 #include "model/move/move.h"
 
 namespace logic {
 
-MoveMaker::MoveMaker(model::Board& board)
-    : bbs_(board.bbs) 
-    , occupancy_masks_(board.occupancy_masks)
-    , piece_map_(board.piece_map)
-    , z_hasher_(board.z_hasher)
-{}
+MoveMaker::MoveMaker(model::Position& pos) : pos_(pos) {}
 
-utils::MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
+UndoInfo MoveMaker::make_move(const model::Move& move, bool is_w)
 {
-    auto move_result = utils::MoveResult();
+    auto undo_info = UndoInfo();
+
+    // Store undo-info state before the move
+    store_state(undo_info);
 
     // If the move is a castle, update and return
     if (move.is_any_castle()) {
         make_castle_move(is_w, move.is_king_castle());
-        return move_result;
+
+        update_ep_target_mask(move, is_w);
+
+        auto king_type = is_w ? model::Piece::Type::W_KING
+                              : model::Piece::Type::B_KING;
+
+        update_castle_rights(move, is_w, king_type);
+        
+        return undo_info;
     }
 
     // Get the from and to idxs
@@ -36,25 +40,122 @@ utils::MoveResult MoveMaker::make_move(const model::Move& move, bool is_w)
         // Calculate sq of captured piece, might be EP
         sq_idx capture_sq = utils::determine_capture_sq(move, is_w);
 
-        model::Piece::Type captured_piece_type = piece_map_.get_piece_type_at(capture_sq);
+        model::Piece::Type captured_piece_type = pos_.piece_map.get_piece_type_at(capture_sq);
         remove_captured_piece_from_board(move.is_ep_capture(), is_w, capture_sq, captured_piece_type);
         
-        move_result.captured_piece_type = captured_piece_type;
+        undo_info.captured_piece_type = captured_piece_type;
     }
 
     // Update the moved piece type if the move is a promotion    
     if (move.is_any_promo())
         moved_piece_type = utils::get_promotion_piece_type(move.get_flag(), is_w);
 
-    move_result.moved_piece_type = moved_piece_type;
+    undo_info.moved_piece_type = moved_piece_type;
 
     // Place the moved piece on the to square
     place_moved_piece_on_board(is_w, to_sq, moved_piece_type);
 
     // Update occupied and empty squares bitmasks
-    occupancy_masks_.update_occupancy_masks();
+    pos_.occ_masks.update_occupancy_masks();
 
-    return move_result;
+    // Update ep target mask based on if the move was a double pawn push or not
+    update_ep_target_mask(move, is_w);
+
+    // Todo: search_memory_.handle_no_capture_count(move, current_depth, move_result.moved_piece_type);
+
+    update_castle_rights(move, is_w, undo_info.moved_piece_type);
+
+    return undo_info;
+}
+
+void MoveMaker::store_state(UndoInfo& undo_info)
+{
+    undo_info.c_rights = pos_.c_rights;
+    undo_info.ep_target_mask = pos_.ep_target_mask;
+}
+
+void MoveMaker::update_ep_target_mask(const model::Move& move, bool is_w)
+{
+    if (!move.is_double_pawn_push()) {
+        pos_.ep_target_mask = 0ULL;
+    } else {
+        pos_.ep_target_mask = is_w ? (1ULL << (move.get_to_sq() - 8)) 
+                                   : (1ULL << (move.get_to_sq() + 8));
+                                   // FIXME: Temporary because I don't know how to implement this haha
+                                   // z_hasher_.hash_ep_file(to_sq % 8);
+    }
+}
+
+void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, model::Piece::Type moved_piece_type) 
+{
+    // If no one has any rights then there is nothing to update
+    if (pos_.c_rights == 0)
+        return;
+
+    // If it is white but he has no rights then there is nothing to update
+    if (is_w && (pos_.c_rights & logic::masks::W_BOTH_SIDES_CASTLE_RIGHTS_MASK) == 0)
+        return;
+
+    // If it is black but he has no rights then there is nothing to update
+    if (!is_w && (pos_.c_rights & logic::masks::B_BOTH_SIDES_CASTLE_RIGHTS_MASK) == 0)
+        return;
+
+    // If the move is castle, remove all rights for that player
+    if (move.is_any_castle()) {
+        if (is_w) {
+            pos_.c_rights &= ~logic::masks::W_BOTH_SIDES_CASTLE_RIGHTS_MASK;
+        } else {
+            pos_.c_rights &= ~logic::masks::B_BOTH_SIDES_CASTLE_RIGHTS_MASK;
+        }
+    }
+
+    if (is_w) {
+        // If move is made by white king, remove all white castling rights
+        if (moved_piece_type == model::Piece::Type::W_KING) {
+            pos_.c_rights &= ~logic::masks::W_BOTH_SIDES_CASTLE_RIGHTS_MASK;
+            return;
+        }
+        
+        // If moved piece was neither a king or rook, no castle rights changes
+        // Code after this statement now assumes that a W_ROOK has been moved
+        if (moved_piece_type != model::Piece::Type::W_ROOK)
+            return;
+
+        // If rook is moved from kside corner and you have kside castle rights, remove them
+        if (move.get_from_sq() == 0 && (pos_.c_rights & logic::masks::W_KSIDE_CASTLE_RIGHTS_MASK) != 0) {
+            pos_.c_rights &= ~logic::masks::W_KSIDE_CASTLE_RIGHTS_MASK;
+            return;
+        }
+
+        // If rook is moved from qside corner and you have qside castle rights, remove them
+        if (move.get_from_sq() == 7 && (pos_.c_rights & logic::masks::W_QSIDE_CASTLE_RIGHTS_MASK) != 0) {
+            pos_.c_rights &= ~logic::masks::W_QSIDE_CASTLE_RIGHTS_MASK;
+            return;
+        }
+    } else {
+        // If move is made by black king, remove all black castling rights
+        if (moved_piece_type == model::Piece::Type::B_KING) {
+            pos_.c_rights &= ~logic::masks::B_BOTH_SIDES_CASTLE_RIGHTS_MASK;
+            return;
+        }
+        
+        // If moved piece was neither a king or rook, no castle rights changes
+        // Code after this statement now assumes that a B_ROOK has been moved
+        if (moved_piece_type != model::Piece::Type::B_ROOK)
+            return;
+
+        // If rook is moved from kside corner and you have kside castle rights, remove them
+        if (move.get_from_sq() == 56 && (pos_.c_rights & logic::masks::B_KSIDE_CASTLE_RIGHTS_MASK) != 0) {
+            pos_.c_rights &= ~logic::masks::B_KSIDE_CASTLE_RIGHTS_MASK;
+            return;
+        }
+
+        // If rook is moved from qside corner and you have qside castle rights, remove them
+        if (move.get_from_sq() == 63 && (pos_.c_rights & logic::masks::B_QSIDE_CASTLE_RIGHTS_MASK) != 0) {
+            pos_.c_rights &= ~logic::masks::B_QSIDE_CASTLE_RIGHTS_MASK;
+            return;
+        }
+    }
 }
 
 void MoveMaker::make_castle_move(bool is_w, bool is_kside)
@@ -67,43 +168,43 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
         rook_from_sq = is_kside ? 0 : 7;
         rook_to_sq   = is_kside ? 2 : 4;
 
-        bbs_.clear_w_king_bit(king_from_sq);
-        bbs_.set_w_king_bit(king_to_sq);
-        bbs_.clear_w_rooks_bit(rook_from_sq);
-        bbs_.set_w_rooks_bit(rook_to_sq);
+        pos_.bbs.clear_w_king_bit(king_from_sq);
+        pos_.bbs.set_w_king_bit(king_to_sq);
+        pos_.bbs.clear_w_rooks_bit(rook_from_sq);
+        pos_.bbs.set_w_rooks_bit(rook_to_sq);
 
-        occupancy_masks_.clear_w_pieces_bit(king_from_sq);
-        occupancy_masks_.set_w_pieces_bit(king_to_sq);
-        occupancy_masks_.clear_w_pieces_bit(rook_from_sq);
-        occupancy_masks_.set_w_pieces_bit(rook_to_sq);
+        pos_.occ_masks.clear_w_pieces_bit(king_from_sq);
+        pos_.occ_masks.set_w_pieces_bit(king_to_sq);
+        pos_.occ_masks.clear_w_pieces_bit(rook_from_sq);
+        pos_.occ_masks.set_w_pieces_bit(rook_to_sq);
 
-        piece_map_.set_piece_type_at(king_from_sq, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at(king_to_sq,   model::Piece::Type::W_KING);
-        piece_map_.set_piece_type_at(rook_from_sq, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at(rook_to_sq,   model::Piece::Type::W_ROOK);
+        pos_.piece_map.set_piece_type_at(king_from_sq, model::Piece::Type::EMPTY);
+        pos_.piece_map.set_piece_type_at(king_to_sq,   model::Piece::Type::W_KING);
+        pos_.piece_map.set_piece_type_at(rook_from_sq, model::Piece::Type::EMPTY);
+        pos_.piece_map.set_piece_type_at(rook_to_sq,   model::Piece::Type::W_ROOK);
     } else {
         king_from_sq = 59;
         king_to_sq   = is_kside ? 57 : 61;
         rook_from_sq = is_kside ? 56 : 63;
         rook_to_sq   = is_kside ? 58 : 60;
 
-        bbs_.clear_b_king_bit(king_from_sq);
-        bbs_.set_b_king_bit(king_to_sq);
-        bbs_.clear_b_rooks_bit(rook_from_sq);
-        bbs_.set_b_rooks_bit(rook_to_sq);
+        pos_.bbs.clear_b_king_bit(king_from_sq);
+        pos_.bbs.set_b_king_bit(king_to_sq);
+        pos_.bbs.clear_b_rooks_bit(rook_from_sq);
+        pos_.bbs.set_b_rooks_bit(rook_to_sq);
 
-        occupancy_masks_.clear_b_pieces_bit(king_from_sq);
-        occupancy_masks_.set_b_pieces_bit(king_to_sq);
-        occupancy_masks_.clear_b_pieces_bit(rook_from_sq);
-        occupancy_masks_.set_b_pieces_bit(rook_to_sq);
+        pos_.occ_masks.clear_b_pieces_bit(king_from_sq);
+        pos_.occ_masks.set_b_pieces_bit(king_to_sq);
+        pos_.occ_masks.clear_b_pieces_bit(rook_from_sq);
+        pos_.occ_masks.set_b_pieces_bit(rook_to_sq);
 
-        piece_map_.set_piece_type_at(king_from_sq, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at(king_to_sq,   model::Piece::Type::B_KING);
-        piece_map_.set_piece_type_at(rook_from_sq, model::Piece::Type::EMPTY);
-        piece_map_.set_piece_type_at(rook_to_sq,   model::Piece::Type::B_ROOK);
+        pos_.piece_map.set_piece_type_at(king_from_sq, model::Piece::Type::EMPTY);
+        pos_.piece_map.set_piece_type_at(king_to_sq,   model::Piece::Type::B_KING);
+        pos_.piece_map.set_piece_type_at(rook_from_sq, model::Piece::Type::EMPTY);
+        pos_.piece_map.set_piece_type_at(rook_to_sq,   model::Piece::Type::B_ROOK);
     }
 
-    occupancy_masks_.update_occupancy_masks();
+    pos_.occ_masks.update_occupancy_masks();
 }
 
 void MoveMaker::make_temporary_king_move(bool is_w, bool is_kside)
@@ -113,11 +214,11 @@ void MoveMaker::make_temporary_king_move(bool is_w, bool is_kside)
                               : (is_w ? 4 : 60);
 
     if (is_w) {
-        bbs_.clear_w_king_bit(from_sq);
-        bbs_.set_w_king_bit(to_sq);
+        pos_.bbs.clear_w_king_bit(from_sq);
+        pos_.bbs.set_w_king_bit(to_sq);
     } else {
-        bbs_.clear_b_king_bit(from_sq);
-        bbs_.set_b_king_bit(to_sq);
+        pos_.bbs.clear_b_king_bit(from_sq);
+        pos_.bbs.set_b_king_bit(to_sq);
     }
 }
 
@@ -125,17 +226,17 @@ void MoveMaker::make_temporary_king_move(bool is_w, bool is_kside)
 model::Piece::Type MoveMaker::remove_moved_piece_from_board(bool is_w, sq_idx from_sq) 
 {
     // Determine the piece type of the piece being moved
-    model::Piece::Type  moved_piece_type = piece_map_.get_piece_type_at(from_sq);
+    model::Piece::Type  moved_piece_type = pos_.piece_map.get_piece_type_at(from_sq);
 
     // Update zobrist hash
-    z_hasher_.hash_piece_type_at(from_sq, moved_piece_type);
+    pos_.z_hasher.hash_piece_type_at(from_sq, moved_piece_type);
 
     // Clear the piece from bbs, squarelookup and gamestate bitmasks
-    bbs_.clear_piece_type_bit(from_sq, moved_piece_type);
-    piece_map_.set_piece_type_at(from_sq, model::Piece::Type::EMPTY);
+    pos_.bbs.clear_piece_type_bit(from_sq, moved_piece_type);
+    pos_.piece_map.set_piece_type_at(from_sq, model::Piece::Type::EMPTY);
 
-    is_w ? occupancy_masks_.clear_w_pieces_bit(from_sq) 
-         : occupancy_masks_.clear_b_pieces_bit(from_sq);
+    is_w ? pos_.occ_masks.clear_w_pieces_bit(from_sq) 
+         : pos_.occ_masks.clear_b_pieces_bit(from_sq);
 
     return moved_piece_type;
 }
@@ -145,29 +246,29 @@ void MoveMaker::place_moved_piece_on_board(
     sq_idx to_sq, 
     model::Piece::Type moved_piece_type) 
 {
-    bbs_.set_piece_type_bit(to_sq, moved_piece_type);
-    piece_map_.set_piece_type_at(to_sq, moved_piece_type);
+    pos_.bbs.set_piece_type_bit(to_sq, moved_piece_type);
+    pos_.piece_map.set_piece_type_at(to_sq, moved_piece_type);
 
-    z_hasher_.hash_piece_type_at(to_sq, moved_piece_type);
+    pos_.z_hasher.hash_piece_type_at(to_sq, moved_piece_type);
 
-    is_w ? occupancy_masks_.set_w_pieces_bit(to_sq) 
-         : occupancy_masks_.set_b_pieces_bit(to_sq);
+    is_w ? pos_.occ_masks.set_w_pieces_bit(to_sq) 
+         : pos_.occ_masks.set_b_pieces_bit(to_sq);
 }
 
-void MoveMaker::remove_captured_piece_from_board(bool is_ep, bool is_w, sq_idx capture_sq, model::Piece::Type  captured_piece_type) {
-    // Remove captured piece from board models
-    bbs_.clear_piece_type_bit(capture_sq, captured_piece_type);
+void MoveMaker::remove_captured_piece_from_board(bool is_ep, bool is_w, sq_idx capture_sq, model::Piece::Type captured_piece_type) {
+    // Remove captured piece from models
+    pos_.bbs.clear_piece_type_bit(capture_sq, captured_piece_type);
 
-    is_w ? occupancy_masks_.clear_b_pieces_bit(capture_sq) 
-         : occupancy_masks_.clear_w_pieces_bit(capture_sq);
+    is_w ? pos_.occ_masks.clear_b_pieces_bit(capture_sq) 
+         : pos_.occ_masks.clear_w_pieces_bit(capture_sq);
 
-    z_hasher_.hash_piece_type_at(capture_sq, captured_piece_type);
+    pos_.z_hasher.hash_piece_type_at(capture_sq, captured_piece_type);
 
     // Only clear from the squares lookup if the move was an ep capture
     // because the capture idx points to the square where the pawn was
     // and is now empty, the square we moved to will have been updated
     if (is_ep) {
-        piece_map_.set_piece_type_at(capture_sq, model::Piece::Type::EMPTY);
+        pos_.piece_map.set_piece_type_at(capture_sq, model::Piece::Type::EMPTY);
     }
 }
 

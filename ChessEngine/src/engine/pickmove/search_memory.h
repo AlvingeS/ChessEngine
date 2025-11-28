@@ -25,18 +25,6 @@ public:
         return castle_rights_[depth];
     }
 
-    model::Piece::Type get_last_captured_piece_at_depth(int depth) const
-    {
-        return last_captured_pieces_[depth];
-    }
-
-    void set_last_captured_piece_at_depth(
-        int current_depth,
-        model::Piece::Type piece_type) 
-    {
-        last_captured_pieces_[current_depth] = piece_type;
-    }
-
     void set_castle_rights(
         int current_depth, 
         const model::Move& move, 
@@ -92,7 +80,6 @@ public:
 private:
     int max_depth_;
     std::vector<unsigned char> castle_rights_;
-    std::vector<model::Piece::Type> last_captured_pieces_;
     std::vector<bitmask> ep_target_masks_;
     std::vector<int> no_captures_or_pawn_moves_counts_;
 

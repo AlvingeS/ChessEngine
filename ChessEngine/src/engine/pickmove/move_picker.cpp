@@ -32,15 +32,8 @@ MovePicker::MovePicker(int maxDepth)
         first_moves_[i] = model::Move();
     }
 
-    last_captured_pieces_.resize(max_depth_);
     move_lists_.resize(max_depth_);
     no_captures_or_pawn_moves_counts_.resize(max_depth_);
-
-    for (int i = 0; i < max_depth_; i++) {
-        last_captured_pieces_[i] = model::Piece::Type::EMPTY;
-        move_lists_[i] = model::Movelist();
-        no_captures_or_pawn_moves_counts_[i] = 0;
-    }
 
     node_count_.resize(20);
     capture_count_.resize(20);
@@ -261,10 +254,6 @@ void MovePicker::minimax(
             }
 
             continue;
-        }
-
-        if (current_move.is_any_capture()) {
-            search_memory_.set_last_captured_piece_at_depth(current_depth, move_result.captured_piece_type);
         }
 
         search_memory_.handle_ep_memory(current_move, is_maximizer, current_depth, current_move.get_to_sq());

@@ -123,7 +123,6 @@ private:
 
     int pseudo_legal_moves_count_;
     std::vector<model::Movelist> move_lists_;
-    std::vector<model::Piece::Type> last_captured_pieces_;
     std::vector<int> no_captures_or_pawn_moves_counts_; 
 
     bool too_many_pieces_on_board();

@@ -7,13 +7,11 @@ namespace engine {
 SearchMemory::SearchMemory(int maxDepth) : max_depth_(maxDepth) 
 {
     castle_rights_.resize(max_depth_ + 1);
-    last_captured_pieces_.resize(max_depth_ + 1);
     ep_target_masks_.resize(max_depth_ + 1);
     no_captures_or_pawn_moves_counts_.resize(max_depth_ + 1);
 
     for (int i = 0; i <= max_depth_; i++) {
         castle_rights_[i] = 0b1111;
-        last_captured_pieces_[i] = model::Piece::Type::EMPTY;
         ep_target_masks_[i] = 0ULL;
         no_captures_or_pawn_moves_counts_[i] = 0;
     }

@@ -1,5 +1,6 @@
 #include "logic/makemove/move_maker.h"
 
+#include "model/constants.h"
 #include "model/position/position.h"
 #include "model/move/move.h"
 
@@ -22,9 +23,10 @@ UndoInfo MoveMaker::make_move(const model::Move& move, bool is_w)
 
         auto king_type = is_w ? model::Piece::Type::W_KING
                               : model::Piece::Type::B_KING;
+        undo_info.moved_piece_type = king_type;
 
-        update_castle_rights(move, is_w, king_type);
-        
+        update_castle_rights(move, is_w, undo_info);
+
         return undo_info;
     }
 
@@ -63,7 +65,7 @@ UndoInfo MoveMaker::make_move(const model::Move& move, bool is_w)
 
     // Todo: search_memory_.handle_no_capture_count(move, current_depth, move_result.moved_piece_type);
 
-    update_castle_rights(move, is_w, undo_info.moved_piece_type);
+    update_castle_rights(move, is_w, undo_info);
 
     return undo_info;
 }
@@ -86,7 +88,7 @@ void MoveMaker::update_ep_target_mask(const model::Move& move, bool is_w)
     }
 }
 
-void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, model::Piece::Type moved_piece_type) 
+void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, UndoInfo& undo_info) 
 {
     // If no one has any rights then there is nothing to update
     if (pos_.c_rights == 0)
@@ -111,49 +113,79 @@ void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, model::
 
     if (is_w) {
         // If move is made by white king, remove all white castling rights
-        if (moved_piece_type == model::Piece::Type::W_KING) {
+        if (undo_info.moved_piece_type == model::Piece::Type::W_KING) {
             pos_.c_rights &= ~logic::masks::W_BOTH_SIDES_CASTLE_RIGHTS_MASK;
             return;
         }
         
-        // If moved piece was neither a king or rook, no castle rights changes
-        // Code after this statement now assumes that a W_ROOK has been moved
-        if (moved_piece_type != model::Piece::Type::W_ROOK)
+        // If the the players king or any of the rooks was not moved or an opponent rook has not been taken
+        // there is nothing to do. 
+        bool rook_moved = (move.get_from_sq() == constants::W_KSIDE_ROOK_START_SQ 
+                        || move.get_from_sq() == constants::W_QSIDE_ROOK_START_SQ)
+                        && undo_info.moved_piece_type == model::Piece::Type::W_ROOK;
+
+        bool opp_rook_captured = move.is_any_capture() 
+                              && undo_info.captured_piece_type == model::Piece::Type::B_ROOK
+                              && (move.get_to_sq() == constants::B_KSIDE_ROOK_START_SQ 
+                              ||  move.get_to_sq() == constants::B_QSIDE_ROOK_START_SQ); 
+
+
+        if (!rook_moved && !opp_rook_captured)
             return;
 
-        // If rook is moved from kside corner and you have kside castle rights, remove them
-        if (move.get_from_sq() == 0 && (pos_.c_rights & logic::masks::W_KSIDE_CASTLE_RIGHTS_MASK) != 0) {
-            pos_.c_rights &= ~logic::masks::W_KSIDE_CASTLE_RIGHTS_MASK;
-            return;
+        if (rook_moved) {
+            if (move.get_from_sq() == constants::W_KSIDE_ROOK_START_SQ) {
+                pos_.c_rights &= ~logic::masks::W_KSIDE_CASTLE_RIGHTS_MASK; // If move was made from kside, remove kside c_rights
+            } else {
+                pos_.c_rights &= ~logic::masks::W_QSIDE_CASTLE_RIGHTS_MASK; // Else, move was made from qside, remove qside c_rights
+                return;
+            }
         }
 
-        // If rook is moved from qside corner and you have qside castle rights, remove them
-        if (move.get_from_sq() == 7 && (pos_.c_rights & logic::masks::W_QSIDE_CASTLE_RIGHTS_MASK) != 0) {
-            pos_.c_rights &= ~logic::masks::W_QSIDE_CASTLE_RIGHTS_MASK;
-            return;
+        if (opp_rook_captured) {
+            if (move.get_to_sq() == constants::B_KSIDE_ROOK_START_SQ) {
+                pos_.c_rights &= ~logic::masks::B_KSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on kside, remove opp kside c_rights
+            } else {
+                pos_.c_rights &= ~logic::masks::B_QSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on qside, remove opp qside c_rights
+            }
         }
     } else {
-        // If move is made by black king, remove all black castling rights
-        if (moved_piece_type == model::Piece::Type::B_KING) {
+        // If move is made by white king, remove all white castling rights
+        if (undo_info.moved_piece_type == model::Piece::Type::B_KING) {
             pos_.c_rights &= ~logic::masks::B_BOTH_SIDES_CASTLE_RIGHTS_MASK;
             return;
         }
         
-        // If moved piece was neither a king or rook, no castle rights changes
-        // Code after this statement now assumes that a B_ROOK has been moved
-        if (moved_piece_type != model::Piece::Type::B_ROOK)
+        // If the the players king or any of the rooks was not moved or an opponent rook has not been taken
+        // there is nothing to do. 
+        bool rook_moved = (move.get_from_sq() == constants::B_KSIDE_ROOK_START_SQ 
+                        || move.get_from_sq() == constants::B_QSIDE_ROOK_START_SQ)
+                        && undo_info.moved_piece_type == model::Piece::Type::B_ROOK;
+
+        bool opp_rook_captured = move.is_any_capture() 
+                              && undo_info.captured_piece_type == model::Piece::Type::W_ROOK
+                              && (move.get_to_sq() == constants::W_KSIDE_ROOK_START_SQ 
+                              ||  move.get_to_sq() == constants::W_QSIDE_ROOK_START_SQ); 
+
+
+        if (!rook_moved && !opp_rook_captured)
             return;
 
-        // If rook is moved from kside corner and you have kside castle rights, remove them
-        if (move.get_from_sq() == 56 && (pos_.c_rights & logic::masks::B_KSIDE_CASTLE_RIGHTS_MASK) != 0) {
-            pos_.c_rights &= ~logic::masks::B_KSIDE_CASTLE_RIGHTS_MASK;
-            return;
+        if (rook_moved) {
+            if (move.get_from_sq() == constants::B_KSIDE_ROOK_START_SQ) {
+                pos_.c_rights &= ~logic::masks::B_KSIDE_CASTLE_RIGHTS_MASK; // If move was made from kside, remove kside c_rights
+            } else {
+                pos_.c_rights &= ~logic::masks::B_QSIDE_CASTLE_RIGHTS_MASK; // Else, move was made from qside, remove qside c_rights
+                return;
+            }
         }
 
-        // If rook is moved from qside corner and you have qside castle rights, remove them
-        if (move.get_from_sq() == 63 && (pos_.c_rights & logic::masks::B_QSIDE_CASTLE_RIGHTS_MASK) != 0) {
-            pos_.c_rights &= ~logic::masks::B_QSIDE_CASTLE_RIGHTS_MASK;
-            return;
+        if (opp_rook_captured) {
+            if (move.get_to_sq() == constants::W_KSIDE_ROOK_START_SQ) {
+                pos_.c_rights &= ~logic::masks::W_KSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on kside, remove opp kside c_rights
+            } else {
+                pos_.c_rights &= ~logic::masks::W_QSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on qside, remove opp qside c_rights
+            }
         }
     }
 }

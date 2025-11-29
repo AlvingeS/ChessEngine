@@ -23,7 +23,7 @@ public:
 
 private:
     void update_ep_target_mask(const model::Move& move, bool is_w);
-    void update_castle_rights(const model::Move& move, bool is_w, model::Piece::Type captured_piece_type);
+    void update_castle_rights(const model::Move& move, bool is_w, UndoInfo& undo_info);
     void make_castle_move(bool is_w, bool is_kside);
     void store_state(UndoInfo& undo_info);
 

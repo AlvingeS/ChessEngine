@@ -1,6 +1,8 @@
 #pragma once
 
 #include "logic/makemove/undo_info.h"
+#include "logic/zobrist/z_hasher.h"
+
 #include "model/move/move.h"
 #include "model/types.h"
 
@@ -15,9 +17,7 @@ class MoveRetractor {
 
 public:
     // Constructor
-    MoveRetractor(
-        model::Position& pos
-    );
+    MoveRetractor(model::Position& pos, ZHasher& z_hasher);
     
     void unmake_move(
         const model::Move& move, 
@@ -39,6 +39,7 @@ private:
     void restore_state(logic::UndoInfo& undo_info);
 
     model::Position& pos_;
+    logic::ZHasher& z_hasher_;
 };
 
 } // namespace logic

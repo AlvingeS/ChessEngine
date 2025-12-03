@@ -2,8 +2,10 @@
 
 #include "model/types.h"
 #include "model/position/piece_type.h"
+
 #include "logic/utils.h"
 #include "logic/makemove/undo_info.h"
+#include "logic/zobrist/z_hasher.h"
 
 namespace model {
     class Move;
@@ -15,7 +17,7 @@ namespace logic {
 class MoveMaker {
 
 public:
-    MoveMaker(model::Position& pos);
+    MoveMaker(model::Position& pos, ZHasher& z_hasher);
     
     UndoInfo make_move(const model::Move& move, bool is_w);
     
@@ -43,6 +45,7 @@ private:
     );
 
     model::Position& pos_;
+    logic::ZHasher& z_hasher_;
 };
 
 } // namespace logic

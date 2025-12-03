@@ -7,7 +7,10 @@
 
 namespace logic {
 
-MoveRetractor::MoveRetractor(model::Position& pos) : pos_(pos) {}
+MoveRetractor::MoveRetractor(model::Position& pos, ZHasher& z_hasher) 
+    : pos_(pos)
+    , z_hasher_(z_hasher) 
+{}
 
 void MoveRetractor::unmake_castle_move(bool was_w, bool was_kside)
 {
@@ -149,6 +152,7 @@ void MoveRetractor::restore_state(logic::UndoInfo& undo_info)
 {
     pos_.c_rights = undo_info.c_rights;
     pos_.ep_target_mask = undo_info.ep_target_mask;
+    z_hasher_.set_z_hash(undo_info.z_hash);
 }
 
 void MoveRetractor::unmake_move(

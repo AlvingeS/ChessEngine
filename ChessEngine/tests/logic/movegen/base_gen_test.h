@@ -7,6 +7,7 @@
 #include "model/move/movelist.h"
 #include "logic/movegen/move_gen.h"
 
+#include "logic/zobrist/z_hasher.h"
 #include "logic/makemove/move_maker.h"
 #include "logic/makemove/move_retractor.h"
 
@@ -21,6 +22,7 @@ class BaseGenerator : public ::testing::Test
 {
 protected:
     model::Position pos;
+    ZHasher z_hasher;
     MoveMaker move_maker;
     MoveRetractor move_retractor;
     MoveGen moveGenerator;
@@ -29,8 +31,9 @@ protected:
 
     BaseGenerator()
           : pos(model::Position())
-          , move_maker(pos)
-          , move_retractor(pos)
+          , z_hasher(pos)
+          , move_maker(pos, z_hasher)
+          , move_retractor(pos, z_hasher)
           , moveGenerator(MoveGen(pos, move_maker, move_retractor))
           , movelist(model::Movelist()) 
     {}

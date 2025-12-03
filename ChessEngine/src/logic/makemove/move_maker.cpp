@@ -6,7 +6,10 @@
 
 namespace logic {
 
-MoveMaker::MoveMaker(model::Position& pos) : pos_(pos) {}
+MoveMaker::MoveMaker(model::Position& pos, ZHasher& z_hasher) 
+    : pos_(pos)
+    , z_hasher_(z_hasher)
+{}
 
 UndoInfo MoveMaker::make_move(const model::Move& move, bool is_w)
 {
@@ -74,6 +77,7 @@ void MoveMaker::store_state(UndoInfo& undo_info)
 {
     undo_info.c_rights = pos_.c_rights;
     undo_info.ep_target_mask = pos_.ep_target_mask;
+    undo_info.z_hash = z_hasher_.value();
 }
 
 void MoveMaker::update_ep_target_mask(const model::Move& move, bool is_w)
@@ -84,7 +88,7 @@ void MoveMaker::update_ep_target_mask(const model::Move& move, bool is_w)
         pos_.ep_target_mask = is_w ? (1ULL << (move.get_to_sq() - 8)) 
                                    : (1ULL << (move.get_to_sq() + 8));
                                    // FIXME: Temporary because I don't know how to implement this haha
-                                   // z_hasher_.hash_ep_file(to_sq % 8);
+                                   // z_hasher_.xor_ep_file_at(to_sq % 8);
     }
 }
 
@@ -95,26 +99,26 @@ void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, UndoInf
         return;
 
     // If it is white but he has no rights then there is nothing to update
-    if (is_w && (pos_.c_rights & logic::masks::W_BOTH_SIDES_CASTLE_RIGHTS_MASK) == 0)
+    if (is_w && (pos_.c_rights & masks::W_BOTH_SIDES_CASTLE_RIGHTS_MASK) == 0)
         return;
 
     // If it is black but he has no rights then there is nothing to update
-    if (!is_w && (pos_.c_rights & logic::masks::B_BOTH_SIDES_CASTLE_RIGHTS_MASK) == 0)
+    if (!is_w && (pos_.c_rights & masks::B_BOTH_SIDES_CASTLE_RIGHTS_MASK) == 0)
         return;
 
     // If the move is castle, remove all rights for that player
     if (move.is_any_castle()) {
         if (is_w) {
-            pos_.c_rights &= ~logic::masks::W_BOTH_SIDES_CASTLE_RIGHTS_MASK;
+            pos_.c_rights &= ~masks::W_BOTH_SIDES_CASTLE_RIGHTS_MASK;
         } else {
-            pos_.c_rights &= ~logic::masks::B_BOTH_SIDES_CASTLE_RIGHTS_MASK;
+            pos_.c_rights &= ~masks::B_BOTH_SIDES_CASTLE_RIGHTS_MASK;
         }
     }
 
     if (is_w) {
         // If move is made by white king, remove all white castling rights
         if (undo_info.moved_piece_type == model::Piece::Type::W_KING) {
-            pos_.c_rights &= ~logic::masks::W_BOTH_SIDES_CASTLE_RIGHTS_MASK;
+            pos_.c_rights &= ~masks::W_BOTH_SIDES_CASTLE_RIGHTS_MASK;
             return;
         }
         
@@ -135,24 +139,24 @@ void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, UndoInf
 
         if (rook_moved) {
             if (move.get_from_sq() == constants::W_KSIDE_ROOK_START_SQ) {
-                pos_.c_rights &= ~logic::masks::W_KSIDE_CASTLE_RIGHTS_MASK; // If move was made from kside, remove kside c_rights
+                pos_.c_rights &= ~masks::W_KSIDE_CASTLE_RIGHTS_MASK; // If move was made from kside, remove kside c_rights
             } else {
-                pos_.c_rights &= ~logic::masks::W_QSIDE_CASTLE_RIGHTS_MASK; // Else, move was made from qside, remove qside c_rights
+                pos_.c_rights &= ~masks::W_QSIDE_CASTLE_RIGHTS_MASK; // Else, move was made from qside, remove qside c_rights
                 return;
             }
         }
 
         if (opp_rook_captured) {
             if (move.get_to_sq() == constants::B_KSIDE_ROOK_START_SQ) {
-                pos_.c_rights &= ~logic::masks::B_KSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on kside, remove opp kside c_rights
+                pos_.c_rights &= ~masks::B_KSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on kside, remove opp kside c_rights
             } else {
-                pos_.c_rights &= ~logic::masks::B_QSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on qside, remove opp qside c_rights
+                pos_.c_rights &= ~masks::B_QSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on qside, remove opp qside c_rights
             }
         }
     } else {
         // If move is made by white king, remove all white castling rights
         if (undo_info.moved_piece_type == model::Piece::Type::B_KING) {
-            pos_.c_rights &= ~logic::masks::B_BOTH_SIDES_CASTLE_RIGHTS_MASK;
+            pos_.c_rights &= ~masks::B_BOTH_SIDES_CASTLE_RIGHTS_MASK;
             return;
         }
         
@@ -173,18 +177,18 @@ void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, UndoInf
 
         if (rook_moved) {
             if (move.get_from_sq() == constants::B_KSIDE_ROOK_START_SQ) {
-                pos_.c_rights &= ~logic::masks::B_KSIDE_CASTLE_RIGHTS_MASK; // If move was made from kside, remove kside c_rights
+                pos_.c_rights &= ~masks::B_KSIDE_CASTLE_RIGHTS_MASK; // If move was made from kside, remove kside c_rights
             } else {
-                pos_.c_rights &= ~logic::masks::B_QSIDE_CASTLE_RIGHTS_MASK; // Else, move was made from qside, remove qside c_rights
+                pos_.c_rights &= ~masks::B_QSIDE_CASTLE_RIGHTS_MASK; // Else, move was made from qside, remove qside c_rights
                 return;
             }
         }
 
         if (opp_rook_captured) {
             if (move.get_to_sq() == constants::W_KSIDE_ROOK_START_SQ) {
-                pos_.c_rights &= ~logic::masks::W_KSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on kside, remove opp kside c_rights
+                pos_.c_rights &= ~masks::W_KSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on kside, remove opp kside c_rights
             } else {
-                pos_.c_rights &= ~logic::masks::W_QSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on qside, remove opp qside c_rights
+                pos_.c_rights &= ~masks::W_QSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on qside, remove opp qside c_rights
             }
         }
     }
@@ -261,7 +265,7 @@ model::Piece::Type MoveMaker::remove_moved_piece_from_board(bool is_w, sq_idx fr
     model::Piece::Type  moved_piece_type = pos_.piece_map.get_piece_type_at(from_sq);
 
     // Update zobrist hash
-    pos_.z_hasher.hash_piece_type_at(from_sq, moved_piece_type);
+    z_hasher_.xor_piece_type_at(from_sq, moved_piece_type);
 
     // Clear the piece from bbs, squarelookup and gamestate bitmasks
     pos_.bbs.clear_piece_type_bit(from_sq, moved_piece_type);
@@ -281,7 +285,7 @@ void MoveMaker::place_moved_piece_on_board(
     pos_.bbs.set_piece_type_bit(to_sq, moved_piece_type);
     pos_.piece_map.set_piece_type_at(to_sq, moved_piece_type);
 
-    pos_.z_hasher.hash_piece_type_at(to_sq, moved_piece_type);
+    z_hasher_.xor_piece_type_at(to_sq, moved_piece_type);
 
     is_w ? pos_.occ_masks.set_w_pieces_bit(to_sq) 
          : pos_.occ_masks.set_b_pieces_bit(to_sq);
@@ -294,7 +298,7 @@ void MoveMaker::remove_captured_piece_from_board(bool is_ep, bool is_w, sq_idx c
     is_w ? pos_.occ_masks.clear_b_pieces_bit(capture_sq) 
          : pos_.occ_masks.clear_w_pieces_bit(capture_sq);
 
-    pos_.z_hasher.hash_piece_type_at(capture_sq, captured_piece_type);
+    z_hasher_.xor_piece_type_at(capture_sq, captured_piece_type);
 
     // Only clear from the squares lookup if the move was an ep capture
     // because the capture idx points to the square where the pawn was

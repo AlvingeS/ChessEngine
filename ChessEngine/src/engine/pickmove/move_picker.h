@@ -98,6 +98,7 @@ public:
 
 private:
     model::Position pos_;
+    logic::ZHasher z_hasher_;
     logic::MoveMaker move_maker_;
     logic::MoveRetractor move_retractor_;
     logic::MoveGen move_generator_;

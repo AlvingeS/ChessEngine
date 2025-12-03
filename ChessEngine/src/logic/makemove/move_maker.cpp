@@ -66,9 +66,9 @@ UndoInfo MoveMaker::make_move(const model::Move& move, bool is_w)
     // Update ep target mask based on if the move was a double pawn push or not
     update_ep_target_mask(move, is_w);
 
-    // Todo: search_memory_.handle_no_capture_count(move, current_depth, move_result.moved_piece_type);
-
     update_castle_rights(move, is_w, undo_info);
+
+    z_hasher_.toggle_side_to_move();
 
     return undo_info;
 }
@@ -82,6 +82,10 @@ void MoveMaker::store_state(UndoInfo& undo_info)
 
 void MoveMaker::update_ep_target_mask(const model::Move& move, bool is_w)
 {
+    // XOR out old ep mask
+    if (pos_.ep_target_mask != 0ULL)
+        z_hasher_.xor_ep_file_at(utils::file_from_sq(utils::lsb_idx(pos_.ep_target_mask)));
+
     if (!move.is_double_pawn_push()) {
         pos_.ep_target_mask = 0ULL;
     } else {
@@ -90,10 +94,16 @@ void MoveMaker::update_ep_target_mask(const model::Move& move, bool is_w)
                                    // FIXME: Temporary because I don't know how to implement this haha
                                    // z_hasher_.xor_ep_file_at(to_sq % 8);
     }
+
+    // XOR in new ep mask
+    if (pos_.ep_target_mask != 0ULL)
+        z_hasher_.xor_ep_file_at(utils::file_from_sq(utils::lsb_idx(pos_.ep_target_mask)));
 }
 
 void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, UndoInfo& undo_info) 
 {
+    castle_rights old_castle_rights = pos_.c_rights;
+
     // If no one has any rights then there is nothing to update
     if (pos_.c_rights == 0)
         return;
@@ -154,7 +164,7 @@ void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, UndoInf
             }
         }
     } else {
-        // If move is made by white king, remove all white castling rights
+        // If move is made by black king, remove all black castling rights
         if (undo_info.moved_piece_type == model::Piece::Type::B_KING) {
             pos_.c_rights &= ~masks::B_BOTH_SIDES_CASTLE_RIGHTS_MASK;
             return;
@@ -192,6 +202,8 @@ void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, UndoInf
             }
         }
     }
+
+    z_hasher_.update_castle_rights(old_castle_rights, pos_.c_rights);
 }
 
 void MoveMaker::make_castle_move(bool is_w, bool is_kside)
@@ -218,6 +230,11 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
         pos_.piece_map.set_piece_type_at(king_to_sq,   model::Piece::Type::W_KING);
         pos_.piece_map.set_piece_type_at(rook_from_sq, model::Piece::Type::EMPTY);
         pos_.piece_map.set_piece_type_at(rook_to_sq,   model::Piece::Type::W_ROOK);
+
+        z_hasher_.xor_piece_type_at(king_from_sq, model::Piece::Type::W_KING);
+        z_hasher_.xor_piece_type_at(king_to_sq,   model::Piece::Type::W_KING);
+        z_hasher_.xor_piece_type_at(rook_from_sq, model::Piece::Type::W_ROOK);
+        z_hasher_.xor_piece_type_at(rook_to_sq,   model::Piece::Type::W_ROOK);
     } else {
         king_from_sq = 59;
         king_to_sq   = is_kside ? 57 : 61;
@@ -238,6 +255,11 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
         pos_.piece_map.set_piece_type_at(king_to_sq,   model::Piece::Type::B_KING);
         pos_.piece_map.set_piece_type_at(rook_from_sq, model::Piece::Type::EMPTY);
         pos_.piece_map.set_piece_type_at(rook_to_sq,   model::Piece::Type::B_ROOK);
+
+        z_hasher_.xor_piece_type_at(king_from_sq, model::Piece::Type::B_KING);
+        z_hasher_.xor_piece_type_at(king_to_sq,   model::Piece::Type::B_KING);
+        z_hasher_.xor_piece_type_at(rook_from_sq, model::Piece::Type::B_ROOK);
+        z_hasher_.xor_piece_type_at(rook_to_sq,   model::Piece::Type::B_ROOK);
     }
 
     pos_.occ_masks.update_occupancy_masks();

@@ -34,7 +34,7 @@ ZHasher::ZHasher(const model::Position& pos)
     }
 
     // Generate random number for is white table
-    is_w_key = dis(gen);
+    side_to_move_key = dis(gen);
     
     compute_initial_hash(pos);
 }
@@ -72,5 +72,16 @@ void ZHasher::compute_initial_hash(const model::Position& pos)
     if (!pos.is_w)
         toggle_side_to_move();
 }
+
+void ZHasher::update_castle_rights(castle_rights old_rights, castle_rights new_rights)
+{
+    castle_rights lost = old_rights & ~new_rights;
+
+    if (lost & masks::W_KSIDE_CASTLE_RIGHTS_MASK) xor_castle_right(W_KSIDE);
+    if (lost & masks::W_QSIDE_CASTLE_RIGHTS_MASK) xor_castle_right(W_QSIDE);
+    if (lost & masks::B_KSIDE_CASTLE_RIGHTS_MASK) xor_castle_right(B_KSIDE);
+    if (lost & masks::B_QSIDE_CASTLE_RIGHTS_MASK) xor_castle_right(B_QSIDE);
+}
+
 
 } // namespace logic

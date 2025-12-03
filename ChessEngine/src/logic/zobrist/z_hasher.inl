@@ -15,9 +15,9 @@ inline void ZHasher::xor_ep_file_at(int file)
     z_hash_ ^= ep_file_keys[file];
 }
 
-inline void ZHasher::toggle_side_to_move(bool is_w)
+inline void ZHasher::toggle_side_to_move()
 {
-    z_hash_ ^= is_w_key;
+    z_hash_ ^= side_to_move_key;
 }
 
 inline void ZHasher::set_z_hash(uint64_t z_hash) 

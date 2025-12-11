@@ -14,6 +14,7 @@ struct Position {
     bitmask ep_target_mask;
     castle_rights c_rights;
     bool is_w;
+    int halfmove_clock;
 
     Position()
         : bbs(Bitboards())
@@ -22,6 +23,7 @@ struct Position {
         , ep_target_mask{0ULL}
         , c_rights{0b1111}
         , is_w{true}
+        , halfmove_clock{0}
     {}
 };
 

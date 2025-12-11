@@ -12,7 +12,7 @@ inline Move::Move(const Move& move) {
     move_ = move.move_;
 }
 
-inline int Move::get_move() const {
+inline int Move::value() const {
     return move_;
 }
 

@@ -28,7 +28,7 @@
 //     };
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhite_ShouldReturn2Moves) {
-//         io::fen::set_board_from_fen(fenOne, pos);
+//         io::fen::set_pos_from_fen(fenOne, pos);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
 //         model::Movelist moves = getMoves();
@@ -45,7 +45,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlack_ShouldReturn2Moves) {
-//         io::fen::set_board_from_fen(fenOne, pos);
+//         io::fen::set_pos_from_fen(fenOne, pos);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
 //         model::Movelist moves = getMoves();
@@ -63,7 +63,7 @@
 
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenTwo_ShouldReturn0Moves) {
-//         io::fen::set_board_from_fen(fenTwo, pos);
+//         io::fen::set_pos_from_fen(fenTwo, pos);
 //         moveGenerator.gen_castle_moves(true, movelist);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
@@ -71,7 +71,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenThreeWhite_ShouldReturn1Moves) {
-//         io::fen::set_board_from_fen(fenThree, pos);
+//         io::fen::set_pos_from_fen(fenThree, pos);
 //         moveGenerator.getBoard().setRookHMoved(true, true);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
@@ -90,7 +90,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenThreeBlack_ShouldReturn1Moves) {
-//         io::fen::set_board_from_fen(fenThree, pos);
+//         io::fen::set_pos_from_fen(fenThree, pos);
 //         moveGenerator.getBoard().setRookAMoved(false, true);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
@@ -109,7 +109,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenStartingPos_ShouldReturn0Moves) {
-//         io::fen::set_board_from_fen(startingPos, pos);
+//         io::fen::set_pos_from_fen(startingPos, pos);
 //         moveGenerator.gen_castle_moves(true, movelist);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
@@ -117,7 +117,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteKingMoved_ShouldReturn0Moves) {
-//         io::fen::set_board_from_fen(fenOne, pos);
+//         io::fen::set_pos_from_fen(fenOne, pos);
 //         moveGenerator.getBoard().setKingMoved(true, true);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
@@ -125,7 +125,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackKingMoved_ShouldReturn0Moves) {
-//         io::fen::set_board_from_fen(fenOne, pos);
+//         io::fen::set_pos_from_fen(fenOne, pos);
 //         moveGenerator.getBoard().setKingMoved(false, true);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
@@ -133,7 +133,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteRookAMoved_ShouldReturn1Moves) {
-//         io::fen::set_board_from_fen(fenOne, pos);
+//         io::fen::set_pos_from_fen(fenOne, pos);
 //         moveGenerator.getBoard().setRookAMoved(true, true);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
@@ -152,7 +152,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackRookAMoved_ShouldReturn1Moves) {
-//         io::fen::set_board_from_fen(fenOne, pos);
+//         io::fen::set_pos_from_fen(fenOne, pos);
 //         moveGenerator.getBoard().setRookAMoved(false, true);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
@@ -171,7 +171,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneWhiteRookHMoved_ShouldReturn1Moves) {
-//         io::fen::set_board_from_fen(fenOne, pos);
+//         io::fen::set_pos_from_fen(fenOne, pos);
 //         moveGenerator.getBoard().setRookHMoved(true, true);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
@@ -190,7 +190,7 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_fenOneBlackRookHMoved_ShouldReturn1Moves) {
-//         io::fen::set_board_from_fen(fenOne, pos);
+//         io::fen::set_pos_from_fen(fenOne, pos);
 //         moveGenerator.getBoard().setRookHMoved(false, true);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
@@ -209,35 +209,35 @@
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_bugFenWhite_ShouldReturn0Moves) {
-//         io::fen::set_board_from_fen(bugFen, pos);
+//         io::fen::set_pos_from_fen(bugFen, pos);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
 //         ASSERT_EQ(movelist.get_move_idx(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingWhileInCheckWhiteFen_ShouldReturn0Moves) {
-//         io::fen::set_board_from_fen(castlingWhileInCheckWhiteFen, pos);
+//         io::fen::set_pos_from_fen(castlingWhileInCheckWhiteFen, pos);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
 //         ASSERT_EQ(movelist.get_move_idx(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingWhileInCheckBlackFen_ShouldReturn0Moves) {
-//         io::fen::set_board_from_fen(castlingWhileInCheckBlackFen, pos);
+//         io::fen::set_pos_from_fen(castlingWhileInCheckBlackFen, pos);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
 //         ASSERT_EQ(movelist.get_move_idx(), 0);
 //         }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingThroughAttacksWhiteFenWhite_ShouldReturn0Moves) {
-//         io::fen::set_board_from_fen(castlingThroughAttacksWhiteFen, pos);
+//         io::fen::set_pos_from_fen(castlingThroughAttacksWhiteFen, pos);
 //         moveGenerator.gen_castle_moves(true, movelist);
 
 //         ASSERT_EQ(movelist.get_move_idx(), 0);
 //     }
 
 //     TEST_F(MoveGeneratorCastlingTest, genCastlingMoves_castlingThroughAttacksBlackFenBlack_ShouldReturn0Moves) {
-//         io::fen::set_board_from_fen(castlingThroughAttacksBlackFen, pos);
+//         io::fen::set_pos_from_fen(castlingThroughAttacksBlackFen, pos);
 //         moveGenerator.gen_castle_moves(false, movelist);
 
 //         ASSERT_EQ(movelist.get_move_idx(), 0);

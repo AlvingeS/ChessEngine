@@ -29,7 +29,7 @@ public:
     Move(sq_idx from_sq, sq_idx to_sq, int flag);
     Move(const Move& move);
 
-    int get_move() const;
+    int value() const;
     int get_flag() const;
 
     void operator=(const Move& move);

@@ -54,7 +54,7 @@ protected:
     {
         logic::attack_tables::init_attack_tables();
         startPos = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        pos_two = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -";
+        pos_two = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0";
         pos_three = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - -";
         posFive = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
     }
@@ -141,67 +141,40 @@ protected:
         return move_str;
     }
 
-    from_to_bit_idxs translateStrToFromTo(std::string move_str) 
+    std::unordered_map<model::Move, uint64_t> node_count_per_first_move_as_map() 
     {
-        from_to_bit_idxs from_to;
-
-        int from_row = move_str[1] - '1';
-        int from_col = 8 - (move_str[0] - 'a') - 1;
-        int to_row = move_str[3] - '1';
-        int to_col = 8 - (move_str[2] - 'a') - 1;
-
-        from_to.from = from_row * 8 + from_col;
-        from_to.to = to_row * 8 + to_col;
-
-        return from_to;
-    }
-
-    model::Move move_from_str_and_flag(std::string move_str, int flag) 
-    {
-        from_to_bit_idxs from_to = translateStrToFromTo(move_str);
-        return model::Move(from_to.from, from_to.to, flag);
-    }
-
-    std::unordered_map<std::string, uint64_t> node_count_per_first_move_as_map(bool w_started) 
-    {
-        std::unordered_map<std::string, uint64_t> node_count_per_first_move_map{};
-        int sum = 0;
+        std::unordered_map<model::Move, uint64_t> node_count_per_first_move_map{};
 
         for (size_t i = 0; i < move_picker.node_count_per_first_move_.size(); i++) {
-            if (move_picker.first_moves_[i].get_move() != 0) {
-                std::string move_str = move_to_str(move_picker.first_moves_[i], w_started);
-                std::string node_counts_str = std::to_string(move_picker.node_count_per_first_move_[i]);
-                std::string move_node_counts_str = move_str + ": " + node_counts_str;
-                node_count_per_first_move_map[move_str] = move_picker.node_count_per_first_move_[i];
-
-                sum += move_picker.node_count_per_first_move_[i];
-            }
+            model::Move move = move_picker.first_moves_[i];
+            
+            if (move.value() != 0)
+                node_count_per_first_move_map[move] = move_picker.node_count_per_first_move_[i];
         }
-
-        node_count_per_first_move_map["searched"] = sum;
 
         return node_count_per_first_move_map;
     }
 
     void compare_first_move_counts_to_stockfish(
-        const std::unordered_map<std::string, uint64_t> first_move_counts,
-        const std::unordered_map<std::string, uint64_t> stockfish_results) 
+        const std::unordered_map<model::Move, uint64_t> first_move_counts,
+        const std::unordered_map<model::Move, uint64_t> stockfish_results,
+        bool w_started)
     {
         std::ostringstream errors;
         bool has_errors = false;
 
         for (const auto& move_count_pair : first_move_counts) {
-            const std::string& move = move_count_pair.first;
+            const model::Move& move = move_count_pair.first;
             uint64_t count = move_count_pair.second;
 
             auto fount_it = stockfish_results.find(move);
             if (fount_it == stockfish_results.end()) {
-                errors << "Move: " << move << " not found in stockfish results.\n";
+                errors << "Move: " << move_to_str(move, w_started) << " not found in stockfish results.\n";
                 has_errors = true;
             } else {
                 uint64_t stockfishCount = fount_it->second;
                 if (count != stockfishCount) {
-                    errors << "Move: " << move << " failed. Expected: " << stockfishCount << ", Got: " << count << ".\n";
+                    errors << "Move: " << move_to_str(move, w_started) << " failed. Expected: " << stockfishCount << ", Got: " << count << ".\n";
                     has_errors = true;
                 }
             }

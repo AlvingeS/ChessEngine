@@ -25,7 +25,7 @@ protected:
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosWhite_ShouldReturn16Moves) 
 {
-    io::fen::set_board_from_fen(startingPos, pos);
+    io::fen::set_pos_from_fen(startingPos, pos);
     moveGenerator.gen_pawn_moves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -50,7 +50,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosWhite_ShouldReturn16Moves)
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosBlack_ShouldReturn16Moves) 
 {
-    io::fen::set_board_from_fen(startingPos, pos);
+    io::fen::set_pos_from_fen(startingPos, pos);
     moveGenerator.gen_pawn_moves(false, movelist);
 
     model::Movelist moves = getMoves();
@@ -75,7 +75,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_startPosBlack_ShouldReturn16Moves)
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneWhite_ShouldReturn6Moves) 
 {
-    io::fen::set_board_from_fen(fenOne, pos);
+    io::fen::set_pos_from_fen(fenOne, pos);
     moveGenerator.gen_pawn_moves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -95,7 +95,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneWhite_ShouldReturn6Moves)
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneBlack_ShouldReturnXMoves) 
 {
-    io::fen::set_board_from_fen(fenOne, pos);
+    io::fen::set_pos_from_fen(fenOne, pos);
     moveGenerator.gen_pawn_moves(false, movelist);
 
     model::Movelist moves = getMoves();
@@ -115,7 +115,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenOneBlack_ShouldReturnXMoves)
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Moves) 
 {
-    io::fen::set_board_from_fen(fenEnPessantForWhiteTest, pos);
+    io::fen::set_pos_from_fen(fenEnPessantForWhiteTest, pos);
     // moveGenerator.getBoard().setEnPessantTargetAtIndex(43);
     moveGenerator.gen_pawn_moves(true, movelist);
 
@@ -134,7 +134,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForWhite_ShouldReturn2Mov
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForBlack_ShouldReturn2Moves) 
 {
-    io::fen::set_board_from_fen(fenEnPessantForBlackTest, pos);
+    io::fen::set_pos_from_fen(fenEnPessantForBlackTest, pos);
     // moveGenerator.getBoard().setEnPessantTargetAtIndex(23);
     moveGenerator.gen_pawn_moves(false, movelist);
 
@@ -153,7 +153,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenEnPessantForBlack_ShouldReturn2Mov
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12Moves) 
 {
-    io::fen::set_board_from_fen(fenPromotionTest, pos);
+    io::fen::set_pos_from_fen(fenPromotionTest, pos);
     moveGenerator.gen_pawn_moves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -173,7 +173,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestWhite_ShouldReturn12M
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12Moves) 
 {
-    io::fen::set_board_from_fen(fenPromotionTest, pos);
+    io::fen::set_pos_from_fen(fenPromotionTest, pos);
     moveGenerator.gen_pawn_moves(false, movelist);
 
     model::Movelist moves = getMoves();
@@ -193,7 +193,7 @@ TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenPromotionTestBlack_ShouldReturn12M
 
 TEST_F(MoveGeneratorPawnTest, genPawnMoves_fenBuggedPawnTestWhite_ShouldNotReturnh6) 
 {
-    io::fen::set_board_from_fen(fenBuggedPawnTest, pos);
+    io::fen::set_pos_from_fen(fenBuggedPawnTest, pos);
     moveGenerator.gen_pawn_moves(false, movelist);
 
     model::Movelist moves = getMoves();

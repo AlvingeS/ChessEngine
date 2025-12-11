@@ -67,6 +67,16 @@ public:
         size_t i
     ) const;
 
+    inline model::PieceMap get_piece_map_copy()
+    {
+        return pos_.piece_map;
+    }
+
+    inline bool get_is_w_copy()
+    {
+        return pos_.is_w;
+    }
+
     void set_max_depth(int max_depth) 
     {
         max_depth_ = max_depth;
@@ -81,14 +91,9 @@ public:
         return move_generator_;
     }
 
-    void set_board_from_fen(const std::string& fen)
+    void set_pos_from_fen(const std::string& fen)
     {
-        io::fen::set_board_from_fen(fen, pos_);
-    }
-
-    std::string get_fen_from_board() const
-    {
-        return io::fen::get_fen_from_board(pos_.piece_map);
+        io::fen::set_pos_from_fen(fen, pos_);
     }
 
     bool diff_between_occupancy_masks() const

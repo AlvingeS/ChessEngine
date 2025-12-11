@@ -108,7 +108,13 @@ void CastleGen::gen_single_castle_move(
     int move_flag = is_kside ? model::Move::KING_CASTLE_FLAG 
                              : model::Move::QUEEN_CASTLE_FLAG;
 
-    movelist.add_move(model::Move(0, 0, move_flag));
+    sq_idx from_sq = is_w ? 3 : 59;
+    sq_idx to_sq = is_w ? is_kside ? 1
+                                   : 5
+                        : is_kside ? 57
+                                   : 61;
+                                    
+    movelist.add_move(model::Move(from_sq, to_sq, move_flag));
 }
 
 } // namespace logic

@@ -22,14 +22,16 @@ TEST_F(PerftStartPos, perft_starting_pos)
             std::cout << "Running mega run for starting position" << std::endl;
         }
 
-        std::unordered_map<std::string, uint64_t> stockfish_results = io::stockfish::get_perft_results(startPos, depth);
+        auto pm_copy = move_picker.get_piece_map_copy();
+
+        std::unordered_map<model::Move, uint64_t> stockfish_results = io::stockfish::get_perft_results(startPos, depth, pm_copy);
 
         move_picker.set_max_depth(depth);
         bool w_to_start = true;
 
         move_picker.minimax(0, w_to_start, 0);
-        std::unordered_map<std::string, uint64_t> first_move_counts = node_count_per_first_move_as_map(w_to_start);
-        compare_first_move_counts_to_stockfish(first_move_counts, stockfish_results);
+        std::unordered_map<model::Move, uint64_t> first_move_counts = node_count_per_first_move_as_map();
+        compare_first_move_counts_to_stockfish(first_move_counts, stockfish_results, w_to_start);
 
         std::unordered_map<int, std::vector<uint64_t>> expected_results {
             {0, {1,          0,         0,      0,      0, 0,        0    }},

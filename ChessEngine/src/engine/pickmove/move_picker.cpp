@@ -170,7 +170,7 @@ void MovePicker::minimax(
         model::Move current_move = move_lists_[current_depth].get_move_at(i);
 
         // End of moves
-        if (current_move.get_move() == 0) {
+        if (current_move.value() == 0) {
             break;
         }
 
@@ -182,7 +182,7 @@ void MovePicker::minimax(
             num_illegal_moves++;
             move_retractor_.unmake_move(current_move, is_maximizer, undo_stack_[current_depth]);
 
-            if (num_illegal_moves == i + 1 && move_lists_[current_depth].get_move_at(i + 1).get_move() == 0) {
+            if (num_illegal_moves == i + 1 && move_lists_[current_depth].get_move_at(i + 1).value() == 0) {
                 bool was_in_check = move_generator_.in_check(is_maximizer);
 
                 if (was_in_check) {

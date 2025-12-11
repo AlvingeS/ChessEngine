@@ -17,7 +17,7 @@ protected:
 
 TEST_F(MoveGeneratorKnightTest, genKnightMoves_startPosWhite_ShouldReturn4Moves) 
 {
-    io::fen::set_board_from_fen(startingPos, pos);
+    io::fen::set_pos_from_fen(startingPos, pos);
     moveGenerator.gen_knight_moves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -36,7 +36,7 @@ TEST_F(MoveGeneratorKnightTest, genKnightMoves_startPosWhite_ShouldReturn4Moves)
 
 TEST_F(MoveGeneratorKnightTest, genKnightMoves_startPosBlack_ShouldReturn4Moves) 
 {
-    io::fen::set_board_from_fen(startingPos, pos);
+    io::fen::set_pos_from_fen(startingPos, pos);
     moveGenerator.gen_knight_moves(false, movelist);
 
     model::Movelist moves = getMoves();
@@ -55,7 +55,7 @@ TEST_F(MoveGeneratorKnightTest, genKnightMoves_startPosBlack_ShouldReturn4Moves)
 
 TEST_F(MoveGeneratorKnightTest, genKnightMoves_fenOneWhite_ShouldReturn8Moves) 
 {
-    io::fen::set_board_from_fen(fenOne, pos);
+    io::fen::set_pos_from_fen(fenOne, pos);
     moveGenerator.gen_knight_moves(true, movelist);
 
     model::Movelist moves = getMoves();
@@ -74,7 +74,7 @@ TEST_F(MoveGeneratorKnightTest, genKnightMoves_fenOneWhite_ShouldReturn8Moves)
 
 TEST_F(MoveGeneratorKnightTest, genKnightMoves_fenOneBlack_ShouldReturn10Moves) 
 {
-    io::fen::set_board_from_fen(fenOne, pos);
+    io::fen::set_pos_from_fen(fenOne, pos);
     moveGenerator.gen_knight_moves(false, movelist);
 
     model::Movelist moves = getMoves();

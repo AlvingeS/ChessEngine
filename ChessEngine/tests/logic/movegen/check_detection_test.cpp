@@ -30,109 +30,109 @@ protected:
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenPawnChecksWhite_ShouldReturnTrue) 
 {
-    io::fen::set_board_from_fen(fenPawnChecks, pos);
+    io::fen::set_pos_from_fen(fenPawnChecks, pos);
     ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenPawnChecksBlack_ShouldReturnTrue)
 {
-    io::fen::set_board_from_fen(fenPawnChecks, pos);
+    io::fen::set_pos_from_fen(fenPawnChecks, pos);
     ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenKnightChecksWhite_ShouldReturnTrue)
 {
-    io::fen::set_board_from_fen(fenKnightChecks, pos);
+    io::fen::set_pos_from_fen(fenKnightChecks, pos);
     ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenKnightChecksBlack_ShouldReturnTrue)
 {
-    io::fen::set_board_from_fen(fenKnightChecks, pos);
+    io::fen::set_pos_from_fen(fenKnightChecks, pos);
     ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksTrueWhite_ShouldReturnTrue)
 {
-    io::fen::set_board_from_fen(fenBishopChecksTrue, pos);
+    io::fen::set_pos_from_fen(fenBishopChecksTrue, pos);
     ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksTrueBlack_ShouldReturnTrue)
 {
-    io::fen::set_board_from_fen(fenBishopChecksTrue, pos);
+    io::fen::set_pos_from_fen(fenBishopChecksTrue, pos);
     ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksFalseWhite_ShouldReturnFalse)
 {
-    io::fen::set_board_from_fen(fenBishopChecksFalse, pos);
+    io::fen::set_pos_from_fen(fenBishopChecksFalse, pos);
     ASSERT_FALSE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenBishopChecksFalseBlack_ShouldReturnFalse)
 {
-    io::fen::set_board_from_fen(fenBishopChecksFalse, pos);
+    io::fen::set_pos_from_fen(fenBishopChecksFalse, pos);
     ASSERT_FALSE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksTrueWhite_ShouldReturnTrue)
 {
-    io::fen::set_board_from_fen(fenRookChecksTrue, pos);
+    io::fen::set_pos_from_fen(fenRookChecksTrue, pos);
     ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksTrueBlack_ShouldReturnTrue)
 {
-    io::fen::set_board_from_fen(fenRookChecksTrue, pos);
+    io::fen::set_pos_from_fen(fenRookChecksTrue, pos);
     ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksFalseWhite_ShouldReturnFalse)
 {
-    io::fen::set_board_from_fen(fenRookChecksFalse, pos);
+    io::fen::set_pos_from_fen(fenRookChecksFalse, pos);
     ASSERT_FALSE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksFalseBlack_ShouldReturnFalse)
 {
-    io::fen::set_board_from_fen(fenRookChecksFalse, pos);
+    io::fen::set_pos_from_fen(fenRookChecksFalse, pos);
     ASSERT_FALSE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksTrueWhite_ShouldReturnTrue)
 {
-    io::fen::set_board_from_fen(fenQueenChecksTrue, pos);
+    io::fen::set_pos_from_fen(fenQueenChecksTrue, pos);
     ASSERT_TRUE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksTrueBlack_ShouldReturnTrue)
 {
-    io::fen::set_board_from_fen(fenQueenChecksTrue, pos);
+    io::fen::set_pos_from_fen(fenQueenChecksTrue, pos);
     ASSERT_TRUE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksFalseWhite_ShouldReturnFalse)
 {
-    io::fen::set_board_from_fen(fenQueenChecksFalse, pos);
+    io::fen::set_pos_from_fen(fenQueenChecksFalse, pos);
     ASSERT_FALSE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenQueenChecksFalseBlack_ShouldReturnFalse)
 {
-    io::fen::set_board_from_fen(fenQueenChecksFalse, pos);
+    io::fen::set_pos_from_fen(fenQueenChecksFalse, pos);
     ASSERT_FALSE(moveGenerator.in_check(false));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_startingPosWhite_ShouldReturnFalse)
 {
-    io::fen::set_board_from_fen(startingPos, pos);
+    io::fen::set_pos_from_fen(startingPos, pos);
     ASSERT_FALSE(moveGenerator.in_check(true));
 }
 
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_startingPosBlack_ShouldReturnFalse)
 {
-    io::fen::set_board_from_fen(startingPos, pos);
+    io::fen::set_pos_from_fen(startingPos, pos);
     ASSERT_FALSE(moveGenerator.in_check(false));
 }
 

@@ -81,14 +81,9 @@ public:
         return move_generator_;
     }
 
-    void set_board_from_fen(const std::string& fen)
+    void set_pos_from_fen(const std::string& fen)
     {
-        io::fen::set_board_from_fen(fen, pos_);
-    }
-
-    std::string get_fen_from_board() const
-    {
-        return io::fen::get_fen_from_board(pos_.piece_map);
+        io::fen::set_pos_from_fen(fen, pos_);
     }
 
     bool diff_between_occupancy_masks() const

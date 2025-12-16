@@ -30,6 +30,9 @@ UndoInfo MoveMaker::make_move(const model::Move& move, bool is_w)
 
         update_castle_rights(move, is_w, undo_info);
 
+        pos_.is_w = !pos_.is_w;
+        z_hasher_.toggle_side_to_move();
+
         return undo_info;
     }
 
@@ -68,6 +71,7 @@ UndoInfo MoveMaker::make_move(const model::Move& move, bool is_w)
 
     update_castle_rights(move, is_w, undo_info);
 
+    pos_.is_w = !pos_.is_w;
     z_hasher_.toggle_side_to_move();
 
     return undo_info;
@@ -91,8 +95,6 @@ void MoveMaker::update_ep_target_mask(const model::Move& move, bool is_w)
     } else {
         pos_.ep_target_mask = is_w ? (1ULL << (move.get_to_sq() - 8)) 
                                    : (1ULL << (move.get_to_sq() + 8));
-                                   // FIXME: Temporary because I don't know how to implement this haha
-                                   // z_hasher_.xor_ep_file_at(to_sq % 8);
     }
 
     // XOR in new ep mask
@@ -129,6 +131,7 @@ void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, UndoInf
         // If move is made by white king, remove all white castling rights
         if (undo_info.moved_piece_type == model::Piece::Type::W_KING) {
             pos_.c_rights &= ~masks::W_BOTH_SIDES_CASTLE_RIGHTS_MASK;
+            z_hasher_.update_castle_rights(old_castle_rights, pos_.c_rights);
             return;
         }
         
@@ -152,7 +155,6 @@ void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, UndoInf
                 pos_.c_rights &= ~masks::W_KSIDE_CASTLE_RIGHTS_MASK; // If move was made from kside, remove kside c_rights
             } else {
                 pos_.c_rights &= ~masks::W_QSIDE_CASTLE_RIGHTS_MASK; // Else, move was made from qside, remove qside c_rights
-                return;
             }
         }
 
@@ -167,6 +169,7 @@ void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, UndoInf
         // If move is made by black king, remove all black castling rights
         if (undo_info.moved_piece_type == model::Piece::Type::B_KING) {
             pos_.c_rights &= ~masks::B_BOTH_SIDES_CASTLE_RIGHTS_MASK;
+            z_hasher_.update_castle_rights(old_castle_rights, pos_.c_rights);
             return;
         }
         
@@ -190,7 +193,6 @@ void MoveMaker::update_castle_rights(const model::Move& move, bool is_w, UndoInf
                 pos_.c_rights &= ~masks::B_KSIDE_CASTLE_RIGHTS_MASK; // If move was made from kside, remove kside c_rights
             } else {
                 pos_.c_rights &= ~masks::B_QSIDE_CASTLE_RIGHTS_MASK; // Else, move was made from qside, remove qside c_rights
-                return;
             }
         }
 
@@ -313,21 +315,17 @@ void MoveMaker::place_moved_piece_on_board(
          : pos_.occ_masks.set_b_pieces_bit(to_sq);
 }
 
-void MoveMaker::remove_captured_piece_from_board(bool is_ep, bool is_w, sq_idx capture_sq, model::Piece::Type captured_piece_type) {
+void MoveMaker::remove_captured_piece_from_board(bool is_ep, bool is_w, sq_idx capture_sq, model::Piece::Type captured_piece_type)
+{
     // Remove captured piece from models
     pos_.bbs.clear_piece_type_bit(capture_sq, captured_piece_type);
 
     is_w ? pos_.occ_masks.clear_b_pieces_bit(capture_sq) 
          : pos_.occ_masks.clear_w_pieces_bit(capture_sq);
 
-    z_hasher_.xor_piece_type_at(capture_sq, captured_piece_type);
+    pos_.piece_map.set_piece_type_at(capture_sq, model::Piece::Type::EMPTY); 
 
-    // Only clear from the squares lookup if the move was an ep capture
-    // because the capture idx points to the square where the pawn was
-    // and is now empty, the square we moved to will have been updated
-    if (is_ep) {
-        pos_.piece_map.set_piece_type_at(capture_sq, model::Piece::Type::EMPTY);
-    }
+    z_hasher_.xor_piece_type_at(capture_sq, captured_piece_type);
 }
 
 } // namespace logic

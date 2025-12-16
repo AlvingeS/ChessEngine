@@ -27,6 +27,10 @@ target_include_directories(cxx_setup INTERFACE
     ${PROJECT_SOURCE_DIR}/ChessEngine/
 )
 
+target_compile_definitions(cxx_setup INTERFACE
+    TEST_DATA_DIR="${PROJECT_SOURCE_DIR}/ChessEngine/tests/data"
+)
+
 include(CTest)
 
 add_subdirectory(${PROJECT_NAME})

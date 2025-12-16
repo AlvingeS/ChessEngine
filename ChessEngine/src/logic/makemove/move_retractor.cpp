@@ -153,6 +153,7 @@ void MoveRetractor::restore_state(logic::UndoInfo& undo_info)
     pos_.c_rights = undo_info.c_rights;
     pos_.ep_target_mask = undo_info.ep_target_mask;
     z_hasher_.set_z_hash(undo_info.z_hash);
+    pos_.is_w = !pos_.is_w;
 }
 
 void MoveRetractor::unmake_move(

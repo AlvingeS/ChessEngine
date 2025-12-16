@@ -144,6 +144,20 @@ bool MovePicker::check_condition(
     // return current_depth == 2 && first_move_idx == 0 && is_maximizer == true && current_move.getMove() == 66;
 }
 
+std::unordered_map<model::Move, uint64_t> MovePicker::get_node_count_per_first_move_map() 
+{
+    std::unordered_map<model::Move, uint64_t> node_count_per_first_move_map{};
+
+    for (size_t i = 0; i < node_count_per_first_move_.size(); i++) {
+        model::Move move = first_moves_[i];
+        
+        if (move.value() != 0)
+            node_count_per_first_move_map[move] = node_count_per_first_move_[i];
+    }
+
+    return node_count_per_first_move_map;
+}
+
 // TODO: Implement draw by repetition after implementing zobrist hashing
 void MovePicker::minimax(
     int current_depth, 

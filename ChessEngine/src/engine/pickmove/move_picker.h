@@ -101,6 +101,8 @@ public:
         return (pos_.occ_masks.get_b_pieces_mask() | pos_.occ_masks.get_w_pieces_mask()) != pos_.occ_masks.get_occupied_squares_mask();
     }
 
+    std::unordered_map<model::Move, uint64_t> get_node_count_per_first_move_map();
+
 private:
     model::Position pos_;
     logic::ZHasher z_hasher_;

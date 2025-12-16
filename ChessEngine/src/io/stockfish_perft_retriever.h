@@ -11,6 +11,7 @@ namespace io::stockfish
 {
 
 std::unordered_map<model::Move, uint64_t> get_perft_results(const std::string& FEN, int depth, const model::PieceMap pm);
-
+std::vector<model::Move> get_legal_moves_from_fen(const std::string& FEN, const model::PieceMap pm);
+std::string move_to_str(model::Move move, bool w_started);
 
 } // namespace io::stockfish

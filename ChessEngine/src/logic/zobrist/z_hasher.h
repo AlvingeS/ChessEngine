@@ -1,6 +1,8 @@
 #pragma once
 
 #include "model/position/position.h"
+#include "model/types.h"
+#include <optional>
 
 namespace logic {
 
@@ -13,8 +15,9 @@ enum CastleRightsType : int {
 
 class ZHasher {
 
-public:
-    ZHasher(const model::Position& pos);
+    public:
+    ZHasher(const model::Position& pos, std::optional<uint64_t> seed = std::nullopt);
+    void hash_from_position(const model::Position& pos);
 
     void xor_piece_type_at(sq_idx sq, model::Piece::Type piece_type);
     void update_castle_rights(castle_rights old_rights, castle_rights new_rights);
@@ -26,7 +29,6 @@ public:
     uint64_t value() const;
 
 private:
-    void compute_initial_hash(const model::Position& pos);
 
     uint64_t square_piece_type_keys[64][12];
     

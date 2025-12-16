@@ -30,7 +30,7 @@ TEST_F(PerftStartPos, perft_starting_pos)
         bool w_to_start = true;
 
         move_picker.minimax(0, w_to_start, 0);
-        std::unordered_map<model::Move, uint64_t> first_move_counts = node_count_per_first_move_as_map();
+        std::unordered_map<model::Move, uint64_t> first_move_counts = move_picker.get_node_count_per_first_move_map();
         compare_first_move_counts_to_stockfish(first_move_counts, stockfish_results, w_to_start);
 
         std::unordered_map<int, std::vector<uint64_t>> expected_results {

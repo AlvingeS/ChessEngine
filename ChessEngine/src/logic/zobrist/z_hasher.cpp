@@ -9,12 +9,21 @@
 
 namespace logic {
 
-ZHasher::ZHasher(const model::Position& pos) 
+ZHasher::ZHasher(const model::Position& pos, std::optional<uint64_t> seed) 
 {
     std::random_device rd;
-    std::mt19937 gen(rd());
+    std::mt19937 gen;
 
-    std::uniform_int_distribution<uint64_t> dis(0, std::numeric_limits<uint64_t>::max());
+    if (seed.has_value()) {
+        gen.seed(*seed);
+    } else {
+        std::random_device rd;
+        gen.seed(rd());
+    }
+
+    std::uniform_int_distribution<uint64_t> dis(
+        0, std::numeric_limits<uint64_t>::max()
+    );
 
     // Generate random numbers for board/piece table
     for (sq_idx sq = 0; sq < 64; sq++) {
@@ -36,10 +45,10 @@ ZHasher::ZHasher(const model::Position& pos)
     // Generate random number for is white table
     side_to_move_key = dis(gen);
     
-    compute_initial_hash(pos);
+    hash_from_position(pos);
 }
 
-void ZHasher::compute_initial_hash(const model::Position& pos)
+void ZHasher::hash_from_position(const model::Position& pos)
 {
     z_hash_ = 0ULL;
 

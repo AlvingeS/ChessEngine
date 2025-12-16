@@ -3,6 +3,7 @@
 #include "engine/pickmove/move_picker.h"
 
 #include "io/fen.h"
+#include "io/stockfish_perft_retriever.h"
 
 #include "logic/attack_tables/attack_tables.h"
 #include "model/position/position.h"
@@ -59,102 +60,6 @@ protected:
         posFive = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
     }
 
-    char col_to_char(int col) {
-        switch (col) {
-            case 0:
-                return 'h';
-            case 1:
-                return 'g';
-            case 2:
-                return 'f';
-            case 3:
-                return 'e';
-            case 4:
-                return 'd';
-            case 5:
-                return 'c';
-            case 6:
-                return 'b';
-            case 7:
-                return 'a';
-            default:
-                return 'x';
-        }
-    }
-
-    std::string move_to_str(model::Move move, bool w_started) 
-    {
-        if (move.is_any_castle()) {
-            return move.is_king_castle() ? (w_started ? "e1g1" : "e8g8") 
-                                        : (w_started ? "e1c1" : "e8c8");
-        }
-        
-        int from = move.get_from_sq();
-        int to = move.get_to_sq();
-        
-        int from_row = from / 8;
-        int from_col = from % 8;
-
-        char from_col_char = col_to_char(from_col);
-
-        int to_row = to / 8;
-        int to_col = to % 8;
-        char to_col_char = col_to_char(to_col);
-
-        std::string move_str = "";
-        move_str += from_col_char;
-        move_str += std::to_string(from_row + 1);
-        move_str += to_col_char;
-        move_str += std::to_string(to_row + 1);
-
-        if (move.is_any_promo()) {
-            switch (move.get_flag()) {
-                case model::Move::KNIGHT_PROMO_FLAG:
-                    move_str += (w_started) ? "n" : "N";
-                    break;
-                case model::Move::BISHOP_PROMO_FLAG:
-                    move_str += (w_started) ? "b" : "B";
-                    break;
-                case model::Move::ROOK_PROMO_FLAG:
-                    move_str += (w_started) ? "r" : "R";
-                    break;
-                case model::Move::QUEEN_PROMO_FLAG:
-                    move_str += (w_started) ? "q" : "Q";
-                    break;
-                default:
-                    break;
-                case model::Move::KNIGHT_PROMO_CAPTURE_FLAG:
-                    move_str += (w_started) ? "n" : "N";
-                    break;
-                case model::Move::BISHOP_PROMO_CAPTURE_FLAG:
-                    move_str += (w_started) ? "b" : "B";
-                    break;
-                case model::Move::ROOK_PROMO_CAPTURE_FLAG:
-                    move_str += (w_started) ? "r" : "R";
-                    break;
-                case model::Move::QUEEN_PROMO_CAPTURE_FLAG:
-                    move_str += (w_started) ? "q" : "Q";
-                    break;
-            }
-        }
-
-        return move_str;
-    }
-
-    std::unordered_map<model::Move, uint64_t> node_count_per_first_move_as_map() 
-    {
-        std::unordered_map<model::Move, uint64_t> node_count_per_first_move_map{};
-
-        for (size_t i = 0; i < move_picker.node_count_per_first_move_.size(); i++) {
-            model::Move move = move_picker.first_moves_[i];
-            
-            if (move.value() != 0)
-                node_count_per_first_move_map[move] = move_picker.node_count_per_first_move_[i];
-        }
-
-        return node_count_per_first_move_map;
-    }
-
     void compare_first_move_counts_to_stockfish(
         const std::unordered_map<model::Move, uint64_t> first_move_counts,
         const std::unordered_map<model::Move, uint64_t> stockfish_results,
@@ -169,12 +74,12 @@ protected:
 
             auto fount_it = stockfish_results.find(move);
             if (fount_it == stockfish_results.end()) {
-                errors << "Move: " << move_to_str(move, w_started) << " not found in stockfish results.\n";
+                errors << "Move: " << io::stockfish::move_to_str(move, w_started) << " not found in stockfish results.\n";
                 has_errors = true;
             } else {
                 uint64_t stockfishCount = fount_it->second;
                 if (count != stockfishCount) {
-                    errors << "Move: " << move_to_str(move, w_started) << " failed. Expected: " << stockfishCount << ", Got: " << count << ".\n";
+                    errors << "Move: " << io::stockfish::move_to_str(move, w_started) << " failed. Expected: " << stockfishCount << ", Got: " << count << ".\n";
                     has_errors = true;
                 }
             }

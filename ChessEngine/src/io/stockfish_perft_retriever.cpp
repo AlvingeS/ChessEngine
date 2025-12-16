@@ -137,23 +137,70 @@ model::Move notation_to_move(const std::string& notation, const model::PieceMap 
     return model::Move(from_sq, to_sq, model::Move::QUITE_FLAG);
 }
 
-std::unordered_map<model::Move, uint64_t> parse_output(std::string stockfishOutput, const model::PieceMap pm)
+std::unordered_map<model::Move, uint64_t> parse_output_into_map(std::string stockfish_output, const model::PieceMap pm)
 {
     std::unordered_map<model::Move, uint64_t> results{};
     std::regex pattern(R"((\w+): (\d+))");              // Finds <alphanumeric>: <digits> pattern
     std::smatch match;
 
-    while (std::regex_search(stockfishOutput, match, pattern)) {
+    while (std::regex_search(stockfish_output, match, pattern)) {
         if (match.size() == 3) {                        // Full match + 2 subgroups
             std::string move_str = match[1].str();      // <alphanumeric>
+            if (move_str.size() > 5)
+                break;
+
             long count = std::stol(match[2].str());     // <digits>
             results[notation_to_move(move_str, pm)] = count;
         }
-        stockfishOutput = match.suffix().str();         // Replace output with everything
+        stockfish_output = match.suffix().str();         // Replace output with everything
                                                         // after the matched row
     }
 
     return results; 
+}
+
+std::vector<model::Move> parse_output_into_vector(std::string stockfish_output, const model::PieceMap pm)
+{
+    std::vector<model::Move> results{};
+    std::regex pattern(R"((\w+): (\d+))");              // Finds <alphanumeric>: <digits> pattern
+    std::smatch match;
+
+    while (std::regex_search(stockfish_output, match, pattern)) {
+        if (match.size() == 3) {                        // Full match + 2 subgroups
+            std::string move_str = match[1].str();      // <alphanumeric>
+            if (move_str.size() > 5)
+                break;
+
+            results.push_back(notation_to_move(move_str, pm));
+        }
+        stockfish_output = match.suffix().str();         // Replace output with everything
+                                                         // after the matched row
+    }
+
+    return results; 
+}
+
+char col_to_char(int col) {
+    switch (col) {
+        case 0:
+            return 'h';
+        case 1:
+            return 'g';
+        case 2:
+            return 'f';
+        case 3:
+            return 'e';
+        case 4:
+            return 'd';
+        case 5:
+            return 'c';
+        case 6:
+            return 'b';
+        case 7:
+            return 'a';
+        default:
+            return 'x';
+    }
 }
 
 } // namespace
@@ -161,8 +208,73 @@ std::unordered_map<model::Move, uint64_t> parse_output(std::string stockfishOutp
 
 std::unordered_map<model::Move, uint64_t> get_perft_results(const std::string& FEN, int depth, const model::PieceMap pm) 
 {
-    const auto stockfishOutput = get_stockfish_output(FEN, depth);
-    return parse_output(stockfishOutput, pm);
+    const auto stockfish_output = get_stockfish_output(FEN, depth);
+    return parse_output_into_map(stockfish_output, pm);
+}
+
+std::vector<model::Move> get_legal_moves_from_fen(const std::string& FEN, const model::PieceMap pm)
+{
+    const auto stockfish_output = get_stockfish_output(FEN, 1);
+    return parse_output_into_vector(stockfish_output, pm);
+}
+
+std::string move_to_str(model::Move move, bool w_started) 
+{
+    if (move.is_any_castle()) {
+        return move.is_king_castle() ? (w_started ? "e1g1" : "e8g8") 
+                                    : (w_started ? "e1c1" : "e8c8");
+    }
+    
+    int from = move.get_from_sq();
+    int to = move.get_to_sq();
+    
+    int from_row = from / 8;
+    int from_col = from % 8;
+
+    char from_col_char = col_to_char(from_col);
+
+    int to_row = to / 8;
+    int to_col = to % 8;
+    char to_col_char = col_to_char(to_col);
+
+    std::string move_str = "";
+    move_str += from_col_char;
+    move_str += std::to_string(from_row + 1);
+    move_str += to_col_char;
+    move_str += std::to_string(to_row + 1);
+
+    if (move.is_any_promo()) {
+        switch (move.get_flag()) {
+            case model::Move::KNIGHT_PROMO_FLAG:
+                move_str += (w_started) ? "n" : "N";
+                break;
+            case model::Move::BISHOP_PROMO_FLAG:
+                move_str += (w_started) ? "b" : "B";
+                break;
+            case model::Move::ROOK_PROMO_FLAG:
+                move_str += (w_started) ? "r" : "R";
+                break;
+            case model::Move::QUEEN_PROMO_FLAG:
+                move_str += (w_started) ? "q" : "Q";
+                break;
+            default:
+                break;
+            case model::Move::KNIGHT_PROMO_CAPTURE_FLAG:
+                move_str += (w_started) ? "n" : "N";
+                break;
+            case model::Move::BISHOP_PROMO_CAPTURE_FLAG:
+                move_str += (w_started) ? "b" : "B";
+                break;
+            case model::Move::ROOK_PROMO_CAPTURE_FLAG:
+                move_str += (w_started) ? "r" : "R";
+                break;
+            case model::Move::QUEEN_PROMO_CAPTURE_FLAG:
+                move_str += (w_started) ? "q" : "Q";
+                break;
+        }
+    }
+
+    return move_str;
 }
 
 } // namespace io::stockfish

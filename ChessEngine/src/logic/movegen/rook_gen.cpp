@@ -41,7 +41,7 @@ void RookGen::generate(bool is_w, model::Movelist& movelist)
 
         rays::add_moves_from_line_ray(
             line_ray_attack_table_[rook_sq][LineDir::E],
-            false, 
+            true, 
             true, 
             is_w, 
             rook_sq, 
@@ -67,7 +67,7 @@ void RookGen::generate(bool is_w, model::Movelist& movelist)
 
         rays::add_moves_from_line_ray(
             line_ray_attack_table_[rook_sq][LineDir::W],
-            true, 
+            false, 
             true, 
             is_w, 
             rook_sq, 

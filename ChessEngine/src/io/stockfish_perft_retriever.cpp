@@ -2,6 +2,7 @@
 
 #include "io/utils.h"
 #include "model/position/piece_map.h"
+#include "model/constants.h"
 
 #include <sstream>
 #include <regex>
@@ -62,8 +63,6 @@ model::Move notation_to_move(const std::string& notation, const model::PieceMap 
     model::Piece::Type piece_type_from = pm.get_piece_type_at(from_sq);
     model::Piece::Type piece_type_to = pm.get_piece_type_at(to_sq);
 
-
-
     bool is_capture = pm.get_piece_type_at(to_sq) != model::Piece::Type::EMPTY;
     bool is_promo = promo_to_piece != ' ';
 
@@ -109,25 +108,39 @@ model::Move notation_to_move(const std::string& notation, const model::PieceMap 
         }
     }
 
-    bool is_kside_castle = (from_sq == 3  && to_sq == 1  && piece_type_from == model::Piece::Type::W_KING)
-                        || (from_sq == 59 && to_sq == 57 && piece_type_from == model::Piece::Type::B_KING);
+    bool is_kside_castle = (from_sq         == constants::W_KING_START_SQ           &&
+                            to_sq           == constants::W_KSIDE_KING_CASTLE_TO_SQ &&
+                            piece_type_from == model::Piece::Type::W_KING)          || 
+                           (from_sq         == constants::B_KING_START_SQ           &&
+                            to_sq           == constants::B_KSIDE_KING_CASTLE_TO_SQ &&
+                            piece_type_from == model::Piece::Type::B_KING);
+
     if (is_kside_castle)
         return model::Move(from_sq, to_sq, model::Move::KING_CASTLE_FLAG);
 
-    bool is_qside_castle = (from_sq == 3  && to_sq == 5  && piece_type_from == model::Piece::Type::W_KING)
-                        || (from_sq == 59 && to_sq == 61 && piece_type_from == model::Piece::Type::B_KING);
+    bool is_qside_castle = (from_sq         == constants::W_KING_START_SQ           &&
+                            to_sq           == constants::W_QSIDE_KING_CASTLE_TO_SQ &&
+                            piece_type_from == model::Piece::Type::W_KING)          || 
+                           (from_sq         == constants::B_KING_START_SQ           &&
+                            to_sq           == constants::B_QSIDE_KING_CASTLE_TO_SQ &&
+                            piece_type_from == model::Piece::Type::B_KING);
+
     if (is_qside_castle)
         return model::Move(from_sq, to_sq, model::Move::QUEEN_CASTLE_FLAG);
 
-    bool is_ep_capture = (piece_type_from == model::Piece::Type::W_PAWN || piece_type_from == model::Piece::Type::B_PAWN)
-                      && (std::abs(from_sq - to_sq) % 8 != 0)
-                      && piece_type_to == model::Piece::Type::EMPTY;
+    bool is_ep_capture = (piece_type_from == model::Piece::Type::W_PAWN  ||
+                          piece_type_from == model::Piece::Type::B_PAWN) &&
+                         (std::abs(from_sq - to_sq) % 8 != 0)            &&
+                          piece_type_to == model::Piece::Type::EMPTY;
+
     if (is_ep_capture)
         return model::Move(from_sq, to_sq, model::Move::EP_CAPTURE_FLAG);
 
 
-    bool is_double_pawn_push = (piece_type_from == model::Piece::Type::W_PAWN || piece_type_from == model::Piece::Type::B_PAWN)
-                            && (std::abs(from_sq - to_sq) == 16);
+    bool is_double_pawn_push = (piece_type_from == model::Piece::Type::W_PAWN  ||
+                                piece_type_from == model::Piece::Type::B_PAWN) &&
+                               (std::abs(from_sq - to_sq) == 16);
+
     if (is_double_pawn_push)
         return model::Move(from_sq, to_sq, model::Move::DOUBLE_PAWN_PUSH_FLAG);
 
@@ -183,21 +196,21 @@ std::vector<model::Move> parse_output_into_vector(std::string stockfish_output, 
 char col_to_char(int col) {
     switch (col) {
         case 0:
-            return 'h';
-        case 1:
-            return 'g';
-        case 2:
-            return 'f';
-        case 3:
-            return 'e';
-        case 4:
-            return 'd';
-        case 5:
-            return 'c';
-        case 6:
-            return 'b';
-        case 7:
             return 'a';
+        case 1:
+            return 'b';
+        case 2:
+            return 'c';
+        case 3:
+            return 'd';
+        case 4:
+            return 'e';
+        case 5:
+            return 'f';
+        case 6:
+            return 'g';
+        case 7:
+            return 'h';
         default:
             return 'x';
     }

@@ -86,16 +86,34 @@ TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
 
         size_t i = 0, j = 0;
         while (i < legal_moves.size() && j < sf_legal_moves.size()) {
-            if (legal_moves[i].value() == sf_legal_moves[j].value()) {i++; j++;} // Move in both
-            else if (legal_moves[i].value() < sf_legal_moves[j].value()) {       // Move only in legal_moves
-                errors << "Move: " << io::stockfish::move_to_str(legal_moves[i], pos.is_w) << " only found in generated moves, not sf. FEN: " << fen << "\n";
+            if (legal_moves[i].value() == sf_legal_moves[j].value()) {
+                i++;
+                j++;
+            } else if (legal_moves[i].value() < sf_legal_moves[j].value()) {
+                errors << "Move: " << io::stockfish::move_to_str(legal_moves[i], pos.is_w)
+                    << " only found in generated moves, not sf. FEN: " << fen << "\n";
                 i++;
                 has_errors = true;
-            } else {                                                             // Move only in sf_legal_moves
-                errors << "Move: " << io::stockfish::move_to_str(sf_legal_moves[j], pos.is_w) << " only found in sf moves, not generated. FEN: " << fen << "\n";
+            } else {
+                errors << "Move: " << io::stockfish::move_to_str(sf_legal_moves[j], pos.is_w)
+                    << " only found in sf moves, not generated. FEN: " << fen << "\n";
                 j++;
                 has_errors = true;
             }
+        }
+
+        while (i < legal_moves.size()) {
+            errors << "Move: " << io::stockfish::move_to_str(legal_moves[i], pos.is_w)
+                << " only found in generated moves, not sf. FEN: " << fen << "\n";
+            i++;
+            has_errors = true;
+        }
+
+        while (j < sf_legal_moves.size()) {
+            errors << "Move: " << io::stockfish::move_to_str(sf_legal_moves[j], pos.is_w)
+                << " only found in sf moves, not generated. FEN: " << fen << "\n";
+            j++;
+            has_errors = true;
         }
 
         // If there were any errors, print them and fail the test

@@ -11,6 +11,7 @@
 
 #include "model/move/movelist.h"
 #include "model/move/move.h"
+#include "model/constants.h"
 
 namespace logic {
 
@@ -50,17 +51,17 @@ void CastleGen::generate(bool is_w, model::Movelist& movelist)
 
 bool CastleGen::king_and_rook_on_castle_squares(bool is_w, bool is_kside) const
 {
-    bool king_bit_enabled = is_w ? (pos_.bbs.get_w_king_bb() & (1ULL << 3)) != 0
-                                 : (pos_.bbs.get_b_king_bb() & (1ULL << 59)) != 0;
+    bool king_bit_enabled = is_w ? (pos_.bbs.get_w_king_bb() & (1ULL << constants::W_KING_START_SQ)) != 0
+                                 : (pos_.bbs.get_b_king_bb() & (1ULL << constants::B_KING_START_SQ)) != 0;
     
     if (!king_bit_enabled)
         return false;
 
     // Since we know that the king is present, we can return if the rook is present or not
-    return is_w ? (is_kside ? (pos_.bbs.get_w_rooks_bb() & (1ULL << 0)) != 0
-                            : (pos_.bbs.get_w_rooks_bb() & (1ULL << 7)) != 0)
-                : (is_kside ? (pos_.bbs.get_b_rooks_bb() & (1ULL << 56)) != 0
-                            : (pos_.bbs.get_b_rooks_bb() & (1ULL << 63)) != 0);
+    return is_w ? (is_kside ? (pos_.bbs.get_w_rooks_bb() & (1ULL << constants::W_KSIDE_ROOK_START_SQ)) != 0
+                            : (pos_.bbs.get_w_rooks_bb() & (1ULL << constants::W_QSIDE_ROOK_START_SQ)) != 0)
+                : (is_kside ? (pos_.bbs.get_b_rooks_bb() & (1ULL << constants::B_KSIDE_ROOK_START_SQ)) != 0
+                            : (pos_.bbs.get_b_rooks_bb() & (1ULL << constants::B_QSIDE_ROOK_START_SQ)) != 0);
 }
 
 void CastleGen::make_temporary_king_move(bool is_w, bool is_kside)
@@ -108,12 +109,10 @@ void CastleGen::gen_single_castle_move(
     int move_flag = is_kside ? model::Move::KING_CASTLE_FLAG 
                              : model::Move::QUEEN_CASTLE_FLAG;
 
-    sq_idx from_sq = is_w ? 3 : 59;
-    sq_idx to_sq = is_w ? is_kside ? 1
-                                   : 5
-                        : is_kside ? 57
-                                   : 61;
-                                    
+    sq_idx from_sq = is_w ? constants::W_KING_START_SQ : constants::B_KING_START_SQ;
+    sq_idx to_sq   = is_kside ? (is_w ? constants::W_KSIDE_KING_CASTLE_TO_SQ : constants::B_KSIDE_KING_CASTLE_TO_SQ)
+                              : (is_w ? constants::W_QSIDE_KING_CASTLE_TO_SQ : constants::B_QSIDE_KING_CASTLE_TO_SQ);
+       
     movelist.add_move(model::Move(from_sq, to_sq, move_flag));
 }
 

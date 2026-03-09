@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "base_gen_test.h"
+#include "io/board_printer.h"
 
 namespace logic {
 
@@ -91,6 +92,8 @@ TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksTrueBlack_Sh
 TEST_F(MoveGeneratorCheckDetectionTest, checkDetection_fenRookChecksFalseWhite_ShouldReturnFalse)
 {
     io::fen::set_pos_from_fen(fenRookChecksFalse, pos);
+    auto bp = io::BoardPrinter(pos.bbs);
+    bp.print();
     ASSERT_FALSE(moveGenerator.in_check(true));
 }
 

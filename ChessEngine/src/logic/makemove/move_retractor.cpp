@@ -4,6 +4,7 @@
 
 #include "model/position/position.h"
 #include "model/move/move.h"
+#include "model/constants.h"
 
 namespace logic {
 
@@ -17,10 +18,10 @@ void MoveRetractor::unmake_castle_move(bool was_w, bool was_kside)
     sq_idx king_from_sq, king_to_sq, rook_from_sq, rook_to_sq;
 
     if (was_w) {
-        king_from_sq = 3;
-        king_to_sq   = was_kside ? 1 : 5;
-        rook_from_sq = was_kside ? 0 : 7;
-        rook_to_sq = was_kside ? 2 : 4;
+        king_from_sq = constants::W_KING_START_SQ;
+        king_to_sq   = was_kside ? constants::W_KSIDE_KING_CASTLE_TO_SQ : constants::W_QSIDE_KING_CASTLE_TO_SQ;
+        rook_from_sq = was_kside ? constants::W_KSIDE_ROOK_START_SQ     : constants::W_QSIDE_ROOK_START_SQ;
+        rook_to_sq   = was_kside ? constants::W_KSIDE_ROOK_CASTLE_TO_SQ : constants::W_QSIDE_ROOK_CASTLE_TO_SQ;
         
         pos_.bbs.clear_w_king_bit(king_to_sq);
         pos_.bbs.set_w_king_bit(king_from_sq);
@@ -37,10 +38,11 @@ void MoveRetractor::unmake_castle_move(bool was_w, bool was_kside)
         pos_.piece_map.set_piece_type_at(rook_from_sq, model::Piece::Type::W_ROOK);
         pos_.piece_map.set_piece_type_at(rook_to_sq, model::Piece::Type::EMPTY);
     } else {
-        king_from_sq = 59;
-        king_to_sq = was_kside ? 57 : 61;
-        rook_from_sq = was_kside ? 56 : 63;
-        rook_to_sq = was_kside ? 58 : 60;
+        king_from_sq = constants::B_KING_START_SQ;
+        king_to_sq   = was_kside ? constants::B_KSIDE_KING_CASTLE_TO_SQ : constants::B_QSIDE_KING_CASTLE_TO_SQ;
+        rook_from_sq = was_kside ? constants::B_KSIDE_ROOK_START_SQ     : constants::B_QSIDE_ROOK_START_SQ;
+        rook_to_sq   = was_kside ? constants::B_KSIDE_ROOK_CASTLE_TO_SQ : constants::B_QSIDE_ROOK_CASTLE_TO_SQ;
+
 
         pos_.bbs.set_b_king_bit(king_from_sq);
         pos_.bbs.clear_b_king_bit(king_to_sq);
@@ -63,17 +65,19 @@ void MoveRetractor::unmake_castle_move(bool was_w, bool was_kside)
 
 void MoveRetractor::revert_temporary_king_move(bool was_w, bool is_kside) 
 {
-    sq_idx from_sq = is_kside ? (was_w ? 2 : 58) 
-                              : (was_w ? 4 : 60);
-
-    sq_idx to_sq = was_w ? 3 : 59;
+    sq_idx to_sq = was_w   ? (is_kside ? constants::W_KING_START_SQ + 1 
+                                       : constants::W_KING_START_SQ - 1)
+                           : (is_kside ? constants::B_KING_START_SQ + 1 
+                                       : constants::B_KING_START_SQ - 1);
+            
+    sq_idx from_sq = was_w ? constants::W_KING_START_SQ : constants::B_KING_START_SQ;
 
     if (was_w) {
-        pos_.bbs.clear_w_king_bit(from_sq);
-        pos_.bbs.set_w_king_bit(to_sq);
+        pos_.bbs.clear_w_king_bit(to_sq);
+        pos_.bbs.set_w_king_bit(from_sq);
     } else {
-        pos_.bbs.clear_b_king_bit(from_sq);
-        pos_.bbs.set_b_king_bit(to_sq);
+        pos_.bbs.clear_b_king_bit(to_sq);
+        pos_.bbs.set_b_king_bit(from_sq);
     }
 }
 

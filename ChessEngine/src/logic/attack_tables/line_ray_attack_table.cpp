@@ -26,7 +26,7 @@ bitmask get_e_ray(sq_idx sq)
 
     bitmask e_ray = 0ULL;
 
-    for (int i = file - 1; i >= 0; i--) {
+    for (int i = file + 1; i < 8; i++) {
         e_ray |= (1ULL << (rank * 8 + i));
     }
 
@@ -54,7 +54,7 @@ bitmask get_w_ray(sq_idx sq)
 
     bitmask w_ray = 0ULL;
 
-    for (int i = file + 1; i < 8; i++) {
+    for (int i = file - 1; i >= 0; i--) {
         w_ray |= (1ULL << (rank * 8 + i));
     }
 

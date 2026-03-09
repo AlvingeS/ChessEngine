@@ -52,16 +52,16 @@ void BoardPrinter::fill_board(const model::Bitboards& bbs)
 }
 
 void BoardPrinter::print() const {
-    for (int row = 7; row >= 0; row--) {  // Start from the bottom row (row 7) and go upwards.
+    for (int row = 7; row >= 0; row--) {  // Start from the top row (row 7) and go downwards.
         std::cout << "---------------------------------   ---------------------------------" << std::endl;
-        for (int col = 7; col >= 0; col--) {  // Iterate through columns from left to right.
+        for (int col = 0; col < 8; col++) {  // Iterate through columns from left to right.
             char piece = board_[row][col];
             std::cout << "| " << piece << " ";  // Print the piece character.
         }
 
         std::cout << "|   ";  // Separate the two boards.
 
-        for (int col = 7; col >= 0; col--) {  // Iterate again for bit idxs.
+        for (int col = 0; col < 8; col++) {  // Iterate again for bit idxs.
             int bit_idx = row * 8 + col;
             std::cout << "| " << bit_idx << (bit_idx < 10 ? " " : "");  // Print the bit index, add extra space for single digit numbers.
         }

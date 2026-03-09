@@ -34,13 +34,13 @@ bool CheckDetection::in_check(bool is_w) const
     if (rays::check_line_ray(line_ray_attack_table_[king_sq][LineDir::N], true, opp_rooks_and_queens_mask, pos_.occ_masks.get_occupied_squares_mask()))
         return true;
 
-    if (rays::check_line_ray(line_ray_attack_table_[king_sq][LineDir::E], false, opp_rooks_and_queens_mask, pos_.occ_masks.get_occupied_squares_mask()))
+    if (rays::check_line_ray(line_ray_attack_table_[king_sq][LineDir::E], true, opp_rooks_and_queens_mask, pos_.occ_masks.get_occupied_squares_mask()))
         return true;
 
     if (rays::check_line_ray(line_ray_attack_table_[king_sq][LineDir::S], false, opp_rooks_and_queens_mask, pos_.occ_masks.get_occupied_squares_mask()))
         return true;
 
-    if (rays::check_line_ray(line_ray_attack_table_[king_sq][LineDir::W], true, opp_rooks_and_queens_mask, pos_.occ_masks.get_occupied_squares_mask()))
+    if (rays::check_line_ray(line_ray_attack_table_[king_sq][LineDir::W], false, opp_rooks_and_queens_mask, pos_.occ_masks.get_occupied_squares_mask()))
         return true;
 
     // Check if any opponent bishops or queens are attacking the king

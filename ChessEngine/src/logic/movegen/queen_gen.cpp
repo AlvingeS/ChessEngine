@@ -43,7 +43,7 @@ void QueenGen::generate(
 
         rays::add_moves_from_line_ray(
             line_ray_attack_table_[queen_sq][LineDir::E],
-            false,
+            true,
             true,
             is_w,
             queen_sq,
@@ -69,7 +69,7 @@ void QueenGen::generate(
 
         rays::add_moves_from_line_ray(
             line_ray_attack_table_[queen_sq][LineDir::W],
-            true,
+            false,
             true,
             is_w,
             queen_sq,

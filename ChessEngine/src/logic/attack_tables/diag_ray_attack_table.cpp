@@ -12,8 +12,8 @@ bitmask get_ne_ray(sq_idx sq)
     bitmask ne_ray = 0ULL;
 
     for (int i = 1; i < 8; i++) {
-        if (rank + i < 8 && file - i >= 0) {
-            ne_ray |= (1ULL << ((rank + i) * 8 + file - i));
+        if (rank + i < 8 && file + i < 8) {
+            ne_ray |= (1ULL << ((rank + i) * 8 + file + i));
         }
     }
 
@@ -28,8 +28,8 @@ bitmask get_se_ray(sq_idx sq)
     bitmask se_ray = 0ULL;
 
     for (int i = 1; i < 8; i++) {
-        if (rank - i >= 0 && file - i >= 0) {
-            se_ray |= (1ULL << ((rank - i) * 8 + file - i));
+        if (rank - i >= 0 && file + i < 8) {
+            se_ray |= (1ULL << ((rank - i) * 8 + file + i));
         }
     }
 
@@ -44,8 +44,8 @@ bitmask get_sw_ray(sq_idx sq)
     bitmask sw_ray = 0ULL;
 
     for (int i = 1; i < 8; i++) {
-        if (rank - i >= 0 && file + i < 8) {
-            sw_ray |= (1ULL << ((rank - i) * 8 + file + i));
+        if (rank - i >= 0 && file - i >= 0) {
+            sw_ray |= (1ULL << ((rank - i) * 8 + file - i));
         }
     }
 
@@ -60,8 +60,8 @@ bitmask get_nw_ray(sq_idx sq)
     bitmask north_west_ray = 0ULL;
 
     for (int i = 1; i < 8; i++) {
-        if (rank + i < 8 && file + i < 8) {
-            north_west_ray |= (1ULL << ((rank + i) * 8 + file + i));
+        if (rank + i < 8 && file - i >= 0) {
+            north_west_ray |= (1ULL << ((rank + i) * 8 + file - i));
         }
     }
 

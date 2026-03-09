@@ -11,15 +11,15 @@ Bitboards::Bitboards()
     w_knights_bb_ = 0x0000000000000042ULL;
     w_bishops_bb_ = 0x0000000000000024ULL;
     w_rooks_bb_   = 0x0000000000000081ULL;
-    w_queens_bb_  = 0x0000000000000010ULL;
-    w_king_bb_    = 0x0000000000000008ULL;
+    w_queens_bb_  = 0x0000000000000008ULL;
+    w_king_bb_    = 0x0000000000000010ULL;
 
     b_pawns_bb_   = 0x00FF000000000000ULL;
     b_knights_bb_ = 0x4200000000000000ULL;
     b_bishops_bb_ = 0x2400000000000000ULL;
     b_rooks_bb_   = 0x8100000000000000ULL;
-    b_queens_bb_  = 0x1000000000000000ULL;
-    b_king_bb_    = 0x0800000000000000ULL;
+    b_queens_bb_  = 0x0800000000000000ULL;
+    b_king_bb_    = 0x1000000000000000ULL;
 
     bbs_.push_back(&w_pawns_bb_);
     bbs_.push_back(&w_knights_bb_);

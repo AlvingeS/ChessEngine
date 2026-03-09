@@ -14,6 +14,7 @@ EXCLUDE_DIRS = {
     "__pycache__",
     "dist",
     "out",
+    "tests/data"
 }
 
 EXCLUDE_EXT = {
@@ -33,6 +34,7 @@ EXCLUDE_EXT = {
     ".tar",
     ".gz",
     ".7z",
+    ".csv",
 }
 
 OUTPUT = "repo_dump.md"

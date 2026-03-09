@@ -25,26 +25,22 @@ bitmask get_knight_attack_mask(sq_idx sq)
 // Applies reversed file masks to attack_mask to prevent looping around the board
 void remove_wrap_around_from_attack_mask(bitmask& attack_mask, sq_idx sq) 
 {
-    bitmask a_file_mask = logic::utils::get_file_mask(7);
-    bitmask b_file_mask = logic::utils::get_file_mask(6);
+    bitmask a_file_mask = logic::utils::get_file_mask(0);
+    bitmask b_file_mask = logic::utils::get_file_mask(1);
     bitmask all_files_except_ab_mask = ~(a_file_mask | b_file_mask);
 
-    bitmask g_file_mask = logic::utils::get_file_mask(1);
-    bitmask h_file_mask = logic::utils::get_file_mask(0);
+    bitmask g_file_mask = logic::utils::get_file_mask(6);
+    bitmask h_file_mask = logic::utils::get_file_mask(7);
     bitmask all_files_except_gh_mask = ~(g_file_mask | h_file_mask);
 
     switch (logic::utils::file_from_sq(sq)) {
-        case 0: // If knight is on file 0 (H), remove overlap that happened in A or B
-            attack_mask &= all_files_except_ab_mask;
-            break;
-        case 1: // If knight is on file 1 (G), remove overlap that happened in A or B
-            attack_mask &= all_files_except_ab_mask;
-            break;
-        case 6: // If knight is on file 7 (B), remove overlap that happened in G or H
+        case 0:
+        case 1: // If knight is on file 1 or 2 (A or B), remove overlap that happened in G or H
             attack_mask &= all_files_except_gh_mask;
             break;
-        case 7: // If knight is on file 7 (A), remove overlap that happened in G or H
-            attack_mask &= all_files_except_gh_mask;
+        case 6:
+        case 7: // If knight is on file 6 or 7 (G or H), remove overlap that happened in A or B
+            attack_mask &= all_files_except_ab_mask;
             break;
     }
 }

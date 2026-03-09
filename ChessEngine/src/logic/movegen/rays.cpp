@@ -58,7 +58,7 @@ void add_moves_between_blocker_and_piece_on_line_ray(
 
     for (int i = start - 1; i > stop; --i) {
         sq_idx to_sq = along_file ? rook_rank * 8 + i 
-                               : i * 8 + rook_file;
+                                  : i * 8 + rook_file;
         
         movelist.add_move(model::Move(from_sq, to_sq, model::Move::QUITE_FLAG));
     }
@@ -188,7 +188,7 @@ void add_moves_from_diag_ray(
 
 bool check_line_ray(
     bitmask line_ray,
-    bool is_w,
+    bool first_blocker_on_lsb,
     bitmask opp_rooks_and_queens_mask,
     bitmask occupied_squares_mask) 
 {
@@ -205,18 +205,18 @@ bool check_line_ray(
     if (utils::pop_count(blockers_mask) == 1)
         return true;
 
-    sq_idx first_blocker_sq = is_w ? utils::lsb_idx(blockers_mask) 
-                                   : utils::msb_idx(blockers_mask);
+    sq_idx first_blocker_sq = first_blocker_on_lsb ? utils::lsb_idx(blockers_mask) 
+                                                   : utils::msb_idx(blockers_mask);
 
-    sq_idx first_opp_rook_or_queen_sq = is_w ? utils::lsb_idx(opp_rooks_and_queens_blocker_mask)
-                                             : utils::msb_idx(opp_rooks_and_queens_blocker_mask);
+    sq_idx first_opp_rook_or_queen_sq = first_blocker_on_lsb ? utils::lsb_idx(opp_rooks_and_queens_blocker_mask)
+                                                             : utils::msb_idx(opp_rooks_and_queens_blocker_mask);
 
     return first_blocker_sq == first_opp_rook_or_queen_sq;
 }
 
 bool check_diag_ray(
     bitmask diag_ray,
-    bool is_w,
+    bool blocker_on_lsb,
     bitmask opp_bishops_and_queens_mask,
     bitmask occupied_squares_mask)
 {
@@ -233,11 +233,11 @@ bool check_diag_ray(
     if (utils::pop_count(blockers_mask) == 1)
         return true;
 
-    sq_idx first_blocker_sq = is_w ? utils::lsb_idx(blockers_mask)
-                                   : utils::msb_idx(blockers_mask);
+    sq_idx first_blocker_sq = blocker_on_lsb ? utils::lsb_idx(blockers_mask)
+                                             : utils::msb_idx(blockers_mask);
 
-    int first_opp_bishop_or_queen_sq = is_w ? utils::lsb_idx(opp_bishops_and_queens_blocker_mask)
-                                            : utils::msb_idx(opp_bishops_and_queens_blocker_mask);
+    int first_opp_bishop_or_queen_sq = blocker_on_lsb ? utils::lsb_idx(opp_bishops_and_queens_blocker_mask)
+                                                      : utils::msb_idx(opp_bishops_and_queens_blocker_mask);
 
     return first_blocker_sq == first_opp_bishop_or_queen_sq;
 }

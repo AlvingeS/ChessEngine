@@ -44,8 +44,8 @@ bitmask get_w_pawn_capture_attack_mask(sq_idx sq)
 {
     bitmask capture_attack_mask = 0ULL;
 
-    int step_up_left  = 9;
-    int step_up_right = 7;
+    int step_up_left  = 7;
+    int step_up_right = 9;
 
     if (sq + step_up_left  <= 63 && sq + step_up_left  >= 0) capture_attack_mask |= (1ULL << (sq + step_up_left));
     if (sq + step_up_right <= 63 && sq + step_up_right >= 0) capture_attack_mask |= (1ULL << (sq + step_up_right));
@@ -58,8 +58,8 @@ bitmask get_b_pawn_capture_attack_mask(sq_idx sq)
 {
     bitmask capture_attack_mask = 0ULL;
     
-    int step_up_left  = -9;
-    int step_up_right = -7;
+    int step_up_left  = -7;
+    int step_up_right = -9;
 
     if (sq + step_up_left  <= 63 && sq + step_up_left  >= 0) capture_attack_mask |= (1ULL << (sq + step_up_left));
     if (sq + step_up_right <= 63 && sq + step_up_right >= 0) capture_attack_mask |= (1ULL << (sq + step_up_right));
@@ -70,15 +70,15 @@ bitmask get_b_pawn_capture_attack_mask(sq_idx sq)
 // Applies reversed file masks to attack_mask to prevent looping around the board
 void remove_wrap_around_from_capture_attack_mask(bitmask& capture_attack_mask, sq_idx sq) 
 {
-    bitmask all_files_except_a_mask = ~logic::utils::get_file_mask(7);
-    bitmask all_files_except_h_mask = ~logic::utils::get_file_mask(0);
+    bitmask all_files_except_a_mask = ~logic::utils::get_file_mask(0);
+    bitmask all_files_except_h_mask = ~logic::utils::get_file_mask(7);
 
     switch (logic::utils::file_from_sq(sq)) {
-        case 0: // If pawn is on file 0 (H), remove overlap that happened in A
-            capture_attack_mask &= all_files_except_a_mask;
-            break;
-        case 7: // If pawn is on file 7 (A), remove overlap that happened in H
+        case 0: // If pawn is on file 0 (A), remove overlap that happened in H
             capture_attack_mask &= all_files_except_h_mask;
+            break;
+        case 7: // If pawn is on file 7 (H), remove overlap that happened in A
+            capture_attack_mask &= all_files_except_a_mask;
             break;
     }
 }

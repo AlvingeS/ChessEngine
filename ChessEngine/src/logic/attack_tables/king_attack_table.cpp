@@ -25,15 +25,15 @@ bitmask get_king_attack_mask(sq_idx sq)
 // Applies reversed file masks to attack_mask to prevent looping around the board
 void remove_wrap_around_from_attack_mask(bitmask& attack_mask, sq_idx sq) 
 {
-    bitmask all_files_except_a_mask = ~logic::utils::get_file_mask(7);
-    bitmask all_files_except_h_mask = ~logic::utils::get_file_mask(0);
+    bitmask all_files_except_a_mask = ~logic::utils::get_file_mask(0);
+    bitmask all_files_except_h_mask = ~logic::utils::get_file_mask(7);
 
     switch (logic::utils::file_from_sq(sq)) {
-        case 0: // If king is on file 0 (H), remove overlap that happened in A
-            attack_mask &= all_files_except_a_mask;
-            break;
-        case 7: // If king is on file 7 (A), remove overlap that happened in H
+        case 0: // If king is on file 0 (A), remove overlap that happened in H
             attack_mask &= all_files_except_h_mask;
+            break;
+        case 7: // If king is on file 7 (H), remove overlap that happened in A
+            attack_mask &= all_files_except_a_mask;
             break;
     }
 }

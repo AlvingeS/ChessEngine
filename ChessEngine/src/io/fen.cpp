@@ -68,7 +68,7 @@ void set_pos_from_fen(const std::string& fen, model::Position& pos)
             file += c - '0';
         } else {
             model::Piece::Type type = model::Piece::get_type_from_char(c);
-            pos.bbs.set_piece_type_bit(rank * 8 + 7 - file, type);
+            pos.bbs.set_piece_type_bit(rank * 8 + file, type);
             file++;
         }
     }

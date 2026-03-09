@@ -213,10 +213,10 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
     sq_idx king_from_sq, king_to_sq, rook_from_sq, rook_to_sq;
 
     if (is_w) {
-        king_from_sq = 3;
-        king_to_sq   = is_kside ? 1 : 5;
-        rook_from_sq = is_kside ? 0 : 7;
-        rook_to_sq   = is_kside ? 2 : 4;
+        king_from_sq = constants::W_KING_START_SQ;
+        king_to_sq   = is_kside ? constants::W_KSIDE_KING_CASTLE_TO_SQ : constants::W_QSIDE_KING_CASTLE_TO_SQ;
+        rook_from_sq = is_kside ? constants::W_KSIDE_ROOK_START_SQ     : constants::W_QSIDE_ROOK_START_SQ;
+        rook_to_sq   = is_kside ? constants::W_KSIDE_ROOK_CASTLE_TO_SQ : constants::W_QSIDE_ROOK_CASTLE_TO_SQ;
 
         pos_.bbs.clear_w_king_bit(king_from_sq);
         pos_.bbs.set_w_king_bit(king_to_sq);
@@ -238,10 +238,10 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
         z_hasher_.xor_piece_type_at(rook_from_sq, model::Piece::Type::W_ROOK);
         z_hasher_.xor_piece_type_at(rook_to_sq,   model::Piece::Type::W_ROOK);
     } else {
-        king_from_sq = 59;
-        king_to_sq   = is_kside ? 57 : 61;
-        rook_from_sq = is_kside ? 56 : 63;
-        rook_to_sq   = is_kside ? 58 : 60;
+        king_from_sq = constants::B_KING_START_SQ;
+        king_to_sq   = is_kside ? constants::B_KSIDE_KING_CASTLE_TO_SQ : constants::B_QSIDE_KING_CASTLE_TO_SQ;
+        rook_from_sq = is_kside ? constants::B_KSIDE_ROOK_START_SQ     : constants::B_QSIDE_ROOK_START_SQ;
+        rook_to_sq   = is_kside ? constants::B_KSIDE_ROOK_CASTLE_TO_SQ : constants::B_QSIDE_ROOK_CASTLE_TO_SQ;
 
         pos_.bbs.clear_b_king_bit(king_from_sq);
         pos_.bbs.set_b_king_bit(king_to_sq);
@@ -269,9 +269,13 @@ void MoveMaker::make_castle_move(bool is_w, bool is_kside)
 
 void MoveMaker::make_temporary_king_move(bool is_w, bool is_kside)
 {
-    sq_idx from_sq = is_w ? 3 : 59;
-    sq_idx to_sq   = is_kside ? (is_w ? 2 : 58)
-                              : (is_w ? 4 : 60);
+    sq_idx from_sq = is_w ? constants::W_KING_START_SQ : constants::B_KING_START_SQ;
+    
+    // This only moves ONE square and not the actual castle move to check for rays between king and rook
+    sq_idx to_sq   = is_w ? (is_kside ? constants::W_KING_START_SQ + 1 
+                                      : constants::W_KING_START_SQ - 1)
+                          : (is_kside ? constants::B_KING_START_SQ + 1 
+                                      : constants::B_KING_START_SQ - 1);
 
     if (is_w) {
         pos_.bbs.clear_w_king_bit(from_sq);

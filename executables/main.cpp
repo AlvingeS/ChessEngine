@@ -1,5 +1,5 @@
 #include "logic/movegen/move_gen.h"
-#include "engine/pickmove/move_picker.h"
+#include "engine/perft/perft.h"
 // #include "engine/perft/perft.h"
 #include "io/board_printer.h"
 #include "logic/utils.h"
@@ -45,7 +45,7 @@ int main()
             Refactored acessing bbs to use pointers directly instead of lookup
             1.940s ~ 3.471M nodes/s ~ 1.4% SF
 
-            Removed castling logic that I had forgotten about, it is all handled by the move_picker
+            Removed castling logic that I had forgotten about, it is all handled by the perft
             1.783s ~ 3.686M nodes/s ~ 1.5% SF
 
         - 2024-05-12
@@ -61,7 +61,7 @@ int main()
             greater than 14 to see if it is a castle
             0.346s ~ 19.145M nodes/s ~ 7.8% SF
 
-            Refactored move_picker so that castling rights and last captured pieces info
+            Refactored perft so that castling rights and last captured pieces info
             is now in its on class, will add everything else as well
             0.337s ~ 20.009M nodes/s ~ 8.0% SF
 
@@ -91,19 +91,19 @@ int main()
     
     bool recPerftStats = false;
 
-    engine::MovePicker movePickerStartPos = engine::MovePicker(MAX_DEPTH);
+    engine::Perft movePickerStartPos = engine::Perft(MAX_DEPTH);
     movePickerStartPos.set_pos_from_fen(startPos);
     movePickerStartPos.minimax(0, 0, recPerftStats);
 
-    engine::MovePicker movePickerPosTwo = engine::MovePicker(MAX_DEPTH);
+    engine::Perft movePickerPosTwo = engine::Perft(MAX_DEPTH);
     movePickerPosTwo.set_pos_from_fen(pos_two);
     movePickerPosTwo.minimax(0, 0, recPerftStats);
     
-    engine::MovePicker movePickerPosThree = engine::MovePicker(MAX_DEPTH);
+    engine::Perft movePickerPosThree = engine::Perft(MAX_DEPTH);
     movePickerPosThree.set_pos_from_fen(pos_three);
     movePickerPosThree.minimax(0, 0, recPerftStats);
 
-    engine::MovePicker movePickerPosFive = engine::MovePicker(MAX_DEPTH);
+    engine::Perft movePickerPosFive = engine::Perft(MAX_DEPTH);
     movePickerPosFive.set_pos_from_fen(posFive);
     movePickerPosFive.minimax(0, 0, recPerftStats);
 

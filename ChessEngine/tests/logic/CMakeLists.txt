@@ -1,2 +1,0 @@
-add_subdirectory(movegen)
-add_subdirectory(mass_fen)

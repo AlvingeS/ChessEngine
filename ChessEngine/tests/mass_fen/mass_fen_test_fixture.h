@@ -9,6 +9,10 @@
 #include "logic/makemove/move_retractor.h"
 #include "logic/movegen/move_gen.h"
 
+#include "engine/perft/perft.h"
+
+#include "tests/test_config.h"
+
 #include "io/fen.h"
 
 #include <gtest/gtest.h>
@@ -17,27 +21,27 @@
 #include <string>
 #include <iostream>
 
-namespace logic {
-
 class MassFenTestFixture : public ::testing::Test 
 {
 
 protected:
     MassFenTestFixture() 
         : pos(model::Position())
-        , z_hasher(ZHasher(pos, 123))
-        , z_hasher_control(ZHasher(pos, 123))
-        , move_maker(MoveMaker(pos, z_hasher))
-        , move_retractor(MoveRetractor(pos, z_hasher))
-        , move_gen(MoveGen(pos, move_maker, move_retractor))
+        , z_hasher(logic::ZHasher(pos, 123))
+        , z_hasher_control(logic::ZHasher(pos, 123))
+        , move_maker(logic::MoveMaker(pos, z_hasher))
+        , move_retractor(logic::MoveRetractor(pos, z_hasher))
+        , move_gen(logic::MoveGen(pos, move_maker, move_retractor))
+        , perft(engine::Perft(mass_fen_perft_depth))
     {};
 
     model::Position pos;
-    ZHasher z_hasher;
-    ZHasher z_hasher_control;
-    MoveMaker move_maker;
-    MoveRetractor move_retractor;
-    MoveGen move_gen;
+    logic::ZHasher z_hasher;
+    logic::ZHasher z_hasher_control;
+    logic::MoveMaker move_maker;
+    logic::MoveRetractor move_retractor;
+    logic::MoveGen move_gen;
+    engine::Perft perft;
 
     virtual void SetUp() override 
     {
@@ -57,9 +61,13 @@ protected:
             z_hasher.hash_from_position(pos);
             z_hasher_control.hash_from_position(pos);
 
+            perft.set_max_depth(mass_fen_perft_depth);
+            perft.reset_stats();
+            perft.reset_stacks();
+            io::fen::set_pos_from_fen(fen, perft.get_pos());
+            perft.z_hash_from_position();
+
             fn(fen);
         }
     }
 };
-
-} // namespace engine

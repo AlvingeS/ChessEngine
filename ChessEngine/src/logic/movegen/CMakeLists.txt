@@ -12,4 +12,4 @@ add_library(movegen
     containers.cpp
 )
 
-target_link_libraries(movegen PUBLIC move position logic_utils attack_tables pickmove cxx_setup) # TODO: Remove dependency to pickmove!!!
+target_link_libraries(movegen PUBLIC move position logic_utils attack_tables perft cxx_setup) # TODO: Remove dependency to perft!!!

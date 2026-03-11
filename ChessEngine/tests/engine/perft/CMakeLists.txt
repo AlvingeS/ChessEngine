@@ -1,9 +1,0 @@
-add_executable(perft_test
-    perft_start_pos_test.cpp
-    perft_pos_two_test.cpp
-    perft_pos_three_test.cpp
-    perft_pos_five_test.cpp
-)
-
-target_link_libraries(perft_test PRIVATE pickmove position test_support attack_tables GTest::gtest_main)
-gtest_discover_tests(perft_test)

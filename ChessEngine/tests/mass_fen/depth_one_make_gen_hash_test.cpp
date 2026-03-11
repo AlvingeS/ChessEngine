@@ -1,15 +1,14 @@
 #include "mass_fen_test_fixture.h"
 
 #include "io/stockfish_perft_retriever.h"
-
-namespace logic {
+#include "tests/test_config.h"
 
 class DepthOneMakeGenHashTest : public MassFenTestFixture  
 {};
 
 TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
 {
-    for_each_fen_position(std::string(TEST_DATA_DIR) + "/fens/sampled_250.csv", [&](const std::string& fen){
+    for_each_fen_position(std::string(TEST_DATA_DIR) + mass_fen_make_unmake_samples, [&](const std::string& fen){
         model::Movelist pseudo_legal_moves;
         move_gen.gen_moves(pseudo_legal_moves);
         model::PieceMap pm_copy = pos.piece_map;
@@ -123,5 +122,3 @@ TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
         }
     });
 }
-
-} // namespace logic

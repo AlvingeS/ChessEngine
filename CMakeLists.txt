@@ -28,7 +28,7 @@ target_include_directories(cxx_setup INTERFACE
 )
 
 target_compile_definitions(cxx_setup INTERFACE
-    TEST_DATA_DIR="${PROJECT_SOURCE_DIR}/ChessEngine/tests/data"
+    TEST_DATA_DIR="${PROJECT_SOURCE_DIR}/ChessEngine/tests/mass_fen/data"
 )
 
 include(CTest)

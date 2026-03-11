@@ -290,4 +290,32 @@ std::string move_to_str(model::Move move, bool w_started)
     return move_str;
 }
 
+std::pair<bool, std::string> compare_first_move_counts_to_stockfish(
+    const std::unordered_map<model::Move, uint64_t>& first_move_counts,
+    const std::unordered_map<model::Move, uint64_t>& stockfish_results,
+    bool w_started)
+{
+    std::ostringstream errors;
+    bool has_errors = false;
+
+    for (const auto& move_count_pair : first_move_counts) {
+        const model::Move& move = move_count_pair.first;
+        uint64_t count = move_count_pair.second;
+
+        auto fount_it = stockfish_results.find(move);
+        if (fount_it == stockfish_results.end()) {
+            errors << "Move: " << io::stockfish::move_to_str(move, w_started) << " not found in stockfish results.\n";
+            has_errors = true;
+        } else {
+            uint64_t stockfishCount = fount_it->second;
+            if (count != stockfishCount) {
+                errors << "Move: " << io::stockfish::move_to_str(move, w_started) << " failed. Expected: " << stockfishCount << ", Got: " << count << ".\n";
+                has_errors = true;
+            }
+        }
+    }
+
+    return {has_errors, errors.str()};
+}
+
 } // namespace io::stockfish

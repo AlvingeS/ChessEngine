@@ -6,7 +6,6 @@ if (BUILD_TESTING)
         ${PROJECT_SOURCE_DIR}/ChessEngine
     )
 
-    add_subdirectory(engine)
-    # add_subdirectory(io)
-    add_subdirectory(logic)
+    add_subdirectory(mass_fen)
+    add_subdirectory(perft)
 endif()

@@ -2,8 +2,7 @@ add_library(logic_utils
     utils.cpp
 )
 
-target_link_libraries(logic_utils PUBLIC move position cxx_setup) # TODO: Remove dependency to pickmove!!!
-
+target_link_libraries(logic_utils PUBLIC move position cxx_setup)
 
 add_subdirectory(eval)
 add_subdirectory(makemove)

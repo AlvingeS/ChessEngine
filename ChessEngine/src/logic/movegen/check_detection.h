@@ -2,6 +2,7 @@
 
 #include "logic/attack_tables/attack_tables.h"
 
+#include <optional>
 namespace model {
     class Position;
 }
@@ -12,7 +13,7 @@ class CheckDetection {
 
 public:
     CheckDetection(const model::Position& pos);
-    bool in_check(bool is_w) const;
+    bool in_check(std::optional<bool> is_w_override = std::nullopt) const;
 
 private:
     const model::Position& pos_;

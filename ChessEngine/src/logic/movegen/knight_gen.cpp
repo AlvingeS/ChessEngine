@@ -14,22 +14,22 @@ KnightGen::KnightGen(const model::Position& pos)
     , knight_attack_table_(attack_tables::knight)
 {}
 
-void KnightGen::generate(bool is_w, model::Movelist& movelist) 
+void KnightGen::generate(model::Movelist& movelist) 
 {
     std::vector<sq_idx>& knight_sqs        = Containers::get_piece_position_idxs();
     std::vector<sq_idx>& quiet_moves_sqs   = Containers::get_leaping_piece_quiet_moves_idxs();
     std::vector<sq_idx>& capture_moves_sqs = Containers::get_leaping_piece_capturable_moves_idxs();
 
-    utils::get_bit_idxs(knight_sqs, is_w ? pos_.bbs.get_w_knights_bb()
-                                         : pos_.bbs.get_b_knights_bb());
+    utils::get_bit_idxs(knight_sqs, pos_.is_w ? pos_.bbs.get_w_knights_bb()
+                                              : pos_.bbs.get_b_knights_bb());
 
     for (int knight_sq : knight_sqs) {
         bitmask attack_mask = knight_attack_table_[knight_sq];
 
         bitmask quiet_moves_mask = attack_mask & pos_.occ_masks.get_free_squares_mask();
         
-        bitmask opp_pieces_mask = is_w ? pos_.occ_masks.get_b_pieces_mask()
-                                       : pos_.occ_masks.get_w_pieces_mask();
+        bitmask opp_pieces_mask = pos_.is_w ? pos_.occ_masks.get_b_pieces_mask()
+                                            : pos_.occ_masks.get_w_pieces_mask();
         
         bitmask capture_moves_mask = attack_mask & opp_pieces_mask;
 

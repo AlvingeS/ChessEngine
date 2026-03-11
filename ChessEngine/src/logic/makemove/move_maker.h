@@ -19,27 +19,25 @@ class MoveMaker {
 public:
     MoveMaker(model::Position& pos, ZHasher& z_hasher);
     
-    UndoInfo make_move(const model::Move& move, bool is_w);
+    UndoInfo make_move(const model::Move& move);
     
-    void make_temporary_king_move(bool is_w, bool is_kside);
+    void make_temporary_king_move(bool is_kside);
 
 private:
-    void update_ep_target_mask(const model::Move& move, bool is_w);
-    void update_castle_rights(const model::Move& move, bool is_w, UndoInfo& undo_info);
-    void make_castle_move(bool is_w, bool is_kside);
+    void update_ep_target_mask(const model::Move& move);
+    void update_castle_rights(const model::Move& move, UndoInfo& undo_info);
+    void make_castle_move(bool is_kside);
     void store_state(UndoInfo& undo_info);
 
-    model::Piece::Type remove_moved_piece_from_board(bool is_w, sq_idx from_sq);
+    model::Piece::Type remove_moved_piece_from_board(sq_idx from_sq);
 
     void remove_captured_piece_from_board(
         bool is_ep, 
-        bool is_w, 
         sq_idx capture_sq, 
         model::Piece::Type captured_piece_type
     );
 
     void place_moved_piece_on_board(
-        bool is_w, 
         sq_idx to_sq,
         model::Piece::Type moved_piece_type
     );

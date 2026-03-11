@@ -14,12 +14,12 @@ RookGen::RookGen(const model::Position& pos)
     , line_ray_attack_table_(attack_tables::line_ray)
 {}
 
-void RookGen::generate(bool is_w, model::Movelist& movelist)
+void RookGen::generate(model::Movelist& movelist)
 {
     std::vector<sq_idx>& rook_sqs = Containers::get_piece_position_idxs();
 
-    utils::get_bit_idxs(rook_sqs, is_w ? pos_.bbs.get_w_rooks_bb()
-                                       : pos_.bbs.get_b_rooks_bb());
+    utils::get_bit_idxs(rook_sqs, pos_.is_w ? pos_.bbs.get_w_rooks_bb()
+                                            : pos_.bbs.get_b_rooks_bb());
 
     // Loop through all rooks and isolate them
     for (int rook_sq : rook_sqs) {
@@ -30,7 +30,7 @@ void RookGen::generate(bool is_w, model::Movelist& movelist)
             line_ray_attack_table_[rook_sq][LineDir::N],
             true, 
             false, 
-            is_w, 
+            pos_.is_w, 
             rook_sq, 
             rank, 
             file, 
@@ -43,7 +43,7 @@ void RookGen::generate(bool is_w, model::Movelist& movelist)
             line_ray_attack_table_[rook_sq][LineDir::E],
             true, 
             true, 
-            is_w, 
+            pos_.is_w, 
             rook_sq, 
             rank, 
             file, 
@@ -56,7 +56,7 @@ void RookGen::generate(bool is_w, model::Movelist& movelist)
             line_ray_attack_table_[rook_sq][LineDir::S],
             false, 
             false, 
-            is_w, 
+            pos_.is_w, 
             rook_sq, 
             rank, 
             file, 
@@ -69,7 +69,7 @@ void RookGen::generate(bool is_w, model::Movelist& movelist)
             line_ray_attack_table_[rook_sq][LineDir::W],
             false, 
             true, 
-            is_w, 
+            pos_.is_w, 
             rook_sq, 
             rank, 
             file, 

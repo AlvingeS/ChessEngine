@@ -46,14 +46,13 @@ TEST_F(PerftPosThree, perft_pos3)
 
         int num_debug_moves = 0;
 
-        int depth = long_runs ? pos_three_max_depth + 1 : pos_three_max_depth;
+        int depth = pos_three_max_depth;
         depth -= num_debug_moves;
-        bool w_to_start = num_debug_moves % 2 == 0;
 
         std::unordered_map<model::Move, uint64_t> stockfish_results = io::stockfish::get_perft_results(pos_three, depth, pm_copy);
 
         move_picker.set_max_depth(depth);
-        move_picker.minimax(0, w_to_start, 0);
+        move_picker.minimax(0, 0, true);
 
         std::unordered_map<model::Move, uint64_t> first_move_counts = move_picker.get_node_count_per_first_move_map();
         compare_first_move_counts_to_stockfish(first_move_counts, stockfish_results, is_w_copy);

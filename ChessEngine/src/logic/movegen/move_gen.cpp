@@ -27,56 +27,56 @@ MoveGen::MoveGen(
     , castle_gen_(pos, move_maker, move_retractor, &check_detection_)
 {}
 
-void MoveGen::gen_moves(bool is_w, model::Movelist& movelist)
+void MoveGen::gen_moves(model::Movelist& movelist)
 {
     movelist.reset();
-    gen_rook_moves(is_w, movelist);
-    gen_bishop_moves(is_w, movelist);
-    gen_queen_moves(is_w, movelist);
-    gen_knight_moves(is_w, movelist);
-    gen_king_moves(is_w, movelist);
-    gen_pawn_moves(is_w, movelist);
-    gen_castle_moves(is_w, movelist);
+    gen_rook_moves(movelist);
+    gen_bishop_moves(movelist);
+    gen_queen_moves(movelist);
+    gen_knight_moves(movelist);
+    gen_king_moves(movelist);
+    gen_pawn_moves(movelist);
+    gen_castle_moves(movelist);
     movelist.add_null_move(); // Add a null move to the end of the move list
 }
 
-void MoveGen::gen_rook_moves(bool is_w, model::Movelist& movelist)
+void MoveGen::gen_rook_moves(model::Movelist& movelist)
 {
-    rook_gen_.generate(is_w, movelist);
+    rook_gen_.generate(movelist);
 }
 
-void MoveGen::gen_bishop_moves(bool is_w, model::Movelist& movelist)
+void MoveGen::gen_bishop_moves(model::Movelist& movelist)
 {
-    bishop_gen_.generate(is_w, movelist);
+    bishop_gen_.generate(movelist);
 }
 
-void MoveGen::gen_queen_moves(bool is_w, model::Movelist& movelist)
+void MoveGen::gen_queen_moves(model::Movelist& movelist)
 {
-    queen_gen_.generate(is_w, movelist);;
+    queen_gen_.generate(movelist);;
 }
 
-void MoveGen::gen_knight_moves(bool is_w, model::Movelist& movelist)
+void MoveGen::gen_knight_moves(model::Movelist& movelist)
 {
-    knight_gen_.generate(is_w, movelist);
+    knight_gen_.generate(movelist);
 }
 
-void MoveGen::gen_king_moves(bool is_w, model::Movelist& movelist)
+void MoveGen::gen_king_moves(model::Movelist& movelist)
 {
-    king_gen_.generate(is_w, movelist);
+    king_gen_.generate(movelist);
 }
 
-void MoveGen::gen_pawn_moves(bool is_w, model::Movelist& movelist)
+void MoveGen::gen_pawn_moves(model::Movelist& movelist)
 {
-    pawn_gen_.generate(is_w, movelist);
+    pawn_gen_.generate(movelist);
 }
 
-void MoveGen::gen_castle_moves(bool is_w, model::Movelist& movelist)
+void MoveGen::gen_castle_moves(model::Movelist& movelist)
 {
-    castle_gen_.generate(is_w, movelist);
+    castle_gen_.generate(movelist);
 }
 
-bool MoveGen::in_check(bool is_w) {
-    return check_detection_.in_check(is_w);
+bool MoveGen::in_check(std::optional<bool> is_w_override) {
+    return check_detection_.in_check(is_w_override);
 }
 
 } // namespace logic

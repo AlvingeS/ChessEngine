@@ -93,19 +93,19 @@ int main()
 
     engine::MovePicker movePickerStartPos = engine::MovePicker(MAX_DEPTH);
     movePickerStartPos.set_pos_from_fen(startPos);
-    movePickerStartPos.minimax(0, true, 0, recPerftStats);
+    movePickerStartPos.minimax(0, 0, recPerftStats);
 
     engine::MovePicker movePickerPosTwo = engine::MovePicker(MAX_DEPTH);
     movePickerPosTwo.set_pos_from_fen(pos_two);
-    movePickerPosTwo.minimax(0, true, 0, recPerftStats);
+    movePickerPosTwo.minimax(0, 0, recPerftStats);
     
     engine::MovePicker movePickerPosThree = engine::MovePicker(MAX_DEPTH);
     movePickerPosThree.set_pos_from_fen(pos_three);
-    movePickerPosThree.minimax(0, true, 0, recPerftStats);
+    movePickerPosThree.minimax(0, 0, recPerftStats);
 
     engine::MovePicker movePickerPosFive = engine::MovePicker(MAX_DEPTH);
     movePickerPosFive.set_pos_from_fen(posFive);
-    movePickerPosFive.minimax(0, true, 0, recPerftStats);
+    movePickerPosFive.minimax(0, 0, recPerftStats);
 
     if (recPerftStats) {
         int sum = 0;

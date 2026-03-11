@@ -23,24 +23,23 @@ struct from_to_bit_idxs {
 };
 
 protected:
-    bool long_runs = true;
-    bool mega_runs = false;
+    int run_depth_addition = 1;
 
-    // Long run should be depth 6, mega run should be depth 7
+    // Standard run depth is 5
     bool enable_start_pos_test = true;
-    int start_pos_max_depth = 5;
+    int start_pos_max_depth = 5 + run_depth_addition;
 
-    // Long run should be depth 5
+    // Standard run depth is 4
     bool enable_pos_2_test = true;
-    int posTwomax_depth = 4;
+    int posTwomax_depth = 4 + run_depth_addition;
 
-    // Long run should be depth 7
+    // Standard run depth is 6
     bool enable_pos_3_test = true;
-    int pos_three_max_depth = 6;
+    int pos_three_max_depth = 6 + run_depth_addition;
 
-    // Long run should be depth 5
+    // Standard run depth is 4
     bool enable_pos_5_test = true;
-    int pos_five_max_depth = 4;
+    int pos_five_max_depth = 4 + run_depth_addition;
 
     std::string startPos;
     std::string pos_two;

@@ -14,7 +14,7 @@ class RookGen {
 public:
     RookGen(const model::Position& pos);
     
-    void generate(bool is_w, model::Movelist& movelist);
+    void generate(model::Movelist& movelist);
 
 private:
     const model::Position& pos_;

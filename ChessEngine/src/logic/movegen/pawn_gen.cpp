@@ -18,38 +18,39 @@ PawnGen::PawnGen(const model::Position& pos)
     , b_pawn_capture_attack_table_(attack_tables::b_pawn_capture)
 {}
 
-void PawnGen::generate(bool is_w, model::Movelist& movelist)
+void PawnGen::generate(model::Movelist& movelist)
 {
     std::vector<sq_idx>& pawn_sqs              = Containers::get_piece_position_idxs();
     std::vector<sq_idx>& quiet_moves_idxs      = Containers::get_leaping_piece_quiet_moves_idxs();
     std::vector<sq_idx>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_idxs();
 
-    utils::get_bit_idxs(pawn_sqs, is_w ? pos_.bbs.get_w_pawns_bb()
-                                       : pos_.bbs.get_b_pawns_bb());
+    utils::get_bit_idxs(pawn_sqs, pos_.is_w ? pos_.bbs.get_w_pawns_bb()
+                                            : pos_.bbs.get_b_pawns_bb());
 
     for (int pawn_sq : pawn_sqs) {
-        bitmask attack_mask_straight = is_w ? w_pawn_quiet_attack_table_[pawn_sq]
-                                            : b_pawn_quiet_attack_table_[pawn_sq];
+        bitmask attack_mask_straight = pos_.is_w ? w_pawn_quiet_attack_table_[pawn_sq]
+                                                 : b_pawn_quiet_attack_table_[pawn_sq];
 
-        bitmask attack_mask_diag = is_w ? w_pawn_capture_attack_table_[pawn_sq]
-                                        : b_pawn_capture_attack_table_[pawn_sq];
+        bitmask attack_mask_diag = pos_.is_w ? w_pawn_capture_attack_table_[pawn_sq]
+                                             : b_pawn_capture_attack_table_[pawn_sq];
 
         bitmask quiet_moves_mask = attack_mask_straight & pos_.occ_masks.get_free_squares_mask();
         
-        bitmask opp_pieces_mask = is_w ? pos_.occ_masks.get_b_pieces_mask()
-                                       : pos_.occ_masks.get_w_pieces_mask();
+        bitmask opp_pieces_mask = pos_.is_w ? pos_.occ_masks.get_b_pieces_mask()
+                                            : pos_.occ_masks.get_w_pieces_mask();
         
         bitmask capture_moves_mask = attack_mask_diag & opp_pieces_mask;
 
         utils::get_bit_idxs(quiet_moves_idxs, quiet_moves_mask);
         utils::get_bit_idxs(capture_moves_sq_idxs, capture_moves_mask);
 
-        int offset = is_w ? 8 : -8;
-        bool can_promote = (is_w && utils::rank_from_sq(pawn_sq) == 6) || (!is_w && utils::rank_from_sq(pawn_sq) == 1);
+        int offset = pos_.is_w ? 8 : -8;
+        bool can_promote = (pos_.is_w && utils::rank_from_sq(pawn_sq) == 6) ||
+                           (!pos_.is_w && utils::rank_from_sq(pawn_sq) == 1);
 
         if (quiet_moves_idxs.size() == 2) {
-            int single_step_idx = (is_w ? 0 : 1);
-            int double_step_idx = (is_w ? 1 : 0);
+            int single_step_idx = (pos_.is_w ? 0 : 1);
+            int double_step_idx = (pos_.is_w ? 1 : 0);
             
             movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[single_step_idx], model::Move::QUITE_FLAG));
             movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[double_step_idx], model::Move::DOUBLE_PAWN_PUSH_FLAG));

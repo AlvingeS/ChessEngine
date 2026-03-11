@@ -16,12 +16,12 @@ BishopGen::BishopGen(const model::Position& pos)
     , diag_ray_attack_table_(attack_tables::diag_ray)
 {}
 
-void BishopGen::generate(bool is_w, model::Movelist& movelist)
+void BishopGen::generate(model::Movelist& movelist)
 {
     std::vector<sq_idx>& bishop_sqs = Containers::get_piece_position_idxs();
 
-    utils::get_bit_idxs(bishop_sqs, is_w ? pos_.bbs.get_w_bishops_bb()
-                                         : pos_.bbs.get_b_bishops_bb());
+    utils::get_bit_idxs(bishop_sqs, pos_.is_w ? pos_.bbs.get_w_bishops_bb()
+                                              : pos_.bbs.get_b_bishops_bb());
 
     for (sq_idx sq : bishop_sqs) {
         int rank = utils::rank_from_sq(sq);
@@ -30,7 +30,7 @@ void BishopGen::generate(bool is_w, model::Movelist& movelist)
         rays::add_moves_from_diag_ray(
             diag_ray_attack_table_[sq][DiagDir::NE],
             true,
-            is_w,
+            pos_.is_w,
             sq,
             rank,
             file,
@@ -42,7 +42,7 @@ void BishopGen::generate(bool is_w, model::Movelist& movelist)
         rays::add_moves_from_diag_ray(
             diag_ray_attack_table_[sq][DiagDir::SE],
             false,
-            is_w,
+            pos_.is_w,
             sq,
             rank,
             file,
@@ -54,7 +54,7 @@ void BishopGen::generate(bool is_w, model::Movelist& movelist)
         rays::add_moves_from_diag_ray(
             diag_ray_attack_table_[sq][DiagDir::SW],
             false,
-            is_w,
+            pos_.is_w,
             sq,
             rank,
             file,
@@ -66,7 +66,7 @@ void BishopGen::generate(bool is_w, model::Movelist& movelist)
         rays::add_moves_from_diag_ray(
             diag_ray_attack_table_[sq][DiagDir::NW],
             true,
-            is_w,
+            pos_.is_w,
             sq,
             rank,
             file,

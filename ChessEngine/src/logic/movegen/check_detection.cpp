@@ -19,8 +19,9 @@ CheckDetection::CheckDetection(const model::Position& pos)
     , b_pawn_capture_attack_table_(attack_tables::b_pawn_capture)
 {}
 
-bool CheckDetection::in_check(bool is_w) const
+bool CheckDetection::in_check(std::optional<bool> is_w_override) const
 {
+    bool is_w = is_w_override.value_or(pos_.is_w);
     sq_idx king_sq, opp_king_sq;
     int king_rank_diff, king_file_diff;
 
@@ -61,6 +62,7 @@ bool CheckDetection::in_check(bool is_w) const
 
     // Check if any opponent knights are attacking the king
     bitmask knight_attack_mask = knight_attack_table_[king_sq];
+
     bitmask opp_knights_mask   = is_w ? pos_.bbs.get_b_knights_bb() 
                                       : pos_.bbs.get_w_knights_bb();
 

@@ -161,7 +161,6 @@ std::unordered_map<model::Move, uint64_t> MovePicker::get_node_count_per_first_m
 // TODO: Implement draw by repetition after implementing zobrist hashing
 void MovePicker::minimax(
     int current_depth, 
-    bool is_maximizer, 
     int first_move_idx, 
     bool do_record_perft_stats, 
     const model::Move& last_move, 
@@ -171,16 +170,13 @@ void MovePicker::minimax(
         return;
     }
 
-    move_generator_.gen_moves(
-        is_maximizer, 
-        move_lists_[current_depth]
-    );
+    move_generator_.gen_moves(move_lists_[current_depth]);
 
     num_move_gen_calls_++;
     
     size_t num_illegal_moves = 0;
 
-    for (size_t i = 0; i < constants::MAX_LEGAL_MOVES; i++) { // If I just do auto move : blah blah wont that keep track of the moves instead of movelists?
+    for (size_t i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
         model::Move current_move = move_lists_[current_depth].get_move_at(i);
 
         // End of moves
@@ -189,15 +185,15 @@ void MovePicker::minimax(
         }
 
         //  Make move
-        undo_stack_[current_depth] = move_maker_.make_move(current_move, is_maximizer);
+        undo_stack_[current_depth] = move_maker_.make_move(current_move);
 
         // Check if move is legal, unmake otherwise
-        if (move_generator_.in_check(is_maximizer)) {
+        if (move_generator_.in_check(!pos_.is_w)) {
             num_illegal_moves++;
-            move_retractor_.unmake_move(current_move, is_maximizer, undo_stack_[current_depth]);
+            move_retractor_.unmake_move(current_move, undo_stack_[current_depth]);
 
             if (num_illegal_moves == i + 1 && move_lists_[current_depth].get_move_at(i + 1).value() == 0) {
-                bool was_in_check = move_generator_.in_check(is_maximizer);
+                bool was_in_check = move_generator_.in_check();
 
                 if (was_in_check) {
                     checkmate_count_[current_depth]++;
@@ -209,13 +205,10 @@ void MovePicker::minimax(
             continue;
         }
 
-        // Move was legal, update castling rights
-
         if (do_record_perft_stats) {
             bool ret_flag;
             
             record_perft_stats(
-                is_maximizer, 
                 current_depth, 
                 first_move_idx, 
                 i, 
@@ -229,14 +222,13 @@ void MovePicker::minimax(
 
         minimax(
             current_depth + 1, 
-            !is_maximizer, 
             first_move_idx, 
             do_record_perft_stats, 
             current_move, 
             verbose
         );
 
-        move_retractor_.unmake_move(current_move, is_maximizer, undo_stack_[current_depth]);
+        move_retractor_.unmake_move(current_move, undo_stack_[current_depth]);
     
         // if (not current_move.is_any_capture() && (move_result.captured_piece_type != model::Piece::Type::W_PAWN && move_result.moved_piece_type != model::Piece::Type::B_PAWN)) {
         //     search_memory_.decrement_no_captures_or_pawn_moves_count_at_depth(current_depth + 1);
@@ -247,7 +239,6 @@ void MovePicker::minimax(
 }
 
 void MovePicker::record_perft_stats(
-    bool is_maximizer, 
     int current_depth, 
     int &first_move_idx, 
     size_t i, 
@@ -255,8 +246,7 @@ void MovePicker::record_perft_stats(
     bool &ret_flag) 
 {
     ret_flag = true;
-    if (move_generator_.in_check(!is_maximizer))
-    {
+    if (move_generator_.in_check()) {
         check_count_[current_depth + 1]++;
     }
 

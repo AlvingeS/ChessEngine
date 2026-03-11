@@ -9,9 +9,9 @@ class DepthOneMakeGenHashTest : public MassFenTestFixture
 
 TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
 {
-    for_each_fen_position(std::string(TEST_DATA_DIR) + "/fens/sampled_100.csv", [&](const std::string& fen){
+    for_each_fen_position(std::string(TEST_DATA_DIR) + "/fens/sampled_250.csv", [&](const std::string& fen){
         model::Movelist pseudo_legal_moves;
-        move_gen.gen_moves(pos.is_w, pseudo_legal_moves);
+        move_gen.gen_moves(pseudo_legal_moves);
         model::PieceMap pm_copy = pos.piece_map;
 
         std::vector<model::Move> legal_moves;
@@ -32,7 +32,7 @@ TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
 
             const bool mover_is_w = pos.is_w;
 
-            auto undo_info = move_maker.make_move(move, mover_is_w);
+            auto undo_info = move_maker.make_move(move);
 
             const uint64_t inc = z_hasher.value();
             z_hasher_control.hash_from_position(pos);
@@ -51,11 +51,11 @@ TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
                 num_correct_hash++;
             }
 
-            if (!move_gen.in_check(mover_is_w)) {
+            if (!move_gen.in_check(!pos.is_w)) {
                 legal_moves.push_back(move);
             }
 
-            move_retractor.unmake_move(move, mover_is_w, undo_info);
+            move_retractor.unmake_move(move, undo_info);
         }
 
         if (num_hash_errors > 0) {

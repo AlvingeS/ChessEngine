@@ -12,7 +12,7 @@ from collections import defaultdict
 INPUT_CSV = "fen_dataset.csv"   # in same folder as this script
 OUTPUT_PREFIX = "sampled"       # sampled_1000.csv etc
 
-N_SAMPLES = 100
+N_SAMPLES = 250
 SEED = 1
 
 MIN_EP_FRAC = 0.15      # best-effort fraction with EP target present

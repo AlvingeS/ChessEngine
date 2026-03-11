@@ -29,20 +29,17 @@ public:
         logic::MoveRetractor& move_retractor
     );
 
-    void gen_moves(
-        bool is_w,
-        model::Movelist& movelist
-    );
+    void gen_moves(model::Movelist& movelist);
     
-    void gen_rook_moves(bool is_w, model::Movelist& movelist);
-    void gen_bishop_moves(bool is_w, model::Movelist& movelist);
-    void gen_queen_moves(bool is_w, model::Movelist& movelist);
-    void gen_knight_moves(bool is_w, model::Movelist& movelist);
-    void gen_king_moves(bool is_w, model::Movelist& movelist);
-    void gen_pawn_moves(bool is_w, model::Movelist& movelist);
-    void gen_castle_moves(bool is_w, model::Movelist& movelist);
+    void gen_rook_moves(model::Movelist& movelist);
+    void gen_bishop_moves(model::Movelist& movelist);
+    void gen_queen_moves(model::Movelist& movelist);
+    void gen_knight_moves(model::Movelist& movelist);
+    void gen_king_moves(model::Movelist& movelist);
+    void gen_pawn_moves(model::Movelist& movelist);
+    void gen_castle_moves(model::Movelist& movelist);
     
-    bool in_check(bool is_w);
+    bool in_check(std::optional<bool> is_w_override = std::nullopt);
 
 private:
     const model::Position& pos_;    

@@ -1,7 +1,6 @@
 #include "mass_fen_test_fixture.h"
 
 #include "io/stockfish_perft_retriever.h"
-#include "tests/test_config.h"
 
 class DepthOneMakeGenHashTest : public MassFenTestFixture  
 {};

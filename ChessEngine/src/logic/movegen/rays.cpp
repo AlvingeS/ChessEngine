@@ -3,9 +3,12 @@
 #include "model/move/movelist.h"
 #include "model/move/move.h"
 
+#include "logic/attack_tables/attack_tables.h"
 #include "logic/movegen/containers.h"
 #include "logic/utils.h"
 #include "logic/utils.h"
+
+#include <optional>
 
 namespace logic::rays {
 
@@ -186,60 +189,162 @@ void add_moves_from_diag_ray(
     }
 }
 
-bool check_line_ray(
-    bitmask line_ray,
-    bool first_blocker_on_lsb,
-    bitmask opp_rooks_and_queens_mask,
-    bitmask occupied_squares_mask) 
-{
-    bitmask opp_rooks_and_queens_blocker_mask = line_ray & opp_rooks_and_queens_mask;
-    
-    // If no blocker is an opponent rook or queen, we cannot be in check from line ray
-    if (opp_rooks_and_queens_blocker_mask == 0ULL)
-        return false;
-
-    bitmask blockers_mask = line_ray & occupied_squares_mask;
-
-    // We know opp_rooks_and_queens_blocker-mask != 0ULL, so if there is only
-    // one blocker, then it must be an opponent rook/queen and we must be in check
-    if (utils::pop_count(blockers_mask) == 1)
-        return true;
-
-    sq_idx first_blocker_sq = first_blocker_on_lsb ? utils::lsb_idx(blockers_mask) 
-                                                   : utils::msb_idx(blockers_mask);
-
-    sq_idx first_opp_rook_or_queen_sq = first_blocker_on_lsb ? utils::lsb_idx(opp_rooks_and_queens_blocker_mask)
-                                                             : utils::msb_idx(opp_rooks_and_queens_blocker_mask);
-
-    return first_blocker_sq == first_opp_rook_or_queen_sq;
-}
-
-bool check_diag_ray(
-    bitmask diag_ray,
+RayCheckDetectionResult detect_check_in_line_ray(
+    sq_idx king_idx,
+    LineDir ray_dir,
     bool blocker_on_lsb,
-    bitmask opp_bishops_and_queens_mask,
-    bitmask occupied_squares_mask)
+    bitmask opp_rooks_and_queens_mask,
+    bitmask opp_pieces_mask,
+    bitmask own_pieces_mask) 
 {
-    bitmask opp_bishops_and_queens_blocker_mask = diag_ray & opp_bishops_and_queens_mask;
+    RayCheckDetectionResult result;
 
-    // If no blocker is an opponent bishop or queen, we cannot be in check from diag ray
-    if (opp_bishops_and_queens_blocker_mask == 0)
-        return false;
+    bitmask line_ray = attack_tables::line_ray[king_idx][ray_dir];
+    bitmask opp_rooks_and_queens_blocker_mask = line_ray & opp_rooks_and_queens_mask;
 
-    bitmask blockers_mask = diag_ray & occupied_squares_mask;
+    // If no blocker is an opponent rook or queen, we cannot be in check from line ray
+    if (opp_rooks_and_queens_blocker_mask == 0) {
+        return result;
+    }
 
-    // We know opp_rooks_and_queens_blocker-mask != 0ULL, so if there is only
-    // one blocker, then it must be an opponent rook/queen and we must be in check
-    if (utils::pop_count(blockers_mask) == 1)
-        return true;
+    bitmask blockers_mask = line_ray & (own_pieces_mask | opp_pieces_mask);
 
+    // We know opp_rooks_and_queens_blocker mask != 0ULL, so if there is only
+    // one blocker, then it must be an opponent rook/queen and we must be in check.
+    // There cannot be a pinned piece.
+    if (utils::pop_count(blockers_mask) == 1) {
+        result.checker_sq_idx = utils::lsb_idx(blockers_mask);
+        result.check_mask = create_line_attack_mask(king_idx, result.checker_sq_idx.value(), ray_dir, true);
+        return result;
+    }
+
+    // We know now that there are >=2 pieces on the ray.
+    // If the first blocker is an opp rook or queen, we are in check, nothing more to do.
     sq_idx first_blocker_sq = blocker_on_lsb ? utils::lsb_idx(blockers_mask)
                                              : utils::msb_idx(blockers_mask);
 
-    int first_opp_bishop_or_queen_sq = blocker_on_lsb ? utils::lsb_idx(opp_bishops_and_queens_blocker_mask)
-                                                      : utils::msb_idx(opp_bishops_and_queens_blocker_mask);
+    sq_idx first_opp_rook_or_queen_sq = blocker_on_lsb ? utils::lsb_idx(opp_rooks_and_queens_blocker_mask)
+                                                       : utils::msb_idx(opp_rooks_and_queens_blocker_mask);
 
-    return first_blocker_sq == first_opp_bishop_or_queen_sq;
+    if (first_blocker_sq == first_opp_rook_or_queen_sq) {
+        result.checker_sq_idx = first_blocker_sq;
+        result.check_mask = create_line_attack_mask(king_idx, result.checker_sq_idx.value(), ray_dir, true);
+        return result;
+    }
+
+    // If first blocker is not our own, then it must be a non-rook/queen piece and is blocking the check
+    // Nothing can be pinned.
+    bool first_blocker_is_own = utils::get_bit(own_pieces_mask, first_blocker_sq);
+    if (!first_blocker_is_own) {
+        return result;
+    }
+
+    // We know now that the first blocker is our own piece, and that there must be a rook/queen
+    // somewhere behind it. If it is the second piece on the ray, it is pinning our piece.
+    bitmask ray_after_first_blocker = attack_tables::line_ray[first_blocker_sq][ray_dir];
+    bitmask blockers_after_first = ray_after_first_blocker & (own_pieces_mask | opp_pieces_mask);
+
+    sq_idx second_blocker_sq = blocker_on_lsb
+        ? utils::lsb_idx(blockers_after_first)
+        : utils::msb_idx(blockers_after_first);
+
+    if (second_blocker_sq == first_opp_rook_or_queen_sq) {
+        result.pinned_piece_sq_idx = first_blocker_sq;
+        result.pin_ray = create_line_attack_mask(king_idx, second_blocker_sq, ray_dir, true);
+    }
+
+    return result;
+}
+
+RayCheckDetectionResult detect_check_in_diag_ray(
+    sq_idx king_idx,
+    DiagDir ray_dir,
+    bool blocker_on_lsb,
+    bitmask opp_bishops_and_queens_mask,
+    bitmask opp_pieces_mask,
+    bitmask own_pieces_mask)
+{
+    RayCheckDetectionResult result;
+
+    bitmask diag_ray = attack_tables::diag_ray[king_idx][ray_dir];
+    bitmask opp_bishops_and_queens_blocker_mask = diag_ray & opp_bishops_and_queens_mask;
+
+    // If no blocker is an opponent bishop or queen, we cannot be in check from diag ray
+    if (opp_bishops_and_queens_blocker_mask == 0) {
+        return result;
+    }
+
+    bitmask blockers_mask = diag_ray & (own_pieces_mask | opp_pieces_mask);
+
+    // We know opp_bishops_and_queens_blocker mask != 0ULL, so if there is only
+    // one blocker, then it must be an opponent bishop/queen and we must be in check.
+    // There cannot be a pinned piece.
+    if (utils::pop_count(blockers_mask) == 1) {
+        result.checker_sq_idx = utils::lsb_idx(blockers_mask);
+        result.check_mask = create_diag_attack_mask(king_idx, result.checker_sq_idx.value(), ray_dir, true);
+        return result;
+    }
+
+    // We know now that there are >=2 pieces on the ray.
+    // If the first blocker is an opp bishop or queen, we are in check, nothing more to do.
+    sq_idx first_blocker_sq = blocker_on_lsb ? utils::lsb_idx(blockers_mask)
+                                             : utils::msb_idx(blockers_mask);
+
+    sq_idx first_opp_bishop_or_queen_sq = blocker_on_lsb ? utils::lsb_idx(opp_bishops_and_queens_blocker_mask)
+                                                         : utils::msb_idx(opp_bishops_and_queens_blocker_mask);
+
+    if (first_blocker_sq == first_opp_bishop_or_queen_sq) {
+        result.checker_sq_idx = first_blocker_sq;
+        result.check_mask = create_diag_attack_mask(king_idx, result.checker_sq_idx.value(), ray_dir, true);
+        return result;
+    }
+
+    // If first blocker is not our own, then it must be a non-bishop/queen piece and is blocking the check
+    // Nothing can be pinned.
+    bool first_blocker_is_own = utils::get_bit(own_pieces_mask, first_blocker_sq);
+    if (!first_blocker_is_own) {
+        return result;
+    }
+
+    // We know now that the first blocker is our own piece, and that there must be a bishop/queen
+    // somewhere behind it. If it is the second piece on the ray, it is pinning our piece.
+    bitmask ray_after_first_blocker = attack_tables::diag_ray[first_blocker_sq][ray_dir];
+    bitmask blockers_after_first = ray_after_first_blocker & (own_pieces_mask | opp_pieces_mask);
+
+    sq_idx second_blocker_sq = blocker_on_lsb
+        ? utils::lsb_idx(blockers_after_first)
+        : utils::msb_idx(blockers_after_first);
+
+    if (second_blocker_sq == first_opp_bishop_or_queen_sq) {
+        result.pinned_piece_sq_idx = first_blocker_sq;
+        result.pin_ray = create_diag_attack_mask(king_idx, second_blocker_sq, ray_dir, true);
+    }
+
+    return result;
+}
+
+bitmask create_diag_attack_mask(sq_idx king_idx, sq_idx blocker_idx, DiagDir ray_dir, bool include_blocker)
+{
+    bitmask attack_mask = attack_tables::diag_ray[king_idx][ray_dir] &
+                         ~attack_tables::diag_ray[blocker_idx][ray_dir];
+
+    if (!include_blocker) {
+        attack_mask &= ~(1ULL << blocker_idx);
+    }
+
+    return attack_mask;
+}
+
+bitmask create_line_attack_mask(sq_idx king_idx, sq_idx blocker_idx, LineDir ray_dir, bool include_blocker)
+{
+    bitmask attack_mask = attack_tables::line_ray[king_idx][ray_dir] &
+                         ~attack_tables::line_ray[blocker_idx][ray_dir];
+
+    if (!include_blocker) {
+        attack_mask &= ~(1ULL << blocker_idx);
+    }
+
+    return attack_mask;
 }
 
 } // namespace logic

@@ -12,7 +12,8 @@ namespace logic::utils
 {
 
 // Old logic::bits
-bool get_bit(bitmask mask, int i);
+void set_bit(bitmask& mask, sq_idx i);
+bool get_bit(bitmask mask, sq_idx i);
 int lsb_idx(bitmask mask); 
 int msb_idx(bitmask mask);
 void get_bit_idxs(std::vector<int>& idxs, bitboard bb);

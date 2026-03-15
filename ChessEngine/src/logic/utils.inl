@@ -1,7 +1,12 @@
 namespace logic::utils
 {
 
-inline bool get_bit(bitmask mask, int i) 
+inline void set_bit(bitmask& mask, sq_idx i) 
+{
+    mask |= (1ULL << i);    
+}
+
+inline bool get_bit(bitmask mask, sq_idx i) 
 {
     return (mask >> i) & 1;
 }

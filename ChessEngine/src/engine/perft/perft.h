@@ -26,8 +26,6 @@ public:
     void minimax(
         int current_depth,
         int first_move_idx,
-        bool recPerftStats = true,
-        const model::Move& last_move = model::Move(),
         bool verbose = true
     );
 
@@ -35,8 +33,7 @@ public:
         int current_depth,
         int &first_move_idx,
         size_t i,
-        const model::Move& current_move,
-        bool &ret_flag
+        const model::Move& current_move
     );
     
     int num_move_gen_calls_;
@@ -51,6 +48,7 @@ public:
     std::vector<long long> casle_count_;
     std::vector<long long> promo_count_;
     std::vector<long long> check_count_;
+    std::vector<long long> double_check_count_;
     std::vector<long long> checkmate_count_;
 
     void debug_print(bool verbose) const;

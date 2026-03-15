@@ -5,6 +5,7 @@
 
 #include "logic/attack_tables/attack_tables.h"
 #include "logic/movegen/containers.h"
+#include "logic/movegen/check_detection.h"
 #include "logic/utils.h"
 #include "logic/utils.h"
 
@@ -18,8 +19,12 @@ PawnGen::PawnGen(const model::Position& pos)
     , b_pawn_capture_attack_table_(attack_tables::b_pawn_capture)
 {}
 
-void PawnGen::generate(model::Movelist& movelist)
+void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info)
 {
+    if (legality_info.in_double_check()) {
+        return;
+    }
+
     std::vector<sq_idx>& pawn_sqs              = Containers::get_piece_position_idxs();
     std::vector<sq_idx>& quiet_moves_idxs      = Containers::get_leaping_piece_quiet_moves_idxs();
     std::vector<sq_idx>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_idxs();
@@ -41,12 +46,86 @@ void PawnGen::generate(model::Movelist& movelist)
         
         bitmask capture_moves_mask = attack_mask_diag & opp_pieces_mask;
 
+        if (utils::get_bit(legality_info.pinned_mask, pawn_sq)) {
+            capture_moves_mask &= legality_info.pin_rays[pawn_sq];
+            quiet_moves_mask &= legality_info.pin_rays[pawn_sq];
+        }
+
+        bool can_promote = (pos_.is_w && utils::rank_from_sq(pawn_sq) == 6) ||
+                           (!pos_.is_w && utils::rank_from_sq(pawn_sq) == 1);
+                           
+        if (legality_info.in_check()) {
+            bool ep_capture_possible = (attack_mask_diag & pos_.ep_target_mask) != 0ULL;
+            bitmask check_response_mask = legality_info.check_response_mask;
+
+            // If this pawn can make an ep capture...
+            if (ep_capture_possible) {
+                bitmask opp_pawns = pos_.is_w ? pos_.bbs.get_b_pawns_bb()
+                                              : pos_.bbs.get_w_pawns_bb();
+
+                // And the checker is a pawn, then it must be that pawn that
+                // created the ep target, and can thus be captured by ep
+                // We extend the check response mask to also include this
+                if((legality_info.checkers_mask & opp_pawns) != 0ULL) {
+                    check_response_mask |= pos_.ep_target_mask;
+                }
+            }
+
+            bitmask check_stopping_moves = 0ULL;
+            if (ep_capture_possible) {
+                check_stopping_moves = attack_mask_diag & check_response_mask;
+            } else {
+                check_stopping_moves = capture_moves_mask & check_response_mask;
+            }
+            
+            // There can only be at most one legal move in check for a pawn
+            if (check_stopping_moves != 0ULL) {
+                sq_idx capture_sq = utils::lsb_idx(check_stopping_moves);
+                if (can_promote) {
+                    movelist.add_move(model::Move(pawn_sq, capture_sq, model::Move::QUEEN_PROMO_CAPTURE_FLAG));
+                    movelist.add_move(model::Move(pawn_sq, capture_sq, model::Move::ROOK_PROMO_CAPTURE_FLAG));
+                    movelist.add_move(model::Move(pawn_sq, capture_sq, model::Move::BISHOP_PROMO_CAPTURE_FLAG));
+                    movelist.add_move(model::Move(pawn_sq, capture_sq, model::Move::KNIGHT_PROMO_CAPTURE_FLAG));
+                } else {
+                    if (pos_.piece_map.get_piece_type_at(capture_sq) == model::Piece::Type::EMPTY) {
+                        movelist.add_move(model::Move(pawn_sq, capture_sq, model::Move::EP_CAPTURE_FLAG));
+                    } else {
+                        movelist.add_move(model::Move(pawn_sq, capture_sq, model::Move::CAPTURE_FLAG));
+                    }
+                }
+            }
+
+            quiet_moves_mask &= legality_info.check_response_mask;
+            
+            if (quiet_moves_mask != 0ULL) {
+                sq_idx to_sq = utils::lsb_idx(quiet_moves_mask);
+                bool double_pawn_push = std::abs(pawn_sq - to_sq) == 16; 
+
+                if (double_pawn_push) {
+                    int single_step_offset = pos_.is_w ? 8 : -8;
+                    bool single_step_push_free = !utils::get_bit(pos_.occ_masks.get_occupied_squares_mask(), pawn_sq + single_step_offset);
+                    if (single_step_push_free) {
+                        movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::DOUBLE_PAWN_PUSH_FLAG));
+                    }
+                } else {
+                    if (can_promote) {
+                        movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::QUEEN_PROMO_FLAG));
+                        movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::ROOK_PROMO_FLAG));
+                        movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::BISHOP_PROMO_FLAG));
+                        movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::KNIGHT_PROMO_FLAG));
+                    } else {
+                        movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::QUITE_FLAG));
+                    }
+                }
+            }
+
+            continue;
+        }
+
         utils::get_bit_idxs(quiet_moves_idxs, quiet_moves_mask);
         utils::get_bit_idxs(capture_moves_sq_idxs, capture_moves_mask);
 
         int offset = pos_.is_w ? 8 : -8;
-        bool can_promote = (pos_.is_w && utils::rank_from_sq(pawn_sq) == 6) ||
-                           (!pos_.is_w && utils::rank_from_sq(pawn_sq) == 1);
 
         if (quiet_moves_idxs.size() == 2) {
             int single_step_idx = (pos_.is_w ? 0 : 1);

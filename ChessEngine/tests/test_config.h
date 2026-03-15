@@ -2,9 +2,10 @@
 
 #include <string>
 
-static constexpr bool big_tests = false;
+static constexpr bool big_tests = true;
 
 // Perft
+static constexpr bool verbose = false;
 static constexpr int perft_depth_offset = big_tests ? 2 : 1;
 
 // Mass fen low-depth perft

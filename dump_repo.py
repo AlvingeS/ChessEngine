@@ -17,6 +17,10 @@ EXCLUDE_DIRS = {
     "tests/data"
 }
 
+EXCLUDE_FILES = {
+    "CMakeLists.txt",
+}
+
 EXCLUDE_EXT = {
     ".o",
     ".obj",
@@ -45,11 +49,11 @@ def is_excluded_dir(d: Path) -> bool:
 
 
 def is_excluded_file(f: Path) -> bool:
-    return f.suffix in EXCLUDE_EXT
+    return f.suffix in EXCLUDE_EXT or f.name in EXCLUDE_FILES
 
 
 def write_tree(out):
-    out.write("REPO STRUCTURE\n")
+    out.write("# REPO STRUCTURE\n")
     for root, dirs, files in os.walk(ROOT):
         root_path = Path(root)
         dirs[:] = [d for d in dirs if not is_excluded_dir(root_path / d)]
@@ -113,7 +117,7 @@ def write_files(out, stats):
             ext = path.suffix
 
             out.write("\n\n--------------------\n\n")
-            out.write(f"# FILE: {rel.as_posix()}\n\n")
+            out.write(f"## FILE: {rel.as_posix()}\n\n")
             out.write(f"```{lang}\n")
             try:
                 text = path.read_text(encoding="utf-8", errors="replace")

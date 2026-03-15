@@ -57,4 +57,12 @@ inline int determine_capture_sq(const model::Move& move, bool is_w)
                                 : move.get_to_sq();
 }
 
+template<typename Func>
+inline void for_each_bit(bitmask mask, Func f) {
+    while (mask) {
+        f(lsb_idx(mask));
+        mask &= mask - 1;
+    }
+}
+
 } // namespace logic::utils

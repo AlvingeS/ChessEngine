@@ -14,7 +14,7 @@ TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
 
         std::vector<model::Move> legal_moves;
         
-        ASSERT_EQ(z_hasher.value(), z_hasher_control.value());
+        EXPECT_EQ(z_hasher.value(), z_hasher_control.value());
 
         std::ostringstream hash_errors;
         size_t num_hash_errors = 0;
@@ -29,6 +29,13 @@ TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
             num_total_moves++;
 
             const bool mover_is_w = pos.is_w;
+
+            int debug_move_val = 61572;
+            bitmask debug_occ_mask_val = 360869686735015985;
+
+            if (move.value() == debug_move_val && pos.occ_masks.get_occupied_squares_mask() == debug_occ_mask_val) {
+                std::cout << "Reached debug point!" << std::endl;
+            }
 
             auto undo_info = move_maker.make_move(move);
 
@@ -49,7 +56,7 @@ TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
                 num_correct_hash++;
             }
 
-            if (!move_gen.in_check(!pos.is_w)) {
+            if (!move_gen.in_check()) {
                 legal_moves.push_back(move);
             }
 
@@ -89,12 +96,14 @@ TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
                 j++;
             } else if (legal_moves[i].value() < sf_legal_moves[j].value()) {
                 errors << "Move: " << io::stockfish::move_to_str(legal_moves[i], pos.is_w)
-                    << " only found in generated moves, not sf. FEN: " << fen << "\n";
+                       << " (" << legal_moves[i].value() << ") only found in generated moves, not sf. FEN: " << fen << "\n"
+                       << "Occupancy mask: " << pos.occ_masks.get_occupied_squares_mask() << "\n";
                 i++;
                 has_errors = true;
             } else {
                 errors << "Move: " << io::stockfish::move_to_str(sf_legal_moves[j], pos.is_w)
-                    << " only found in sf moves, not generated. FEN: " << fen << "\n";
+                    << " (" << legal_moves[i].value() << ") only found in sf moves, not generated. FEN: " << fen << "\n"
+                    << "Occupancy mask: " << pos.occ_masks.get_occupied_squares_mask() << "\n";
                 j++;
                 has_errors = true;
             }
@@ -102,14 +111,17 @@ TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
 
         while (i < legal_moves.size()) {
             errors << "Move: " << io::stockfish::move_to_str(legal_moves[i], pos.is_w)
-                << " only found in generated moves, not sf. FEN: " << fen << "\n";
+                   << " (" << legal_moves[i].value() << ") only found in generated moves, not sf. FEN: " << fen << "\n"
+                   << "Occupancy mask: " << pos.occ_masks.get_occupied_squares_mask() << "\n";
+;
             i++;
             has_errors = true;
         }
 
         while (j < sf_legal_moves.size()) {
             errors << "Move: " << io::stockfish::move_to_str(sf_legal_moves[j], pos.is_w)
-                << " only found in sf moves, not generated. FEN: " << fen << "\n";
+                   << " (" << legal_moves[i].value() << ") only found in sf moves, not generated. FEN: " << fen << "\n"
+                   << "Occupancy mask: " << pos.occ_masks.get_occupied_squares_mask() << "\n";
             j++;
             has_errors = true;
         }

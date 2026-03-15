@@ -26,11 +26,13 @@ bitmask get_rank_mask(int rank);
 int rank_from_sq(sq_idx sq);
 int file_from_sq(sq_idx sq);
 int abs(int n);
-int manhattan_distance(int i, int j);
 
 // Old logic::move_utils
 model::Piece::Type get_promotion_piece_type(int promotionFlag, bool is_w);
 int determine_capture_sq(const model::Move& move, bool is_w);
+
+template<typename Func>
+inline void for_each_bit(bitmask mask, Func f);
 
 } // namespace logic::utils
 #include "logic/utils.inl"

@@ -57,7 +57,12 @@ protected:
         while (std::getline(f, fen)) {
             if (fen.empty()) continue;
 
+            if (fen == "6nr/p2Q3p/2rB1p2/1k1N2p1/Pp2P3/8/2P2PPP/R5K1 b - a3 0 25\r") {
+                std::cout << "..." << std::endl;
+            }
+
             io::fen::set_pos_from_fen(fen, pos);
+
             z_hasher.hash_from_position(pos);
             z_hasher_control.hash_from_position(pos);
 

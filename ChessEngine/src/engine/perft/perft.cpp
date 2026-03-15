@@ -1,8 +1,11 @@
 #include "engine/perft/perft.h"
 
-#include "io/board_printer.h"
 #include "model/constants.h"
+
+#include "logic/movegen/check_detection.h"
 #include "logic/masks.h"
+#include "io/board_printer.h"
+
 
 #include <cstdlib>
 #include <iostream>
@@ -18,7 +21,6 @@ Perft::Perft(int max_depth)
     , eval_(logic::Eval(pos_))
     , max_depth_(max_depth)
 {
-    num_move_gen_calls_ = 0;
     total_nodes_ = 0;
     
     node_count_per_first_move_.resize(constants::MAX_LEGAL_MOVES);
@@ -39,6 +41,7 @@ Perft::Perft(int max_depth)
     casle_count_.resize(20);
     promo_count_.resize(20);
     check_count_.resize(20);
+    double_check_count_.resize(20);
     checkmate_count_.resize(20);
 
     for (int i = 0; i < 20; i++) {
@@ -48,6 +51,7 @@ Perft::Perft(int max_depth)
         casle_count_[i] = 0;
         promo_count_[i] = 0;
         check_count_[i] = 0;
+        double_check_count_[i] = 0;
         checkmate_count_[i] = 0;
     }
 }
@@ -62,16 +66,7 @@ long long Perft::sum_nodes_to_depth(int depth) const {
     return sum;
 }
 
-void Perft::debug_print(bool verbose) const
-{
-    if (verbose) {
-        io::BoardPrinter boardPrinter = io::BoardPrinter(pos_.bbs);
-        boardPrinter.print();
-    }
-}
-
 void Perft::reset_stats() {
-    num_move_gen_calls_ = 0;
     total_nodes_ = 0;
     
     for (int i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
@@ -119,21 +114,35 @@ std::unordered_map<model::Move, uint64_t> Perft::get_node_count_per_first_move_m
 }
 
 void Perft::minimax(
-    int current_depth, 
+    int current_depth,
     int first_move_idx, 
-    bool do_record_perft_stats, 
-    const model::Move& last_move, 
     bool verbose)
 {        
     if (current_depth == max_depth_) {
         return;
     }
-
-    move_generator_.gen_moves(move_lists_[current_depth]);
-
-    num_move_gen_calls_++;
     
-    size_t num_illegal_moves = 0;
+    if (verbose) {
+        std::string w = pos_.is_w ? "white" : "black";
+        std::cout << "Generating moves from the following position for " + w + "..." << std::endl;
+        auto bp =io::BoardPrinter(pos_);
+        bp.print();
+        std::cout << "Making moves..." << std::endl;
+    }
+    logic::LegalityInfo legality_info = move_generator_.gen_moves(move_lists_[current_depth]);
+
+    // The move that was made before the next call of minimax put us in check, at the previous depth
+    if (current_depth - 1 >= 0 && legality_info.in_check()) {
+        check_count_[current_depth - 1]++;
+    }
+
+    if (current_depth - 1 >= 0 && legality_info.in_double_check()) {
+        double_check_count_[current_depth - 1]++;
+    }
+
+    if (current_depth - 1 >= 0 && legality_info.in_check() && move_lists_[current_depth].get_move_idx() == 0) {
+        checkmate_count_[current_depth - 1]++;
+    }
 
     for (size_t i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
         model::Move current_move = move_lists_[current_depth].get_move_at(i);
@@ -141,53 +150,46 @@ void Perft::minimax(
         // End of moves
         if (current_move.value() == 0) {
             break;
-        }
+        } 
 
         //  Make move
         undo_stack_[current_depth] = move_maker_.make_move(current_move);
+        if (verbose) {
+            auto bp =io::BoardPrinter(pos_);
+            bp.print(current_move);
+         
+            std::optional<bitmask> debug_occ_mask = std::nullopt;
+            int debug_move_value = 5977;
 
-        // Check if move is legal, unmake otherwise
-        if (move_generator_.in_check(!pos_.is_w)) {
-            num_illegal_moves++;
-            move_retractor_.unmake_move(current_move, undo_stack_[current_depth]);
-
-            if (num_illegal_moves == i + 1 && move_lists_[current_depth].get_move_at(i + 1).value() == 0) {
-                bool was_in_check = move_generator_.in_check();
-
-            if (was_in_check) {
-                if (current_depth > 0) {
-                    checkmate_count_[current_depth - 1]++;
-                } else {
-                    checkmate_count_[0]++;
+            if (debug_occ_mask.has_value()) {
+                if (pos_.occ_masks.get_occupied_squares_mask() == debug_occ_mask.value() &&
+                    current_move.value() == debug_move_value) 
+                {
+                    std::cout << "Debug state reached!" << std::endl;
                 }
+            } else if (current_move.value() == debug_move_value) {
+                std::cout << "Debug state reached!" << std::endl;
             }
-
-                return;
-            }
-
-            continue;
         }
 
-        if (do_record_perft_stats) {
-            bool ret_flag;
-            
-            record_perft_stats(
-                current_depth, 
-                first_move_idx, 
-                i, 
-                current_move, 
-                ret_flag
-            );
-            
-            if (ret_flag)
-                return;
+        // If move is castle, make the move, check if in check, if so - undo
+        if (current_move.is_any_castle() || current_move.is_ep_capture()) {
+            if (move_generator_.in_check())  {
+                move_retractor_.unmake_move(current_move, undo_stack_[current_depth]);   
+                continue;
+            }
         }
+
+        record_perft_stats(
+            current_depth, 
+            first_move_idx, 
+            i, 
+            current_move
+        );
 
         minimax(
             current_depth + 1, 
             first_move_idx, 
-            do_record_perft_stats, 
-            current_move, 
             verbose
         );
 
@@ -198,17 +200,11 @@ void Perft::minimax(
 }
 
 void Perft::record_perft_stats(
-    int current_depth, 
+    int current_depth,
     int &first_move_idx, 
-    size_t i, 
-    const model::Move& current_move, 
-    bool &ret_flag) 
+    size_t i,
+    const model::Move& current_move) 
 {
-    ret_flag = true;
-    if (move_generator_.in_check()) {
-        check_count_[current_depth]++;
-    }
-
     if (current_depth == 0) {
         first_move_idx = i;
         first_moves_[i] = current_move;
@@ -235,8 +231,6 @@ void Perft::record_perft_stats(
     if (current_move.is_ep_capture()) {
         ep_capture_count_[current_depth]++;
     }
-
-    ret_flag = false;
 }
 
 } // namespace engine

@@ -4,6 +4,7 @@
 
 #include "logic/movegen/rays.h"
 #include "logic/movegen/containers.h"
+#include "logic/movegen/check_detection.h"
 #include "logic/utils.h"
 #include "logic/utils.h"
 
@@ -11,73 +12,27 @@ namespace logic {
 
 RookGen::RookGen(const model::Position& pos)
     : pos_(pos)
-    , line_ray_attack_table_(attack_tables::line_ray)
 {}
 
-void RookGen::generate(model::Movelist& movelist)
+void RookGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info)
 {
-    std::vector<sq_idx>& rook_sqs = Containers::get_piece_position_idxs();
-
-    utils::get_bit_idxs(rook_sqs, pos_.is_w ? pos_.bbs.get_w_rooks_bb()
-                                            : pos_.bbs.get_b_rooks_bb());
-
-    // Loop through all rooks and isolate them
-    for (int rook_sq : rook_sqs) {
-        int rank = utils::rank_from_sq(rook_sq);
-        int file = utils::file_from_sq(rook_sq);
-
-        rays::add_moves_from_line_ray(
-            line_ray_attack_table_[rook_sq][LineDir::N],
-            true, 
-            false, 
-            pos_.is_w, 
-            rook_sq, 
-            rank, 
-            file, 
-            movelist,
-            pos_.occ_masks.get_w_pieces_mask(),
-            pos_.occ_masks.get_occupied_squares_mask()
-        );
-
-        rays::add_moves_from_line_ray(
-            line_ray_attack_table_[rook_sq][LineDir::E],
-            true, 
-            true, 
-            pos_.is_w, 
-            rook_sq, 
-            rank, 
-            file, 
-            movelist,
-            pos_.occ_masks.get_w_pieces_mask(),
-            pos_.occ_masks.get_occupied_squares_mask()
-        );
-
-        rays::add_moves_from_line_ray(
-            line_ray_attack_table_[rook_sq][LineDir::S],
-            false, 
-            false, 
-            pos_.is_w, 
-            rook_sq, 
-            rank, 
-            file, 
-            movelist,
-            pos_.occ_masks.get_w_pieces_mask(),
-            pos_.occ_masks.get_occupied_squares_mask()
-        );
-
-        rays::add_moves_from_line_ray(
-            line_ray_attack_table_[rook_sq][LineDir::W],
-            false, 
-            true, 
-            pos_.is_w, 
-            rook_sq, 
-            rank, 
-            file, 
-            movelist,
-            pos_.occ_masks.get_w_pieces_mask(),
-            pos_.occ_masks.get_occupied_squares_mask()
-        );
+    if (legality_info.in_double_check()) {
+        return;
     }
+
+    bitmask occupied_pieces_mask = pos_.occ_masks.get_occupied_squares_mask();
+    bitmask opponent_pieces_mask = pos_.is_w ? pos_.occ_masks.get_b_pieces_mask()
+                                             : pos_.occ_masks.get_w_pieces_mask();
+
+    bitboard bb = pos_.is_w ? pos_.bbs.get_w_rooks_bb()
+                            : pos_.bbs.get_b_rooks_bb();
+
+    utils::for_each_bit(bb, [&](sq_idx sq) {
+        rays::add_moves_from_ray(Direction::N,  true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
+        rays::add_moves_from_ray(Direction::E,  true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
+        rays::add_moves_from_ray(Direction::S,  false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
+        rays::add_moves_from_ray(Direction::W,  false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
+    });
 }
 
 } // namespace logic

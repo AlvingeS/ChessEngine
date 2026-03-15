@@ -34,7 +34,7 @@ char Piece::get_char_from_type(Piece::Type type) {
         case Piece::Type::B_ROOK: return 'r';
         case Piece::Type::B_QUEEN: return 'q';
         case Piece::Type::B_KING: return 'k';
-        default : return 'e';
+        default : return ' ';
     }
 }
 

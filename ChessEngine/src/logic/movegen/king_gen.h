@@ -9,12 +9,14 @@ namespace model {
 
 namespace logic {
 
+struct LegalityInfo;
+
 class KingGen {
 
 public:
     KingGen(const model::Position& pos);
 
-    void generate(model::Movelist& movelist);
+    void generate(model::Movelist& movelist, const LegalityInfo& legality_info);
 
 private:
     const model::Position& pos_;    

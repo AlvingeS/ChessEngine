@@ -16,13 +16,6 @@ void get_bit_idxs(std::vector<int>& idxs, bitboard bb)
     }
 }
 
-int manhattan_distance(int i, int j) 
-{
-    int rank_diff = rank_from_sq(i) - rank_from_sq(j);
-    int file_diff = file_from_sq(i) - file_from_sq(j);
-    return abs(rank_diff) + abs(file_diff);
-}
-
 model::Piece::Type get_promotion_piece_type(int promo_flag, bool is_w) 
 {
     switch(promo_flag) {

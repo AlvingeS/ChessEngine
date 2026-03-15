@@ -19,6 +19,7 @@ namespace logic {
 
 class MoveMaker;
 class MoveRetractor;
+struct LegalityInfo;
 
 class MoveGen {
 
@@ -29,17 +30,18 @@ public:
         logic::MoveRetractor& move_retractor
     );
 
-    void gen_moves(model::Movelist& movelist);
+    LegalityInfo gen_moves(model::Movelist& movelist);
     
-    void gen_rook_moves(model::Movelist& movelist);
-    void gen_bishop_moves(model::Movelist& movelist);
-    void gen_queen_moves(model::Movelist& movelist);
-    void gen_knight_moves(model::Movelist& movelist);
-    void gen_king_moves(model::Movelist& movelist);
-    void gen_pawn_moves(model::Movelist& movelist);
-    void gen_castle_moves(model::Movelist& movelist);
+    void gen_rook_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
+    void gen_bishop_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
+    void gen_queen_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
+    void gen_knight_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
+    void gen_king_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
+    void gen_pawn_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
+    void gen_castle_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
     
-    bool in_check(std::optional<bool> is_w_override = std::nullopt);
+    bool in_check_from_line_rays();
+    bool in_check();
 
 private:
     const model::Position& pos_;    

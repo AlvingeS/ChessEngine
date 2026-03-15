@@ -3,9 +3,9 @@
 #include "model/position/position.h"
 
 #include "logic/utils.h"
-#include "logic/movegen/check_detection.h"
 #include "logic/masks.h"
 
+#include "logic/movegen/check_detection.h"
 #include "logic/makemove/move_maker.h"
 #include "logic/makemove/move_retractor.h"
 
@@ -26,8 +26,12 @@ CastleGen::CastleGen(
     , check_detection_(check_detection) 
 {}
 
-void CastleGen::generate(model::Movelist& movelist) 
+void CastleGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info) 
 {
+    if (legality_info.in_check()) {
+        return;
+    }
+
     if (pos_.c_rights == 0) {
         return;
     }
@@ -36,16 +40,16 @@ void CastleGen::generate(model::Movelist& movelist)
     // respective castle rights
     if (pos_.is_w) {
         if (pos_.c_rights & masks::W_KSIDE_CASTLE_RIGHTS_MASK)
-            gen_single_castle_move(true, movelist);
+            gen_single_castle_move(true, movelist, legality_info);
 
         if (pos_.c_rights & masks::W_QSIDE_CASTLE_RIGHTS_MASK)
-            gen_single_castle_move(false, movelist);
+            gen_single_castle_move(false, movelist, legality_info);
     } else {
         if (pos_.c_rights & masks::B_KSIDE_CASTLE_RIGHTS_MASK)
-            gen_single_castle_move(true, movelist);
+            gen_single_castle_move(true, movelist, legality_info);
 
         if (pos_.c_rights & masks::B_QSIDE_CASTLE_RIGHTS_MASK)
-            gen_single_castle_move(false, movelist);
+            gen_single_castle_move(false, movelist, legality_info);
     }
 }
 
@@ -76,7 +80,8 @@ void CastleGen::revert_temporary_king_move(bool is_kside)
 
 void CastleGen::gen_single_castle_move(
     bool is_kside,
-    model::Movelist& movelist)
+    model::Movelist& movelist,
+    const LegalityInfo& legality_info)
 {                                                  
     // Check that there are no pieces between the king and rook
     bitmask space_between_castlers_mask = pos_.is_w ? (is_kside ? masks::W_KSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK 
@@ -90,21 +95,7 @@ void CastleGen::gen_single_castle_move(
     // Check that the king and rook are on the correct squares
     if (!king_and_rook_on_castle_squares(is_kside))
         return;
-
-    // Check that we are not currently in check
-    if (check_detection_->in_check())
-        return;
-
-    // Move king one square towards the rook, check that the king is not in check
-    make_temporary_king_move(is_kside);
     
-    if (check_detection_->in_check()) {
-        revert_temporary_king_move(is_kside);
-        return;
-    }
-    
-    revert_temporary_king_move(is_kside);
-
     int move_flag = is_kside ? model::Move::KING_CASTLE_FLAG 
                              : model::Move::QUEEN_CASTLE_FLAG;
 
@@ -112,6 +103,13 @@ void CastleGen::gen_single_castle_move(
 
     sq_idx to_sq   = pos_.is_w ? (is_kside ? constants::W_KSIDE_KING_CASTLE_TO_SQ : constants::W_QSIDE_KING_CASTLE_TO_SQ)
                                : (is_kside ? constants::B_KSIDE_KING_CASTLE_TO_SQ : constants::B_QSIDE_KING_CASTLE_TO_SQ);
+
+    // If the square towards the rook is blocked according to legality_info, then we may now castle
+    // as it would pass us through check
+    int move_offset =   is_kside ? 1 : -1;
+    if (utils::get_bit(legality_info.king_blocked_moves_mask, from_sq + move_offset)) {
+        return;
+    }
 
     movelist.add_move(model::Move(from_sq, to_sq, move_flag));
 }

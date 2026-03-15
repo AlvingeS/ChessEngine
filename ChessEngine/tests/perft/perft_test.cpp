@@ -13,7 +13,7 @@
 
 namespace {
 struct PerftDataRow {
-    long long nodes = 0;
+    std::optional<long long> nodes         = std::nullopt;
     std::optional<long long> captures      = std::nullopt;
     std::optional<long long> ep_captures   = std::nullopt;
     std::optional<long long> castles       = std::nullopt;
@@ -53,6 +53,14 @@ std::vector<TestPosition> build_perft_data()
     TestPosition pos4{"pos4", "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1", 4, 6};
     TestPosition pos5{"pos5", "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8", 4, 5};
     TestPosition pos6{"pos6", "r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10", 4, 9};
+    TestPosition pos_exp{"pos_exp", "8/7p/8/1pbp4/3N4/2P5/Pk3P1P/R3K1R1 w Q - 0 1", 2, 2};
+    TestPosition castle_brings_you_into_check_from_opp_king{"castle_brings_you_into_check_from_opp_king", "8/7p/8/1pbp4/3N4/2P5/Pk3P1P/R3K1R1 w Q - 0 1", 2, 2};
+    TestPosition double_pawn_push_check_ep_capture_blocked_by_pin{"double_pawn_push_check_ep_capture_blocked_by_pin", "8/K7/5p2/5k2/5p2/5Q2/5PPP/8 w - - 3 44", 4, 6};
+    TestPosition block_check_with_promotion{"block_check_with_promotion", "8/8/8/8/8/2QK4/1p6/k7 w - - 36 81", 4, 6};
+    TestPosition pawn_can_both_capture_and_block_to_stop_check{"pawn_can_both_capture_and_block_to_stop_check", "r3k3/5p1p/1R6/3b4/3B4/P2PK2n/5PrP/R7 b q - 2 26", 4, 6};
+    TestPosition pinned_bish_cannot_capture_checker{"pinned_bish_cannot_capture_checker", "4r1k1/1p3p2/5p2/p6P/P4P2/3nB1P1/4K3/3r3b b - - 0 34", 4, 6};
+    TestPosition dont_stop_check_by_jumping_over_king{"dont_stop_check_by_jumping_over_king", "6k1/5pb1/3q2pp/2pP4/8/5K1P/1P1Q1PP1/8 b - - 1 29", 4, 6};
+    TestPosition stop_check_by_ep_capture{"stop_check_by_ep_capture", "6nr/p2Q3p/2rB1p2/1k1N2p1/Pp2P3/8/2P2PPP/R5K1 b - a3 0 25", 4, 6};
 
     // Nodes, captures, ep_captures, castles, promos, checks, disc_checks, double_checks, checkmates
     start_pos.data[0] = {20, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -110,7 +118,15 @@ std::vector<TestPosition> build_perft_data()
         pos3,
         pos4,
         pos5,
-        pos6
+        pos6,
+        pos_exp,
+        castle_brings_you_into_check_from_opp_king,
+        double_pawn_push_check_ep_capture_blocked_by_pin,
+        block_check_with_promotion,
+        pawn_can_both_capture_and_block_to_stop_check,
+        pinned_bish_cannot_capture_checker,
+        dont_stop_check_by_jumping_over_king,
+        stop_check_by_ep_capture,
     };
 }
 
@@ -143,7 +159,7 @@ TEST_P(PerftTest, MatchesExpectedResults)
 
     const bool is_w_copy = perft.get_is_w_copy();
     perft.set_max_depth(depth);
-    perft.minimax(0, 0, true);
+    perft.minimax(0, 0, verbose);
 
     std::unordered_map<model::Move, uint64_t> first_move_counts = perft.get_node_count_per_first_move_map();
     auto sf_results = io::stockfish::compare_first_move_counts_to_stockfish(first_move_counts, stockfish_results, is_w_copy);
@@ -151,37 +167,39 @@ TEST_P(PerftTest, MatchesExpectedResults)
     // If there were any errors, print them and fail the test
     if (sf_results.first) {
         std::cerr << sf_results.second;
-        ASSERT_TRUE(false);
+        EXPECT_TRUE(false);
     }
 
     for (int i = 0; i < depth; i++) {
-        ASSERT_EQ(perft.node_count_[i], test_pos.data[i].nodes);
+        if (test_pos.data[i].nodes.has_value()) {
+            EXPECT_EQ(perft.node_count_[i], test_pos.data[i].nodes);
+        }
 
         if (test_pos.data[i].captures.has_value()) {
-            ASSERT_EQ(perft.capture_count_[i], test_pos.data[i].captures);
+            EXPECT_EQ(perft.capture_count_[i], test_pos.data[i].captures);
         }
 
         if (test_pos.data[i].ep_captures.has_value()) {
-            ASSERT_EQ(perft.ep_capture_count_[i], test_pos.data[i].ep_captures);
+            EXPECT_EQ(perft.ep_capture_count_[i], test_pos.data[i].ep_captures);
         }
 
         if (test_pos.data[i].castles.has_value()) {
-            ASSERT_EQ(perft.casle_count_[i], test_pos.data[i].castles);
+            EXPECT_EQ(perft.casle_count_[i], test_pos.data[i].castles);
         }
 
         if (test_pos.data[i].promos.has_value()) {
-            ASSERT_EQ(perft.promo_count_[i], test_pos.data[i].promos);
+            EXPECT_EQ(perft.promo_count_[i], test_pos.data[i].promos);
         }
         
-        if (test_pos.data[i].checks.has_value()) {
-            ASSERT_EQ(perft.check_count_[i], test_pos.data[i].checks);
+        if (i < depth - 1 && test_pos.data[i].checks.has_value()) {
+            EXPECT_EQ(perft.check_count_[i], test_pos.data[i].checks);
         }
 
         // TODO: Implement disc checks count and assert
         // TODO: Implement double checks count and assert
 
         if (i < depth - 1 && test_pos.data[i].checkmates.has_value()) {
-            ASSERT_EQ(perft.checkmate_count_[i], test_pos.data[i].checkmates);
+            EXPECT_EQ(perft.checkmate_count_[i], test_pos.data[i].checkmates);
         }
     }
 };

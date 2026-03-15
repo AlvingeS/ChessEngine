@@ -4,6 +4,7 @@
 #include "model/move/movelist.h"
 
 #include "logic/attack_tables/attack_tables.h"
+#include "logic/movegen/check_detection.h"
 #include "logic/movegen/containers.h"
 #include "logic/utils.h"
 
@@ -14,8 +15,14 @@ KnightGen::KnightGen(const model::Position& pos)
     , knight_attack_table_(attack_tables::knight)
 {}
 
-void KnightGen::generate(model::Movelist& movelist) 
+void KnightGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info) 
 {
+    if (legality_info.in_double_check()) {
+        return;
+    }
+
+
+
     std::vector<sq_idx>& knight_sqs        = Containers::get_piece_position_idxs();
     std::vector<sq_idx>& quiet_moves_sqs   = Containers::get_leaping_piece_quiet_moves_idxs();
     std::vector<sq_idx>& capture_moves_sqs = Containers::get_leaping_piece_capturable_moves_idxs();
@@ -24,14 +31,22 @@ void KnightGen::generate(model::Movelist& movelist)
                                               : pos_.bbs.get_b_knights_bb());
 
     for (int knight_sq : knight_sqs) {
-        bitmask attack_mask = knight_attack_table_[knight_sq];
+        // A pinned knight cannot move
+        if (utils::get_bit(legality_info.pinned_mask, knight_sq)) {
+            continue;
+        }
 
-        bitmask quiet_moves_mask = attack_mask & pos_.occ_masks.get_free_squares_mask();
+        bitmask legal_moves = knight_attack_table_[knight_sq];
+        if (legality_info.in_check()) {
+            legal_moves &= legality_info.check_response_mask;
+        }
+
+        bitmask quiet_moves_mask = legal_moves & pos_.occ_masks.get_free_squares_mask();
         
         bitmask opp_pieces_mask = pos_.is_w ? pos_.occ_masks.get_b_pieces_mask()
                                             : pos_.occ_masks.get_w_pieces_mask();
         
-        bitmask capture_moves_mask = attack_mask & opp_pieces_mask;
+        bitmask capture_moves_mask = legal_moves & opp_pieces_mask;
 
         utils::get_bit_idxs(quiet_moves_sqs, quiet_moves_mask);
         utils::get_bit_idxs(capture_moves_sqs, capture_moves_mask);

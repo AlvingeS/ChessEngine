@@ -9,17 +9,17 @@ namespace model {
 
 namespace logic {
 
+struct LegalityInfo;
+
 class QueenGen {
 
 public:
     QueenGen(const model::Position& pos);
     
-    void generate(model::Movelist& movelist);
+    void generate(model::Movelist& movelist, const LegalityInfo& legality_info);
 
 private:
     const model::Position& pos_;
-    ray_attack_table& line_ray_attack_table_;
-    ray_attack_table& diag_ray_attack_table_;
 };
 
 } // namespace logic

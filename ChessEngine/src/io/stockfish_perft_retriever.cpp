@@ -304,12 +304,12 @@ std::pair<bool, std::string> compare_first_move_counts_to_stockfish(
 
         auto fount_it = stockfish_results.find(move);
         if (fount_it == stockfish_results.end()) {
-            errors << "Move: " << io::stockfish::move_to_str(move, w_started) << " not found in stockfish results.\n";
+            errors << "Move: (" << move.value() << ") " << io::stockfish::move_to_str(move, w_started) << " not found in stockfish results.\n";
             has_errors = true;
         } else {
             uint64_t stockfishCount = fount_it->second;
             if (count != stockfishCount) {
-                errors << "Move: " << io::stockfish::move_to_str(move, w_started) << " failed. Expected: " << stockfishCount << ", Got: " << count << ".\n";
+                errors << "Move: (" << move.value() << ") " << io::stockfish::move_to_str(move, w_started) << " failed. Expected: " << stockfishCount << ", Got: " << count << ".\n";
                 has_errors = true;
             }
         }

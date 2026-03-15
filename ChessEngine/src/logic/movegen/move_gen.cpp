@@ -1,5 +1,6 @@
 #include "logic/movegen/move_gen.h"
 
+#include "logic/movegen/check_detection.h"
 #include "logic/makemove/move_maker.h"
 #include "logic/makemove/move_retractor.h"
 
@@ -27,56 +28,66 @@ MoveGen::MoveGen(
     , castle_gen_(pos, move_maker, move_retractor, &check_detection_)
 {}
 
-void MoveGen::gen_moves(model::Movelist& movelist)
+LegalityInfo MoveGen::gen_moves(model::Movelist& movelist)
 {
     movelist.reset();
-    gen_rook_moves(movelist);
-    gen_bishop_moves(movelist);
-    gen_queen_moves(movelist);
-    gen_knight_moves(movelist);
-    gen_king_moves(movelist);
-    gen_pawn_moves(movelist);
-    gen_castle_moves(movelist);
+
+    auto legality_info = check_detection_.generate_legality_info();
+
+    gen_rook_moves(movelist, legality_info);
+    gen_bishop_moves(movelist, legality_info);
+    gen_queen_moves(movelist, legality_info);
+    gen_knight_moves(movelist, legality_info);
+    gen_king_moves(movelist, legality_info);
+    gen_pawn_moves(movelist, legality_info);
+    gen_castle_moves(movelist, legality_info);
+
     movelist.add_null_move(); // Add a null move to the end of the move list
+
+    return legality_info;
 }
 
-void MoveGen::gen_rook_moves(model::Movelist& movelist)
+void MoveGen::gen_rook_moves(model::Movelist& movelist, const LegalityInfo& legality_info)
 {
-    rook_gen_.generate(movelist);
+    rook_gen_.generate(movelist, legality_info);
 }
 
-void MoveGen::gen_bishop_moves(model::Movelist& movelist)
+void MoveGen::gen_bishop_moves(model::Movelist& movelist, const LegalityInfo& legality_info)
 {
-    bishop_gen_.generate(movelist);
+    bishop_gen_.generate(movelist, legality_info);
 }
 
-void MoveGen::gen_queen_moves(model::Movelist& movelist)
+void MoveGen::gen_queen_moves(model::Movelist& movelist, const LegalityInfo& legality_info)
 {
-    queen_gen_.generate(movelist);;
+    queen_gen_.generate(movelist, legality_info);;
 }
 
-void MoveGen::gen_knight_moves(model::Movelist& movelist)
+void MoveGen::gen_knight_moves(model::Movelist& movelist, const LegalityInfo& legality_info)
 {
-    knight_gen_.generate(movelist);
+    knight_gen_.generate(movelist, legality_info);
 }
 
-void MoveGen::gen_king_moves(model::Movelist& movelist)
+void MoveGen::gen_king_moves(model::Movelist& movelist, const LegalityInfo& legality_info)
 {
-    king_gen_.generate(movelist);
+    king_gen_.generate(movelist, legality_info);
 }
 
-void MoveGen::gen_pawn_moves(model::Movelist& movelist)
+void MoveGen::gen_pawn_moves(model::Movelist& movelist, const LegalityInfo& legality_info)
 {
-    pawn_gen_.generate(movelist);
+    pawn_gen_.generate(movelist, legality_info);
 }
 
-void MoveGen::gen_castle_moves(model::Movelist& movelist)
+void MoveGen::gen_castle_moves(model::Movelist& movelist, const LegalityInfo& legality_info)
 {
-    castle_gen_.generate(movelist);
+    castle_gen_.generate(movelist, legality_info);
 }
 
-bool MoveGen::in_check(std::optional<bool> is_w_override) {
-    return check_detection_.in_check(is_w_override);
+bool MoveGen::in_check_from_line_rays() {
+    return check_detection_.in_check_from_line_rays();
+}
+
+bool MoveGen::in_check() {
+    return check_detection_.in_check();
 }
 
 } // namespace logic

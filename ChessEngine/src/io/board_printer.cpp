@@ -64,8 +64,8 @@ void BoardPrinter::fill_boards()
 void BoardPrinter::print(std::optional<model::Move> move)
 {
     if (move.has_value()) {
-        int from_col = logic::utils::file_from_sq(move.value().get_from_sq());
-        int from_row = logic::utils::rank_from_sq(move.value().get_from_sq());
+        int from_col = logic::utils::file_from_sq(move.value().from());
+        int from_row = logic::utils::rank_from_sq(move.value().from());
         board_bbs_[from_row][from_col] = '*';
         board_pm_[from_row][from_col]  = '*';
     }
@@ -73,8 +73,8 @@ void BoardPrinter::print(std::optional<model::Move> move)
     int to_row = -1;
     int to_col = -1;
     if (move.has_value()) {
-        to_col = logic::utils::file_from_sq(move.value().get_to_sq());
-        to_row = logic::utils::rank_from_sq(move.value().get_to_sq());
+        to_col = logic::utils::file_from_sq(move.value().to());
+        to_row = logic::utils::rank_from_sq(move.value().to());
     }
 
     for (int row = 7; row >= 0; row--) {  // Start from the top row (row 7) and go downwards.

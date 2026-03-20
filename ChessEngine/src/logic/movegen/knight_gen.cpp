@@ -52,7 +52,7 @@ void KnightGen::generate(model::Movelist& movelist, const LegalityInfo& legality
         utils::get_bit_idxs(capture_moves_sqs, capture_moves_mask);
 
         for (sq_idx to_sq : quiet_moves_sqs) {
-            movelist.add_move(model::Move(knight_sq, to_sq, model::Move::QUITE_FLAG));
+            movelist.add_move(model::Move(knight_sq, to_sq, model::Move::QUIET_FLAG));
         }
 
         for (sq_idx to_sq : capture_moves_sqs) {

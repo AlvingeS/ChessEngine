@@ -5,75 +5,183 @@
 
 namespace model {
 
-class Move {
+struct Move {
 
 public:
-    static const int QUITE_FLAG = 0;
-    static const int CAPTURE_FLAG = 1;
-    static const int EP_CAPTURE_FLAG = 2;
-    static const int KNIGHT_PROMO_CAPTURE_FLAG = 3;
-    static const int BISHOP_PROMO_CAPTURE_FLAG = 4;
-    static const int ROOK_PROMO_CAPTURE_FLAG = 5;
-    static const int QUEEN_PROMO_CAPTURE_FLAG = 6;
-    static const int KNIGHT_PROMO_FLAG = 7;
-    static const int BISHOP_PROMO_FLAG = 8;
-    static const int ROOK_PROMO_FLAG = 9;
-    static const int QUEEN_PROMO_FLAG = 10;
-    static const int TBD_ONE_FLAG = 11;
-    static const int TBD_TWO_FLAG = 12;
-    static const int DOUBLE_PAWN_PUSH_FLAG = 13;
-    static const int KING_CASTLE_FLAG = 14;
-    static const int QUEEN_CASTLE_FLAG = 15;
+    enum Flag : std::uint8_t {
+        QUIET_FLAG                = 0,
+        CAPTURE_FLAG              = 1,
+        EP_CAPTURE_FLAG           = 2,
+        KNIGHT_PROMO_CAPTURE_FLAG = 3,
+        BISHOP_PROMO_CAPTURE_FLAG = 4,
+        ROOK_PROMO_CAPTURE_FLAG   = 5,
+        QUEEN_PROMO_CAPTURE_FLAG  = 6,
+        KNIGHT_PROMO_FLAG         = 7,
+        BISHOP_PROMO_FLAG         = 8,
+        ROOK_PROMO_FLAG           = 9,
+        QUEEN_PROMO_FLAG          = 10,
+        TBD_ONE_FLAG              = 11,
+        TBD_TWO_FLAG              = 12,
+        DOUBLE_PAWN_PUSH_FLAG     = 13,
+        KING_CASTLE_FLAG          = 14,
+        QUEEN_CASTLE_FLAG         = 15
+    };
     
-    Move();
-    Move(sq_idx from_sq, sq_idx to_sq, int flag);
-    Move(const Move& move);
+    using val_t = std::uint16_t;
 
-    int value() const;
-    int get_flag() const;
+    static constexpr int FROM_SHIFT = 0;
+    static constexpr int TO_SHIFT   = 6;
+    static constexpr int FLAG_SHIFT = 12;
+    
+    static constexpr val_t FROM_MASK = 0x3F;
+    static constexpr val_t TO_MASK   = 0x3F;
+    static constexpr val_t FLAG_MASK = 0x0F;
+    
+    val_t val_ = 0;
 
-    void operator=(const Move& move);
-    bool operator==(const Move& move) const;
-    bool operator!=(const Move& move) const;
+    Move() noexcept = default;
 
-    sq_idx get_from_sq() const;
-    sq_idx get_to_sq() const;
-    bool is_quite() const;
-    bool is_double_pawn_push() const;
-    bool is_king_castle() const;
-    bool is_queen_castle() const;
-    bool is_normal_capture() const;
-    bool is_ep_capture() const;
-    bool is_knight_promo() const;
-    bool is_bishop_promo() const;
-    bool is_rook_promo() const;
-    bool is_queen_promo() const;
-    bool is_knight_promo_capture() const;
-    bool is_bishop_promo_capture() const;
-    bool is_rook_promo_capture() const;
-    bool is_queen_promo_capture() const;
-    bool is_any_capture() const;
-    bool is_any_promo() const;
-    bool is_any_promo_capture() const;
-    bool is_any_castle() const;
+    Move(sq_idx from, sq_idx to, int flag) noexcept
+        : val_(
+            ((from & FROM_MASK) << FROM_SHIFT) |
+            ((to   & TO_MASK)   << TO_SHIFT)   |
+            ((flag & FLAG_MASK) << FLAG_SHIFT))
+        {}
 
-private:
-    int move_;
+    [[nodiscard]] constexpr bool operator==(const Move& other) const noexcept
+    {
+        return val_ == other.val_;
+    }
+
+    [[nodiscard]] constexpr bool operator!=(const Move& other) const noexcept
+    {
+        return val_ != other.val_;
+    }
+
+    [[nodiscard]] constexpr val_t value() const noexcept
+    {
+        return val_;
+    }
+
+    [[nodiscard]] constexpr int flag() const noexcept
+    {
+        return (val_ >> FLAG_SHIFT) & FLAG_MASK;
+    }
+
+    [[nodiscard]] constexpr sq_idx from() const noexcept
+    {
+        return (val_ >> FROM_SHIFT) & FROM_MASK;
+    }
+
+    [[nodiscard]] constexpr sq_idx to() const noexcept
+    {
+        return (val_ >> TO_SHIFT) & TO_MASK;
+    }
+
+    [[nodiscard]] constexpr bool is_quiet() const noexcept
+    {
+        return flag() == QUIET_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_double_pawn_push() const noexcept
+    {
+        return flag() == DOUBLE_PAWN_PUSH_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_king_castle() const noexcept
+    {
+        return flag() == KING_CASTLE_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_queen_castle() const noexcept
+    {
+        return flag() == QUEEN_CASTLE_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_normal_capture() const noexcept
+    {
+        return flag() == CAPTURE_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_ep_capture() const noexcept
+    {
+        return flag() == EP_CAPTURE_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_knight_promo() const noexcept
+    {
+        return flag() == KNIGHT_PROMO_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_bishop_promo() const noexcept
+    {
+        return flag() == BISHOP_PROMO_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_rook_promo() const noexcept
+    {
+        return flag() == ROOK_PROMO_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_queen_promo() const noexcept
+    {
+        return flag() == QUEEN_PROMO_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_knight_promo_capture() const noexcept
+    {
+        return flag() == KNIGHT_PROMO_CAPTURE_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_bishop_promo_capture() const noexcept
+    {
+        return flag() == BISHOP_PROMO_CAPTURE_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_rook_promo_capture() const noexcept
+    {
+        return flag() == ROOK_PROMO_CAPTURE_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_queen_promo_capture() const noexcept
+    {
+        return flag() == QUEEN_PROMO_CAPTURE_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_any_capture() const noexcept
+    {
+        const int f = flag();
+        return f >= CAPTURE_FLAG && f <= QUEEN_PROMO_CAPTURE_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_any_promo() const noexcept
+    {
+        const int f = flag();
+        return f >= KNIGHT_PROMO_CAPTURE_FLAG && f <= QUEEN_PROMO_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_any_promo_capture() const noexcept
+    {
+        const int f = flag();
+        return f >= KNIGHT_PROMO_CAPTURE_FLAG && f <= QUEEN_PROMO_CAPTURE_FLAG;
+    }
+
+    [[nodiscard]] constexpr bool is_any_castle() const noexcept
+    {
+        return flag() >= KING_CASTLE_FLAG;
+    }
 };
 
 } // namespace model
 
-#include "model/move/move.inl"
-
-namespace std {
+namespace std
+{
     template <>
-    struct hash<model::Move> {
-        size_t operator()(const model::Move& move) const {
-            size_t h1 = std::hash<int>()(move.get_from_sq());
-            size_t h2 = std::hash<int>()(move.get_to_sq());
-            size_t h3 = std::hash<int>()(move.get_flag());
-
-            return h1 ^ (h2 << 1) ^ (h3 << 2);
+    struct hash<model::Move>
+    {
+        size_t operator()(const model::Move& m) const noexcept
+        {
+            return static_cast<size_t>(m.value());
         }
     };
 }

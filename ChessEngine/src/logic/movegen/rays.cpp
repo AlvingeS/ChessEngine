@@ -39,7 +39,7 @@ void add_moves_from_ray(
 
             //  If we can block it is the only legal move
             if (blocking_move_mask != 0ULL) {
-                movelist.add_move(model::Move(piece_sq, utils::lsb_idx(blocking_move_mask), model::Move::QUITE_FLAG));
+                movelist.add_move(model::Move(piece_sq, utils::lsb_idx(blocking_move_mask), model::Move::QUIET_FLAG));
             }
 
             return;
@@ -47,7 +47,7 @@ void add_moves_from_ray(
     
         // If there are no blockers, add all moves from unhindered ray
         utils::for_each_bit(unhindered_ray, [&](sq_idx to_sq) {
-            movelist.add_move(model::Move(piece_sq, to_sq, model::Move::QUITE_FLAG));
+            movelist.add_move(model::Move(piece_sq, to_sq, model::Move::QUIET_FLAG));
         });
 
         return;
@@ -70,7 +70,7 @@ void add_moves_from_ray(
         
         //  If we can block it is the only legal move
         if (blocking_move_mask != 0ULL) {
-            movelist.add_move(model::Move(piece_sq, utils::lsb_idx(blocking_move_mask), model::Move::QUITE_FLAG));
+            movelist.add_move(model::Move(piece_sq, utils::lsb_idx(blocking_move_mask), model::Move::QUIET_FLAG));
             return;
         }
         
@@ -86,7 +86,7 @@ void add_moves_from_ray(
     }  else {
         // Add all moves upp until blocker
         utils::for_each_bit(ray_between_piece_and_first_blocker, [&](sq_idx to_sq) {
-            movelist.add_move(model::Move(piece_sq, to_sq, model::Move::QUITE_FLAG));
+            movelist.add_move(model::Move(piece_sq, to_sq, model::Move::QUIET_FLAG));
         });
     
         // If the blocker is an opponent and pin-ray has not zeroed it, capture it

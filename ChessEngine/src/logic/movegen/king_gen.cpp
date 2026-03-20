@@ -38,7 +38,7 @@ void KingGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
     utils::get_bit_idxs(capturable_moves_sqs, capture_moves_mask);
 
     for (sq_idx to_sq : quiet_moves_sqs) {
-        movelist.add_move(model::Move(king_sq_idx, to_sq, model::Move::QUITE_FLAG));
+        movelist.add_move(model::Move(king_sq_idx, to_sq, model::Move::QUIET_FLAG));
     }
 
     for (sq_idx to_sq : capturable_moves_sqs) {

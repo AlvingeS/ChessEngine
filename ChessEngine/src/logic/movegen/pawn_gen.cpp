@@ -114,7 +114,7 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
                         movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::BISHOP_PROMO_FLAG));
                         movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::KNIGHT_PROMO_FLAG));
                     } else {
-                        movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::QUITE_FLAG));
+                        movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::QUIET_FLAG));
                     }
                 }
             }
@@ -131,7 +131,7 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
             int single_step_idx = (pos_.is_w ? 0 : 1);
             int double_step_idx = (pos_.is_w ? 1 : 0);
             
-            movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[single_step_idx], model::Move::QUITE_FLAG));
+            movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[single_step_idx], model::Move::QUIET_FLAG));
             movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[double_step_idx], model::Move::DOUBLE_PAWN_PUSH_FLAG));
 
         } else if (quiet_moves_idxs.size() == 1 && quiet_moves_idxs[0] == pawn_sq + offset) {
@@ -143,7 +143,7 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
                 movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[0], model::Move::QUEEN_PROMO_FLAG));
             
             } else {
-                movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[0], model::Move::QUITE_FLAG));
+                movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[0], model::Move::QUIET_FLAG));
             }
         }
 

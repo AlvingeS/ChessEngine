@@ -38,8 +38,8 @@ UndoInfo MoveMaker::make_move(const model::Move& move)
     }
 
     // Get the from and to idxs
-    sq_idx from_sq = move.get_from_sq();
-    sq_idx to_sq   = move.get_to_sq();
+    sq_idx from_sq = move.from();
+    sq_idx to_sq   = move.to();
 
     // Pick up the piece from the from square and get the moved piece type
     model::Piece::Type moved_piece_type = remove_moved_piece_from_board(from_sq);
@@ -57,7 +57,7 @@ UndoInfo MoveMaker::make_move(const model::Move& move)
 
     // Update the moved piece type if the move is a promotion    
     if (move.is_any_promo())
-        moved_piece_type = utils::get_promotion_piece_type(move.get_flag(), pos_.is_w);
+        moved_piece_type = utils::get_promotion_piece_type(move.flag(), pos_.is_w);
 
     undo_info.moved_piece_type = moved_piece_type;
 
@@ -94,8 +94,8 @@ void MoveMaker::update_ep_target_mask(const model::Move& move)
     if (!move.is_double_pawn_push()) {
         pos_.ep_target_mask = 0ULL;
     } else {
-        pos_.ep_target_mask = pos_.is_w ? (1ULL << (move.get_to_sq() - 8)) 
-                                        : (1ULL << (move.get_to_sq() + 8));
+        pos_.ep_target_mask = pos_.is_w ? (1ULL << (move.to() - 8)) 
+                                        : (1ULL << (move.to() + 8));
     }
 
     // XOR in new ep mask
@@ -138,21 +138,21 @@ void MoveMaker::update_castle_rights(const model::Move& move, UndoInfo& undo_inf
         
         // If the the players king or any of the rooks was not moved or an opponent rook has not been taken
         // there is nothing to do. 
-        bool rook_moved = (move.get_from_sq() == constants::W_KSIDE_ROOK_START_SQ 
-                        || move.get_from_sq() == constants::W_QSIDE_ROOK_START_SQ)
+        bool rook_moved = (move.from() == constants::W_KSIDE_ROOK_START_SQ 
+                        || move.from() == constants::W_QSIDE_ROOK_START_SQ)
                         && undo_info.moved_piece_type == model::Piece::Type::W_ROOK;
 
         bool opp_rook_captured = move.is_any_capture() 
                               && undo_info.captured_piece_type == model::Piece::Type::B_ROOK
-                              && (move.get_to_sq() == constants::B_KSIDE_ROOK_START_SQ 
-                              ||  move.get_to_sq() == constants::B_QSIDE_ROOK_START_SQ); 
+                              && (move.to() == constants::B_KSIDE_ROOK_START_SQ 
+                              ||  move.to() == constants::B_QSIDE_ROOK_START_SQ); 
 
 
         if (!rook_moved && !opp_rook_captured)
             return;
 
         if (rook_moved) {
-            if (move.get_from_sq() == constants::W_KSIDE_ROOK_START_SQ) {
+            if (move.from() == constants::W_KSIDE_ROOK_START_SQ) {
                 pos_.c_rights &= ~masks::W_KSIDE_CASTLE_RIGHTS_MASK; // If move was made from kside, remove kside c_rights
             } else {
                 pos_.c_rights &= ~masks::W_QSIDE_CASTLE_RIGHTS_MASK; // Else, move was made from qside, remove qside c_rights
@@ -160,7 +160,7 @@ void MoveMaker::update_castle_rights(const model::Move& move, UndoInfo& undo_inf
         }
 
         if (opp_rook_captured) {
-            if (move.get_to_sq() == constants::B_KSIDE_ROOK_START_SQ) {
+            if (move.to() == constants::B_KSIDE_ROOK_START_SQ) {
                 pos_.c_rights &= ~masks::B_KSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on kside, remove opp kside c_rights
             } else {
                 pos_.c_rights &= ~masks::B_QSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on qside, remove opp qside c_rights
@@ -176,21 +176,21 @@ void MoveMaker::update_castle_rights(const model::Move& move, UndoInfo& undo_inf
         
         // If the the players king or any of the rooks was not moved or an opponent rook has not been taken
         // there is nothing to do. 
-        bool rook_moved = (move.get_from_sq() == constants::B_KSIDE_ROOK_START_SQ 
-                        || move.get_from_sq() == constants::B_QSIDE_ROOK_START_SQ)
+        bool rook_moved = (move.from() == constants::B_KSIDE_ROOK_START_SQ 
+                        || move.from() == constants::B_QSIDE_ROOK_START_SQ)
                         && undo_info.moved_piece_type == model::Piece::Type::B_ROOK;
 
         bool opp_rook_captured = move.is_any_capture() 
                               && undo_info.captured_piece_type == model::Piece::Type::W_ROOK
-                              && (move.get_to_sq() == constants::W_KSIDE_ROOK_START_SQ 
-                              ||  move.get_to_sq() == constants::W_QSIDE_ROOK_START_SQ); 
+                              && (move.to() == constants::W_KSIDE_ROOK_START_SQ 
+                              ||  move.to() == constants::W_QSIDE_ROOK_START_SQ); 
 
 
         if (!rook_moved && !opp_rook_captured)
             return;
 
         if (rook_moved) {
-            if (move.get_from_sq() == constants::B_KSIDE_ROOK_START_SQ) {
+            if (move.from() == constants::B_KSIDE_ROOK_START_SQ) {
                 pos_.c_rights &= ~masks::B_KSIDE_CASTLE_RIGHTS_MASK; // If move was made from kside, remove kside c_rights
             } else {
                 pos_.c_rights &= ~masks::B_QSIDE_CASTLE_RIGHTS_MASK; // Else, move was made from qside, remove qside c_rights
@@ -198,7 +198,7 @@ void MoveMaker::update_castle_rights(const model::Move& move, UndoInfo& undo_inf
         }
 
         if (opp_rook_captured) {
-            if (move.get_to_sq() == constants::W_KSIDE_ROOK_START_SQ) {
+            if (move.to() == constants::W_KSIDE_ROOK_START_SQ) {
                 pos_.c_rights &= ~masks::W_KSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on kside, remove opp kside c_rights
             } else {
                 pos_.c_rights &= ~masks::W_QSIDE_CASTLE_RIGHTS_MASK; // If rook captured is on qside, remove opp qside c_rights

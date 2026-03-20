@@ -147,7 +147,7 @@ model::Move notation_to_move(const std::string& notation, const model::PieceMap 
     if (is_capture)
         return model::Move(from_sq, to_sq, model::Move::CAPTURE_FLAG);
     
-    return model::Move(from_sq, to_sq, model::Move::QUITE_FLAG);
+    return model::Move(from_sq, to_sq, model::Move::QUIET_FLAG);
 }
 
 std::unordered_map<model::Move, uint64_t> parse_output_into_map(std::string stockfish_output, const model::PieceMap pm)
@@ -238,8 +238,8 @@ std::string move_to_str(model::Move move, bool w_started)
                                     : (w_started ? "e1c1" : "e8c8");
     }
     
-    int from = move.get_from_sq();
-    int to = move.get_to_sq();
+    int from = move.from();
+    int to = move.to();
     
     int from_row = from / 8;
     int from_col = from % 8;
@@ -257,7 +257,7 @@ std::string move_to_str(model::Move move, bool w_started)
     move_str += std::to_string(to_row + 1);
 
     if (move.is_any_promo()) {
-        switch (move.get_flag()) {
+        switch (move.flag()) {
             case model::Move::KNIGHT_PROMO_FLAG:
                 move_str += (w_started) ? "n" : "N";
                 break;

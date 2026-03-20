@@ -52,9 +52,9 @@ inline int abs(int n) {
 
 inline int determine_capture_sq(const model::Move& move, bool is_w)
 {
-    return move.is_ep_capture() ? is_w ? move.get_to_sq() - 8 
-                                       : move.get_to_sq() + 8 
-                                : move.get_to_sq();
+    return move.is_ep_capture() ? is_w ? move.to() - 8 
+                                       : move.to() + 8 
+                                : move.to();
 }
 
 template<typename Func>

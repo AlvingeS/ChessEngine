@@ -97,7 +97,7 @@ void MoveRetractor::remove_previously_moved_piece_from_board(
     if (not move.is_any_promo()) {
         pos_.bbs.clear_piece_type_bit(to_sq, previously_moved_piece_type);
     } else {
-        model::Piece::Type promotionPieceType = utils::get_promotion_piece_type(move.get_flag(), was_white);
+        model::Piece::Type promotionPieceType = utils::get_promotion_piece_type(move.flag(), was_white);
         pos_.bbs.clear_piece_type_bit(to_sq, promotionPieceType);
     }
 
@@ -181,8 +181,8 @@ void MoveRetractor::unmake_move(
     // Get the from and to idxs
     // Things get a bit tricky here because the move is being unmade, and so
     // we are "moving to" the from square and "moving from" the to square
-    sq_idx from_sq = previous_move.get_from_sq();
-    sq_idx to_sq   = previous_move.get_to_sq();
+    sq_idx from_sq = previous_move.from();
+    sq_idx to_sq   = previous_move.to();
 
     // Determine the piece type of the piece that was previously moved,
     // takes into consideration if the move was a promotion

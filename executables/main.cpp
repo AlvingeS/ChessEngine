@@ -74,6 +74,12 @@ int main()
 
             Done with major refactoring into model/logic/engine/io
             0.426s ~ 16.21 nodes/s ~ 6.5% SF
+
+            Using work computer, bunch of shit just picking this up again now
+            0.358 ~ 18.14M nodes/s ~ 7.2% SF
+
+            Reworked movegen, now only produce legal moves but test castle and ep instead of all for check
+            0.245s ~ 26.38M nodes/s ~ 10.5% SF
     */
 
     // Start clock

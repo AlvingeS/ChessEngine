@@ -4,7 +4,6 @@
 #include "model/move/movelist.h"
 
 #include "logic/attack_tables/attack_tables.h"
-#include "logic/movegen/containers.h"
 #include "logic/movegen/check_detection.h"
 #include "logic/utils.h"
 #include "logic/utils.h"
@@ -25,14 +24,11 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
         return;
     }
 
-    std::vector<sq_idx>& pawn_sqs              = Containers::get_piece_position_idxs();
-    std::vector<sq_idx>& quiet_moves_idxs      = Containers::get_leaping_piece_quiet_moves_idxs();
-    std::vector<sq_idx>& capture_moves_sq_idxs = Containers::get_leaping_piece_capturable_moves_idxs();
+    bitboard pawns_bb = pos_.is_w ? pos_.bbs.get_w_pawns_bb()
+                                  : pos_.bbs.get_b_pawns_bb();
 
-    utils::get_bit_idxs(pawn_sqs, pos_.is_w ? pos_.bbs.get_w_pawns_bb()
-                                            : pos_.bbs.get_b_pawns_bb());
 
-    for (int pawn_sq : pawn_sqs) {
+    utils::controlled_for_each_bit(pawns_bb, [&](sq_idx pawn_sq) {
         bitmask attack_mask_straight = pos_.is_w ? w_pawn_quiet_attack_table_[pawn_sq]
                                                  : b_pawn_quiet_attack_table_[pawn_sq];
 
@@ -119,35 +115,34 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
                 }
             }
 
-            continue;
+            return LoopControl::Continue;
         }
-
-        utils::get_bit_idxs(quiet_moves_idxs, quiet_moves_mask);
-        utils::get_bit_idxs(capture_moves_sq_idxs, capture_moves_mask);
-
+        
         int offset = pos_.is_w ? 8 : -8;
 
-        if (quiet_moves_idxs.size() == 2) {
-            int single_step_idx = (pos_.is_w ? 0 : 1);
-            int double_step_idx = (pos_.is_w ? 1 : 0);
-            
-            movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[single_step_idx], model::Move::QUIET_FLAG));
-            movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[double_step_idx], model::Move::DOUBLE_PAWN_PUSH_FLAG));
-
-        } else if (quiet_moves_idxs.size() == 1 && quiet_moves_idxs[0] == pawn_sq + offset) {
+        if (utils::pop_count(quiet_moves_mask) == 2) {
+            if (pos_.is_w) {
+                movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(quiet_moves_mask), model::Move::QUIET_FLAG));
+                movelist.add_move(model::Move(pawn_sq, utils::msb_idx(quiet_moves_mask), model::Move::DOUBLE_PAWN_PUSH_FLAG));
+            } else {
+                movelist.add_move(model::Move(pawn_sq, utils::msb_idx(quiet_moves_mask), model::Move::QUIET_FLAG));
+                movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(quiet_moves_mask), model::Move::DOUBLE_PAWN_PUSH_FLAG));                
+            }
+        } else if (utils::pop_count(quiet_moves_mask) == 1 && utils::lsb_idx(quiet_moves_mask) == pawn_sq + offset) {
+            sq_idx to_sq = pawn_sq + offset;
             // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces
             if (can_promote) {
-                movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[0], model::Move::KNIGHT_PROMO_FLAG));
-                movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[0], model::Move::BISHOP_PROMO_FLAG));
-                movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[0], model::Move::ROOK_PROMO_FLAG));
-                movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[0], model::Move::QUEEN_PROMO_FLAG));
+                movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::KNIGHT_PROMO_FLAG));
+                movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::BISHOP_PROMO_FLAG));
+                movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::ROOK_PROMO_FLAG));
+                movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::QUEEN_PROMO_FLAG));
             
             } else {
-                movelist.add_move(model::Move(pawn_sq, quiet_moves_idxs[0], model::Move::QUIET_FLAG));
+                movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::QUIET_FLAG));
             }
         }
 
-        for (sq_idx to_sq : capture_moves_sq_idxs) {
+        utils::for_each_bit(capture_moves_mask, [&](sq_idx to_sq) {
             if (can_promote) {
                 movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::QUEEN_PROMO_CAPTURE_FLAG));
                 movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::ROOK_PROMO_CAPTURE_FLAG));
@@ -156,12 +151,14 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
             } else {
                 movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::CAPTURE_FLAG));
             }
-        }
-
+        });
+        
         if ((attack_mask_diag & pos_.ep_target_mask) != 0) {
             movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(attack_mask_diag & pos_.ep_target_mask), model::Move::EP_CAPTURE_FLAG));
         }
-    }
+
+        return LoopControl::Continue;
+    });
 }
 
 } // namespace logic

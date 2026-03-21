@@ -3,7 +3,6 @@
 #include "model/position/position.h"
 
 #include "logic/movegen/rays.h"
-#include "logic/movegen/containers.h"
 #include "logic/movegen/check_detection.h"
 #include "logic/utils.h"
 #include "logic/utils.h"

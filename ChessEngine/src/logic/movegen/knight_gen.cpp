@@ -5,7 +5,6 @@
 
 #include "logic/attack_tables/attack_tables.h"
 #include "logic/movegen/check_detection.h"
-#include "logic/movegen/containers.h"
 #include "logic/utils.h"
 
 namespace logic {
@@ -21,44 +20,37 @@ void KnightGen::generate(model::Movelist& movelist, const LegalityInfo& legality
         return;
     }
 
+    bitboard knights_bb = pos_.is_w ? pos_.bbs.get_w_knights_bb()
+                                    : pos_.bbs.get_b_knights_bb();
 
-
-    std::vector<sq_idx>& knight_sqs        = Containers::get_piece_position_idxs();
-    std::vector<sq_idx>& quiet_moves_sqs   = Containers::get_leaping_piece_quiet_moves_idxs();
-    std::vector<sq_idx>& capture_moves_sqs = Containers::get_leaping_piece_capturable_moves_idxs();
-
-    utils::get_bit_idxs(knight_sqs, pos_.is_w ? pos_.bbs.get_w_knights_bb()
-                                              : pos_.bbs.get_b_knights_bb());
-
-    for (int knight_sq : knight_sqs) {
+    utils::controlled_for_each_bit(knights_bb, [&](sq_idx knight_sq)  {
         // A pinned knight cannot move
         if (utils::get_bit(legality_info.pinned_mask, knight_sq)) {
-            continue;
+            return LoopControl::Continue;
         }
-
+    
         bitmask legal_moves = knight_attack_table_[knight_sq];
         if (legality_info.in_check()) {
             legal_moves &= legality_info.check_response_mask;
         }
-
+    
         bitmask quiet_moves_mask = legal_moves & pos_.occ_masks.get_free_squares_mask();
         
         bitmask opp_pieces_mask = pos_.is_w ? pos_.occ_masks.get_b_pieces_mask()
                                             : pos_.occ_masks.get_w_pieces_mask();
         
         bitmask capture_moves_mask = legal_moves & opp_pieces_mask;
-
-        utils::get_bit_idxs(quiet_moves_sqs, quiet_moves_mask);
-        utils::get_bit_idxs(capture_moves_sqs, capture_moves_mask);
-
-        for (sq_idx to_sq : quiet_moves_sqs) {
+    
+        utils::for_each_bit(quiet_moves_mask, [&](sq_idx to_sq) {
             movelist.add_move(model::Move(knight_sq, to_sq, model::Move::QUIET_FLAG));
-        }
+        });
 
-        for (sq_idx to_sq : capture_moves_sqs) {
+        utils::for_each_bit(capture_moves_mask, [&](sq_idx to_sq) {
             movelist.add_move(model::Move(knight_sq, to_sq, model::Move::CAPTURE_FLAG));
-        }
-    }
+        });
+
+        return LoopControl::Continue;
+    });
 }
 
 } // namespace logic

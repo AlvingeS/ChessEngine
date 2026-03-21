@@ -23,3 +23,8 @@ enum Direction {
     NW    = 7,
     COUNT = 8
 };
+
+enum class LoopControl {
+    Continue,
+    Break
+};

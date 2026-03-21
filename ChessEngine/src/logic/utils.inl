@@ -58,9 +58,22 @@ inline int determine_capture_sq(const model::Move& move, bool is_w)
 }
 
 template<typename Func>
+inline void controlled_for_each_bit(bitmask mask, Func f) {
+    while (mask) {
+        auto sq = lsb_idx(mask);
+
+        if (f(sq) == LoopControl::Break)
+            return;
+
+        mask &= mask - 1;
+    }
+}
+
+template<typename Func>
 inline void for_each_bit(bitmask mask, Func f) {
     while (mask) {
-        f(lsb_idx(mask));
+        auto sq = lsb_idx(mask);
+        f(sq);
         mask &= mask - 1;
     }
 }

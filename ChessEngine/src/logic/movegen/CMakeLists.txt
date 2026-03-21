@@ -9,7 +9,6 @@ add_library(movegen
     castle_gen.cpp
     rays.cpp
     check_detection.cpp
-    containers.cpp
 )
 
 target_link_libraries(movegen PUBLIC move position logic_utils attack_tables perft cxx_setup) # TODO: Remove dependency to perft!!!

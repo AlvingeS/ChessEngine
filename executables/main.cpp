@@ -3,7 +3,6 @@
 // #include "engine/perft/perft.h"
 #include "io/board_printer.h"
 #include "logic/utils.h"
-#include "logic/movegen/containers.h"
 
 #include <iostream>
 #include <chrono>
@@ -85,7 +84,6 @@ int main()
     // Start clock
     auto start = std::chrono::high_resolution_clock::now();
 
-    logic::Containers::init();
     logic::attack_tables::init_attack_tables();
 
     int const MAX_DEPTH = 4;

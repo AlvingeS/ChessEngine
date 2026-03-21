@@ -4,7 +4,6 @@
 #include "model/move/move.h"
 
 #include "logic/attack_tables/attack_tables.h"
-#include "logic/movegen/containers.h"
 #include "logic/movegen/check_detection.h"
 #include "logic/utils.h"
 #include "logic/utils.h"

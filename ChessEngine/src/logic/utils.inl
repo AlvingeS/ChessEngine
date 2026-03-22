@@ -46,10 +46,6 @@ inline int file_from_sq(sq_idx sq)
     return sq % 8;
 }
 
-inline int abs(int n) {
-    return (n < 0) ? -n : n;
-}
-
 inline int determine_capture_sq(const model::Move& move, bool is_w)
 {
     return move.is_ep_capture() ? is_w ? move.to() - 8 

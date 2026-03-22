@@ -9,6 +9,5 @@ namespace io::utils
 {
 
 sq_idx sq_from_notation(const std::string& notation);
-model::Piece::Type piece_type_from_promo_notation(const char notation);
 
 } // namespace utils

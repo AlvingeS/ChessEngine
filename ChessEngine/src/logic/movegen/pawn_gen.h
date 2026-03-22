@@ -20,10 +20,6 @@ public:
 
 private:
     const model::Position& pos_;
-    attack_table& w_pawn_quiet_attack_table_;
-    attack_table& w_pawn_capture_attack_table_;
-    attack_table& b_pawn_quiet_attack_table_;
-    attack_table& b_pawn_capture_attack_table_;
 };
 
 } // namespace logic

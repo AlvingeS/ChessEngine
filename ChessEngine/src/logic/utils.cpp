@@ -3,19 +3,6 @@
 namespace logic::utils 
 {
 
-void get_bit_idxs(std::vector<int>& idxs, bitboard bb)
-{ 
-    idxs.clear();
-
-    while (bb != 0) {
-        int idx = __builtin_ctzll(bb);
-
-        idxs.push_back(idx);
-
-        bb &= (bb - 1);
-    }
-}
-
 model::Piece::Type get_promotion_piece_type(int promo_flag, bool is_w) 
 {
     switch(promo_flag) {

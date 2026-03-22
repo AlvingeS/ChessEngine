@@ -13,27 +13,6 @@ BoardPrinter::BoardPrinter(const model::Position& pos)
     fill_boards();
 }
 
-bool BoardPrinter::is_valid_piece(model::Piece::Type piece_type) 
-{
-    switch(piece_type) {
-        case model::Piece::Type::W_PAWN:
-        case model::Piece::Type::W_KNIGHT:
-        case model::Piece::Type::W_BISHOP:
-        case model::Piece::Type::W_ROOK:
-        case model::Piece::Type::W_QUEEN:
-        case model::Piece::Type::W_KING:
-        case model::Piece::Type::B_PAWN:
-        case model::Piece::Type::B_KNIGHT:
-        case model::Piece::Type::B_BISHOP:
-        case model::Piece::Type::B_ROOK:
-        case model::Piece::Type::B_QUEEN:
-        case model::Piece::Type::B_KING:
-            return true;
-        default:
-            return false;
-    }
-}
-
 void BoardPrinter::fill_boards() 
 {
     board_bbs_ = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));

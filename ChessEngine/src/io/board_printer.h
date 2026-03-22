@@ -22,7 +22,6 @@ public:
     
 private:
     void fill_boards();
-    bool is_valid_piece(model::Piece::Type piece_type);
     
     const model::Position& pos_;
     std::vector<std::vector<char>> board_bbs_;

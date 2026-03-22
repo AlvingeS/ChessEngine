@@ -21,8 +21,6 @@ Perft::Perft(int max_depth)
     , eval_(logic::Eval(pos_))
     , max_depth_(max_depth)
 {
-    total_nodes_ = 0;
-    
     node_count_per_first_move_.resize(constants::MAX_LEGAL_MOVES);
     first_moves_.resize(constants::MAX_LEGAL_MOVES);
 
@@ -67,8 +65,6 @@ long long Perft::sum_nodes_to_depth(int depth) const {
 }
 
 void Perft::reset_stats() {
-    total_nodes_ = 0;
-    
     for (int i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
         node_count_per_first_move_[i] = 0;
         first_moves_[i] = model::Move();
@@ -86,15 +82,15 @@ void Perft::reset_stats() {
 }
 
 void Perft::reset_stacks() {
-    for (int i = 0; i < move_lists_.size(); i++) {
+    for (long long i = 0; i < static_cast<long long>(move_lists_.size()); i++) {
         move_lists_[i] = model::Movelist();
     }
 
-    for (int i = 0; i < undo_stack_.size(); i++) {
+    for (long long i = 0; i < static_cast<long long>(undo_stack_.size()); i++) {
         undo_stack_[i] = logic::UndoInfo();
     }
 
-    for (int i = 0; i < no_captures_or_pawn_moves_counts_.size(); i++) {
+    for (long long i = 0; i < static_cast<long long>(no_captures_or_pawn_moves_counts_.size()); i++) {
         no_captures_or_pawn_moves_counts_[i] = 0;
     }
 }

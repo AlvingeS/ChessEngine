@@ -68,16 +68,6 @@ bool CastleGen::king_and_rook_on_castle_squares(bool is_kside) const
                                  : (pos_.bbs.get_b_rooks_bb() & (1ULL << constants::B_QSIDE_ROOK_START_SQ)) != 0);
 }
 
-void CastleGen::make_temporary_king_move(bool is_kside)
-{
-    move_maker_.make_temporary_king_move(is_kside);
-}
-
-void CastleGen::revert_temporary_king_move(bool is_kside)
-{
-    move_retractor_.revert_temporary_king_move(is_kside);
-}
-
 void CastleGen::gen_single_castle_move(
     bool is_kside,
     model::Movelist& movelist,

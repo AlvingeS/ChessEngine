@@ -36,9 +36,6 @@ public:
         const model::Move& current_move
     );
     
-    int num_move_gen_calls_;
-    int total_nodes_;
-
     long long sum_nodes_to_depth(int depth) const;
     std::vector<long long> node_count_per_first_move_;
     std::vector<model::Move> first_moves_;
@@ -50,18 +47,6 @@ public:
     std::vector<long long> check_count_;
     std::vector<long long> double_check_count_;
     std::vector<long long> checkmate_count_;
-
-    void debug_print(bool verbose) const;
-    
-    bool check_condition(
-        int current_depth,
-        bool is_maximizer, 
-        int first_move_idx, 
-        model::Move current_move, 
-        model::Move last_move, 
-        bool verbose, 
-        size_t i
-    ) const;
 
     inline model::PieceMap get_piece_map_copy()
     {
@@ -82,19 +67,9 @@ public:
         return max_depth_;
     }
 
-    const logic::MoveGen& get_move_generator() const
-    {
-        return move_generator_;
-    }
-
     void set_pos_from_fen(const std::string& fen)
     {
         io::fen::set_pos_from_fen(fen, pos_);
-    }
-
-    bool diff_between_occupancy_masks() const
-    {
-        return (pos_.occ_masks.get_b_pieces_mask() | pos_.occ_masks.get_w_pieces_mask()) != pos_.occ_masks.get_occupied_squares_mask();
     }
 
     model::Position& get_pos() {

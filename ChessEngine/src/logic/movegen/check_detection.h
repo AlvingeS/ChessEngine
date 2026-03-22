@@ -46,7 +46,6 @@ class CheckDetection {
 public:
     CheckDetection(const model::Position& pos);
     LegalityInfo generate_legality_info() const;
-    bool in_check_from_line_rays() const;
     bool in_check() const;
     
 private:

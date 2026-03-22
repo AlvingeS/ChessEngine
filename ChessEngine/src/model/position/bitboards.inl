@@ -1,10 +1,5 @@
 namespace model {
 
-inline const bitboard& Bitboards::get_bb_from_piece_type(Piece::Type piece_type) const 
-{
-    return *(bbs_[Piece::get_int_from_type(piece_type)]);
-}
-
 inline const bitboard& Bitboards::get_bb_from_idx(int idx) const 
 {
     return *(bbs_[idx]);

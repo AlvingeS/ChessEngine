@@ -268,26 +268,6 @@ void MoveMaker::make_castle_move(bool is_kside)
     pos_.occ_masks.update_occupancy_masks();
 }
 
-void MoveMaker::make_temporary_king_move(bool is_kside)
-{
-    sq_idx from_sq = pos_.is_w ? constants::W_KING_START_SQ : constants::B_KING_START_SQ;
-    
-    // This only moves ONE square and not the actual castle move to check for rays between king and rook
-    sq_idx to_sq   = pos_.is_w ? (is_kside ? constants::W_KING_START_SQ + 1 
-                                           : constants::W_KING_START_SQ - 1)
-                               : (is_kside ? constants::B_KING_START_SQ + 1 
-                                           : constants::B_KING_START_SQ - 1);
-
-    if (pos_.is_w) {
-        pos_.bbs.clear_w_king_bit(from_sq);
-        pos_.bbs.set_w_king_bit(to_sq);
-    } else {
-        pos_.bbs.clear_b_king_bit(from_sq);
-        pos_.bbs.set_b_king_bit(to_sq);
-    }
-}
-
-
 model::Piece::Type MoveMaker::remove_moved_piece_from_board(sq_idx from_sq) 
 {
     // Determine the piece type of the piece being moved

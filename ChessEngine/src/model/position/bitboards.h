@@ -12,7 +12,6 @@ class Bitboards {
 public:
     Bitboards();
 
-    const bitboard& get_bb_from_piece_type(Piece::Type piece_type) const;
     const bitboard& get_bb_from_idx(int idx) const;
     
     void clear_piece_type_bit(sq_idx sq, Piece::Type piece_type);

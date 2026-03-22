@@ -24,21 +24,4 @@ sq_idx sq_from_notation(const std::string& notation)
     return 8 * row_idx + file_idx;
 }
 
-model::Piece::Type piece_type_from_promo_notation(const char notation)
-{
-    switch (notation)
-    {
-    case 'Q': return model::Piece::Type::W_QUEEN;
-    case 'R': return model::Piece::Type::W_ROOK;
-    case 'B': return model::Piece::Type::W_BISHOP;
-    case 'N': return model::Piece::Type::W_KNIGHT;
-    case 'q': return model::Piece::Type::B_QUEEN;
-    case 'r': return model::Piece::Type::B_ROOK;
-    case 'b': return model::Piece::Type::B_BISHOP;
-    case 'n': return model::Piece::Type::B_KNIGHT;    
-    default:  return model::Piece::Type::ERROR;
-    }
-}
-
-
 } // namespace utils

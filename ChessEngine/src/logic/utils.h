@@ -16,16 +16,13 @@ void set_bit(bitmask& mask, sq_idx i);
 bool get_bit(bitmask mask, sq_idx i);
 int lsb_idx(bitmask mask); 
 int msb_idx(bitmask mask);
-void get_bit_idxs(std::vector<int>& idxs, bitboard bb);
 int pop_count(bitmask mask);
-void print_bitmask_in_bits(bitmask mask);   
 
 // Old logic::chess_utils
 bitmask get_file_mask(int file);
 bitmask get_rank_mask(int rank);
 int rank_from_sq(sq_idx sq);
 int file_from_sq(sq_idx sq);
-int abs(int n);
 
 // Old logic::move_utils
 model::Piece::Type get_promotion_piece_type(int promotionFlag, bool is_w);

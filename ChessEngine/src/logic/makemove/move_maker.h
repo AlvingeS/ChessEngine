@@ -18,11 +18,8 @@ class MoveMaker {
 
 public:
     MoveMaker(model::Position& pos, ZHasher& z_hasher);
-    
     UndoInfo make_move(const model::Move& move);
     
-    void make_temporary_king_move(bool is_kside);
-
 private:
     void update_ep_target_mask(const model::Move& move);
     void update_castle_rights(const model::Move& move, UndoInfo& undo_info);

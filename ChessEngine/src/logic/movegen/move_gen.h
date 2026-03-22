@@ -39,8 +39,6 @@ public:
     void gen_king_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
     void gen_pawn_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
     void gen_castle_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
-    
-    bool in_check_from_line_rays();
     bool in_check();
 
 private:

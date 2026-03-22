@@ -64,24 +64,6 @@ void MoveRetractor::unmake_castle_move(bool was_kside)
     pos_.occ_masks.update_occupancy_masks();
 }
 
-void MoveRetractor::revert_temporary_king_move(bool is_kside) 
-{
-    sq_idx to_sq = pos_.is_w   ? (is_kside ? constants::W_KING_START_SQ + 1 
-                                           : constants::W_KING_START_SQ - 1)
-                               : (is_kside ? constants::B_KING_START_SQ + 1 
-                                           : constants::B_KING_START_SQ - 1);
-            
-    sq_idx from_sq = pos_.is_w ? constants::W_KING_START_SQ : constants::B_KING_START_SQ;
-
-    if (pos_.is_w) {
-        pos_.bbs.clear_w_king_bit(to_sq);
-        pos_.bbs.set_w_king_bit(from_sq);
-    } else {
-        pos_.bbs.clear_b_king_bit(to_sq);
-        pos_.bbs.set_b_king_bit(from_sq);
-    }
-}
-
 void MoveRetractor::remove_previously_moved_piece_from_board(
     const model::Move& move,
     sq_idx to_sq,

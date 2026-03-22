@@ -277,46 +277,6 @@ void CheckDetection::reverse_raycast(sq_idx king_sq, LegalityInfo& legality_info
     }
 }
 
-bool CheckDetection::in_check_from_line_rays() const
-{
-    // This function is always called after make_move,
-    // and we need to check if the maker is left in check
-    bool is_w = !pos_.is_w;
-
-    sq_idx king_sq = utils::lsb_idx(is_w ? pos_.bbs.get_w_king_bb()
-                                              : pos_.bbs.get_b_king_bb());
-
-    bitmask opp_pieces = is_w ? pos_.occ_masks.get_b_pieces_mask()
-                                   : pos_.occ_masks.get_w_pieces_mask();
-    bitmask own_pieces = is_w ? pos_.occ_masks.get_w_pieces_mask()
-                                   : pos_.occ_masks.get_b_pieces_mask();
-
-    bitmask opp_rooks_and_queens_mask = is_w ? pos_.bbs.get_b_rooks_bb() | pos_.bbs.get_b_queens_bb()
-                                                  : pos_.bbs.get_w_rooks_bb() | pos_.bbs.get_w_queens_bb();
-
-    rays::RayCheckDetectionResult n_ray_result = rays::detect_check_in_ray(king_sq, Direction::N, true, opp_rooks_and_queens_mask, opp_pieces, own_pieces, false);
-    if (n_ray_result.checker_sq_idx.has_value()) {
-        return true;
-    }
-
-    rays::RayCheckDetectionResult e_ray_result = rays::detect_check_in_ray(king_sq, Direction::E, true, opp_rooks_and_queens_mask, opp_pieces, own_pieces, false);
-    if (e_ray_result.checker_sq_idx.has_value()) {
-        return true;
-    }
-
-    rays::RayCheckDetectionResult s_ray_result = rays::detect_check_in_ray(king_sq, Direction::S, false, opp_rooks_and_queens_mask, opp_pieces, own_pieces, false);
-    if (s_ray_result.checker_sq_idx.has_value()) {
-        return true;
-    }
-
-    rays::RayCheckDetectionResult w_ray_result = rays::detect_check_in_ray(king_sq, Direction::W, false, opp_rooks_and_queens_mask, opp_pieces, own_pieces, false);
-    if (w_ray_result.checker_sq_idx.has_value()) {
-        return true;
-    }
-
-    return false;
-}
-
 bool CheckDetection::in_check() const {
     LegalityInfo legality_info{};
 

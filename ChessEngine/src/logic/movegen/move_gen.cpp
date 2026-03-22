@@ -82,10 +82,6 @@ void MoveGen::gen_castle_moves(model::Movelist& movelist, const LegalityInfo& le
     castle_gen_.generate(movelist, legality_info);
 }
 
-bool MoveGen::in_check_from_line_rays() {
-    return check_detection_.in_check_from_line_rays();
-}
-
 bool MoveGen::in_check() {
     return check_detection_.in_check();
 }

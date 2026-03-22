@@ -11,11 +11,7 @@
 namespace logic {
 
 PawnGen::PawnGen(const model::Position& pos) 
-    : pos_(pos)   
-    , w_pawn_quiet_attack_table_(attack_tables::w_pawn_quiet)
-    , w_pawn_capture_attack_table_(attack_tables::w_pawn_capture)
-    , b_pawn_quiet_attack_table_(attack_tables::b_pawn_quiet)
-    , b_pawn_capture_attack_table_(attack_tables::b_pawn_capture)
+    : pos_(pos)
 {}
 
 void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info)
@@ -29,11 +25,11 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
 
 
     utils::controlled_for_each_bit(pawns_bb, [&](sq_idx pawn_sq) {
-        bitmask attack_mask_straight = pos_.is_w ? w_pawn_quiet_attack_table_[pawn_sq]
-                                                 : b_pawn_quiet_attack_table_[pawn_sq];
+        bitmask attack_mask_straight = pos_.is_w ? attack_tables::w_pawn_quiet[pawn_sq]
+                                                 : attack_tables::b_pawn_quiet[pawn_sq];
 
-        bitmask attack_mask_diag = pos_.is_w ? w_pawn_capture_attack_table_[pawn_sq]
-                                             : b_pawn_capture_attack_table_[pawn_sq];
+        bitmask attack_mask_diag = pos_.is_w ? attack_tables::w_pawn_capture[pawn_sq]
+                                             : attack_tables::b_pawn_capture[pawn_sq];
 
         bitmask quiet_moves_mask = attack_mask_straight & pos_.occ_masks.get_free_squares_mask();
         

@@ -34,8 +34,6 @@ private:
     );
 
     bool king_and_rook_on_castle_squares(bool is_kside) const;
-    void make_temporary_king_move(bool is_kside);
-    void revert_temporary_king_move(bool is_kside);
 
     const model::Position& pos_;
     logic::MoveMaker& move_maker_;

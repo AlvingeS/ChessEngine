@@ -1,7 +1,5 @@
 #include "logic/zobrist/z_hasher.h"
 
-#include "model/position/piece_map.h"
-
 #include "logic/masks.h"
 #include "logic/utils.h"
 
@@ -54,9 +52,9 @@ void ZHasher::hash_from_position(const model::Position& pos)
 
     // XOR each square with a piece on it from square_piece_type_keys
     for (sq_t sq = 0; sq < 64; sq++) {
-        model::Piece::Type piece_type = pos.piece_map.get_piece_type_at(sq);
+        PieceType piece_type = pos.bbs.get_piece_type_at(sq);
 
-        if (piece_type != model::Piece::Type::EMPTY)
+        if (piece_type != PieceType::EMPTY)
             xor_piece_type_at(sq, piece_type);
     }
 

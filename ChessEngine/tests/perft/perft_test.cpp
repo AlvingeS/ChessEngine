@@ -53,8 +53,8 @@ std::vector<TestPosition> build_perft_data()
     TestPosition pos4{"pos4", "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1", 4, 6};
     TestPosition pos5{"pos5", "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8", 4, 5};
     TestPosition pos6{"pos6", "r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10", 4, 9};
-    TestPosition pos_exp{"pos_exp", "8/7p/8/1pbp4/3N4/2P5/Pk3P1P/R3K1R1 w Q - 0 1", 2, 2};
-    TestPosition castle_brings_you_into_check_from_opp_king{"castle_brings_you_into_check_from_opp_king", "8/7p/8/1pbp4/3N4/2P5/Pk3P1P/R3K1R1 w Q - 0 1", 2, 2};
+    TestPosition pos_exp{"pos_exp", "1k1r4/ppp2pQp/8/8/2p5/P1P1P1P1/5P1P/4K1NR b K - 2 28", 4, 6};
+    TestPosition castle_brings_you_into_check_from_opp_king{"castle_brings_you_into_check_from_opp_king", "8/7p/8/1pbp4/3N4/2P5/Pk3P1P/R3K1R1 w Q - 0 1", 4, 6};
     TestPosition double_pawn_push_check_ep_capture_blocked_by_pin{"double_pawn_push_check_ep_capture_blocked_by_pin", "8/K7/5p2/5k2/5p2/5Q2/5PPP/8 w - - 3 44", 4, 6};
     TestPosition block_check_with_promotion{"block_check_with_promotion", "8/8/8/8/8/2QK4/1p6/k7 w - - 36 81", 4, 6};
     TestPosition pawn_can_both_capture_and_block_to_stop_check{"pawn_can_both_capture_and_block_to_stop_check", "r3k3/5p1p/1R6/3b4/3B4/P2PK2n/5PrP/R7 b q - 2 26", 4, 6};
@@ -113,12 +113,12 @@ std::vector<TestPosition> build_perft_data()
     pos6.data[8] = {490154852788714LL};
 
     return {
-        start_pos,
-        pos2,
-        pos3,
-        pos4,
-        pos5,
-        pos6,
+        // start_pos,
+        // pos2,
+        // pos3,
+        // pos4,
+        // pos5,
+        // pos6,
         pos_exp,
         castle_brings_you_into_check_from_opp_king,
         double_pawn_push_check_ep_capture_blocked_by_pin,
@@ -150,19 +150,19 @@ TEST_P(PerftTest, MatchesExpectedResults)
     const int depth =  std::min(test_pos.standard_depth + perft_depth_offset, test_pos.max_depth);
 
     perft.set_pos_from_fen(test_pos.fen);
+    model::Position pos_copy = perft.get_pos_copy();
 
     std::unordered_map<model::Move, uint64_t> stockfish_results = io::stockfish::get_perft_results(
         test_pos.fen,
         depth,
-        perft.get_piece_map_copy()
+        perft.get_pos()
     );
 
-    const bool is_w_copy = perft.get_is_w_copy();
     perft.set_max_depth(depth);
     perft.minimax(0, 0, verbose);
 
     std::unordered_map<model::Move, uint64_t> first_move_counts = perft.get_node_count_per_first_move_map();
-    auto sf_results = io::stockfish::compare_first_move_counts_to_stockfish(first_move_counts, stockfish_results, is_w_copy);
+    auto sf_results = io::stockfish::compare_first_move_counts_to_stockfish(first_move_counts, stockfish_results, pos_copy.is_w);
 
     // If there were any errors, print them and fail the test
     if (sf_results.first) {

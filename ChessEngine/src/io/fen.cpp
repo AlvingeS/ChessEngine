@@ -1,9 +1,10 @@
 #include "io/fen.h"
 
 #include "io/utils.h"
-#include "model/position/piece_type.h"
 #include "logic/masks.h"
 #include <sstream>
+
+#include <vector>
 
 namespace io::fen {
 
@@ -67,16 +68,11 @@ void set_pos_from_fen(const std::string& fen, model::Position& pos)
         } else if (std::isdigit(static_cast<unsigned char>(c))) {
             file += c - '0';
         } else {
-            model::Piece::Type type = model::Piece::get_type_from_char(c);
-            pos.bbs.set_piece_type_bit(rank * 8 + file, type);
+            PieceType piece_type = utils::get_type_from_char(c);
+            pos.bbs.set_bit_at(rank * 8 + file, piece_type);
             file++;
         }
     }
-
-    pos.piece_map.fill_piece_map_from_bitboards(pos.bbs);
-    pos.occ_masks.fill_b_pieces_mask_from_bbs(pos.bbs);
-    pos.occ_masks.fill_w_pieces_mask_from_bbs(pos.bbs);
-    pos.occ_masks.update_occupancy_masks();
 
     if (tokens.size() > 1) {
         const std::string& color_str = tokens[1];

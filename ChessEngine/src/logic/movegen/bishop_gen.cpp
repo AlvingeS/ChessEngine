@@ -24,12 +24,12 @@ void BishopGen::generate(model::Movelist& movelist, const LegalityInfo& legality
         return;
     }
 
-    bitmask occupied_pieces_mask = pos_.occ_masks.get_occupied_squares_mask();
-    bitmask opponent_pieces_mask = pos_.is_w ? pos_.occ_masks.get_b_pieces_mask()
-                                             : pos_.occ_masks.get_w_pieces_mask();
+    bitmask occupied_pieces_mask = pos_.bbs.get_occ();
+    bitmask opponent_pieces_mask = pos_.is_w ? pos_.bbs.get_b()
+                                             : pos_.bbs.get_w();
 
-    bitboard bb = pos_.is_w ? pos_.bbs.get_w_bishops_bb()
-                            : pos_.bbs.get_b_bishops_bb();
+    bitboard bb = pos_.is_w ? pos_.bbs.get(PieceType::W_BISHOP)
+                            : pos_.bbs.get(PieceType::B_BISHOP);
 
     utils::for_each_bit(bb, [&](sq_t sq) {
         rays::add_moves_from_ray(Direction::NE, true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);

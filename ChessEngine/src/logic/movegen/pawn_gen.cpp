@@ -20,8 +20,8 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
         return;
     }
 
-    bitboard pawns_bb = pos_.is_w ? pos_.bbs.get_w_pawns_bb()
-                                  : pos_.bbs.get_b_pawns_bb();
+    bitboard pawns_bb = pos_.is_w ? pos_.bbs.get(PieceType::W_PAWN)
+                                  : pos_.bbs.get(PieceType::B_PAWN);
 
 
     utils::controlled_for_each_bit(pawns_bb, [&](sq_t pawn_sq) {
@@ -31,10 +31,10 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
         bitmask attack_mask_diag = pos_.is_w ? attack_tables::w_pawn_capture[pawn_sq]
                                              : attack_tables::b_pawn_capture[pawn_sq];
 
-        bitmask quiet_moves_mask = attack_mask_straight & pos_.occ_masks.get_free_squares_mask();
+        bitmask quiet_moves_mask = attack_mask_straight & pos_.bbs.get_empty();
         
-        bitmask opp_pieces_mask = pos_.is_w ? pos_.occ_masks.get_b_pieces_mask()
-                                            : pos_.occ_masks.get_w_pieces_mask();
+        bitmask opp_pieces_mask = pos_.is_w ? pos_.bbs.get_b()
+                                            : pos_.bbs.get_w();
         
         bitmask capture_moves_mask = attack_mask_diag & opp_pieces_mask;
 
@@ -52,8 +52,8 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
 
             // If this pawn can make an ep capture...
             if (ep_capture_possible) {
-                bitmask opp_pawns = pos_.is_w ? pos_.bbs.get_b_pawns_bb()
-                                              : pos_.bbs.get_w_pawns_bb();
+                bitmask opp_pawns = pos_.is_w ? pos_.bbs.get(PieceType::B_PAWN)
+                                              : pos_.bbs.get(PieceType::W_PAWN);
 
                 // And the checker is a pawn, then it must be that pawn that
                 // created the ep target, and can thus be captured by ep
@@ -79,7 +79,7 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
                     movelist.add_move(model::Move(pawn_sq, capture_sq, model::Move::BISHOP_PROMO_CAPTURE_FLAG));
                     movelist.add_move(model::Move(pawn_sq, capture_sq, model::Move::KNIGHT_PROMO_CAPTURE_FLAG));
                 } else {
-                    if (pos_.piece_map.get_piece_type_at(capture_sq) == model::Piece::Type::EMPTY) {
+                    if (pos_.bbs.get_empty_bit(capture_sq)) {
                         movelist.add_move(model::Move(pawn_sq, capture_sq, model::Move::EP_CAPTURE_FLAG));
                     } else {
                         movelist.add_move(model::Move(pawn_sq, capture_sq, model::Move::CAPTURE_FLAG));
@@ -95,7 +95,7 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
 
                 if (double_pawn_push) {
                     int single_step_offset = pos_.is_w ? 8 : -8;
-                    bool single_step_push_free = !utils::get_bit(pos_.occ_masks.get_occupied_squares_mask(), pawn_sq + single_step_offset);
+                    bool single_step_push_free = !pos_.bbs.get_occ_bit(pawn_sq + single_step_offset);
                     if (single_step_push_free) {
                         movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::DOUBLE_PAWN_PUSH_FLAG));
                     }

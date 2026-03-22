@@ -1,6 +1,8 @@
 #include "io/board_printer.h"
 
 #include "logic/utils.h"
+#include "io/utils.h"
+
 
 #include <iostream>
 #include <cstdio>
@@ -18,9 +20,9 @@ void BoardPrinter::fill_boards()
     board_bbs_ = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
     
     for (int i = 0; i < 12; i++) {
-        model::Piece::Type piece_type = model::Piece::get_type_from_int(i);
-        bitboard bb = pos_.bbs.get_bb_from_idx(i);
-        char piece_char = model::Piece::get_char_from_type(piece_type);
+        PieceType piece_type = static_cast<PieceType>(i);
+        bitboard bb = pos_.bbs.get(piece_type);
+        char piece_char = utils::get_char_from_type(piece_type);
 
         for (sq_t sq = 0; sq < 64; sq++) {
             if ((bb >> sq) & 1) {
@@ -30,14 +32,6 @@ void BoardPrinter::fill_boards()
             }
         }
     }
-
-    board_pm_ = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
-    
-    for (sq_t sq = 0; sq < 64; sq++) {
-        int row = sq / 8;
-        int col = sq % 8;
-        board_pm_[row][col] = model::Piece::get_char_from_type(pos_.piece_map.get_piece_type_at(sq));
-    }
 }
 
 void BoardPrinter::print(std::optional<model::Move> move)
@@ -46,7 +40,6 @@ void BoardPrinter::print(std::optional<model::Move> move)
         int from_col = logic::utils::file_from_sq(move.value().from());
         int from_row = logic::utils::rank_from_sq(move.value().from());
         board_bbs_[from_row][from_col] = '*';
-        board_pm_[from_row][from_col]  = '*';
     }
     
     int to_row = -1;
@@ -79,22 +72,12 @@ void BoardPrinter::print(std::optional<model::Move> move)
             std::cout << "| " << bit_idx << (bit_idx < 10 ? " " : "");  // Print the bit index, add extra space for single digit numbers.
         }
 
-        std::cout << "|   ";  // Separate the two boards.
-
-        for (int col = 0; col < 8; col++) {  // Iterate through columns from left to right.
-            char piece = board_pm_[row][col];
-            if (to_row == row && to_col == col) {
-                std::cout << "|>" << piece << "<";
-            } else {
-                std::cout << "| " << piece << " ";  // Print the piece character.
-            }
-        }
-
         std::cout << "|" << std::endl;  // End of the row.
     }
+
     std::cout << "---------------------------------   ---------------------------------   ---------------------------------" << std::endl;
     if (move.has_value()) {
-        std::printf("Debug info: occupancy_mask=%lu, move=%d\n", pos_.occ_masks.get_occupied_squares_mask(), move.value().value());
+        std::printf("Debug info: occupancy_mask=%lu, move=%d\n", pos_.bbs.get_occ(), move.value().value());
     }
 }
 

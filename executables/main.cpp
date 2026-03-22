@@ -89,7 +89,13 @@ int main()
             0.358 ~ 18.14M nodes/s ~ 7.2% SF
 
             Reworked movegen, now only produce legal moves but test castle and ep instead of all for check
-            0.245s ~ 26.38M nodes/s ~ 10.5% SF (0.308s on pc)
+            0.245s ~ 26.38M nodes/s ~ 10.5% SF
+            
+            Same performance as above, but now on better main function
+            1.641s ~ 24.267M nps, ~ 9.7% SF
+
+            Removed piece_loopup, occ_masks class and PieceType. everything through bitboards now
+            1.636s ~ 26.324Mnps ~ 10.5369% SF
     */
 
     // Start clock

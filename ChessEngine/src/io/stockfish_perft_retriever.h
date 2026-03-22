@@ -1,7 +1,7 @@
 #pragma once
 
+#include "model/position/position.h"
 #include "model/move/move.h"
-#include "model/position/piece_map.h"
 
 #include <unordered_map>
 #include <cstdint>
@@ -10,8 +10,8 @@
 namespace io::stockfish
 {
 
-std::unordered_map<model::Move, uint64_t> get_perft_results(const std::string& FEN, int depth, const model::PieceMap pm);
-std::vector<model::Move> get_legal_moves_from_fen(const std::string& FEN, const model::PieceMap pm);
+std::unordered_map<model::Move, uint64_t> get_perft_results(const std::string& FEN, int depth, const model::Position& pos);
+std::vector<model::Move> get_legal_moves_from_fen(const std::string& FEN, const model::Position& pos);
 std::string move_to_str(model::Move move, bool w_started);
 std::pair<bool, std::string> compare_first_move_counts_to_stockfish(
     const std::unordered_map<model::Move, uint64_t>& first_move_counts,

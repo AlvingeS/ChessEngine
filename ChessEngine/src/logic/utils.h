@@ -3,7 +3,6 @@
 #include "logic/masks.h"
 
 #include "model/types.h"
-#include "model/position/piece_type.h"
 #include "model/move/move.h"
 
 #include <vector>
@@ -25,7 +24,7 @@ int rank_from_sq(sq_t sq);
 int file_from_sq(sq_t sq);
 
 // Old logic::move_utils
-model::Piece::Type get_promotion_piece_type(int promotionFlag, bool is_w);
+PieceType get_promotion_piece_type(int promo_flag, bool is_w);
 int determine_capture_sq(const model::Move& move, bool is_w);
 
 template<typename Func>

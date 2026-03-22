@@ -1,7 +1,6 @@
 #pragma once
 
 #include "model/types.h"
-#include "model/position/piece_type.h"
 
 #include "logic/utils.h"
 #include "logic/makemove/undo_info.h"
@@ -26,13 +25,13 @@ private:
     void make_castle_move(bool is_kside);
     void store_state(UndoInfo& undo_info);
 
-    model::Piece::Type remove_moved_piece_from_board(sq_t from_sq);
+    PieceType remove_moved_piece_from_board(sq_t from_sq);
 
-    void remove_captured_piece_from_board(sq_t capture_sq, model::Piece::Type captured_piece_type);
+    void remove_captured_piece_from_board(sq_t capture_sq, PieceType captured_piece_type);
 
     void place_moved_piece_on_board(
         sq_t to_sq,
-        model::Piece::Type moved_piece_type
+        PieceType moved_piece_type
     );
 
     model::Position& pos_;

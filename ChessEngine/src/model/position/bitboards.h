@@ -1,9 +1,8 @@
 #pragma once
 
 #include "model/types.h"
-#include "model/position/piece_type.h"
 
-#include <vector>
+#include <cassert>
 
 namespace model {
 
@@ -12,56 +11,29 @@ class Bitboards {
 public:
     Bitboards();
 
-    const bitboard& get_bb_from_idx(int idx) const;
+    void set_bit_at(sq_t sq, PieceType piece_type);
+    void clr_bit_at(sq_t sq, PieceType piece_type);
+    bool get_bit_at(sq_t sq, PieceType PieceType) const;
+    const bitboard& get(PieceType piece_type) const;
     
-    void clear_piece_type_bit(sq_t sq, Piece::Type piece_type);
-    void set_piece_type_bit(sq_t sq, Piece::Type piece_type);
+    bool get_w_bit(sq_t sq) const;
+    bitboard get_w() const;
+
+    bool get_b_bit(sq_t sq) const;
+    bitboard get_b() const;
+
+    bool get_occ_bit(sq_t sq) const;
+    bitboard get_occ() const;
+    
+    bool get_empty_bit(sq_t sq) const;
+    bitboard get_empty() const;
+
+    PieceType get_piece_type_at(sq_t sq, bool is_w) const;
+    PieceType get_piece_type_at(sq_t sq) const;
     void reset_bitboards();
 
-    // Set, clear and get for all individual piece types / bbs
-    #define DEFINE_BITBOARD_MACROS(PIECE_NAME, VARIABLE_NAME) \
-        inline void set_##PIECE_NAME##_bit(int square) \
-        { \
-            VARIABLE_NAME |= (1ULL << square); \
-        } \
-        inline void clear_##PIECE_NAME##_bit(int square) \
-        { \
-            VARIABLE_NAME &= ~(1ULL << square); \
-        } \
-        inline const bitboard& get_##PIECE_NAME##_bb() const \
-        { \
-            return VARIABLE_NAME; \
-        }
-
-    DEFINE_BITBOARD_MACROS(w_pawns, w_pawns_bb_)
-    DEFINE_BITBOARD_MACROS(w_knights, w_knights_bb_)
-    DEFINE_BITBOARD_MACROS(w_bishops, w_bishops_bb_)
-    DEFINE_BITBOARD_MACROS(w_rooks, w_rooks_bb_)
-    DEFINE_BITBOARD_MACROS(w_queens, w_queens_bb_)
-    DEFINE_BITBOARD_MACROS(w_king, w_king_bb_)
-    DEFINE_BITBOARD_MACROS(b_pawns, b_pawns_bb_)
-    DEFINE_BITBOARD_MACROS(b_knights, b_knights_bb_)
-    DEFINE_BITBOARD_MACROS(b_bishops, b_bishops_bb_)
-    DEFINE_BITBOARD_MACROS(b_rooks, b_rooks_bb_)
-    DEFINE_BITBOARD_MACROS(b_queens, b_queens_bb_)
-    DEFINE_BITBOARD_MACROS(b_king, b_king_bb_)
-
 private:
-    std::vector<bitboard*> bbs_;
-
-    bitboard w_pawns_bb_;
-    bitboard w_knights_bb_;
-    bitboard w_bishops_bb_;
-    bitboard w_rooks_bb_;
-    bitboard w_queens_bb_;
-    bitboard w_king_bb_;
-
-    bitboard b_pawns_bb_;
-    bitboard b_knights_bb_;
-    bitboard b_bishops_bb_;
-    bitboard b_rooks_bb_;
-    bitboard b_queens_bb_;
-    bitboard b_king_bb_;
+    bitboard bbs_[12];
 };
 
 } // namespace model

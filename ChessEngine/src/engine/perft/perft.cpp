@@ -155,10 +155,10 @@ void Perft::minimax(
             bp.print(current_move);
          
             std::optional<bitmask> debug_occ_mask = std::nullopt;
-            int debug_move_value = 5977;
+            int debug_move_value = 4690;
 
             if (debug_occ_mask.has_value()) {
-                if (pos_.occ_masks.get_occupied_squares_mask() == debug_occ_mask.value() &&
+                if (pos_.bbs.get_occ() == debug_occ_mask.value() &&
                     current_move.value() == debug_move_value) 
                 {
                     std::cout << "Debug state reached!" << std::endl;

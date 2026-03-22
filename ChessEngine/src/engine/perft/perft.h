@@ -48,14 +48,9 @@ public:
     std::vector<long long> double_check_count_;
     std::vector<long long> checkmate_count_;
 
-    inline model::PieceMap get_piece_map_copy()
+    inline model::Position get_pos_copy()
     {
-        return pos_.piece_map;
-    }
-
-    inline bool get_is_w_copy()
-    {
-        return pos_.is_w;
+        return pos_;
     }
 
     void set_max_depth(int max_depth) 

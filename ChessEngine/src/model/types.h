@@ -9,8 +9,23 @@ typedef bitmask ray_attack_table[64][8];
 typedef int sq_t;
 typedef unsigned char castle_rights;
 
-// enum LineDir : int {N = 0, E = 1, S = 2, W = 3};
-// enum DiagDir : int {NE = 0, SE = 1, SW = 2, NW = 3};
+enum PieceType {
+    W_PAWN   = 0,
+    W_KNIGHT = 1,
+    W_BISHOP = 2,
+    W_ROOK   = 3,
+    W_QUEEN  = 4,
+    W_KING   = 5,
+    B_PAWN   = 6,
+    B_KNIGHT = 7,
+    B_BISHOP = 8,
+    B_ROOK   = 9,
+    B_QUEEN  = 10,
+    B_KING   = 11,
+    EMPTY    = 12,
+};
+
+inline bool is_white(PieceType piece_type) { return piece_type <= W_KING; }
 
 enum Direction {
     N     = 0,

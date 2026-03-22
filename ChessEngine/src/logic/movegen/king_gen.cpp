@@ -16,14 +16,14 @@ KingGen::KingGen(const model::Position& pos)
 
 void KingGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info) 
 {
-    sq_t king_sq = utils::lsb_idx(pos_.is_w ? pos_.bbs.get_w_king_bb()
-                                              : pos_.bbs.get_b_king_bb());
+    sq_t king_sq = utils::lsb_idx(pos_.is_w ? pos_.bbs.get(PieceType::W_KING)
+                                              : pos_.bbs.get(PieceType::B_KING));
 
     bitmask legal_moves      = king_attack_table_[king_sq] & legality_info.king_response_mask;
-    bitmask quiet_moves_mask = legal_moves & pos_.occ_masks.get_free_squares_mask();
+    bitmask quiet_moves_mask = legal_moves & pos_.bbs.get_empty();
     
-    bitmask opp_pieces_mask  = pos_.is_w ? pos_.occ_masks.get_b_pieces_mask() 
-                                        : pos_.occ_masks.get_w_pieces_mask();
+    bitmask opp_pieces_mask  = pos_.is_w ? pos_.bbs.get_b() 
+                                        : pos_.bbs.get_w();
 
     bitmask capture_moves_mask = legal_moves & opp_pieces_mask;
 

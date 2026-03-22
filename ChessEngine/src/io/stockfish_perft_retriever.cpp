@@ -1,7 +1,6 @@
 #include "io/stockfish_perft_retriever.h"
 
 #include "io/utils.h"
-#include "model/position/piece_map.h"
 #include "model/constants.h"
 
 #include <sstream>
@@ -48,7 +47,7 @@ std::string get_stockfish_output(const std::string& FEN, int depth)
     return output;
 }
 
-model::Move notation_to_move(const std::string& notation, const model::PieceMap pm)
+model::Move notation_to_move(const std::string& notation, const model::Position& pos)
 {
     std::string from = notation.substr(0, 2);
     std::string to = notation.substr(2, 2);
@@ -60,10 +59,10 @@ model::Move notation_to_move(const std::string& notation, const model::PieceMap 
     sq_t from_sq = io::utils::sq_from_notation(from);
     sq_t to_sq = io::utils::sq_from_notation(to);
 
-    model::Piece::Type piece_type_from = pm.get_piece_type_at(from_sq);
-    model::Piece::Type piece_type_to = pm.get_piece_type_at(to_sq);
+    PieceType piece_type_from = pos.bbs.get_piece_type_at(from_sq);
+    PieceType piece_type_to = pos.bbs.get_piece_type_at(to_sq);
 
-    bool is_capture = pm.get_piece_type_at(to_sq) != model::Piece::Type::EMPTY;
+    bool is_capture = piece_type_to != PieceType::EMPTY;
     bool is_promo = promo_to_piece != ' ';
 
     if (is_promo) {
@@ -110,35 +109,35 @@ model::Move notation_to_move(const std::string& notation, const model::PieceMap 
 
     bool is_kside_castle = (from_sq         == constants::W_KING_START_SQ           &&
                             to_sq           == constants::W_KSIDE_KING_CASTLE_TO_SQ &&
-                            piece_type_from == model::Piece::Type::W_KING)          || 
+                            piece_type_from == PieceType::W_KING)          || 
                            (from_sq         == constants::B_KING_START_SQ           &&
                             to_sq           == constants::B_KSIDE_KING_CASTLE_TO_SQ &&
-                            piece_type_from == model::Piece::Type::B_KING);
+                            piece_type_from == PieceType::B_KING);
 
     if (is_kside_castle)
         return model::Move(from_sq, to_sq, model::Move::KING_CASTLE_FLAG);
 
     bool is_qside_castle = (from_sq         == constants::W_KING_START_SQ           &&
                             to_sq           == constants::W_QSIDE_KING_CASTLE_TO_SQ &&
-                            piece_type_from == model::Piece::Type::W_KING)          || 
+                            piece_type_from == PieceType::W_KING)          || 
                            (from_sq         == constants::B_KING_START_SQ           &&
                             to_sq           == constants::B_QSIDE_KING_CASTLE_TO_SQ &&
-                            piece_type_from == model::Piece::Type::B_KING);
+                            piece_type_from == PieceType::B_KING);
 
     if (is_qside_castle)
         return model::Move(from_sq, to_sq, model::Move::QUEEN_CASTLE_FLAG);
 
-    bool is_ep_capture = (piece_type_from == model::Piece::Type::W_PAWN  ||
-                          piece_type_from == model::Piece::Type::B_PAWN) &&
+    bool is_ep_capture = (piece_type_from == PieceType::W_PAWN  ||
+                          piece_type_from == PieceType::B_PAWN) &&
                          (std::abs(from_sq - to_sq) % 8 != 0)            &&
-                          piece_type_to == model::Piece::Type::EMPTY;
+                          piece_type_to == PieceType::EMPTY;
 
     if (is_ep_capture)
         return model::Move(from_sq, to_sq, model::Move::EP_CAPTURE_FLAG);
 
 
-    bool is_double_pawn_push = (piece_type_from == model::Piece::Type::W_PAWN  ||
-                                piece_type_from == model::Piece::Type::B_PAWN) &&
+    bool is_double_pawn_push = (piece_type_from == PieceType::W_PAWN  ||
+                                piece_type_from == PieceType::B_PAWN) &&
                                (std::abs(from_sq - to_sq) == 16);
 
     if (is_double_pawn_push)
@@ -150,7 +149,7 @@ model::Move notation_to_move(const std::string& notation, const model::PieceMap 
     return model::Move(from_sq, to_sq, model::Move::QUIET_FLAG);
 }
 
-std::unordered_map<model::Move, uint64_t> parse_output_into_map(std::string stockfish_output, const model::PieceMap pm)
+std::unordered_map<model::Move, uint64_t> parse_output_into_map(std::string stockfish_output, const model::Position& pos)
 {
     std::unordered_map<model::Move, uint64_t> results{};
     std::regex pattern(R"((\w+): (\d+))");              // Finds <alphanumeric>: <digits> pattern
@@ -163,7 +162,7 @@ std::unordered_map<model::Move, uint64_t> parse_output_into_map(std::string stoc
                 break;
 
             long count = std::stol(match[2].str());     // <digits>
-            results[notation_to_move(move_str, pm)] = count;
+            results[notation_to_move(move_str, pos)] = count;
         }
         stockfish_output = match.suffix().str();         // Replace output with everything
                                                         // after the matched row
@@ -172,7 +171,7 @@ std::unordered_map<model::Move, uint64_t> parse_output_into_map(std::string stoc
     return results; 
 }
 
-std::vector<model::Move> parse_output_into_vector(std::string stockfish_output, const model::PieceMap pm)
+std::vector<model::Move> parse_output_into_vector(std::string stockfish_output, const model::Position& pos)
 {
     std::vector<model::Move> results{};
     std::regex pattern(R"((\w+): (\d+))");              // Finds <alphanumeric>: <digits> pattern
@@ -184,7 +183,7 @@ std::vector<model::Move> parse_output_into_vector(std::string stockfish_output, 
             if (move_str.size() > 5)
                 break;
 
-            results.push_back(notation_to_move(move_str, pm));
+            results.push_back(notation_to_move(move_str, pos));
         }
         stockfish_output = match.suffix().str();         // Replace output with everything
                                                          // after the matched row
@@ -219,16 +218,16 @@ char col_to_char(int col) {
 } // namespace
 
 
-std::unordered_map<model::Move, uint64_t> get_perft_results(const std::string& FEN, int depth, const model::PieceMap pm) 
+std::unordered_map<model::Move, uint64_t> get_perft_results(const std::string& FEN, int depth, const model::Position& pos) 
 {
     const auto stockfish_output = get_stockfish_output(FEN, depth);
-    return parse_output_into_map(stockfish_output, pm);
+    return parse_output_into_map(stockfish_output, pos);
 }
 
-std::vector<model::Move> get_legal_moves_from_fen(const std::string& FEN, const model::PieceMap pm)
+std::vector<model::Move> get_legal_moves_from_fen(const std::string& FEN, const model::Position& pos)
 {
     const auto stockfish_output = get_stockfish_output(FEN, 1);
-    return parse_output_into_vector(stockfish_output, pm);
+    return parse_output_into_vector(stockfish_output, pos);
 }
 
 std::string move_to_str(model::Move move, bool w_started) 

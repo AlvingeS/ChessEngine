@@ -55,17 +55,17 @@ void CastleGen::generate(model::Movelist& movelist, const LegalityInfo& legality
 
 bool CastleGen::king_and_rook_on_castle_squares(bool is_kside) const
 {
-    bool king_bit_enabled = pos_.is_w ? (pos_.bbs.get_w_king_bb() & (1ULL << constants::W_KING_START_SQ)) != 0
-                                      : (pos_.bbs.get_b_king_bb() & (1ULL << constants::B_KING_START_SQ)) != 0;
+    bool king_bit_enabled = pos_.is_w ? (pos_.bbs.get(PieceType::W_KING) & (1ULL << constants::W_KING_START_SQ)) != 0
+                                      : (pos_.bbs.get(PieceType::B_KING) & (1ULL << constants::B_KING_START_SQ)) != 0;
     
     if (!king_bit_enabled)
         return false;
 
     // Since we know that the king is present, we can return if the rook is present or not
-    return pos_.is_w ? (is_kside ? (pos_.bbs.get_w_rooks_bb() & (1ULL << constants::W_KSIDE_ROOK_START_SQ)) != 0
-                                 : (pos_.bbs.get_w_rooks_bb() & (1ULL << constants::W_QSIDE_ROOK_START_SQ)) != 0)
-                     : (is_kside ? (pos_.bbs.get_b_rooks_bb() & (1ULL << constants::B_KSIDE_ROOK_START_SQ)) != 0
-                                 : (pos_.bbs.get_b_rooks_bb() & (1ULL << constants::B_QSIDE_ROOK_START_SQ)) != 0);
+    return pos_.is_w ? (is_kside ? (pos_.bbs.get(PieceType::W_ROOK) & (1ULL << constants::W_KSIDE_ROOK_START_SQ)) != 0
+                                 : (pos_.bbs.get(PieceType::W_ROOK) & (1ULL << constants::W_QSIDE_ROOK_START_SQ)) != 0)
+                     : (is_kside ? (pos_.bbs.get(PieceType::B_ROOK) & (1ULL << constants::B_KSIDE_ROOK_START_SQ)) != 0
+                                 : (pos_.bbs.get(PieceType::B_ROOK) & (1ULL << constants::B_QSIDE_ROOK_START_SQ)) != 0);
 }
 
 void CastleGen::gen_single_castle_move(
@@ -79,7 +79,7 @@ void CastleGen::gen_single_castle_move(
                                                     : (is_kside ? masks::B_KSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK
                                                                 : masks::B_QSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK);
     
-    if ((space_between_castlers_mask & pos_.occ_masks.get_occupied_squares_mask()) != 0)
+    if ((space_between_castlers_mask & pos_.bbs.get_occ()) != 0)
         return;
 
     // Check that the king and rook are on the correct squares

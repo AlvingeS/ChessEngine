@@ -49,13 +49,13 @@ LegalityInfo CheckDetection::generate_legality_info() const
 {
     LegalityInfo legality_info{};
 
-    sq_t king_sq = utils::lsb_idx(pos_.is_w ? pos_.bbs.get_w_king_bb()
-                                              : pos_.bbs.get_b_king_bb());
+    sq_t king_sq = utils::lsb_idx(pos_.is_w ? pos_.bbs.get(PieceType::W_KING)
+                                              : pos_.bbs.get(PieceType::B_KING));
 
 
     reverse_raycast(king_sq, legality_info, true);
-    bitmask own_pieces = pos_.is_w ? pos_.occ_masks.get_w_pieces_mask()
-                                   : pos_.occ_masks.get_b_pieces_mask();
+    bitmask own_pieces = pos_.is_w ? pos_.bbs.get_w()
+                                   : pos_.bbs.get_b();
 
     for (const auto& pair : legality_info.king_move_offset_response_checklist) {
         if (pair.first) { 
@@ -129,7 +129,7 @@ void CheckDetection::handle_ray_check_detection_result(const rays::RayCheckDetec
                 legality_info.king_move_offset_response_checklist[8].first = true;
             }
 
-            if (dir == Direction::W && king_sq + opposite_move_offset - 1 >= 0 && king_sq + opposite_move_offset - 1 <= 63) {
+            if (opposite_dir == Direction::W && king_sq + opposite_move_offset - 1 >= 0 && king_sq + opposite_move_offset - 1 <= 63) {
                 utils::set_bit(legality_info.king_blocked_moves_mask, king_sq + opposite_move_offset - 1);
                 legality_info.king_move_offset_response_checklist[9].first = true;
             }
@@ -154,14 +154,14 @@ void CheckDetection::reverse_raycast(sq_t king_sq, LegalityInfo& legality_info, 
 {
     bool is_w = is_w_override.value_or(pos_.is_w);
 
-    bitmask opp_pieces = is_w ? pos_.occ_masks.get_b_pieces_mask()
-                              : pos_.occ_masks.get_w_pieces_mask();
-    bitmask own_pieces = is_w ? pos_.occ_masks.get_w_pieces_mask()
-                              : pos_.occ_masks.get_b_pieces_mask();
+    bitmask opp_pieces = is_w ? pos_.bbs.get_b()
+                              : pos_.bbs.get_w();
+    bitmask own_pieces = is_w ? pos_.bbs.get_w()
+                              : pos_.bbs.get_b();
 
     // Check if any opponent rooks or queens are attacking the king
-    bitmask opp_rooks_and_queens_mask = is_w ? pos_.bbs.get_b_rooks_bb() | pos_.bbs.get_b_queens_bb()
-                                             : pos_.bbs.get_w_rooks_bb() | pos_.bbs.get_w_queens_bb();
+    bitmask opp_rooks_and_queens_mask = is_w ? pos_.bbs.get(PieceType::B_ROOK) | pos_.bbs.get(PieceType::B_QUEEN)
+                                             : pos_.bbs.get(PieceType::W_ROOK) | pos_.bbs.get(PieceType::W_QUEEN);
 
     rays::RayCheckDetectionResult n_ray_result = rays::detect_check_in_ray(king_sq, Direction::N, true, opp_rooks_and_queens_mask, opp_pieces, own_pieces, actual_king_sq);
 
@@ -179,8 +179,8 @@ void CheckDetection::reverse_raycast(sq_t king_sq, LegalityInfo& legality_info, 
     handle_ray_check_detection_result(w_ray_result, legality_info, W, king_sq, actual_king_sq);
 
     // Check if any opponent bishops or queens are attacking the king
-    bitmask opp_bishops_and_queens_mask = is_w ? pos_.bbs.get_b_bishops_bb() | pos_.bbs.get_b_queens_bb() 
-                                               : pos_.bbs.get_w_bishops_bb() | pos_.bbs.get_w_queens_bb();
+    bitmask opp_bishops_and_queens_mask = is_w ? pos_.bbs.get(PieceType::B_BISHOP) | pos_.bbs.get(PieceType::B_QUEEN) 
+                                               : pos_.bbs.get(PieceType::W_BISHOP) | pos_.bbs.get(PieceType::W_QUEEN);
 
     rays::RayCheckDetectionResult ne_ray_result = rays::detect_check_in_ray(king_sq, Direction::NE, true, opp_bishops_and_queens_mask, opp_pieces, own_pieces, actual_king_sq);
     handle_ray_check_detection_result(ne_ray_result, legality_info, NE, king_sq, actual_king_sq);
@@ -200,8 +200,8 @@ void CheckDetection::reverse_raycast(sq_t king_sq, LegalityInfo& legality_info, 
     // Check if any opponent knights are attacking the king
     bitmask reverse_knight_attack_mask = attack_tables::knight[king_sq];
 
-    bitmask opp_knights_mask   = is_w ? pos_.bbs.get_b_knights_bb() 
-                                      : pos_.bbs.get_w_knights_bb();
+    bitmask opp_knights_mask   = is_w ? pos_.bbs.get(PieceType::B_KNIGHT) 
+                                      : pos_.bbs.get(PieceType::W_KNIGHT);
     
     // There cannot be more than one knight checking the king
     bitmask knight_attacking_king_mask =  reverse_knight_attack_mask & opp_knights_mask;
@@ -231,8 +231,8 @@ void CheckDetection::reverse_raycast(sq_t king_sq, LegalityInfo& legality_info, 
     }
     
     // Check if any opponent pawns are attacking the king
-    bitmask opp_pawns_mask = is_w ? pos_.bbs.get_b_pawns_bb() 
-                                  : pos_.bbs.get_w_pawns_bb();
+    bitmask opp_pawns_mask = is_w ? pos_.bbs.get(PieceType::B_PAWN) 
+                                  : pos_.bbs.get(PieceType::W_PAWN);
     
     bitmask pawn_capture_mask = is_w ? attack_tables::w_pawn_capture[king_sq] 
                                      : attack_tables::b_pawn_capture[king_sq];
@@ -253,8 +253,8 @@ void CheckDetection::reverse_raycast(sq_t king_sq, LegalityInfo& legality_info, 
     }
 
     // Check if the opposing king is blocking movement for ours.
-    sq_t opp_king_sq = utils::lsb_idx(is_w ? pos_.bbs.get_b_king_bb()
-                                             : pos_.bbs.get_w_king_bb());
+    sq_t opp_king_sq = utils::lsb_idx(is_w ? pos_.bbs.get(PieceType::B_KING)
+                                             : pos_.bbs.get(PieceType::W_KING));
 
     if (actual_king_sq) {
         bitmask blocked_squares = attack_tables::king[king_sq] & attack_tables::king[opp_king_sq];
@@ -284,15 +284,15 @@ bool CheckDetection::in_check() const {
     // and we need to check if the maker is left in check
     bool is_w = !pos_.is_w;
 
-    sq_t king_sq = utils::lsb_idx(is_w ? pos_.bbs.get_w_king_bb()
-                                         : pos_.bbs.get_b_king_bb());
+    sq_t king_sq = utils::lsb_idx(is_w ? pos_.bbs.get(PieceType::W_KING)
+                                         : pos_.bbs.get(PieceType::B_KING));
 
     reverse_raycast(king_sq, legality_info, true, is_w);
 
     // Super special case, if you castle which brings you within 1 square of the opp king
     // the above does catch that since I don't do the reverse raycasts from elsewhere
-    bitboard opp_king_bb = is_w ? pos_.bbs.get_b_king_bb()
-                                : pos_.bbs.get_w_king_bb();
+    bitboard opp_king_bb = is_w ? pos_.bbs.get(PieceType::B_KING)
+                                : pos_.bbs.get(PieceType::W_KING);
 
     if ((attack_tables::king[king_sq] & opp_king_bb) != 0ULL) {
         return true;

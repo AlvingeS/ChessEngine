@@ -25,7 +25,6 @@ private:
     
     const model::Position& pos_;
     std::vector<std::vector<char>> board_bbs_;
-    std::vector<std::vector<char>> board_pm_;
 };
 
 } // namespace io

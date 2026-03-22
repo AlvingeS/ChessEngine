@@ -18,7 +18,7 @@ namespace rays {
 } // namespace rays
 
 struct LegalityInfo {
-    std::array<std::pair<bool, int>, 8> king_move_offset_response_checklist{{
+    std::array<std::pair<bool, int>, 10> king_move_offset_response_checklist{{
         {false, 8},   // N
         {false, 9},   // NE
         {false, 1},   // E
@@ -27,6 +27,8 @@ struct LegalityInfo {
         {false, -9},  // SW
         {false, -1},  // W
         {false, 7},   // NW
+        {false, 2},   // E + 1 (Simulate castle)
+        {false, -2}   // W + 1 (Simulate castle)
     }};
     bitmask king_blocked_moves_mask = 0ULL;
     bitmask king_response_mask = 0ULL;

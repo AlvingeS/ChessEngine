@@ -172,8 +172,8 @@ void Perft::minimax(
             }
         }
 
-        // If move is castle, make the move, check if in check, if so - undo
-        if (current_move.is_any_castle() || current_move.is_ep_capture()) {
+        // If move is ep, make the move, check if in check, if so - undo
+        if (current_move.is_ep_capture()) {
             if (move_generator_.in_check())  {
                 move_retractor_.unmake_move(current_move, undo_stack_[current_depth]);   
                 continue;

@@ -202,7 +202,7 @@ TEST_P(PerftTest, MatchesExpectedResults)
             EXPECT_EQ(perft.checkmate_count_[i], test_pos.data[i].checkmates);
         }
     }
-};
+}
 
 INSTANTIATE_TEST_SUITE_P(
     PerftSuite,

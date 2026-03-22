@@ -37,23 +37,6 @@ Direction opposite_direction(Direction dir) {
     }
 }
 
-
-
-// int one_square_away_in_opposite_of_dir_offset(Direction dir) {
-//     switch (dir) {
-//         case Direction::N:  {return -8;};
-//         case Direction::NE: {return -9;};
-//         case Direction::E:  {return -1;};
-//         case Direction::SE: {return 7;};
-//         case Direction::S:  {return 8;};
-//         case Direction::SW: {return -9;};
-//         case Direction::W:  {return 1;};
-//         case Direction::NW: {return -7;};
-//         default:
-//             throw "No such direction";
-//     }
-// }
-
 }
 
 namespace logic {
@@ -120,6 +103,16 @@ void CheckDetection::handle_ray_check_detection_result(const rays::RayCheckDetec
                     utils::set_bit(legality_info.king_blocked_moves_mask, king_sq + move_offset);
                 }
 
+                if (dir == Direction::E && king_sq + move_offset + 1 >= 0 && king_sq + move_offset + 1  <= 63) {
+                    utils::set_bit(legality_info.king_blocked_moves_mask, king_sq + move_offset + 1);
+                    legality_info.king_move_offset_response_checklist[8].first = true;
+                }
+
+                if (dir == Direction::W && king_sq + move_offset - 1 >= 0 && king_sq + move_offset - 1 <= 63) {
+                    utils::set_bit(legality_info.king_blocked_moves_mask, king_sq + move_offset - 1);
+                    legality_info.king_move_offset_response_checklist[9].first = true;
+                }
+
                 legality_info.king_move_offset_response_checklist[dir].first = true;
             }
 
@@ -129,6 +122,16 @@ void CheckDetection::handle_ray_check_detection_result(const rays::RayCheckDetec
             
             if (king_sq + opposite_move_offset >= 0 && king_sq + opposite_move_offset <= 63) {
                 utils::set_bit(legality_info.king_blocked_moves_mask, king_sq + opposite_move_offset);
+            }
+
+            if (opposite_dir == Direction::E && king_sq + opposite_move_offset + 1 >= 0 && king_sq + opposite_move_offset + 1  <= 63) {
+                utils::set_bit(legality_info.king_blocked_moves_mask, king_sq + opposite_move_offset + 1);
+                legality_info.king_move_offset_response_checklist[8].first = true;
+            }
+
+            if (dir == Direction::W && king_sq + opposite_move_offset - 1 >= 0 && king_sq + opposite_move_offset - 1 <= 63) {
+                utils::set_bit(legality_info.king_blocked_moves_mask, king_sq + opposite_move_offset - 1);
+                legality_info.king_move_offset_response_checklist[9].first = true;
             }
             
             legality_info.king_move_offset_response_checklist[opposite_dir].first = true;
@@ -249,20 +252,28 @@ void CheckDetection::reverse_raycast(sq_idx king_sq, LegalityInfo& legality_info
         }
     }
 
-    // Check if the opposing king is blocking movement for ours. Only needed on original square
+    // Check if the opposing king is blocking movement for ours.
+    sq_idx opp_king_sq = utils::lsb_idx(is_w ? pos_.bbs.get_b_king_bb()
+                                             : pos_.bbs.get_w_king_bb());
+
     if (actual_king_sq) {
-        sq_idx opp_king_sq = utils::lsb_idx(is_w ? pos_.bbs.get_b_king_bb()
-                                                 : pos_.bbs.get_w_king_bb());
-    
         bitmask blocked_squares = attack_tables::king[king_sq] & attack_tables::king[opp_king_sq];
         if (blocked_squares != 0ULL) {
-            std::vector<sq_idx> blocked_sqs_idxs;
-            utils::get_bit_idxs(blocked_sqs_idxs, blocked_squares);
     
-            for (sq_idx blocked_sq_idx : blocked_sqs_idxs) {
-                utils::set_bit(legality_info.king_blocked_moves_mask, blocked_sq_idx);
-            }
+            utils::for_each_bit(blocked_squares, [&](sq_idx blocked_sq) {
+                utils::set_bit(legality_info.king_blocked_moves_mask, blocked_sq);
+            });
         }
+    } else {
+        // If the temporary move to this square brings us into check from opposing king, it is blocked
+        utils::controlled_for_each_bit(attack_tables::king[opp_king_sq], [&](sq_idx opp_king_move_sq) {
+            if (opp_king_move_sq == king_sq) {
+                utils::set_bit(legality_info.king_blocked_moves_mask, king_sq);
+                return LoopControl::Break;
+            }
+
+            return LoopControl::Continue;
+        });
     }
 }
 

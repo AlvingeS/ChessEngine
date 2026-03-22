@@ -78,7 +78,7 @@ int main()
             0.358 ~ 18.14M nodes/s ~ 7.2% SF
 
             Reworked movegen, now only produce legal moves but test castle and ep instead of all for check
-            0.245s ~ 26.38M nodes/s ~ 10.5% SF
+            0.245s ~ 26.38M nodes/s ~ 10.5% SF (0.308s on pc)
     */
 
     // Start clock

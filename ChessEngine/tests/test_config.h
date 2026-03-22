@@ -2,7 +2,7 @@
 
 #include <string>
 
-static constexpr bool big_tests = false;
+static constexpr bool big_tests = true;
 
 // Perft
 static constexpr bool verbose = false;

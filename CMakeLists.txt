@@ -21,7 +21,7 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     target_compile_options(cxx_setup INTERFACE -g -O2 -ffast-math -DNDEBUG) # Enable optimizations
 endif()
 
-target_compile_definitions(cxx_setup INTERFACE cxx_std_17)
+target_compile_features(cxx_setup INTERFACE cxx_std_17)
 target_include_directories(cxx_setup INTERFACE
     ${PROJECT_SOURCE_DIR}/ChessEngine/src
     ${PROJECT_SOURCE_DIR}/ChessEngine/

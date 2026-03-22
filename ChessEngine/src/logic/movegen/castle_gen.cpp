@@ -104,10 +104,10 @@ void CastleGen::gen_single_castle_move(
     sq_idx to_sq   = pos_.is_w ? (is_kside ? constants::W_KSIDE_KING_CASTLE_TO_SQ : constants::W_QSIDE_KING_CASTLE_TO_SQ)
                                : (is_kside ? constants::B_KSIDE_KING_CASTLE_TO_SQ : constants::B_QSIDE_KING_CASTLE_TO_SQ);
 
-    // If the square towards the rook is blocked according to legality_info, then we may now castle
-    // as it would pass us through check
+    // If any of the squares the king would slide through is attacked then we may not castle there
     int move_offset =   is_kside ? 1 : -1;
-    if (utils::get_bit(legality_info.king_blocked_moves_mask, from_sq + move_offset)) {
+    if (utils::get_bit(legality_info.king_blocked_moves_mask, from_sq + move_offset) ||
+        utils::get_bit(legality_info.king_blocked_moves_mask, from_sq + 2 * move_offset)) {
         return;
     }
 

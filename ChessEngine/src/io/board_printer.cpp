@@ -22,7 +22,7 @@ void BoardPrinter::fill_boards()
         bitboard bb = pos_.bbs.get_bb_from_idx(i);
         char piece_char = model::Piece::get_char_from_type(piece_type);
 
-        for (sq_idx sq = 0; sq < 64; sq++) {
+        for (sq_t sq = 0; sq < 64; sq++) {
             if ((bb >> sq) & 1) {
                 int row = sq / 8;
                 int col = sq % 8;
@@ -33,7 +33,7 @@ void BoardPrinter::fill_boards()
 
     board_pm_ = std::vector<std::vector<char>>(8, std::vector<char>(8, ' '));
     
-    for (sq_idx sq = 0; sq < 64; sq++) {
+    for (sq_t sq = 0; sq < 64; sq++) {
         int row = sq / 8;
         int col = sq % 8;
         board_pm_[row][col] = model::Piece::get_char_from_type(pos_.piece_map.get_piece_type_at(sq));

@@ -1,11 +1,11 @@
 namespace model {
 
-inline void OccupancyMasks::set_w_pieces_bit(sq_idx sq) 
+inline void OccupancyMasks::set_w_pieces_bit(sq_t sq) 
 {
     w_pieces_mask_ |= (1ULL << sq);
 }
 
-inline void OccupancyMasks::clear_w_pieces_bit(sq_idx sq) 
+inline void OccupancyMasks::clear_w_pieces_bit(sq_t sq) 
 {
     w_pieces_mask_ &= ~(1ULL << sq);
 }
@@ -15,12 +15,12 @@ inline const bitmask& OccupancyMasks::get_w_pieces_mask() const
     return w_pieces_mask_;
 }
 
-inline void OccupancyMasks::set_b_pieces_bit(sq_idx sq) 
+inline void OccupancyMasks::set_b_pieces_bit(sq_t sq) 
 {
     b_pieces_mask_ |= (1ULL << sq);
 }
 
-inline void OccupancyMasks::clear_b_pieces_bit(sq_idx sq) 
+inline void OccupancyMasks::clear_b_pieces_bit(sq_t sq) 
 {
     b_pieces_mask_ &= ~(1ULL << sq);
 }

@@ -15,7 +15,7 @@ MoveRetractor::MoveRetractor(model::Position& pos, ZHasher& z_hasher)
 
 void MoveRetractor::unmake_castle_move(bool was_kside)
 {
-    sq_idx king_from_sq, king_to_sq, rook_from_sq, rook_to_sq;
+    sq_t king_from_sq, king_to_sq, rook_from_sq, rook_to_sq;
     bool was_white = !pos_.is_w;
 
     if (was_white) {
@@ -66,7 +66,7 @@ void MoveRetractor::unmake_castle_move(bool was_kside)
 
 void MoveRetractor::remove_previously_moved_piece_from_board(
     const model::Move& move,
-    sq_idx to_sq,
+    sq_t to_sq,
     model::Piece::Type previously_moved_piece_type) 
 {
     bool was_white = !pos_.is_w;
@@ -90,8 +90,8 @@ void MoveRetractor::remove_previously_moved_piece_from_board(
 
 void MoveRetractor::place_back_captured_piece_on_board(
     bool is_ep,
-    sq_idx capture_sq,
-    sq_idx to_sq,
+    sq_t capture_sq,
+    sq_t to_sq,
     model::Piece::Type previously_captured_piece_type) 
 {
     bool was_white = !pos_.is_w;
@@ -109,7 +109,7 @@ void MoveRetractor::place_back_captured_piece_on_board(
 }
 
 void MoveRetractor::place_back_moved_piece_on_board(
-    sq_idx from_sq, 
+    sq_t from_sq, 
     model::Piece::Type  moved_piece_type)
 {
     bool was_white = !pos_.is_w;
@@ -123,7 +123,7 @@ void MoveRetractor::place_back_moved_piece_on_board(
 
 model::Piece::Type MoveRetractor::determine_moved_piece_type(
     const model::Move& move, 
-    sq_idx to_sq) const
+    sq_t to_sq) const
 {
     bool was_white = !pos_.is_w;
 
@@ -163,8 +163,8 @@ void MoveRetractor::unmake_move(
     // Get the from and to idxs
     // Things get a bit tricky here because the move is being unmade, and so
     // we are "moving to" the from square and "moving from" the to square
-    sq_idx from_sq = previous_move.from();
-    sq_idx to_sq   = previous_move.to();
+    sq_t from_sq = previous_move.from();
+    sq_t to_sq   = previous_move.to();
 
     // Determine the piece type of the piece that was previously moved,
     // takes into consideration if the move was a promotion
@@ -176,7 +176,7 @@ void MoveRetractor::unmake_move(
     // We place back the captured piece if there was one
     if (previous_move.is_any_capture()) {
        // Calculate the index of the previously captured piece, might be EP
-        sq_idx capture_sq = utils::determine_capture_sq(previous_move, was_white);
+        sq_t capture_sq = utils::determine_capture_sq(previous_move, was_white);
 
         place_back_captured_piece_on_board(previous_move.is_ep_capture(), capture_sq, to_sq, undo_info.captured_piece_type);
     } else {

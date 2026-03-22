@@ -24,7 +24,7 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
                                   : pos_.bbs.get_b_pawns_bb();
 
 
-    utils::controlled_for_each_bit(pawns_bb, [&](sq_idx pawn_sq) {
+    utils::controlled_for_each_bit(pawns_bb, [&](sq_t pawn_sq) {
         bitmask attack_mask_straight = pos_.is_w ? attack_tables::w_pawn_quiet[pawn_sq]
                                                  : attack_tables::b_pawn_quiet[pawn_sq];
 
@@ -72,7 +72,7 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
             
             // There can only be at most one legal move in check for a pawn
             if (check_stopping_moves != 0ULL) {
-                sq_idx capture_sq = utils::lsb_idx(check_stopping_moves);
+                sq_t capture_sq = utils::lsb_idx(check_stopping_moves);
                 if (can_promote) {
                     movelist.add_move(model::Move(pawn_sq, capture_sq, model::Move::QUEEN_PROMO_CAPTURE_FLAG));
                     movelist.add_move(model::Move(pawn_sq, capture_sq, model::Move::ROOK_PROMO_CAPTURE_FLAG));
@@ -90,7 +90,7 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
             quiet_moves_mask &= legality_info.check_response_mask;
             
             if (quiet_moves_mask != 0ULL) {
-                sq_idx to_sq = utils::lsb_idx(quiet_moves_mask);
+                sq_t to_sq = utils::lsb_idx(quiet_moves_mask);
                 bool double_pawn_push = std::abs(pawn_sq - to_sq) == 16; 
 
                 if (double_pawn_push) {
@@ -125,7 +125,7 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
                 movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(quiet_moves_mask), model::Move::DOUBLE_PAWN_PUSH_FLAG));                
             }
         } else if (utils::pop_count(quiet_moves_mask) == 1 && utils::lsb_idx(quiet_moves_mask) == pawn_sq + offset) {
-            sq_idx to_sq = pawn_sq + offset;
+            sq_t to_sq = pawn_sq + offset;
             // Only add them move it is direcly in front of the pawn, to avoid jumping over pieces
             if (can_promote) {
                 movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::KNIGHT_PROMO_FLAG));
@@ -138,7 +138,7 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
             }
         }
 
-        utils::for_each_bit(capture_moves_mask, [&](sq_idx to_sq) {
+        utils::for_each_bit(capture_moves_mask, [&](sq_t to_sq) {
             if (can_promote) {
                 movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::QUEEN_PROMO_CAPTURE_FLAG));
                 movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::ROOK_PROMO_CAPTURE_FLAG));

@@ -6,7 +6,7 @@ namespace
 {
 
 // Builds up all white quiete pawn moves
-bitmask get_w_pawn_quiet_attack_mask(sq_idx sq) 
+bitmask get_w_pawn_quiet_attack_mask(sq_t sq) 
 {
     bitmask w_quiet_attack_mask = 0ULL;
 
@@ -23,7 +23,7 @@ bitmask get_w_pawn_quiet_attack_mask(sq_idx sq)
 }
 
 // Builds up all black quiete pawn moves
-bitmask get_b_pawn_quiet_attack_mask(sq_idx sq) 
+bitmask get_b_pawn_quiet_attack_mask(sq_t sq) 
 {
     bitmask b_quiet_attack_mask = 0ULL;
 
@@ -40,7 +40,7 @@ bitmask get_b_pawn_quiet_attack_mask(sq_idx sq)
 }
 
 // Builds up all pawn capture moves without considering wrapping around the board
-bitmask get_w_pawn_capture_attack_mask(sq_idx sq) 
+bitmask get_w_pawn_capture_attack_mask(sq_t sq) 
 {
     bitmask capture_attack_mask = 0ULL;
 
@@ -54,7 +54,7 @@ bitmask get_w_pawn_capture_attack_mask(sq_idx sq)
 }
 
 // Builds up all pawn capture moves without considering wrapping around the board
-bitmask get_b_pawn_capture_attack_mask(sq_idx sq) 
+bitmask get_b_pawn_capture_attack_mask(sq_t sq) 
 {
     bitmask capture_attack_mask = 0ULL;
     
@@ -68,7 +68,7 @@ bitmask get_b_pawn_capture_attack_mask(sq_idx sq)
 }
 
 // Applies reversed file masks to attack_mask to prevent looping around the board
-void remove_wrap_around_from_capture_attack_mask(bitmask& capture_attack_mask, sq_idx sq) 
+void remove_wrap_around_from_capture_attack_mask(bitmask& capture_attack_mask, sq_t sq) 
 {
     bitmask all_files_except_a_mask = ~logic::utils::get_file_mask(0);
     bitmask all_files_except_h_mask = ~logic::utils::get_file_mask(7);
@@ -89,7 +89,7 @@ namespace logic::attack_tables {
 
 void fill_w_pawn_capture_attack_table(attack_table& w_pawn_capture_attack_table) 
 {
-    for (sq_idx sq = 0; sq < 64; sq++) {
+    for (sq_t sq = 0; sq < 64; sq++) {
         bitmask pawn_capture_attack_mask = get_w_pawn_capture_attack_mask(sq);
         remove_wrap_around_from_capture_attack_mask(pawn_capture_attack_mask, sq);
         w_pawn_capture_attack_table[sq] = pawn_capture_attack_mask;
@@ -98,7 +98,7 @@ void fill_w_pawn_capture_attack_table(attack_table& w_pawn_capture_attack_table)
 
 void fill_b_pawn_capture_attack_table(attack_table& b_pawn_capture_attack_table) 
 {
-    for (sq_idx sq = 0; sq < 64; sq++) {
+    for (sq_t sq = 0; sq < 64; sq++) {
         bitmask pawn_capture_attack_mask = get_b_pawn_capture_attack_mask(sq);
         remove_wrap_around_from_capture_attack_mask(pawn_capture_attack_mask, sq);
         b_pawn_capture_attack_table[sq] = pawn_capture_attack_mask;
@@ -107,14 +107,14 @@ void fill_b_pawn_capture_attack_table(attack_table& b_pawn_capture_attack_table)
 
 void fill_w_pawn_quiet_attack_table(attack_table& w_pawn_quiet_attack_table) 
 {
-    for (sq_idx sq = 0; sq < 64; sq++) {
+    for (sq_t sq = 0; sq < 64; sq++) {
         w_pawn_quiet_attack_table[sq] = get_w_pawn_quiet_attack_mask(sq);
     }
 }
 
 void fill_b_pawn_quiet_attack_table(attack_table& b_pawn_quiet_attack_table) 
 {
-    for (sq_idx sq = 0; sq < 64; sq++) {
+    for (sq_t sq = 0; sq < 64; sq++) {
         b_pawn_quiet_attack_table[sq] = get_b_pawn_quiet_attack_mask(sq);
     }
 }

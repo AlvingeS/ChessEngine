@@ -12,8 +12,8 @@ namespace logic::utils
 {
 
 // Old logic::bits
-void set_bit(bitmask& mask, sq_idx i);
-bool get_bit(bitmask mask, sq_idx i);
+void set_bit(bitmask& mask, sq_t i);
+bool get_bit(bitmask mask, sq_t i);
 int lsb_idx(bitmask mask); 
 int msb_idx(bitmask mask);
 int pop_count(bitmask mask);
@@ -21,8 +21,8 @@ int pop_count(bitmask mask);
 // Old logic::chess_utils
 bitmask get_file_mask(int file);
 bitmask get_rank_mask(int rank);
-int rank_from_sq(sq_idx sq);
-int file_from_sq(sq_idx sq);
+int rank_from_sq(sq_t sq);
+int file_from_sq(sq_t sq);
 
 // Old logic::move_utils
 model::Piece::Type get_promotion_piece_type(int promotionFlag, bool is_w);

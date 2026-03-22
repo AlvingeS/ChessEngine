@@ -57,8 +57,8 @@ model::Move notation_to_move(const std::string& notation, const model::PieceMap 
     if (notation.length() == 5)
         promo_to_piece = notation[4];
 
-    sq_idx from_sq = io::utils::sq_from_notation(from);
-    sq_idx to_sq = io::utils::sq_from_notation(to);
+    sq_t from_sq = io::utils::sq_from_notation(from);
+    sq_t to_sq = io::utils::sq_from_notation(to);
 
     model::Piece::Type piece_type_from = pm.get_piece_type_at(from_sq);
     model::Piece::Type piece_type_to = pm.get_piece_type_at(to_sq);

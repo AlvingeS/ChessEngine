@@ -19,7 +19,7 @@ class ZHasher {
     ZHasher(const model::Position& pos, std::optional<uint64_t> seed = std::nullopt);
     void hash_from_position(const model::Position& pos);
 
-    void xor_piece_type_at(sq_idx sq, model::Piece::Type piece_type);
+    void xor_piece_type_at(sq_t sq, model::Piece::Type piece_type);
     void update_castle_rights(castle_rights old_rights, castle_rights new_rights);
     void xor_castle_right(CastleRightsType c_rights_type);
     void xor_ep_file_at(int file_idx);

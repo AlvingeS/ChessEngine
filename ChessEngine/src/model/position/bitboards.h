@@ -14,8 +14,8 @@ public:
 
     const bitboard& get_bb_from_idx(int idx) const;
     
-    void clear_piece_type_bit(sq_idx sq, Piece::Type piece_type);
-    void set_piece_type_bit(sq_idx sq, Piece::Type piece_type);
+    void clear_piece_type_bit(sq_t sq, Piece::Type piece_type);
+    void set_piece_type_bit(sq_t sq, Piece::Type piece_type);
     void reset_bitboards();
 
     // Set, clear and get for all individual piece types / bbs

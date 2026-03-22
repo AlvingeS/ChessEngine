@@ -89,9 +89,9 @@ void CastleGen::gen_single_castle_move(
     int move_flag = is_kside ? model::Move::KING_CASTLE_FLAG 
                              : model::Move::QUEEN_CASTLE_FLAG;
 
-    sq_idx from_sq = pos_.is_w ? constants::W_KING_START_SQ : constants::B_KING_START_SQ;
+    sq_t from_sq = pos_.is_w ? constants::W_KING_START_SQ : constants::B_KING_START_SQ;
 
-    sq_idx to_sq   = pos_.is_w ? (is_kside ? constants::W_KSIDE_KING_CASTLE_TO_SQ : constants::W_QSIDE_KING_CASTLE_TO_SQ)
+    sq_t to_sq   = pos_.is_w ? (is_kside ? constants::W_KSIDE_KING_CASTLE_TO_SQ : constants::W_QSIDE_KING_CASTLE_TO_SQ)
                                : (is_kside ? constants::B_KSIDE_KING_CASTLE_TO_SQ : constants::B_QSIDE_KING_CASTLE_TO_SQ);
 
     // If any of the squares the king would slide through is attacked then we may not castle there

@@ -6,7 +6,7 @@ typedef uint64_t bitboard;
 typedef uint64_t bitmask;
 typedef bitmask attack_table[64];
 typedef bitmask ray_attack_table[64][8];
-typedef int sq_idx;
+typedef int sq_t;
 typedef unsigned char castle_rights;
 
 // enum LineDir : int {N = 0, E = 1, S = 2, W = 3};

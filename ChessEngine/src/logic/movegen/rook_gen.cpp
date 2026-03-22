@@ -26,7 +26,7 @@ void RookGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
     bitboard bb = pos_.is_w ? pos_.bbs.get_w_rooks_bb()
                             : pos_.bbs.get_b_rooks_bb();
 
-    utils::for_each_bit(bb, [&](sq_idx sq) {
+    utils::for_each_bit(bb, [&](sq_t sq) {
         rays::add_moves_from_ray(Direction::N,  true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
         rays::add_moves_from_ray(Direction::E,  true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
         rays::add_moves_from_ray(Direction::S,  false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);

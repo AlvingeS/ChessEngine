@@ -26,7 +26,7 @@ ZHasher::ZHasher(const model::Position& pos, std::optional<uint64_t> seed)
     );
 
     // Generate random numbers for board/piece table
-    for (sq_idx sq = 0; sq < 64; sq++) {
+    for (sq_t sq = 0; sq < 64; sq++) {
         for (size_t j = 0; j < 12; j++) {
             square_piece_type_keys[sq][j] = dis(gen);
         }
@@ -53,7 +53,7 @@ void ZHasher::hash_from_position(const model::Position& pos)
     z_hash_ = 0ULL;
 
     // XOR each square with a piece on it from square_piece_type_keys
-    for (sq_idx sq = 0; sq < 64; sq++) {
+    for (sq_t sq = 0; sq < 64; sq++) {
         model::Piece::Type piece_type = pos.piece_map.get_piece_type_at(sq);
 
         if (piece_type != model::Piece::Type::EMPTY)

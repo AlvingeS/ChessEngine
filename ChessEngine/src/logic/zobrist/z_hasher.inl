@@ -1,6 +1,6 @@
 namespace logic {
 
-inline void ZHasher::xor_piece_type_at(sq_idx sq, model::Piece::Type piece_type)
+inline void ZHasher::xor_piece_type_at(sq_t sq, model::Piece::Type piece_type)
 {
     z_hash_ ^= square_piece_type_keys[sq][static_cast<int>(piece_type)];
 }

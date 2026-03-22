@@ -15,7 +15,7 @@ namespace logic::rays {
 void add_moves_from_ray(
     Direction dir,
     bool blocker_on_lsb,
-    sq_idx piece_sq,
+    sq_t piece_sq,
     model::Movelist& movelist,
     bitmask occupied_squares_mask,
     bitmask opponent_squares_mask,
@@ -45,7 +45,7 @@ void add_moves_from_ray(
         }
     
         // If there are no blockers, add all moves from unhindered ray
-        utils::for_each_bit(unhindered_ray, [&](sq_idx to_sq) {
+        utils::for_each_bit(unhindered_ray, [&](sq_t to_sq) {
             movelist.add_move(model::Move(piece_sq, to_sq, model::Move::QUIET_FLAG));
         });
 
@@ -53,7 +53,7 @@ void add_moves_from_ray(
     }
 
     // Now we handle if the blocker mask != 0ULL
-    sq_idx first_blocker_sq = blocker_on_lsb ? utils::lsb_idx(blockers_mask) 
+    sq_t first_blocker_sq = blocker_on_lsb ? utils::lsb_idx(blockers_mask) 
                                              : utils::msb_idx(blockers_mask);
     bitmask first_blocker_mask = 0ULL;
     if (blockers_mask != 0ULL) {
@@ -84,7 +84,7 @@ void add_moves_from_ray(
         return;
     }  else {
         // Add all moves upp until blocker
-        utils::for_each_bit(ray_between_piece_and_first_blocker, [&](sq_idx to_sq) {
+        utils::for_each_bit(ray_between_piece_and_first_blocker, [&](sq_t to_sq) {
             movelist.add_move(model::Move(piece_sq, to_sq, model::Move::QUIET_FLAG));
         });
     
@@ -96,7 +96,7 @@ void add_moves_from_ray(
 }
 
 RayCheckDetectionResult detect_check_in_ray(
-    sq_idx king_idx,
+    sq_t king_idx,
     Direction dir,
     bool blocker_on_lsb,
     bitmask opp_bishops_and_queens_mask,
@@ -120,22 +120,22 @@ RayCheckDetectionResult detect_check_in_ray(
     // one blocker, then it must be an opponent bishop/queen and we must be in check.
     // There cannot be a pinned piece.
     if (utils::pop_count(blockers_mask) == 1) {
-        result.checker_sq_idx = utils::lsb_idx(blockers_mask);
-        result.check_mask = create_check_response_mask(king_idx, result.checker_sq_idx.value(), dir, true);
+        result.checker_sq = utils::lsb_idx(blockers_mask);
+        result.check_mask = create_check_response_mask(king_idx, result.checker_sq.value(), dir, true);
         return result;
     }
 
     // We know now that there are >=2 pieces on the ray.
     // If the first blocker is an opp bishop or queen, we are in check, nothing more to do.
-    sq_idx first_blocker_sq = blocker_on_lsb ? utils::lsb_idx(blockers_mask)
+    sq_t first_blocker_sq = blocker_on_lsb ? utils::lsb_idx(blockers_mask)
                                              : utils::msb_idx(blockers_mask);
 
-    sq_idx first_opp_bishop_or_queen_sq = blocker_on_lsb ? utils::lsb_idx(opp_bishops_and_queens_blocker_mask)
+    sq_t first_opp_bishop_or_queen_sq = blocker_on_lsb ? utils::lsb_idx(opp_bishops_and_queens_blocker_mask)
                                                          : utils::msb_idx(opp_bishops_and_queens_blocker_mask);
 
     if (first_blocker_sq == first_opp_bishop_or_queen_sq) {
-        result.checker_sq_idx = first_blocker_sq;
-        result.check_mask = create_check_response_mask(king_idx, result.checker_sq_idx.value(), dir, true);
+        result.checker_sq = first_blocker_sq;
+        result.check_mask = create_check_response_mask(king_idx, result.checker_sq.value(), dir, true);
         return result;
     }
 
@@ -156,19 +156,19 @@ RayCheckDetectionResult detect_check_in_ray(
     bitmask ray_after_first_blocker = attack_tables::rays[first_blocker_sq][dir];
     bitmask blockers_after_first = ray_after_first_blocker & (own_pieces_mask | opp_pieces_mask);
 
-    sq_idx second_blocker_sq = blocker_on_lsb
+    sq_t second_blocker_sq = blocker_on_lsb
         ? utils::lsb_idx(blockers_after_first)
         : utils::msb_idx(blockers_after_first);
 
     if (second_blocker_sq == first_opp_bishop_or_queen_sq) {
-        result.pinned_piece_sq_idx = first_blocker_sq;
+        result.pinned_piece_sq = first_blocker_sq;
         result.pin_ray = create_check_response_mask(king_idx, second_blocker_sq, dir, true);
     }
 
     return result;
 }
 
-bitmask create_check_response_mask(sq_idx king_idx, sq_idx blocker_idx, Direction dir, bool include_blocker)
+bitmask create_check_response_mask(sq_t king_idx, sq_t blocker_idx, Direction dir, bool include_blocker)
 {
     bitmask attack_mask = attack_tables::rays[king_idx][dir] &
                          ~attack_tables::rays[blocker_idx][dir];

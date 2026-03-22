@@ -1,12 +1,12 @@
 namespace logic::utils
 {
 
-inline void set_bit(bitmask& mask, sq_idx i) 
+inline void set_bit(bitmask& mask, sq_t i) 
 {
     mask |= (1ULL << i);    
 }
 
-inline bool get_bit(bitmask mask, sq_idx i) 
+inline bool get_bit(bitmask mask, sq_t i) 
 {
     return (mask >> i) & 1;
 }
@@ -36,12 +36,12 @@ inline bitmask get_rank_mask(int rank)
     return logic::masks::RANK_MASK[rank];
 }
 
-inline int rank_from_sq(sq_idx sq) 
+inline int rank_from_sq(sq_t sq) 
 {
     return sq / 8;
 }
 
-inline int file_from_sq(sq_idx sq) 
+inline int file_from_sq(sq_t sq) 
 {
     return sq % 8;
 }

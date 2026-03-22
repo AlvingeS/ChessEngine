@@ -3,7 +3,7 @@
 namespace io::utils
 {
 
-sq_idx sq_from_notation(const std::string& notation)
+sq_t sq_from_notation(const std::string& notation)
 {
     char file = notation[0];
     int row_idx = (notation[1] - '0') - 1;

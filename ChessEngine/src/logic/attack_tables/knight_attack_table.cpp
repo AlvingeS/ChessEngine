@@ -6,7 +6,7 @@ namespace
 {
 
 // Builds up all knight moves without considering wrapping around the board
-bitmask get_knight_attack_mask(sq_idx sq) 
+bitmask get_knight_attack_mask(sq_t sq) 
 {
     bitmask attack_mask = 0ULL;
 
@@ -23,7 +23,7 @@ bitmask get_knight_attack_mask(sq_idx sq)
 }
 
 // Applies reversed file masks to attack_mask to prevent looping around the board
-void remove_wrap_around_from_attack_mask(bitmask& attack_mask, sq_idx sq) 
+void remove_wrap_around_from_attack_mask(bitmask& attack_mask, sq_t sq) 
 {
     bitmask a_file_mask = logic::utils::get_file_mask(0);
     bitmask b_file_mask = logic::utils::get_file_mask(1);
@@ -51,7 +51,7 @@ namespace logic::attack_tables {
 
 void fill_knight_attack_table(attack_table& knight_attack_table) 
 {
-    for (sq_idx sq = 0; sq < 64; sq++) {
+    for (sq_t sq = 0; sq < 64; sq++) {
         bitmask knight_attack_mask = get_knight_attack_mask(sq);
         remove_wrap_around_from_attack_mask(knight_attack_mask, sq);
         knight_attack_table[sq] = knight_attack_mask;

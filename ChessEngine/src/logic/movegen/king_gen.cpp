@@ -16,7 +16,7 @@ KingGen::KingGen(const model::Position& pos)
 
 void KingGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info) 
 {
-    sq_idx king_sq = utils::lsb_idx(pos_.is_w ? pos_.bbs.get_w_king_bb()
+    sq_t king_sq = utils::lsb_idx(pos_.is_w ? pos_.bbs.get_w_king_bb()
                                               : pos_.bbs.get_b_king_bb());
 
     bitmask legal_moves      = king_attack_table_[king_sq] & legality_info.king_response_mask;
@@ -27,11 +27,11 @@ void KingGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
 
     bitmask capture_moves_mask = legal_moves & opp_pieces_mask;
 
-    utils::for_each_bit(quiet_moves_mask, [&](sq_idx to_sq)  {
+    utils::for_each_bit(quiet_moves_mask, [&](sq_t to_sq)  {
         movelist.add_move(model::Move(king_sq, to_sq, model::Move::QUIET_FLAG));
     });
 
-    utils::for_each_bit(capture_moves_mask, [&](sq_idx to_sq) {
+    utils::for_each_bit(capture_moves_mask, [&](sq_t to_sq) {
         movelist.add_move(model::Move(king_sq, to_sq, model::Move::CAPTURE_FLAG));
     });
 }

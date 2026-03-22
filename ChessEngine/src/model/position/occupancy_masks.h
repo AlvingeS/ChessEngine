@@ -16,10 +16,10 @@ public:
     const bitmask& get_occupied_squares_mask() const;
     const bitmask& get_free_squares_mask() const;
     
-    void set_w_pieces_bit(sq_idx sq);
-    void clear_w_pieces_bit(sq_idx sq);
-    void set_b_pieces_bit(sq_idx sq);
-    void clear_b_pieces_bit(sq_idx sq);
+    void set_w_pieces_bit(sq_t sq);
+    void clear_w_pieces_bit(sq_t sq);
+    void set_b_pieces_bit(sq_t sq);
+    void clear_b_pieces_bit(sq_t sq);
     void update_occupancy_masks();
     void fill_w_pieces_mask_from_bbs(const Bitboards& bbs);
     void fill_b_pieces_mask_from_bbs(const Bitboards& bbs);

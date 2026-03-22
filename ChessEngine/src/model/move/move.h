@@ -41,7 +41,7 @@ public:
 
     Move() noexcept = default;
 
-    Move(sq_idx from, sq_idx to, int flag) noexcept
+    Move(sq_t from, sq_t to, int flag) noexcept
         : val_(
             ((from & FROM_MASK) << FROM_SHIFT) |
             ((to   & TO_MASK)   << TO_SHIFT)   |
@@ -68,12 +68,12 @@ public:
         return (val_ >> FLAG_SHIFT) & FLAG_MASK;
     }
 
-    [[nodiscard]] constexpr sq_idx from() const noexcept
+    [[nodiscard]] constexpr sq_t from() const noexcept
     {
         return (val_ >> FROM_SHIFT) & FROM_MASK;
     }
 
-    [[nodiscard]] constexpr sq_idx to() const noexcept
+    [[nodiscard]] constexpr sq_t to() const noexcept
     {
         return (val_ >> TO_SHIFT) & TO_MASK;
     }

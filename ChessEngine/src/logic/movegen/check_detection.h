@@ -49,8 +49,8 @@ public:
     bool in_check() const;
     
 private:
-    void reverse_raycast(sq_idx king_sq, LegalityInfo& legality_info, bool actual_king_sq, std::optional<bool> is_w_override = std::nullopt) const;
-    void handle_ray_check_detection_result(const rays::RayCheckDetectionResult& result, LegalityInfo& legality_info, Direction dir, sq_idx king_sq, bool actual_king_sq) const;
+    void reverse_raycast(sq_t king_sq, LegalityInfo& legality_info, bool actual_king_sq, std::optional<bool> is_w_override = std::nullopt) const;
+    void handle_ray_check_detection_result(const rays::RayCheckDetectionResult& result, LegalityInfo& legality_info, Direction dir, sq_t king_sq, bool actual_king_sq) const;
     
     const model::Position& pos_;
 };

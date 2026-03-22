@@ -6,7 +6,7 @@ namespace
 {
 
 // Builds up all king moves without considering wrapping around the board
-bitmask get_king_attack_mask(sq_idx sq) 
+bitmask get_king_attack_mask(sq_t sq) 
 {
     bitmask attack_mask = 0ULL;
 
@@ -23,7 +23,7 @@ bitmask get_king_attack_mask(sq_idx sq)
 }
 
 // Applies reversed file masks to attack_mask to prevent looping around the board
-void remove_wrap_around_from_attack_mask(bitmask& attack_mask, sq_idx sq) 
+void remove_wrap_around_from_attack_mask(bitmask& attack_mask, sq_t sq) 
 {
     bitmask all_files_except_a_mask = ~logic::utils::get_file_mask(0);
     bitmask all_files_except_h_mask = ~logic::utils::get_file_mask(7);
@@ -44,7 +44,7 @@ namespace logic::attack_tables {
 
 void fill_king_attack_table(attack_table& king_attack_table) 
 {
-    for (sq_idx sq = 0; sq < 64; sq++) {
+    for (sq_t sq = 0; sq < 64; sq++) {
         bitmask king_attack_mask = get_king_attack_mask(sq);
         remove_wrap_around_from_attack_mask(king_attack_mask, sq);
         king_attack_table[sq] = king_attack_mask;

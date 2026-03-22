@@ -31,7 +31,7 @@ void BishopGen::generate(model::Movelist& movelist, const LegalityInfo& legality
     bitboard bb = pos_.is_w ? pos_.bbs.get_w_bishops_bb()
                             : pos_.bbs.get_b_bishops_bb();
 
-    utils::for_each_bit(bb, [&](sq_idx sq) {
+    utils::for_each_bit(bb, [&](sq_t sq) {
         rays::add_moves_from_ray(Direction::NE, true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
         rays::add_moves_from_ray(Direction::SE, false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
         rays::add_moves_from_ray(Direction::SW, false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);

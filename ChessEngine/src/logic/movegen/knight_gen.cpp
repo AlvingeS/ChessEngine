@@ -23,7 +23,7 @@ void KnightGen::generate(model::Movelist& movelist, const LegalityInfo& legality
     bitboard knights_bb = pos_.is_w ? pos_.bbs.get_w_knights_bb()
                                     : pos_.bbs.get_b_knights_bb();
 
-    utils::controlled_for_each_bit(knights_bb, [&](sq_idx knight_sq)  {
+    utils::controlled_for_each_bit(knights_bb, [&](sq_t knight_sq)  {
         // A pinned knight cannot move
         if (utils::get_bit(legality_info.pinned_mask, knight_sq)) {
             return LoopControl::Continue;
@@ -41,11 +41,11 @@ void KnightGen::generate(model::Movelist& movelist, const LegalityInfo& legality
         
         bitmask capture_moves_mask = legal_moves & opp_pieces_mask;
     
-        utils::for_each_bit(quiet_moves_mask, [&](sq_idx to_sq) {
+        utils::for_each_bit(quiet_moves_mask, [&](sq_t to_sq) {
             movelist.add_move(model::Move(knight_sq, to_sq, model::Move::QUIET_FLAG));
         });
 
-        utils::for_each_bit(capture_moves_mask, [&](sq_idx to_sq) {
+        utils::for_each_bit(capture_moves_mask, [&](sq_t to_sq) {
             movelist.add_move(model::Move(knight_sq, to_sq, model::Move::CAPTURE_FLAG));
         });
 

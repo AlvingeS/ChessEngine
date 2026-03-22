@@ -26,16 +26,12 @@ private:
     void make_castle_move(bool is_kside);
     void store_state(UndoInfo& undo_info);
 
-    model::Piece::Type remove_moved_piece_from_board(sq_idx from_sq);
+    model::Piece::Type remove_moved_piece_from_board(sq_t from_sq);
 
-    void remove_captured_piece_from_board(
-        bool is_ep, 
-        sq_idx capture_sq, 
-        model::Piece::Type captured_piece_type
-    );
+    void remove_captured_piece_from_board(sq_t capture_sq, model::Piece::Type captured_piece_type);
 
     void place_moved_piece_on_board(
-        sq_idx to_sq,
+        sq_t to_sq,
         model::Piece::Type moved_piece_type
     );
 

@@ -49,7 +49,7 @@ LegalityInfo CheckDetection::generate_legality_info() const
 {
     LegalityInfo legality_info{};
 
-    sq_idx king_sq = utils::lsb_idx(pos_.is_w ? pos_.bbs.get_w_king_bb()
+    sq_t king_sq = utils::lsb_idx(pos_.is_w ? pos_.bbs.get_w_king_bb()
                                               : pos_.bbs.get_b_king_bb());
 
 
@@ -86,12 +86,12 @@ LegalityInfo CheckDetection::generate_legality_info() const
     return legality_info;
 }
 
-void CheckDetection::handle_ray_check_detection_result(const rays::RayCheckDetectionResult& result, LegalityInfo& legality_info, Direction dir, sq_idx king_sq, bool actual_king_sq) const
+void CheckDetection::handle_ray_check_detection_result(const rays::RayCheckDetectionResult& result, LegalityInfo& legality_info, Direction dir, sq_t king_sq, bool actual_king_sq) const
 {
-    if (result.checker_sq_idx.has_value()) {        
+    if (result.checker_sq.has_value()) {        
         if (actual_king_sq) {
             // We are in check, set the position of the checker and update check response mask
-            utils::set_bit(legality_info.checkers_mask, result.checker_sq_idx.value());
+            utils::set_bit(legality_info.checkers_mask, result.checker_sq.value());
             legality_info.check_response_mask = result.check_mask.value();
 
             // Mark that the direction of the check is a blocked movement for the king
@@ -143,14 +143,14 @@ void CheckDetection::handle_ray_check_detection_result(const rays::RayCheckDetec
         return;
     }
 
-    if (result.pinned_piece_sq_idx.has_value()) {
+    if (result.pinned_piece_sq.has_value()) {
         // Set which square has a pinned piece, and add the pin pask for that square
-        utils::set_bit(legality_info.pinned_mask, result.pinned_piece_sq_idx.value());
-        legality_info.pin_rays[result.pinned_piece_sq_idx.value()] = result.pin_ray.value();
+        utils::set_bit(legality_info.pinned_mask, result.pinned_piece_sq.value());
+        legality_info.pin_rays[result.pinned_piece_sq.value()] = result.pin_ray.value();
     }   
 }
 
-void CheckDetection::reverse_raycast(sq_idx king_sq, LegalityInfo& legality_info, bool actual_king_sq, std::optional<bool> is_w_override) const
+void CheckDetection::reverse_raycast(sq_t king_sq, LegalityInfo& legality_info, bool actual_king_sq, std::optional<bool> is_w_override) const
 {
     bool is_w = is_w_override.value_or(pos_.is_w);
 
@@ -208,7 +208,7 @@ void CheckDetection::reverse_raycast(sq_idx king_sq, LegalityInfo& legality_info
     
     // If non-zero, we are in check from the knight
     if ((knight_attacking_king_mask) != 0) {
-        sq_idx knight_sq = utils::lsb_idx(knight_attacking_king_mask);
+        sq_t knight_sq = utils::lsb_idx(knight_attacking_king_mask);
         
         if (actual_king_sq) {
             // Set that we have a checker in the knight square and update check response mask
@@ -219,7 +219,7 @@ void CheckDetection::reverse_raycast(sq_idx king_sq, LegalityInfo& legality_info
             bitmask additional_knight_attack_mask = attack_tables::knight[knight_sq] & attack_tables::king[king_sq];
 
             if (additional_knight_attack_mask != 0ULL) {
-                sq_idx blocking_attack_sq = utils::lsb_idx(additional_knight_attack_mask);
+                sq_t blocking_attack_sq = utils::lsb_idx(additional_knight_attack_mask);
                 int dir = offset_to_dir(blocking_attack_sq - king_sq);
                 utils::set_bit(legality_info.king_blocked_moves_mask, blocking_attack_sq); 
                 legality_info.king_move_offset_response_checklist[dir].first = true;
@@ -241,7 +241,7 @@ void CheckDetection::reverse_raycast(sq_idx king_sq, LegalityInfo& legality_info
     bitmask pawn_attacking_king_mask = pawn_capture_mask & opp_pawns_mask;
 
     if (pawn_attacking_king_mask != 0) {
-        sq_idx pawn_sq = utils::lsb_idx(pawn_attacking_king_mask);
+        sq_t pawn_sq = utils::lsb_idx(pawn_attacking_king_mask);
         
         if (actual_king_sq) {
             utils::set_bit(legality_info.checkers_mask, pawn_sq);
@@ -253,20 +253,20 @@ void CheckDetection::reverse_raycast(sq_idx king_sq, LegalityInfo& legality_info
     }
 
     // Check if the opposing king is blocking movement for ours.
-    sq_idx opp_king_sq = utils::lsb_idx(is_w ? pos_.bbs.get_b_king_bb()
+    sq_t opp_king_sq = utils::lsb_idx(is_w ? pos_.bbs.get_b_king_bb()
                                              : pos_.bbs.get_w_king_bb());
 
     if (actual_king_sq) {
         bitmask blocked_squares = attack_tables::king[king_sq] & attack_tables::king[opp_king_sq];
         if (blocked_squares != 0ULL) {
     
-            utils::for_each_bit(blocked_squares, [&](sq_idx blocked_sq) {
+            utils::for_each_bit(blocked_squares, [&](sq_t blocked_sq) {
                 utils::set_bit(legality_info.king_blocked_moves_mask, blocked_sq);
             });
         }
     } else {
         // If the temporary move to this square brings us into check from opposing king, it is blocked
-        utils::controlled_for_each_bit(attack_tables::king[opp_king_sq], [&](sq_idx opp_king_move_sq) {
+        utils::controlled_for_each_bit(attack_tables::king[opp_king_sq], [&](sq_t opp_king_move_sq) {
             if (opp_king_move_sq == king_sq) {
                 utils::set_bit(legality_info.king_blocked_moves_mask, king_sq);
                 return LoopControl::Break;
@@ -284,7 +284,7 @@ bool CheckDetection::in_check() const {
     // and we need to check if the maker is left in check
     bool is_w = !pos_.is_w;
 
-    sq_idx king_sq = utils::lsb_idx(is_w ? pos_.bbs.get_w_king_bb()
+    sq_t king_sq = utils::lsb_idx(is_w ? pos_.bbs.get_w_king_bb()
                                          : pos_.bbs.get_b_king_bb());
 
     reverse_raycast(king_sq, legality_info, true, is_w);

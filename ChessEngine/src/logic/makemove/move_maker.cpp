@@ -38,8 +38,8 @@ UndoInfo MoveMaker::make_move(const model::Move& move)
     }
 
     // Get the from and to idxs
-    sq_idx from_sq = move.from();
-    sq_idx to_sq   = move.to();
+    sq_t from_sq = move.from();
+    sq_t to_sq   = move.to();
 
     // Pick up the piece from the from square and get the moved piece type
     model::Piece::Type moved_piece_type = remove_moved_piece_from_board(from_sq);
@@ -47,10 +47,10 @@ UndoInfo MoveMaker::make_move(const model::Move& move)
     // If the move is a capture, handle memory and remove the captured piece
     if (move.is_any_capture()) {
         // Calculate sq of captured piece, might be EP
-        sq_idx capture_sq = utils::determine_capture_sq(move, pos_.is_w);
+        sq_t capture_sq = utils::determine_capture_sq(move, pos_.is_w);
 
         model::Piece::Type captured_piece_type = pos_.piece_map.get_piece_type_at(capture_sq);
-        remove_captured_piece_from_board(move.is_ep_capture(), capture_sq, captured_piece_type);
+        remove_captured_piece_from_board(capture_sq, captured_piece_type);
         
         undo_info.captured_piece_type = captured_piece_type;
     }
@@ -211,7 +211,7 @@ void MoveMaker::update_castle_rights(const model::Move& move, UndoInfo& undo_inf
 
 void MoveMaker::make_castle_move(bool is_kside)
 {
-    sq_idx king_from_sq, king_to_sq, rook_from_sq, rook_to_sq;
+    sq_t king_from_sq, king_to_sq, rook_from_sq, rook_to_sq;
 
     if (pos_.is_w) {
         king_from_sq = constants::W_KING_START_SQ;
@@ -268,7 +268,7 @@ void MoveMaker::make_castle_move(bool is_kside)
     pos_.occ_masks.update_occupancy_masks();
 }
 
-model::Piece::Type MoveMaker::remove_moved_piece_from_board(sq_idx from_sq) 
+model::Piece::Type MoveMaker::remove_moved_piece_from_board(sq_t from_sq) 
 {
     // Determine the piece type of the piece being moved
     model::Piece::Type  moved_piece_type = pos_.piece_map.get_piece_type_at(from_sq);
@@ -287,7 +287,7 @@ model::Piece::Type MoveMaker::remove_moved_piece_from_board(sq_idx from_sq)
 }
 
 void MoveMaker::place_moved_piece_on_board(
-    sq_idx to_sq, 
+    sq_t to_sq, 
     model::Piece::Type moved_piece_type) 
 {
     pos_.bbs.set_piece_type_bit(to_sq, moved_piece_type);
@@ -299,7 +299,7 @@ void MoveMaker::place_moved_piece_on_board(
               : pos_.occ_masks.set_b_pieces_bit(to_sq);
 }
 
-void MoveMaker::remove_captured_piece_from_board(bool is_ep, sq_idx capture_sq, model::Piece::Type captured_piece_type)
+void MoveMaker::remove_captured_piece_from_board(sq_t capture_sq, model::Piece::Type captured_piece_type)
 {
     // Remove captured piece from models
     pos_.bbs.clear_piece_type_bit(capture_sq, captured_piece_type);

@@ -17,7 +17,7 @@ Perft::Perft(int max_depth)
     , z_hasher_(pos_)
     , move_maker_(logic::MoveMaker(pos_, z_hasher_))
     , move_retractor_(logic::MoveRetractor(pos_, z_hasher_))
-    , move_generator_(logic::MoveGen(pos_, move_maker_, move_retractor_))
+    , move_generator_(logic::MoveGen(pos_))
     , eval_(logic::Eval(pos_))
     , max_depth_(max_depth)
 {

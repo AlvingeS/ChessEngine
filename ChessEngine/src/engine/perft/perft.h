@@ -1,16 +1,14 @@
 #pragma once
 
-#include "logic/eval/eval.h"
-#include "logic/makemove/undo_info.h"
-
 #include "model/position/position.h"
+#include "model/move/movelist.h"
 #include "model/move/move.h"
 
+#include "logic/eval/eval.h"
+#include "logic/makemove/undo_info.h"
 #include "logic/movegen/move_gen.h"
-#include "model/move/movelist.h"
 #include "logic/makemove/move_maker.h"
 #include "logic/makemove/move_retractor.h"
-#include "logic/utils.h"
 
 #include "io/fen.h"
 

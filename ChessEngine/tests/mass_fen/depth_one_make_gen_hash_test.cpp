@@ -23,8 +23,10 @@ TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
 
         for (size_t i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
             auto move = pseudo_legal_moves.get_move_at(i);
-            if (move.value() == 0)
+
+            if (move.value() == 0) {
                 break;
+            }
 
             num_total_moves++;
 

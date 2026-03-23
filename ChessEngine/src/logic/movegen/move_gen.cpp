@@ -11,13 +11,8 @@
 
 namespace logic {
 
-MoveGen::MoveGen(
-    const model::Position& pos,
-    logic::MoveMaker& move_maker,
-    logic::MoveRetractor& move_retractor)
+MoveGen::MoveGen(const model::Position& pos)
     : pos_(pos)
-    , move_maker_(move_maker)
-    , move_retractor_(move_retractor)
     , check_detection_(pos)
     , rook_gen_(pos)
     , bishop_gen_(pos)
@@ -25,7 +20,7 @@ MoveGen::MoveGen(
     , knight_gen_(pos)
     , king_gen_(pos)
     , pawn_gen_(pos)
-    , castle_gen_(pos, move_maker, move_retractor, &check_detection_)
+    , castle_gen_(pos)
 {}
 
 LegalityInfo MoveGen::gen_moves(model::Movelist& movelist)
@@ -42,7 +37,7 @@ LegalityInfo MoveGen::gen_moves(model::Movelist& movelist)
     gen_pawn_moves(movelist, legality_info);
     gen_castle_moves(movelist, legality_info);
 
-    movelist.add_null_move(); // Add a null move to the end of the move list
+    movelist.add_null_move();
 
     return legality_info;
 }

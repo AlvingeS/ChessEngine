@@ -113,12 +113,12 @@ std::vector<TestPosition> build_perft_data()
     pos6.data[8] = {490154852788714LL};
 
     return {
-        // start_pos,
-        // pos2,
-        // pos3,
-        // pos4,
-        // pos5,
-        // pos6,
+        start_pos,
+        pos2,
+        pos3,
+        pos4,
+        pos5,
+        pos6,
         pos_exp,
         castle_brings_you_into_check_from_opp_king,
         double_pawn_push_check_ep_capture_blocked_by_pin,

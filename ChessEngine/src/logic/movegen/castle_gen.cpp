@@ -15,15 +15,8 @@
 
 namespace logic {
 
-CastleGen::CastleGen(
-    const model::Position& pos,
-    logic::MoveMaker& move_maker, 
-    logic::MoveRetractor& move_retractor, 
-    CheckDetection* check_detection)
+CastleGen::CastleGen(const model::Position& pos)
     : pos_(pos)
-    , move_maker_(move_maker)
-    , move_retractor_(move_retractor)
-    , check_detection_(check_detection) 
 {}
 
 void CastleGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info) 

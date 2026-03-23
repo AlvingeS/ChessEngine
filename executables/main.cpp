@@ -2,6 +2,7 @@
 #include "engine/perft/perft.h"
 #include "io/board_printer.h"
 #include "logic/utils.h"
+#include "engine/uci/uci.h"
 
 #include <iostream>
 #include <chrono>
@@ -14,9 +15,7 @@ struct space_separator : std::numpunct<char> {
     std::string do_grouping() const override { return "\003"; }
 };
 
-} // namespace
-
-int main() 
+void bench()
 {
     std::cout.imbue(std::locale(std::cout.getloc(), new space_separator()));
 
@@ -101,8 +100,6 @@ int main()
     // Start clock
     auto start = std::chrono::high_resolution_clock::now();
 
-    logic::attack_tables::init_attack_tables();
-
     std::string start_pos  = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     std::string pos2  = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -";
     std::string pos3  = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1";
@@ -153,6 +150,19 @@ int main()
     float nodes_per_s_float = sum / elapsed_seconds.count();
     std::cout << "Nodes per second: " << nodes_per_s << std::endl;
     std::cout << "SF%: " << (nodes_per_s_float / 250000000) * 100 << std::endl;
+}
+
+} // namespace
+
+int main(int argc, char* argv[])
+{
+    logic::attack_tables::init_attack_tables();
+
+    if (argc > 1 && std::string(argv[1]) == "bench") {
+        bench();
+    } else {
+        engine::uci::uci_loop();         // UCI engine mode
+    }
 
     return 0;
 }

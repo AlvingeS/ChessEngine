@@ -13,8 +13,8 @@ public:
     const Move& get_move_at(int idx) const;
     int get_move_idx() const;
     
-    void add_move(const Move& move);
     void add_null_move();
+    void add_move(const Move& move);
     void reset();
     
 private:

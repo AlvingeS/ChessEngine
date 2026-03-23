@@ -31,7 +31,7 @@ protected:
         , z_hasher_control(logic::ZHasher(pos, 123))
         , move_maker(logic::MoveMaker(pos, z_hasher))
         , move_retractor(logic::MoveRetractor(pos, z_hasher))
-        , move_gen(logic::MoveGen(pos, move_maker, move_retractor))
+        , move_gen(logic::MoveGen(pos))
         , perft(engine::Perft(mass_fen_perft_depth))
     {};
 

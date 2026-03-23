@@ -17,13 +17,7 @@ struct LegalityInfo;
 class CastleGen {
     
 public:
-    CastleGen(
-        const model::Position& position,
-        logic::MoveMaker& move_maker,
-        logic::MoveRetractor& move_retractor,
-        CheckDetection* check_detection
-    );
-    
+    CastleGen(const model::Position& position); 
     void generate(model::Movelist& movelist, const LegalityInfo& legality_info);
 
 private:
@@ -36,9 +30,6 @@ private:
     bool king_and_rook_on_castle_squares(bool is_kside) const;
 
     const model::Position& pos_;
-    logic::MoveMaker& move_maker_;
-    logic::MoveRetractor& move_retractor_;
-    CheckDetection* check_detection_;
 };
 
 } // namespace logic

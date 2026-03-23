@@ -11,7 +11,7 @@ class Eval {
 public:
     Eval(const model::Position& pos);
     
-    float evaluate();
+    int evaluate();
 
 private:
     const model::Position& pos_;

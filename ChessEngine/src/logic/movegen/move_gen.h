@@ -24,11 +24,7 @@ struct LegalityInfo;
 class MoveGen {
 
 public:
-    MoveGen(
-        const model::Position& position,
-        logic::MoveMaker& move_maker,
-        logic::MoveRetractor& move_retractor
-    );
+    MoveGen(const model::Position& position);
 
     LegalityInfo gen_moves(model::Movelist& movelist);
     
@@ -43,8 +39,6 @@ public:
 
 private:
     const model::Position& pos_;    
-    logic::MoveMaker& move_maker_;
-    logic::MoveRetractor& move_retractor_;
     
     CheckDetection check_detection_;
     RookGen rook_gen_;

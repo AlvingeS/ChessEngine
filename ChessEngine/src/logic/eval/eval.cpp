@@ -1,5 +1,7 @@
 #include "logic/eval/eval.h"
 
+#include "logic/utils.h"
+
 #include "model/position/position.h"
 
 namespace logic {
@@ -14,26 +16,25 @@ Eval::Eval(const model::Position& pos)
     : pos_(pos) 
 {}
 
-float Eval::evaluate() {
-    return 0.0f;
-    // int score = 0;
+int Eval::evaluate() {
+    int score = 0;
 
-    // score += PAWN_VALUE * (utils::pop_count(board_.get_bb_from_piece_type(model::Piece::Type::W_PAWN)));
-    // score -= PAWN_VALUE * (utils::pop_count(board_.get_bb_from_piece_type(model::Piece::Type::B_PAWN)));
+    score += PAWN_VALUE * (utils::pop_count(pos_.bbs.get(PieceType::W_PAWN)));
+    score -= PAWN_VALUE * (utils::pop_count(pos_.bbs.get(PieceType::B_PAWN)));
 
-    // score += KNIGHT_VALUE * (utils::pop_count(board_.get_bb_from_piece_type(model::Piece::Type::W_KNIGHT)));
-    // score -= KNIGHT_VALUE * (utils::pop_count(board_.get_bb_from_piece_type(model::Piece::Type::B_KNIGHT)));
+    score += KNIGHT_VALUE * (utils::pop_count(pos_.bbs.get(PieceType::W_KNIGHT)));
+    score -= KNIGHT_VALUE * (utils::pop_count(pos_.bbs.get(PieceType::B_KNIGHT)));
 
-    // score += BISHOP_VALUE * (utils::pop_count(board_.get_bb_from_piece_type(model::Piece::Type::W_BISHOP)));
-    // score -= BISHOP_VALUE * (utils::pop_count(board_.get_bb_from_piece_type(model::Piece::Type::B_BISHOP)));
+    score += BISHOP_VALUE * (utils::pop_count(pos_.bbs.get(PieceType::W_BISHOP)));
+    score -= BISHOP_VALUE * (utils::pop_count(pos_.bbs.get(PieceType::B_BISHOP)));
 
-    // score += ROOK_VALUE * (utils::pop_count(board_.get_bb_from_piece_type(model::Piece::Type::W_ROOK)));
-    // score -= ROOK_VALUE * (utils::pop_count(board_.get_bb_from_piece_type(model::Piece::Type::B_ROOK)));
+    score += ROOK_VALUE * (utils::pop_count(pos_.bbs.get(PieceType::W_ROOK)));
+    score -= ROOK_VALUE * (utils::pop_count(pos_.bbs.get(PieceType::B_ROOK)));
 
-    // score += QUEEN_VALUE * (utils::pop_count(board_.get_bb_from_piece_type(model::Piece::Type::W_QUEEN)));
-    // score -= QUEEN_VALUE * (utils::pop_count(board_.get_bb_from_piece_type(model::Piece::Type::B_QUEEN)));
+    score += QUEEN_VALUE * (utils::pop_count(pos_.bbs.get(PieceType::W_QUEEN)));
+    score -= QUEEN_VALUE * (utils::pop_count(pos_.bbs.get(PieceType::B_QUEEN)));
 
-    // return static_cast<float>(score);
+    return pos_.is_w ? score : -score;
 }
 
 } // namespace logic

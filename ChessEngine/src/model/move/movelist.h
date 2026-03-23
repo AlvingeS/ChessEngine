@@ -1,6 +1,7 @@
 #pragma once
 
 #include "model/move/move.h"
+#include "model/constants.h"
 
 namespace model {
 
@@ -17,7 +18,7 @@ public:
     void reset();
     
 private:
-    std::vector<Move> movelist_;
+    std::array<Move, constants::MAX_LEGAL_MOVES> movelist_;
     int move_idx_;
 };
 

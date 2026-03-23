@@ -4,10 +4,7 @@
 
 namespace model {
 
-Movelist::Movelist() {
-    movelist_ = std::vector<Move>(constants::MAX_LEGAL_MOVES);
-    move_idx_ = 0;
-}
+Movelist::Movelist() : move_idx_(0) {}
 
 void Movelist::add_move(const Move& move) {
     movelist_[move_idx_] = move;

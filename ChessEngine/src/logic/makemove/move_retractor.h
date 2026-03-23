@@ -24,7 +24,7 @@ private:
     void unmake_castle_move(bool is_kside);
     PieceType  determine_moved_piece_type(const model::Move& move, sq_t to_sq) const;
     void remove_previously_moved_piece_from_board(const model::Move& move, sq_t to_sq, PieceType previous_moved_piece_type);
-    void place_back_captured_piece_on_board(bool is_ep, sq_t capture_sq, sq_t to_sq, PieceType previous_captured_piece_type);
+    void place_back_captured_piece_on_board(sq_t capture_sq, PieceType previous_captured_piece_type);
     void place_back_moved_piece_on_board(sq_t from_sq, PieceType moved_piece_type);
 
     void restore_state(logic::UndoInfo& undo_info);

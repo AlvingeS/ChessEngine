@@ -62,12 +62,9 @@ void MoveRetractor::remove_previously_moved_piece_from_board(
 }
 
 void MoveRetractor::place_back_captured_piece_on_board(
-    bool is_ep,
     sq_t capture_sq,
-    sq_t to_sq,
     PieceType previously_captured_piece_type) 
 {
-    bool was_white = !pos_.is_w;
     pos_.bbs.set_bit_at(capture_sq, previously_captured_piece_type);
 }
 
@@ -75,7 +72,6 @@ void MoveRetractor::place_back_moved_piece_on_board(
     sq_t from_sq, 
     PieceType  moved_piece_type)
 {
-    bool was_white = !pos_.is_w;
     pos_.bbs.set_bit_at(from_sq, moved_piece_type);
 }
 
@@ -136,7 +132,7 @@ void MoveRetractor::unmake_move(
        // Calculate the index of the previously captured piece, might be EP
         sq_t capture_sq = utils::determine_capture_sq(previous_move, was_white);
 
-        place_back_captured_piece_on_board(previous_move.is_ep_capture(), capture_sq, to_sq, undo_info.captured_piece_type);
+        place_back_captured_piece_on_board(capture_sq, undo_info.captured_piece_type);
     } 
 
     // Place the moved piece back on the from square

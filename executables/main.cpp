@@ -95,6 +95,10 @@ void bench()
 
             Removed piece_loopup, occ_masks class and PieceType. everything through bitboards now
             1.636s ~ 26.324Mnps ~ 10.5369% SF
+
+            Implemented negamax and movepicker class. First engine test!
+            1132 rating
+            1.668s ~ 25.7Mnps ~10.27% SF
     */
 
     // Start clock

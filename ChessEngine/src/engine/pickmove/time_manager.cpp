@@ -11,9 +11,14 @@ TimeManager::TimeManager(const uci::GoParams& go_params, bool is_w)
         return;
     }
 
-    if (go_params.depth.has_value() || go_params.infinite) {
+    if (go_params.depth.has_value()) {
         allocated_ms_ = LARGE_NUMBER;
         depth_ = go_params.depth.value();
+        return;
+    }
+
+    if (go_params.infinite.has_value()) {
+        allocated_ms_ = LARGE_NUMBER;
         return;
     }
 
@@ -28,5 +33,12 @@ TimeManager::TimeManager(const uci::GoParams& go_params, bool is_w)
         allocated_ms_  = go_params.btime.value() / 20 + go_params.binc.value_or(0) * 0.8;
     }
 }
+
+void TimeManager::start()
+{
+    start_time_ = std::chrono::steady_clock::now();
+    deadline_ = start_time_ + std::chrono::milliseconds(allocated_ms_);   
+}
+
 
 } // namespace engine

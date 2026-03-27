@@ -83,7 +83,17 @@ model::Move MovePicker::pick_move(TimeManager& tm) {
 
         // This code is only reached on completed runs
         best_move_completed = best_move_this_iteration;
-    
+        int uci_score = best_score_this_iteration / 10;
+        if (!pos_.is_w) uci_score = -uci_score;
+
+        std::cout << "info"
+                  << " depth " << depth
+                  << " score cp " << uci_score
+                  << " nodes " << node_count_
+                  << " nps " <<  1000 * (node_count_ / std::max(1, tm.get_elapsed_ms()))
+                  << " time " << tm.get_elapsed_ms()
+                  << "\n";
+
         if (tm.time_is_up()) break;
     }
 

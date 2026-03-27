@@ -1,5 +1,8 @@
 #include "engine/uci/uci.h"
 
+#include "engine/uci/go_params.h"
+#include "engine/pickmove/time_manager.h"
+
 #include "io/fen.h"
 #include "logic/attack_tables/attack_tables.h"
 #include "logic/movegen/move_gen.h"
@@ -11,6 +14,8 @@
 #include "model/move/movelist.h"
 #include "model/move/move.h"
 
+#include <thread>
+#include <atomic>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -20,7 +25,6 @@ namespace engine::uci {
 namespace {
 
 const std::string START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-const int MAX_DEPTH = 12;
 
 std::string sq_to_str(sq_t sq) {
     std::string s;
@@ -87,8 +91,8 @@ model::Move parse_uci_move(
 }
 
 void uci_loop() {
-    engine::MovePicker move_picker(MAX_DEPTH);
-
+    std::thread search_thread;
+    engine::MovePicker move_picker;
     std::string line;
 
     while (std::getline(std::cin, line)) {
@@ -155,27 +159,48 @@ void uci_loop() {
         }
         else if (cmd == "go") {
             std::string token;
-            int depth = 5;
+            GoParams go_params;
+
+            auto read_int = [&](std::optional<int>& param) {
+                int val;
+                if (iss >> val) param = val;
+            };
 
             while (iss >> token) {
-                if (token == "depth") { 
-                    iss >> depth; 
-                }
-                else if (token == "wtime" || token == "btime" || 
-                        token == "winc"  || token == "binc"  || 
-                        token == "movestogo" || token == "movetime" ||
-                        token == "nodes") {
-                    // Consume the value that follows these tokens
-                    std::string skip;
-                    iss >> skip;
-                }
-                // "infinite", "ponder" etc have no value — just ignore
+                if      (token == "wtime")     read_int(go_params.wtime);
+                else if (token == "btime")     read_int(go_params.btime);
+                else if (token == "winc")      read_int(go_params.winc);
+                else if (token == "binc")      read_int(go_params.binc);
+                else if (token == "movestogo") read_int(go_params.movestogo);
+                else if (token == "movetime")  read_int(go_params.movetime);
+                else if (token == "depth")     read_int(go_params.depth);
+                else if (token == "infinite")  go_params.infinite = true;
             }
 
-            model::Move best = move_picker.pick_move(depth);
-            std::cout << "bestmove " << move_to_uci(best) << std::endl;
+            // If a search is already running, stop it first
+            if (search_thread.joinable()) {
+                move_picker.request_stop();
+                search_thread.join();
+            }
+
+            auto tm = TimeManager(go_params, move_picker.get_is_w());
+
+            search_thread = std::thread([&move_picker, tm]() mutable {
+                model::Move best = move_picker.pick_move(tm);
+                std::cout << "bestmove " << move_to_uci(best) << std::endl;
+            });
+        }
+        else if (cmd == "stop") {
+            if (search_thread.joinable()) {
+                move_picker.request_stop();
+                search_thread.join();
+            }
         }
         else if (cmd == "quit") {
+            if (search_thread.joinable()) {
+                move_picker.request_stop();
+                search_thread.join();
+            }
             break;
         }
         // Unknown commands are silently ignored per UCI spec

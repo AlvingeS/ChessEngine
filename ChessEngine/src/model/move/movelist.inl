@@ -16,4 +16,8 @@ inline int Movelist::get_move_idx() const {
     return move_idx_;
 }
 
+inline void Movelist::swap(int i, int j) {
+    std::swap(movelist_[i], movelist_[j]);
+}
+
 }

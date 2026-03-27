@@ -3,6 +3,8 @@
 #include "model/move/move.h"
 #include "model/constants.h"
 
+#include <algorithm>
+
 namespace model {
 
 class Movelist {
@@ -16,6 +18,7 @@ public:
     void add_null_move();
     void add_move(const Move& move);
     void reset();
+    void swap(int i, int j);
     
 private:
     std::array<Move, constants::MAX_LEGAL_MOVES> movelist_;

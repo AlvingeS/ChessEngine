@@ -11,4 +11,4 @@ add_library(movegen
     check_detection.cpp
 )
 
-target_link_libraries(movegen PUBLIC move position logic_utils attack_tables perft cxx_setup) # TODO: Remove dependency to perft!!!
+target_link_libraries(movegen PUBLIC move position logic_utils attack_tables cxx_setup)

@@ -3,6 +3,7 @@
 # Usage: ./scripts/elo_test.sh <elo>
 # Tests current build against Stockfish at the specified Elo (1320-3190)
 # Example: ./scripts/elo_test.sh 1320
+# Requires: cutechess-cli and stockfish on PATH
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OPENINGS="$SCRIPT_DIR/8moves_v3.pgn"
@@ -31,6 +32,14 @@ if [ ! -f "$ENGINE" ]; then
     exit 1
 fi
 
+if ! command -v cutechess-cli &> /dev/null; then
+    echo "Error: cutechess-cli not found in PATH."
+    echo "Once built, add it to your PATH by running:"
+    echo "  echo 'export PATH=\$PATH:/path/to/cutechess/build' >> ~/.bashrc && source ~/.bashrc"
+    echo "Or symlink it: sudo ln -s /path/to/cutechess/build/cutechess-cli /usr/local/bin/cutechess-cli"
+    exit 1
+fi
+
 if ! command -v stockfish &> /dev/null; then
     echo "Error: stockfish not found in PATH."
     exit 1
@@ -43,7 +52,7 @@ echo "  Opponent: Stockfish @ $1 Elo"
 echo "  Games:    100"
 echo "========================================"
 
-~/repos/cutechess/build/cutechess-cli \
+cutechess-cli \
     -engine cmd="$ENGINE" proto=uci name="Smorklaren" \
     -engine cmd=stockfish proto=uci name="SF_$1" \
         option.UCI_LimitStrength=true option.UCI_Elo="$1" \

@@ -3,6 +3,7 @@
 # Usage: ./scripts/sprt.sh <binary_name>
 # Tests current build against a saved binary under binaries/
 # Example: ./scripts/sprt.sh smorklaren_v1
+# Requires: cutechess-cli on PATH
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
@@ -38,6 +39,14 @@ if [ ! -f "$OPENINGS" ]; then
     exit 1
 fi
 
+if ! command -v cutechess-cli &> /dev/null; then
+    echo "Error: cutechess-cli not found in PATH."
+    echo "Once built, add it to your PATH by running:"
+    echo "  echo 'export PATH=\$PATH:/path/to/cutechess/build' >> ~/.bashrc && source ~/.bashrc"
+    echo "Or symlink it: sudo ln -s /path/to/cutechess/build/cutechess-cli /usr/local/bin/cutechess-cli"
+    exit 1
+fi
+
 echo "========================================"
 echo "  SPRT Test"
 echo "  New:      $ENGINE_NEW"
@@ -45,7 +54,7 @@ echo "  Baseline: $BASELINE"
 echo "  elo0=0 elo1=10 alpha=0.05 beta=0.05"
 echo "========================================"
 
-~/repos/cutechess/build/cutechess-cli \
+cutechess-cli \
     -engine cmd="$ENGINE_NEW" name="new" proto=uci \
     -engine cmd="$BASELINE" name="$1" proto=uci \
     -each tc=1+0.01 \

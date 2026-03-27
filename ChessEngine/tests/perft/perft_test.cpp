@@ -53,7 +53,7 @@ std::vector<TestPosition> build_perft_data()
     TestPosition pos4{"pos4", "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1", 4, 6};
     TestPosition pos5{"pos5", "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8", 4, 5};
     TestPosition pos6{"pos6", "r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10", 4, 9};
-    TestPosition pos_exp{"pos_exp", "1k1r4/ppp2pQp/8/8/2p5/P1P1P1P1/5P1P/4K1NR b K - 2 28", 4, 6};
+    TestPosition pos_exp{"pos_exp", "4k3/7R/8/6B1/4P3/5B2/3P4/1K6 b - - 1 1", 4, 6};
     TestPosition castle_brings_you_into_check_from_opp_king{"castle_brings_you_into_check_from_opp_king", "8/7p/8/1pbp4/3N4/2P5/Pk3P1P/R3K1R1 w Q - 0 1", 4, 6};
     TestPosition double_pawn_push_check_ep_capture_blocked_by_pin{"double_pawn_push_check_ep_capture_blocked_by_pin", "8/K7/5p2/5k2/5p2/5Q2/5PPP/8 w - - 3 44", 4, 6};
     TestPosition block_check_with_promotion{"block_check_with_promotion", "8/8/8/8/8/2QK4/1p6/k7 w - - 36 81", 4, 6};

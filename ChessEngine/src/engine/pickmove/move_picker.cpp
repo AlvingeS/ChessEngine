@@ -68,7 +68,7 @@ model::Move MovePicker::pick_move(TimeManager& tm) {
                 }
             }
     
-            int score = -negamax(depth - 1, -BIG_NUMBER, BIG_NUMBER, tm);
+            int score = -negamax(depth - 1, -BIG_NUMBER, BIG_NUMBER, 1, tm);
             move_retractor_.unmake_move(move, undo_info);
     
             if (stop_) break;
@@ -100,7 +100,7 @@ model::Move MovePicker::pick_move(TimeManager& tm) {
     return best_move_completed;
 }
 
-int MovePicker::negamax(int depth, int alpha, int beta, const TimeManager& tm) {
+int MovePicker::negamax(int depth, int alpha, int beta, int ply, const TimeManager& tm) {
     node_count_++;
     if (node_count_ % NODE_CHECK_INTERVAL == 0) {
         if (tm.time_is_up()) {
@@ -115,12 +115,20 @@ int MovePicker::negamax(int depth, int alpha, int beta, const TimeManager& tm) {
         return eval_.evaluate();
     }
     
-    move_generator_.gen_moves(move_lists_[depth - 1]);
+    auto legality_info = move_generator_.gen_moves(move_lists_[depth - 1]);
 
     for (int i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
         model::Move move = move_lists_[depth - 1].get_move_at(i);
 
         if (move.value() == 0) {
+            // If i == 0 then there are no legal moves
+            if (i == 0) {
+                if (legality_info.in_check()) {
+                    return -BIG_NUMBER + ply;
+                } else {
+                    return 0;
+                }
+            }
             break;
         }
 
@@ -134,7 +142,7 @@ int MovePicker::negamax(int depth, int alpha, int beta, const TimeManager& tm) {
             }
         }
 
-        int score = -negamax(depth - 1, -beta, -alpha, tm);
+        int score = -negamax(depth - 1, -beta, -alpha, ply + 1, tm);
 
         move_retractor_.unmake_move(move, undo_stack_[depth - 1]);
 

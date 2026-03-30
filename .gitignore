@@ -1,6 +1,9 @@
 # Ignore build directory
 build/
 
+# Ignore binaries build
+binaries/
+
 # Ignore Testing
 Testing/
 

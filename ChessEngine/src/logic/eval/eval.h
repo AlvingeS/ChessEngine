@@ -1,5 +1,7 @@
 #pragma once
 
+#include "model/types.h"
+
 namespace model {
     class Position;
 }
@@ -11,7 +13,7 @@ class Eval {
 public:
     Eval(const model::Position& pos);
     
-    int evaluate();
+    eval_t evaluate();
 
 private:
     const model::Position& pos_;

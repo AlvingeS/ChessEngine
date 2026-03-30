@@ -100,7 +100,7 @@ model::Move MovePicker::pick_move(TimeManager& tm) {
     return best_move_completed;
 }
 
-int MovePicker::negamax(int depth, int alpha, int beta, int ply, const TimeManager& tm) {
+eval_t MovePicker::negamax(int depth, int alpha, int beta, int ply, const TimeManager& tm) {
     node_count_++;
     if (node_count_ % NODE_CHECK_INTERVAL == 0) {
         if (tm.time_is_up()) {

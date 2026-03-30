@@ -115,8 +115,8 @@ Eval::Eval(const model::Position& pos)
     : pos_(pos) 
 {}
 
-int Eval::evaluate() {
-    int score = 0;
+eval_t Eval::evaluate() {
+    eval_t score = 0;
 
     // Material
     score += PAWN_VALUE   * utils::pop_count(pos_.bbs.get(PieceType::W_PAWN));

@@ -52,7 +52,7 @@ public:
     void reset_stacks();
 
 private:
-    int negamax(int depth, int alpha, int beta, int ply, const TimeManager& tm);
+    eval_t negamax(int depth, int alpha, int beta, int ply, const TimeManager& tm);
 
     model::Position pos_;
     logic::ZHasher z_hasher_;

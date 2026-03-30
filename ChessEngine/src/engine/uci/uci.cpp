@@ -106,6 +106,9 @@ void uci_loop() {
         if (cmd == "uci") {
             std::cout << "id name Smorklaren" << std::endl;
             std::cout << "id author Alvinge" << std::endl;
+            std::cout << "option name Move Overhead type spin default 30 min 0 max 10000\n";
+            std::cout << "option name Threads type spin default 1 min 1 max 1\n";
+            std::cout << "option name Hash type spin default 16 min 1 max 33554432\n";
             std::cout << "uciok" << std::endl;
         }
         else if (cmd == "isready") {
@@ -202,6 +205,9 @@ void uci_loop() {
                 search_thread.join();
             }
             break;
+        }
+        else if (cmd == "setoption") {
+            // silently consume — no options implemented yet
         }
         // Unknown commands are silently ignored per UCI spec
     }

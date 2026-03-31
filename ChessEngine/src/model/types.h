@@ -8,7 +8,7 @@ typedef bitmask attack_table[64];
 typedef bitmask ray_attack_table[64][8];
 typedef int sq_t;
 typedef unsigned char castle_rights;
-typedef uint16_t eval_t;
+typedef int16_t eval_t;
 
 enum PieceType {
     W_PAWN   = 0,

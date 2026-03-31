@@ -1,6 +1,7 @@
 #pragma once
 
 #include "engine/pickmove/time_manager.h"
+#include "engine/pickmove/transposition_table.h"
 
 #include "model/position/position.h"
 #include "model/move/movelist.h"
@@ -51,8 +52,10 @@ public:
 
     void reset_stacks();
 
+    inline void clear_tt() { tt_.clear(); }
+    inline void resize_tt(size_t mb) { tt_.resize(mb); }
 private:
-    eval_t negamax(int depth, int alpha, int beta, int ply, const TimeManager& tm);
+    eval_t negamax(int depth, eval_t alpha, eval_t beta, int ply, const TimeManager& tm);
 
     model::Position pos_;
     logic::ZHasher z_hasher_;
@@ -60,10 +63,13 @@ private:
     logic::MoveRetractor move_retractor_;
     logic::MoveGen move_generator_;
     logic::Eval eval_;
+    engine::TT tt_;
+
+    long long tt_hits_;
 
     long long node_count_;
     std::atomic<bool> stop_;
-    static constexpr int BIG_NUMBER{999999};
+    static constexpr int BIG_NUMBER{INT16_MAX};
     static constexpr int MAX_SAFE_DEPTH{64};
     static constexpr int NODE_CHECK_INTERVAL{2048};
 

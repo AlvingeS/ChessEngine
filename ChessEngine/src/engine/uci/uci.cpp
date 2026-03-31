@@ -111,12 +111,34 @@ void uci_loop() {
             std::cout << "option name Hash type spin default 16 min 1 max 33554432\n";
             std::cout << "uciok" << std::endl;
         }
+        else if (cmd == "setoption") {
+            std::string token;
+            std::string name;
+            std::string value;
+
+            // consume "name"
+            iss >> token;
+
+            // read the option name (could be multiple words, stops at "value")
+            while (iss >> token && token != "value") {
+                if (!name.empty()) name += " ";
+                name += token;
+            }
+
+            // read the value
+            iss >> value;
+
+            if (name == "Hash") {
+                move_picker.resize_tt(std::stoi(value));
+            }
+        }        
         else if (cmd == "isready") {
             std::cout << "readyok" << std::endl;
         }
         else if (cmd == "ucinewgame") {
             move_picker.reset_position();
             move_picker.reset_stacks();
+            move_picker.clear_tt();
         }
         else if (cmd == "position") {
             std::string token;
@@ -206,10 +228,6 @@ void uci_loop() {
             }
             break;
         }
-        else if (cmd == "setoption") {
-            // silently consume — no options implemented yet
-        }
-        // Unknown commands are silently ignored per UCI spec
     }
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "model/constants.h"
+#include "model/move/move.h"
 
 #include <array>
 #include <cstdint>
@@ -13,6 +14,8 @@ class GameHistory
 {
 
 public:
+    static bool is_move_irreversible(const model::Move& move, bool castle_rights_changed);
+
     inline void push(uint64_t hash) { arr_[idx_++] = hash; }
     inline void push_irreversible(uint64_t hash) { last_irreversible_move_idx_ = idx_; push(hash); }
     inline void pop(int previous_irreversible_move_idx) { idx_--; last_irreversible_move_idx_ = previous_irreversible_move_idx; }

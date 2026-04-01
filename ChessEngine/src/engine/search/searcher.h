@@ -1,8 +1,8 @@
 #pragma once
 
-#include "engine/pickmove/time_manager.h"
-#include "engine/pickmove/transposition_table.h"
-#include "engine/pickmove/game_history.h"
+#include "engine/search/time_manager.h"
+#include "engine/search/transposition_table.h"
+#include "engine/search/game_history.h"
 
 #include "model/position/position.h"
 #include "model/move/movelist.h"
@@ -20,44 +20,32 @@
 
 namespace engine {
 
-class MovePicker {
+class Searcher {
 
 public:
-    MovePicker();
-    model::Move pick_move(TimeManager& time_manager);
-    
-    void set_pos_from_fen(const std::string& fen) {
-        clear_game_hist();
-        io::fen::set_pos_from_fen(fen, pos_);
-    }
+    Searcher();
+    model::Move search(TimeManager& time_manager);
 
+    // Wrapper functions
+    void set_pos_from_fen(const std::string& fen);
+    void make_move(const model::Move& move);
+    model::Movelist gen_moves();
+
+    // Inline wrapper functions
     inline bool get_is_w() { return pos_.is_w; }
     inline void request_stop() { stop_ = true; }
+    inline void z_hash_from_position() { z_hasher_.hash_from_position(pos_); }
+    inline void reset_position() { pos_ = model::Position(); }
 
-    void z_hash_from_position() {
-        z_hasher_.hash_from_position(pos_);
-    }
-
-    void make_move(const model::Move& move);
-
-    void reset_position() {
-        pos_ = model::Position();
-    }    
-
-    model::Movelist gen_moves() {
-        auto ml = model::Movelist();
-        move_generator_.gen_moves(ml, false);
-        return ml;
-    }
-
-    bool is_move_irreversible(const model::Move& move, const castle_rights previous_c_rights) const;
-
+    // Reset functions
     void reset_stacks();
     inline void clear_tt() { tt_.clear(); }
     inline void resize_tt(size_t mb) { tt_.resize(mb); }
     inline void clear_game_hist() { game_hist_.clear(); }
+
 private:
     eval_t negamax(int depth, eval_t alpha, eval_t beta, int ply, const TimeManager& tm);
+    eval_t quiescence(eval_t alpha, eval_t beta, int ply, const TimeManager& tm);
 
     model::Position pos_;
     logic::ZHasher z_hasher_;
@@ -73,13 +61,12 @@ private:
     long long node_count_;
     std::atomic<bool> stop_;
     static constexpr int BIG_NUMBER{INT16_MAX};
-    static constexpr int MAX_SAFE_DEPTH{64};
+    static constexpr int MAX_SAFE_DEPTH{256};
     static constexpr int NODE_CHECK_INTERVAL{2048};
 
     std::vector<model::Movelist> move_lists_;
     std::vector<int> no_captures_or_pawn_moves_counts_; 
     std::vector<logic::UndoInfo> undo_stack_;
-
 };
 
 } // namespace engine

@@ -1,4 +1,4 @@
-#include "engine/pickmove/time_manager.h"
+#include "engine/search/time_manager.h"
 
 #include <stdexcept>
 

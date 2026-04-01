@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/pickmove/move_picker.h"
+#include "engine/search/searcher.h"
 
 #include "model/move/move.h"
 #include "model/move/movelist.h"

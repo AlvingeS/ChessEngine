@@ -1,4 +1,4 @@
-#include "engine/pickmove/transposition_table.h"
+#include "engine/search/transposition_table.h"
 
 namespace engine {
 

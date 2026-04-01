@@ -1,7 +1,7 @@
 #include "engine/uci/uci.h"
 
 #include "engine/uci/go_params.h"
-#include "engine/pickmove/time_manager.h"
+#include "engine/search/time_manager.h"
 
 #include "io/fen.h"
 #include "logic/attack_tables/attack_tables.h"
@@ -92,7 +92,7 @@ model::Move parse_uci_move(
 
 void uci_loop() {
     std::thread search_thread;
-    engine::MovePicker move_picker;
+    engine::Searcher searcher;
     std::string line;
 
     while (std::getline(std::cin, line)) {
@@ -129,25 +129,25 @@ void uci_loop() {
             iss >> value;
 
             if (name == "Hash") {
-                move_picker.resize_tt(std::stoi(value));
+                searcher.resize_tt(std::stoi(value));
             }
         }        
         else if (cmd == "isready") {
             std::cout << "readyok" << std::endl;
         }
         else if (cmd == "ucinewgame") {
-            move_picker.reset_position();
-            move_picker.reset_stacks();
-            move_picker.clear_tt();
-            move_picker.clear_game_hist();
+            searcher.reset_position();
+            searcher.reset_stacks();
+            searcher.clear_tt();
+            searcher.clear_game_hist();
         }
         else if (cmd == "position") {
             std::string token;
             iss >> token;
 
             if (token == "startpos") {
-                move_picker.set_pos_from_fen(START_FEN);
-                move_picker.z_hash_from_position();
+                searcher.set_pos_from_fen(START_FEN);
+                searcher.z_hash_from_position();
 
                 // Try to consume "moves" token
                 iss >> token;
@@ -161,8 +161,8 @@ void uci_loop() {
                     fen += part;
                 }
 
-                move_picker.set_pos_from_fen(fen);
-                move_picker.z_hash_from_position();
+                searcher.set_pos_from_fen(fen);
+                searcher.z_hash_from_position();
 
                 // Try to consume "moves" token
                 iss >> token;
@@ -173,13 +173,13 @@ void uci_loop() {
             std::string move_str;
             while (iss >> move_str) {
                 // Generate legal moves from current position
-                auto move_list = move_picker.gen_moves();
+                auto move_list = searcher.gen_moves();
 
                 // Find matching move and apply it
                 model::Move move = parse_uci_move(move_str, move_list);
 
                 if (move.value() != 0) {
-                    move_picker.make_move(move);
+                    searcher.make_move(move);
                 }
             }
         }
@@ -205,26 +205,27 @@ void uci_loop() {
 
             // If a search is already running, stop it first
             if (search_thread.joinable()) {
-                move_picker.request_stop();
+                searcher.request_stop();
                 search_thread.join();
             }
 
-            auto tm = TimeManager(go_params, move_picker.get_is_w());
+            auto tm = TimeManager(go_params, searcher.get_is_w());
 
-            search_thread = std::thread([&move_picker, tm]() mutable {
-                model::Move best = move_picker.pick_move(tm);
-                std::cout << "bestmove " << move_to_uci(best) << std::endl;
+            search_thread = std::thread([&searcher, tm]() mutable {
+                model::Move best = searcher.search(tm);
+                auto move_notation = move_to_uci(best);
+                std::cout << "bestmove " << move_notation << std::endl;
             });
         }
         else if (cmd == "stop") {
             if (search_thread.joinable()) {
-                move_picker.request_stop();
+                searcher.request_stop();
                 search_thread.join();
             }
         }
         else if (cmd == "quit") {
             if (search_thread.joinable()) {
-                move_picker.request_stop();
+                searcher.request_stop();
                 search_thread.join();
             }
             break;

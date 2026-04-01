@@ -6,6 +6,7 @@ namespace constants
 
 static constexpr int MAX_LEGAL_MOVES = 218;
 static constexpr int MAX_GAME_LENGTH{4096};
+static constexpr int MAX_SAFE_DEPTH{64};
 
 static constexpr sq_t W_KSIDE_ROOK_START_SQ = 7;
 static constexpr sq_t W_QSIDE_ROOK_START_SQ = 0;

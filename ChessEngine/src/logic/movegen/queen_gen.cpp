@@ -13,7 +13,7 @@ QueenGen::QueenGen(const model::Position& pos)
     : pos_(pos)   
 {}
 
-void QueenGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info)
+void QueenGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only)
 {
     if (legality_info.in_double_check()) {
         return;
@@ -27,14 +27,14 @@ void QueenGen::generate(model::Movelist& movelist, const LegalityInfo& legality_
                             : pos_.bbs.get(PieceType::B_QUEEN);
 
     utils::for_each_bit(bb, [&](sq_t sq) {
-        rays::add_moves_from_ray(Direction::N,  true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
-        rays::add_moves_from_ray(Direction::E,  true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
-        rays::add_moves_from_ray(Direction::S,  false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
-        rays::add_moves_from_ray(Direction::W,  false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
-        rays::add_moves_from_ray(Direction::NE, true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
-        rays::add_moves_from_ray(Direction::SE, false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
-        rays::add_moves_from_ray(Direction::SW, false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
-        rays::add_moves_from_ray(Direction::NW, true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info);
+        rays::add_moves_from_ray(Direction::N,  true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info, captures_only);
+        rays::add_moves_from_ray(Direction::E,  true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info, captures_only);
+        rays::add_moves_from_ray(Direction::S,  false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info, captures_only);
+        rays::add_moves_from_ray(Direction::W,  false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info, captures_only);
+        rays::add_moves_from_ray(Direction::NE, true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info, captures_only);
+        rays::add_moves_from_ray(Direction::SE, false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info, captures_only);
+        rays::add_moves_from_ray(Direction::SW, false, sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info, captures_only);
+        rays::add_moves_from_ray(Direction::NW, true,  sq, movelist, occupied_pieces_mask, opponent_pieces_mask, legality_info, captures_only);
     });
 }
 

@@ -125,7 +125,7 @@ void Perft::minimax(
         bp.print();
         std::cout << "Making moves..." << std::endl;
     }
-    logic::LegalityInfo legality_info = move_generator_.gen_moves(move_lists_[current_depth]);
+    logic::LegalityInfo legality_info = move_generator_.gen_moves(move_lists_[current_depth], false);
 
     // The move that was made before the next call of minimax put us in check, at the previous depth
     if (current_depth - 1 >= 0 && legality_info.in_check()) {

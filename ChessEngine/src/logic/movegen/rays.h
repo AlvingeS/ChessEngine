@@ -27,7 +27,8 @@ void add_moves_from_ray(
     model::Movelist& movelist,
     bitmask occupied_squares_mask,
     bitmask opponent_squares_mask,
-    const LegalityInfo& legality_info
+    const LegalityInfo& legality_info,
+    const bool captures_only
 );
 
 

@@ -26,14 +26,14 @@ class MoveGen {
 public:
     MoveGen(const model::Position& position);
 
-    LegalityInfo gen_moves(model::Movelist& movelist);
+    LegalityInfo gen_moves(model::Movelist& movelist, const bool captures_only);
     
-    void gen_rook_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
-    void gen_bishop_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
-    void gen_queen_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
-    void gen_knight_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
-    void gen_king_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
-    void gen_pawn_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
+    void gen_rook_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only);
+    void gen_bishop_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only);
+    void gen_queen_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only);
+    void gen_knight_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only);
+    void gen_king_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only);
+    void gen_pawn_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only);
     void gen_castle_moves(model::Movelist& movelist, const LegalityInfo& legality_info);
     bool in_check();
 

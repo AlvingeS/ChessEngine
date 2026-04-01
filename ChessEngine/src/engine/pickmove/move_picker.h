@@ -46,7 +46,7 @@ public:
 
     model::Movelist gen_moves() {
         auto ml = model::Movelist();
-        move_generator_.gen_moves(ml);
+        move_generator_.gen_moves(ml, false);
         return ml;
     }
 

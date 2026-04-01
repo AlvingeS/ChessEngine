@@ -14,7 +14,7 @@ KnightGen::KnightGen(const model::Position& pos)
     , knight_attack_table_(attack_tables::knight)
 {}
 
-void KnightGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info) 
+void KnightGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) 
 {
     if (legality_info.in_double_check()) {
         return;
@@ -34,16 +34,18 @@ void KnightGen::generate(model::Movelist& movelist, const LegalityInfo& legality
             legal_moves &= legality_info.check_response_mask;
         }
     
-        bitmask quiet_moves_mask = legal_moves & pos_.bbs.get_empty();
+        if (!captures_only) {
+            bitmask quiet_moves_mask = legal_moves & pos_.bbs.get_empty();
+            
+            utils::for_each_bit(quiet_moves_mask, [&](sq_t to_sq) {
+                movelist.add_move(model::Move(knight_sq, to_sq, model::Move::QUIET_FLAG));
+            });
+        }
         
         bitmask opp_pieces_mask = pos_.is_w ? pos_.bbs.get_b()
                                             : pos_.bbs.get_w();
         
         bitmask capture_moves_mask = legal_moves & opp_pieces_mask;
-    
-        utils::for_each_bit(quiet_moves_mask, [&](sq_t to_sq) {
-            movelist.add_move(model::Move(knight_sq, to_sq, model::Move::QUIET_FLAG));
-        });
 
         utils::for_each_bit(capture_moves_mask, [&](sq_t to_sq) {
             movelist.add_move(model::Move(knight_sq, to_sq, model::Move::CAPTURE_FLAG));

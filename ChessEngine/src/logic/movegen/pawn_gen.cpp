@@ -14,7 +14,7 @@ PawnGen::PawnGen(const model::Position& pos)
     : pos_(pos)
 {}
 
-void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info)
+void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only)
 {
     if (legality_info.in_double_check()) {
         return;
@@ -116,13 +116,16 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
         
         int offset = pos_.is_w ? 8 : -8;
 
+        
         if (utils::pop_count(quiet_moves_mask) == 2) {
-            if (pos_.is_w) {
-                movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(quiet_moves_mask), model::Move::SINGLE_PAWN_PUSH_FLAG));
-                movelist.add_move(model::Move(pawn_sq, utils::msb_idx(quiet_moves_mask), model::Move::DOUBLE_PAWN_PUSH_FLAG));
-            } else {
-                movelist.add_move(model::Move(pawn_sq, utils::msb_idx(quiet_moves_mask), model::Move::SINGLE_PAWN_PUSH_FLAG));
-                movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(quiet_moves_mask), model::Move::DOUBLE_PAWN_PUSH_FLAG));                
+            if (!captures_only) {
+                if (pos_.is_w) {
+                    movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(quiet_moves_mask), model::Move::SINGLE_PAWN_PUSH_FLAG));
+                    movelist.add_move(model::Move(pawn_sq, utils::msb_idx(quiet_moves_mask), model::Move::DOUBLE_PAWN_PUSH_FLAG));
+                } else {
+                    movelist.add_move(model::Move(pawn_sq, utils::msb_idx(quiet_moves_mask), model::Move::SINGLE_PAWN_PUSH_FLAG));
+                    movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(quiet_moves_mask), model::Move::DOUBLE_PAWN_PUSH_FLAG));                
+                }
             }
         } else if (utils::pop_count(quiet_moves_mask) == 1 && utils::lsb_idx(quiet_moves_mask) == pawn_sq + offset) {
             sq_t to_sq = pawn_sq + offset;
@@ -134,7 +137,8 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
                 movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::QUEEN_PROMO_FLAG));
             
             } else {
-                movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::SINGLE_PAWN_PUSH_FLAG));
+                if (!captures_only)
+                    movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::SINGLE_PAWN_PUSH_FLAG));
             }
         }
 

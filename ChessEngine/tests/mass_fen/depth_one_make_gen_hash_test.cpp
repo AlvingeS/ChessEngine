@@ -9,7 +9,7 @@ TEST_F(DepthOneMakeGenHashTest, CheckCorrectMoveGenMakeMoveAndHashingForMassFen)
 {
     for_each_fen_position(std::string(TEST_DATA_DIR) + mass_fen_make_unmake_samples, [&](const std::string& fen){
         model::Movelist pseudo_legal_moves;
-        move_gen.gen_moves(pseudo_legal_moves);
+        move_gen.gen_moves(pseudo_legal_moves, false);
         model::Position pos_copy = pos;
 
         std::vector<model::Move> legal_moves;

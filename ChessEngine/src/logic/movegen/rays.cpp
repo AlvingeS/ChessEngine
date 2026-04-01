@@ -19,7 +19,8 @@ void add_moves_from_ray(
     model::Movelist& movelist,
     bitmask occupied_squares_mask,
     bitmask opponent_squares_mask,
-    const LegalityInfo& legality_info
+    const LegalityInfo& legality_info,
+    const bool captures_only
     )
 {
     bitmask unhindered_ray = attack_tables::rays[piece_sq][dir];
@@ -32,7 +33,8 @@ void add_moves_from_ray(
     bitmask blockers_mask = unhindered_ray & occupied_squares_mask;
 
     // Rays can be divided logically by if the ray has blockers or not, we first handle the free ray case
-    if (blockers_mask == 0ULL) {
+    // we skip this if we are generating captures only
+    if (blockers_mask == 0ULL && !captures_only) {
         if (legality_info.in_check()) {
             bitmask blocking_move_mask = unhindered_ray & legality_info.check_response_mask;
 
@@ -84,9 +86,11 @@ void add_moves_from_ray(
         return;
     }  else {
         // Add all moves upp until blocker
-        utils::for_each_bit(ray_between_piece_and_first_blocker, [&](sq_t to_sq) {
-            movelist.add_move(model::Move(piece_sq, to_sq, model::Move::QUIET_FLAG));
-        });
+        if (!captures_only) {
+            utils::for_each_bit(ray_between_piece_and_first_blocker, [&](sq_t to_sq) {
+                movelist.add_move(model::Move(piece_sq, to_sq, model::Move::QUIET_FLAG));
+            });
+        }
     
         // If the blocker is an opponent and pin-ray has not zeroed it, capture it
         if (utils::get_bit(opponent_squares_mask, first_blocker_sq) && first_blocker_mask != 0ULL) {

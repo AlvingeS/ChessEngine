@@ -1,5 +1,7 @@
 #pragma once
 
+#include "model/constants.h"
+
 #include <array>
 #include <cstdint>
 
@@ -18,12 +20,10 @@ public:
     inline  int get_last_irreversible_move_idx() const { return last_irreversible_move_idx_; }
 
     int count(uint64_t hash);
-private:
-    static constexpr int MAX_GAME_LENGTH{4096};
-   
+private:   
     int idx_{0};
     int last_irreversible_move_idx_{0};
-    std::array<uint64_t, MAX_GAME_LENGTH> arr_;
+    std::array<uint64_t, constants::MAX_GAME_LENGTH> arr_;
 };
 
 } // namespace engine

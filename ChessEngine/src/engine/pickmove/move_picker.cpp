@@ -39,7 +39,7 @@ model::Move MovePicker::pick_move(TimeManager& tm) {
         
         auto ml = model::Movelist();
         auto undo_info = logic::UndoInfo();
-        move_generator_.gen_moves(ml);
+        move_generator_.gen_moves(ml, false);
 
         // Put the best move found first for the next iteration
         if (depth > 1) {
@@ -143,24 +143,24 @@ eval_t MovePicker::negamax(int depth, eval_t alpha, eval_t beta, int ply, const 
 
     eval_t original_alpha = alpha;
     
-    auto legality_info = move_generator_.gen_moves(move_lists_[depth - 1]);
+    auto legality_info = move_generator_.gen_moves(move_lists_[ply], false);
 
     if (!tt_miss) {
         int swap_idx = 0;
-        for (int i = 0; i < move_lists_[depth - 1].get_move_idx(); i++) {
-            if (move_lists_[depth - 1].get_move_at(i).value() == tt_entry->best_move_val) {
+        for (int i = 0; i < move_lists_[ply].get_move_idx(); i++) {
+            if (move_lists_[ply].get_move_at(i).value() == tt_entry->best_move_val) {
                 swap_idx = i;
                 break;
             }
         }
 
-        move_lists_[depth - 1].swap(0, swap_idx);
+        move_lists_[ply].swap(0, swap_idx);
     }
 
     model::Move best_move = model::Move();
     eval_t best_score = -BIG_NUMBER;
     for (int i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
-        model::Move move = move_lists_[depth - 1].get_move_at(i);
+        model::Move move = move_lists_[ply].get_move_at(i);
 
         if (move.value() == 0) {
             // If i == 0 then there are no legal moves
@@ -177,18 +177,18 @@ eval_t MovePicker::negamax(int depth, eval_t alpha, eval_t beta, int ply, const 
         }
 
         int previous_last_irreversible_move_idx = game_hist_.get_last_irreversible_move_idx();
-        undo_stack_[depth - 1] = move_maker_.make_move(move);
+        undo_stack_[ply] = move_maker_.make_move(move);
 
         // If move is ep, make the move, check if in check, if so - undo
         if (move.is_ep_capture()) {
             if (move_generator_.in_check())  {
-                move_retractor_.unmake_move(move, undo_stack_[depth - 1]);   
+                move_retractor_.unmake_move(move, undo_stack_[ply]);   
                 continue;
             }
         }
 
         uint64_t z_hash = z_hasher_.value();
-        if (is_move_irreversible(move, undo_stack_[depth - 1].c_rights)) {
+        if (is_move_irreversible(move, undo_stack_[ply].c_rights)) {
             game_hist_.push_irreversible(z_hash);
         } else {
             game_hist_.push(z_hash);
@@ -198,14 +198,14 @@ eval_t MovePicker::negamax(int depth, eval_t alpha, eval_t beta, int ply, const 
         // this means that we end the game in draw by three-fold repetition
         int repetitions = game_hist_.count(z_hash);
         if (repetitions == 2 || (repetitions == 1 && ply > 2)) {
-            move_retractor_.unmake_move(move, undo_stack_[depth - 1]);
+            move_retractor_.unmake_move(move, undo_stack_[ply]);
             game_hist_.pop(previous_last_irreversible_move_idx);
             return 0;
         }
 
         eval_t score = -negamax(depth - 1, -beta, -alpha, ply + 1, tm);
         
-        move_retractor_.unmake_move(move, undo_stack_[depth - 1]);
+        move_retractor_.unmake_move(move, undo_stack_[ply]);
         game_hist_.pop(previous_last_irreversible_move_idx);
         if (stop_) break;
 

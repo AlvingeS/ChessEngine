@@ -19,7 +19,7 @@ CastleGen::CastleGen(const model::Position& pos)
     : pos_(pos)
 {}
 
-void CastleGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info) 
+void CastleGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info) const
 {
     if (legality_info.in_check()) {
         return;
@@ -64,7 +64,7 @@ bool CastleGen::king_and_rook_on_castle_squares(bool is_kside) const
 void CastleGen::gen_single_castle_move(
     bool is_kside,
     model::Movelist& movelist,
-    const LegalityInfo& legality_info)
+    const LegalityInfo& legality_info) const
 {                                                  
     // Check that there are no pieces between the king and rook
     bitmask space_between_castlers_mask = pos_.is_w ? (is_kside ? masks::W_KSIDE_SPACE_BETWEEN_KING_AND_ROOK_MASK 

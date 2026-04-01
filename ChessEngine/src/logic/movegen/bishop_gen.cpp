@@ -18,7 +18,7 @@ BishopGen::BishopGen(const model::Position& pos)
     : pos_(pos)
 {}
 
-void BishopGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only)
+void BishopGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) const
 {
     if (legality_info.in_double_check()) {
         return;

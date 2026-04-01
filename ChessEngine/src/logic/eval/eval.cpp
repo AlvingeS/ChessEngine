@@ -115,7 +115,7 @@ Eval::Eval(const model::Position& pos)
     : pos_(pos) 
 {}
 
-eval_t Eval::evaluate() {
+eval_t Eval::evaluate() const {
     eval_t score = 0;
 
     // Material

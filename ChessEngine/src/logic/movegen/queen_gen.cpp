@@ -13,7 +13,7 @@ QueenGen::QueenGen(const model::Position& pos)
     : pos_(pos)   
 {}
 
-void QueenGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only)
+void QueenGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) const
 {
     if (legality_info.in_double_check()) {
         return;

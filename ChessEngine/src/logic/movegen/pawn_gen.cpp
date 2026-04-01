@@ -14,7 +14,7 @@ PawnGen::PawnGen(const model::Position& pos)
     : pos_(pos)
 {}
 
-void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only)
+void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) const
 {
     if (legality_info.in_double_check()) {
         return;

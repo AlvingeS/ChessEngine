@@ -14,7 +14,7 @@ KnightGen::KnightGen(const model::Position& pos)
     , knight_attack_table_(attack_tables::knight)
 {}
 
-void KnightGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) 
+void KnightGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) const
 {
     if (legality_info.in_double_check()) {
         return;

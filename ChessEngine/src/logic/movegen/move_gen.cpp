@@ -23,7 +23,7 @@ MoveGen::MoveGen(const model::Position& pos)
     , castle_gen_(pos)
 {}
 
-LegalityInfo MoveGen::gen_moves(model::Movelist& movelist, const bool captures_only)
+LegalityInfo MoveGen::gen_moves(model::Movelist& movelist, const bool captures_only) const
 {
     movelist.reset();
 
@@ -44,42 +44,42 @@ LegalityInfo MoveGen::gen_moves(model::Movelist& movelist, const bool captures_o
     return legality_info;
 }
 
-void MoveGen::gen_rook_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only)
+void MoveGen::gen_rook_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) const
 {
     rook_gen_.generate(movelist, legality_info, captures_only);
 }
 
-void MoveGen::gen_bishop_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only)
+void MoveGen::gen_bishop_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) const
 {
     bishop_gen_.generate(movelist, legality_info, captures_only);
 }
 
-void MoveGen::gen_queen_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only)
+void MoveGen::gen_queen_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) const
 {
     queen_gen_.generate(movelist, legality_info, captures_only);;
 }
 
-void MoveGen::gen_knight_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only)
+void MoveGen::gen_knight_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) const
 {
     knight_gen_.generate(movelist, legality_info, captures_only);
 }
 
-void MoveGen::gen_king_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only)
+void MoveGen::gen_king_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) const
 {
     king_gen_.generate(movelist, legality_info, captures_only);
 }
 
-void MoveGen::gen_pawn_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only)
+void MoveGen::gen_pawn_moves(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) const
 {
     pawn_gen_.generate(movelist, legality_info, captures_only);
 }
 
-void MoveGen::gen_castle_moves(model::Movelist& movelist, const LegalityInfo& legality_info)
+void MoveGen::gen_castle_moves(model::Movelist& movelist, const LegalityInfo& legality_info) const
 {
     castle_gen_.generate(movelist, legality_info);
 }
 
-bool MoveGen::in_check() {
+bool MoveGen::in_check()  const{
     return check_detection_.in_check();
 }
 

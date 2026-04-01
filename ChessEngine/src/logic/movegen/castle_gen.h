@@ -18,14 +18,14 @@ class CastleGen {
     
 public:
     CastleGen(const model::Position& position); 
-    void generate(model::Movelist& movelist, const LegalityInfo& legality_info);
+    void generate(model::Movelist& movelist, const LegalityInfo& legality_info) const;
 
 private:
     void gen_single_castle_move(
         bool is_kside,
         model::Movelist& movelist,
         const LegalityInfo& legality_info
-    );
+    ) const;
 
     bool king_and_rook_on_castle_squares(bool is_kside) const;
 

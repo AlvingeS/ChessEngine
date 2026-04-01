@@ -14,7 +14,7 @@ KingGen::KingGen(const model::Position& pos)
     , king_attack_table_(attack_tables::king)
 {}
 
-void KingGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) 
+void KingGen::generate(model::Movelist& movelist, const LegalityInfo& legality_info, const bool captures_only) const
 {
     sq_t king_sq = utils::lsb_idx(pos_.is_w ? pos_.bbs.get(PieceType::W_KING)
                                               : pos_.bbs.get(PieceType::B_KING));

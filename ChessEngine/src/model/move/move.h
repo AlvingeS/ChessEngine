@@ -21,7 +21,7 @@ public:
         ROOK_PROMO_FLAG           = 9,
         QUEEN_PROMO_FLAG          = 10,
         TBD_ONE_FLAG              = 11,
-        TBD_TWO_FLAG              = 12,
+        SINGLE_PAWN_PUSH_FLAG     = 12,
         DOUBLE_PAWN_PUSH_FLAG     = 13,
         KING_CASTLE_FLAG          = 14,
         QUEEN_CASTLE_FLAG         = 15
@@ -80,7 +80,7 @@ public:
 
     [[nodiscard]] constexpr bool is_quiet() const noexcept
     {
-        return flag() == QUIET_FLAG;
+        return flag() == QUIET_FLAG || flag() == SINGLE_PAWN_PUSH_FLAG;    
     }
 
     [[nodiscard]] constexpr bool is_double_pawn_push() const noexcept

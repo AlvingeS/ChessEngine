@@ -139,6 +139,7 @@ void uci_loop() {
             move_picker.reset_position();
             move_picker.reset_stacks();
             move_picker.clear_tt();
+            move_picker.clear_game_hist();
         }
         else if (cmd == "position") {
             std::string token;

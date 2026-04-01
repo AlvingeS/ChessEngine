@@ -53,7 +53,7 @@ echo "  Games:    100"
 echo "========================================"
 
 cutechess-cli \
-    -engine cmd="$ENGINE" proto=uci name="Smorklaren" \
+    -engine cmd="$ENGINE" proto=uci name="BlorbBot" \
     -engine cmd=stockfish proto=uci name="SF_$1" \
         option.UCI_LimitStrength=true option.UCI_Elo="$1" \
     -each tc=10+0.1 \

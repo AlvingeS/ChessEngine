@@ -2,6 +2,7 @@
 
 #include "engine/pickmove/time_manager.h"
 #include "engine/pickmove/transposition_table.h"
+#include "engine/pickmove/game_history.h"
 
 #include "model/position/position.h"
 #include "model/move/movelist.h"
@@ -51,9 +52,9 @@ public:
     }
 
     void reset_stacks();
-
     inline void clear_tt() { tt_.clear(); }
     inline void resize_tt(size_t mb) { tt_.resize(mb); }
+    inline void clear_game_hist() { game_hist_.clear(); }
 private:
     eval_t negamax(int depth, eval_t alpha, eval_t beta, int ply, const TimeManager& tm);
 
@@ -63,8 +64,9 @@ private:
     logic::MoveRetractor move_retractor_;
     logic::MoveGen move_generator_;
     logic::Eval eval_;
+    
     engine::TT tt_;
-
+    engine::GameHistory game_hist_;
     long long tt_hits_;
 
     long long node_count_;

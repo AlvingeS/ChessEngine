@@ -18,6 +18,7 @@ MovePicker::MovePicker()
     , move_generator_(logic::MoveGen(pos_))
     , eval_(logic::Eval(pos_))
     , tt_(engine::TT())
+    , game_hist_(GameHistory())
 {
     move_lists_.resize(MAX_SAFE_DEPTH + 1);
     undo_stack_.resize(MAX_SAFE_DEPTH + 1);

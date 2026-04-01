@@ -32,11 +32,13 @@ public:
     
     void resize(size_t mb);
     void clear();
+    int hashfull() const;
 
 private:
     std::vector<TTEntry> array_;
     uint64_t index_mask_;
 
+    static constexpr size_t HASH_COUNTING_SAMPLE_SIZE = 1000;
     static constexpr size_t DEFAULT_SIZE_MB = 16;
 };
 

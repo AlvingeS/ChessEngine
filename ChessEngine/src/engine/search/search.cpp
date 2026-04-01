@@ -80,7 +80,8 @@ model::Move Searcher::search(TimeManager& tm) {
                   << " nodes " << node_count_
                   << " nps " <<  1000 * (node_count_ / std::max(1, tm.get_elapsed_ms()))
                   << " time " << tm.get_elapsed_ms()
-                  << " string tt_hits " << tt_hits_
+                  << " hashfull " << tt_.hashfull()
+                  << " string tt hitrate " << (tt_hits_ * 100) / node_count_
                   << "\n";
 
         if (tm.time_is_up() || stop_) break;

@@ -55,4 +55,14 @@ const TTEntry* TT::lookup(uint64_t key) const
     }
 }
 
+int TT::hashfull() const
+{
+    int count = 0;
+    for (size_t i = 0; i < HASH_COUNTING_SAMPLE_SIZE; i++) {
+        if (array_[i].flag != TTFlag::NONE)
+            count++;
+    }
+    return count;
+}
+
 } // namespace engine

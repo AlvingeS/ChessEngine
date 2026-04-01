@@ -16,4 +16,10 @@ int GameHistory::count(uint64_t hash)
     return count;
 }
 
+void GameHistory::clear()
+{
+    idx_ = 0; 
+    last_irreversible_move_idx_ = 0; 
+}
+
 } // namespace engine

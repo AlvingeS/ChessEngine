@@ -27,6 +27,7 @@ public:
     model::Move pick_move(TimeManager& time_manager);
     
     void set_pos_from_fen(const std::string& fen) {
+        clear_game_hist();
         io::fen::set_pos_from_fen(fen, pos_);
     }
 
@@ -37,9 +38,7 @@ public:
         z_hasher_.hash_from_position(pos_);
     }
 
-    void make_move(const model::Move& move) {
-        move_maker_.make_move(move);
-    }
+    void make_move(const model::Move& move);
 
     void reset_position() {
         pos_ = model::Position();
@@ -50,6 +49,8 @@ public:
         move_generator_.gen_moves(ml);
         return ml;
     }
+
+    bool is_move_irreversible(const model::Move& move, const castle_rights previous_c_rights) const;
 
     void reset_stacks();
     inline void clear_tt() { tt_.clear(); }

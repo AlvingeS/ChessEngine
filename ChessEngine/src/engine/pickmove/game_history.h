@@ -13,8 +13,9 @@ class GameHistory
 public:
     inline void push(uint64_t hash) { arr_[idx_++] = hash; }
     inline void push_irreversible(uint64_t hash) { last_irreversible_move_idx_ = idx_; push(hash); }
-    inline void pop() { idx_--; }
-    inline void clear() { arr_.fill(0ULL); }
+    inline void pop(int previous_irreversible_move_idx) { idx_--; last_irreversible_move_idx_ = previous_irreversible_move_idx; }
+    void clear();
+    inline  int get_last_irreversible_move_idx() const { return last_irreversible_move_idx_; }
 
     int count(uint64_t hash);
 private:

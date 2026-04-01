@@ -176,6 +176,7 @@ eval_t MovePicker::negamax(int depth, eval_t alpha, eval_t beta, int ply, const 
             break;
         }
 
+        int previous_last_irreversible_move_idx = game_hist_.get_last_irreversible_move_idx();
         undo_stack_[depth - 1] = move_maker_.make_move(move);
 
         // If move is ep, make the move, check if in check, if so - undo
@@ -186,9 +187,26 @@ eval_t MovePicker::negamax(int depth, eval_t alpha, eval_t beta, int ply, const 
             }
         }
 
+        uint64_t z_hash = z_hasher_.value();
+        if (is_move_irreversible(move, undo_stack_[depth - 1].c_rights)) {
+            game_hist_.push_irreversible(z_hash);
+        } else {
+            game_hist_.push(z_hash);
+        }
+
+        // We have reached this position 2 times before, and just moved into it again
+        // this means that we end the game in draw by three-fold repetition
+        int repetitions = game_hist_.count(z_hash);
+        if (repetitions == 2 || (repetitions == 1 && ply > 2)) {
+            move_retractor_.unmake_move(move, undo_stack_[depth - 1]);
+            game_hist_.pop(previous_last_irreversible_move_idx);
+            return 0;
+        }
+
         eval_t score = -negamax(depth - 1, -beta, -alpha, ply + 1, tm);
         
         move_retractor_.unmake_move(move, undo_stack_[depth - 1]);
+        game_hist_.pop(previous_last_irreversible_move_idx);
         if (stop_) break;
 
         if (score > best_score) {
@@ -216,6 +234,25 @@ eval_t MovePicker::negamax(int depth, eval_t alpha, eval_t beta, int ply, const 
     tt_.store(z_hasher_.value(), alpha, depth, flag, best_move.value());
 
     return alpha;
+}
+
+bool MovePicker::is_move_irreversible(const model::Move& move, const castle_rights previous_c_rights) const
+{
+        return move.is_any_capture() 
+            || move.flag() == model::Move::SINGLE_PAWN_PUSH_FLAG 
+            || move.flag() == model::Move::DOUBLE_PAWN_PUSH_FLAG
+            || move.is_any_promo()
+            || pos_.c_rights != previous_c_rights;
+}
+
+void MovePicker::make_move(const model::Move& move) {
+    castle_rights prev_c_rights = pos_.c_rights;
+    move_maker_.make_move(move);
+    if (is_move_irreversible(move, prev_c_rights)) {
+        game_hist_.push_irreversible(z_hasher_.value());
+    } else {
+        game_hist_.push(z_hasher_.value());
+    }
 }
 
 void MovePicker::reset_stacks() {

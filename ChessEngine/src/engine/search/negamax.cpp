@@ -67,6 +67,9 @@ eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, const Ti
     model::Move best_move = model::Move();
     eval_t best_score = -BIG_NUMBER;
 
+    bool all_captures_played = false;
+    int killer_move_idx = 0;
+
     // Loop over all moves
     for (int i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
         model::Move move = move_lists_[ply].get_move_at(i);
@@ -86,7 +89,7 @@ eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, const Ti
         }
 
         // Find the highest capture value capture and swap it in
-        if (i > 0) {
+        if (i > 0 && !all_captures_played) {
             int mvv_lva_max_idx = i;
             int mvv_lva_max_score = INT32_MIN;
             for (int j = i; j < move_lists_[ply].get_move_idx(); j++) {
@@ -100,10 +103,27 @@ eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, const Ti
                         mvv_lva_max_score = MVV_LVA_TABLE[victim % 6][attacker % 6];
                     }
                 }
+
             }
+            
+            // If the max score is unchanged, then no more captures was found
+            all_captures_played = mvv_lva_max_score == INT32_MIN;
 
             move_lists_[ply].swap(i, mvv_lva_max_idx);
             move = move_lists_[ply].get_move_at(i);
+        }
+
+        if (all_captures_played && killer_move_idx < 2 && killer_moves_[ply][killer_move_idx].value() != 0) {
+            for (int j = i; j < move_lists_[ply].get_move_idx(); j++) {
+                auto next_move_canditate = move_lists_[ply].get_move_at(j);
+                if (next_move_canditate == killer_moves_[ply][killer_move_idx]) {
+                    move_lists_[ply].swap(i, j);
+                    move = move_lists_[ply].get_move_at(i);
+                    killer_move_idx++;
+                    killer_move_swaps_++;
+                    break;
+                }
+            }
         }
 
         int previous_last_irreversible_move_idx = game_hist_.get_last_irreversible_move_idx();
@@ -147,7 +167,11 @@ eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, const Ti
         alpha = std::max(score, alpha);
 
         if (alpha >= beta) {
-            // Prune!
+            if (!move.is_any_capture()) {
+                killer_moves_[ply][1] = killer_moves_[ply][0];
+                killer_moves_[ply][0] = move;
+            }
+
             break;
         }
     }

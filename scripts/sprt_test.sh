@@ -57,7 +57,7 @@ echo "========================================"
 cutechess-cli \
     -engine cmd="$ENGINE_NEW" name="new" proto=uci \
     -engine cmd="$BASELINE" name="$1" proto=uci \
-    -each tc=1+0.01 \
+    -each tc=3+0.2 \
     -openings file="$OPENINGS" format=pgn order=random \
     -games 2 -rounds 2000 -repeat \
     -recover -concurrency 4 \

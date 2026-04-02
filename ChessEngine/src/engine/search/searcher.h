@@ -54,15 +54,17 @@ private:
     logic::MoveGen move_generator_;
     logic::Eval eval_;
     
-    engine::TT tt_;
-    engine::GameHistory game_hist_;
-    long long tt_hits_;
-
     long long node_count_;
     std::atomic<bool> stop_;
     static constexpr int BIG_NUMBER{INT16_MAX};
     static constexpr int MAX_SAFE_DEPTH{256};
     static constexpr int NODE_CHECK_INTERVAL{2048};
+
+    engine::TT tt_;
+    long long tt_hits_;
+    engine::GameHistory game_hist_;
+    std::array<std::array<model::Move, 2>, MAX_SAFE_DEPTH> killer_moves_{};
+    long long killer_move_swaps_;
 
     std::vector<model::Movelist> move_lists_;
     std::vector<int> no_captures_or_pawn_moves_counts_; 

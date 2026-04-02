@@ -11,7 +11,9 @@ model::Move Searcher::search(TimeManager& tm) {
     stop_ = false;
     node_count_ = 0;
     tt_hits_ = 0;
+    killer_move_swaps_ = 0;
     tm.start();
+    killer_moves_ = {};
 
     for (int depth = 1; depth <= max_depth; depth++) {
         model::Move best_move_this_iteration = model::Move();
@@ -81,7 +83,8 @@ model::Move Searcher::search(TimeManager& tm) {
                   << " nps " <<  1000 * (node_count_ / std::max(1, tm.get_elapsed_ms()))
                   << " time " << tm.get_elapsed_ms()
                   << " hashfull " << tt_.hashfull()
-                  << " string tt hitrate " << (tt_hits_ * 100) / node_count_
+                  << " string tt hitrate " << (tt_hits_ * 100.0) / node_count_
+                  << " string km swaps " << killer_move_swaps_
                   << "\n";
 
         if (tm.time_is_up() || stop_) break;

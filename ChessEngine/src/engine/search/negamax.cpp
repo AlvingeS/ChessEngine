@@ -1,5 +1,7 @@
 #include "engine/search/searcher.h"
 
+#include "engine/search/mvv_lva_table.h"
+
 namespace engine {
 
 eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, const TimeManager& tm) {
@@ -13,6 +15,7 @@ eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, const Ti
 
     if (stop_) return 0;
 
+    // Try to lookup the move from TT
     auto tt_entry = tt_.lookup(z_hasher_.value()); 
     bool tt_miss = tt_entry == nullptr;
     if (!tt_miss && tt_entry->depth >= depth) {
@@ -35,14 +38,19 @@ eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, const Ti
         }
     }
 
+    // Start quescence search if at depth 0
     if (depth == 0) {
         return quiescence(alpha, beta, ply, tm);
     }
 
+    // Save for game history comparison
     eval_t original_alpha = alpha;
-    
+
+    // Generate moves
     auto legality_info = move_generator_.gen_moves(move_lists_[ply], false);
 
+    // If we found an entry in TT that was not EXACT, we can use the previously found best move
+    // we swap it into the first slot
     if (!tt_miss) {
         int swap_idx = 0;
         for (int i = 0; i < move_lists_[ply].get_move_idx(); i++) {
@@ -55,8 +63,11 @@ eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, const Ti
         move_lists_[ply].swap(0, swap_idx);
     }
 
+    // For tt entry
     model::Move best_move = model::Move();
     eval_t best_score = -BIG_NUMBER;
+
+    // Loop over all moves
     for (int i = 0; i < constants::MAX_LEGAL_MOVES; i++) {
         model::Move move = move_lists_[ply].get_move_at(i);
 
@@ -72,6 +83,27 @@ eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, const Ti
                 }
             }
             break;
+        }
+
+        // Find the highest capture value capture and swap it in
+        if (i > 0) {
+            int mvv_lva_max_idx = i;
+            int mvv_lva_max_score = INT32_MIN;
+            for (int j = i; j < move_lists_[ply].get_move_idx(); j++) {
+                auto next_move_candidate = move_lists_[ply].get_move_at(j);
+                if (next_move_candidate.is_any_capture()) {
+                    PieceType attacker = pos_.bbs.get_piece_type_at(next_move_candidate.from());
+                    PieceType victim   = pos_.bbs.get_piece_type_at(next_move_candidate.to());
+
+                    if (MVV_LVA_TABLE[victim % 6][attacker % 6] > mvv_lva_max_score) {
+                        mvv_lva_max_idx = j;
+                        mvv_lva_max_score = MVV_LVA_TABLE[victim % 6][attacker % 6];
+                    }
+                }
+            }
+
+            move_lists_[ply].swap(i, mvv_lva_max_idx);
+            move = move_lists_[ply].get_move_at(i);
         }
 
         int previous_last_irreversible_move_idx = game_hist_.get_last_irreversible_move_idx();

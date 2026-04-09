@@ -39,7 +39,7 @@ private:
     uint64_t index_mask_;
 
     static constexpr size_t HASH_COUNTING_SAMPLE_SIZE = 1000;
-    static constexpr size_t DEFAULT_SIZE_MB = 16;
+    static constexpr size_t DEFAULT_SIZE_MB = 32;
 };
 
 } // namespace engine

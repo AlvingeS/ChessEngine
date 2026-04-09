@@ -65,7 +65,7 @@ private:
     static constexpr int MAX_SAFE_DEPTH{256};
     static constexpr int NODE_CHECK_INTERVAL{2048};
     static constexpr eval_t QUISCIENCE_DELTA_MARGIN{200};
-    static constexpr int NULL_MOVE_DEPTH_REDUCTION{3};
+    static constexpr int NULL_MOVE_DEPTH_REDUCTION{2};
 
     engine::TT tt_;
     long long tt_hits_;

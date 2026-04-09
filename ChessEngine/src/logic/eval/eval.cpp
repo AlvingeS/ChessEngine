@@ -6,11 +6,11 @@
 
 namespace logic {
 
-static constexpr int PAWN_VALUE   = 1000;
-static constexpr int KNIGHT_VALUE = 3200;
-static constexpr int BISHOP_VALUE = 3300;
-static constexpr int ROOK_VALUE   = 5000;
-static constexpr int QUEEN_VALUE  = 9000;
+static constexpr int PAWN_VALUE   = 100;
+static constexpr int KNIGHT_VALUE = 320;
+static constexpr int BISHOP_VALUE = 330;
+static constexpr int ROOK_VALUE   = 500;
+static constexpr int QUEEN_VALUE  = 900;
 
 // Piece-square tables from white's perspective
 // Index 0 = a1, index 7 = h1, index 56 = a8, index 63 = h8
@@ -93,7 +93,7 @@ static int pst_score(const model::Bitboards& bbs, PieceType pt, const int* table
     bitmask bb = bbs.get(pt);
     while (bb) {
         sq_t sq = utils::lsb_idx(bb);
-        score += table[sq];
+        score += table[mirror_sq(sq)];
         bb &= bb - 1;
     }
     return score;
@@ -105,7 +105,7 @@ static int pst_score_mirrored(const model::Bitboards& bbs, PieceType pt, const i
     bitmask bb = bbs.get(pt);
     while (bb) {
         sq_t sq = utils::lsb_idx(bb);
-        score += table[mirror_sq(sq)];
+        score += table[sq];
         bb &= bb - 1;
     }
     return score;

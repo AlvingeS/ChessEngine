@@ -73,7 +73,7 @@ model::Move Searcher::search(TimeManager& tm) {
 
         // This code is only reached on completed runs
         best_move_completed = best_move_this_iteration;
-        int uci_score = best_score_this_iteration / 10;
+        int uci_score = best_score_this_iteration;
         if (!pos_.is_w) uci_score = -uci_score;
 
         std::cout << "info"

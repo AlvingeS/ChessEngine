@@ -16,8 +16,9 @@ eval_t Searcher::quiescence(eval_t alpha, eval_t beta, int ply, const TimeManage
 
     bool in_check = move_generator_.in_check();
 
+    eval_t stand_pat = -BIG_NUMBER;
     if (!in_check) {
-        eval_t stand_pat = eval_.evaluate();
+        stand_pat = eval_.evaluate();
         if (stand_pat >= beta) return beta;
         alpha = std::max(alpha, stand_pat);
     }
@@ -39,24 +40,28 @@ eval_t Searcher::quiescence(eval_t alpha, eval_t beta, int ply, const TimeManage
         }
 
         // Find the highest capture value capture and swap it in
-        if (i > 0) {
-            int mvv_lva_max_idx = i;
-            int mvv_lva_max_score = INT32_MIN;
-            for (int j = i; j < move_lists_[ply].get_move_idx(); j++) {
-                auto next_move_candidate = move_lists_[ply].get_move_at(j);
-                if (next_move_candidate.is_any_capture()) {
-                    PieceType attacker = pos_.bbs.get_piece_type_at(next_move_candidate.from());
-                    PieceType victim   = pos_.bbs.get_piece_type_at(next_move_candidate.to());
+        int mvv_lva_max_idx = i;
+        int mvv_lva_max_score = INT32_MIN;
+        int value_of_captured_piece = 0;
+        for (int j = i; j < move_lists_[ply].get_move_idx(); j++) {
+            auto next_move_candidate = move_lists_[ply].get_move_at(j);
+            if (next_move_candidate.is_any_capture()) {
+                PieceType attacker = pos_.bbs.get_piece_type_at(next_move_candidate.from());
+                PieceType victim   = pos_.bbs.get_piece_type_at(next_move_candidate.to());
 
-                    if (MVV_LVA_TABLE[victim % 6][attacker % 6] > mvv_lva_max_score) {
-                        mvv_lva_max_idx = j;
-                        mvv_lva_max_score = MVV_LVA_TABLE[victim % 6][attacker % 6];
-                    }
+                if (MVV_LVA_TABLE[victim % 6][attacker % 6] > mvv_lva_max_score) {
+                    mvv_lva_max_idx = j;
+                    mvv_lva_max_score = MVV_LVA_TABLE[victim % 6][attacker % 6];
+                    value_of_captured_piece = PIECE_VALUES[victim % 6];
                 }
             }
+        }
 
-            move_lists_[ply].swap(i, mvv_lva_max_idx);
-            move = move_lists_[ply].get_move_at(i);
+        move_lists_[ply].swap(i, mvv_lva_max_idx);
+        move = move_lists_[ply].get_move_at(i);
+
+        if (stand_pat + value_of_captured_piece + QUISCIENCE_DELTA_MARGIN < alpha && !in_check) {
+            continue;
         }
 
         undo_stack_[ply] = move_maker_.make_move(move);

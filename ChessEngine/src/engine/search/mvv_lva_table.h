@@ -4,7 +4,7 @@
 
 #include <array>
 
-namespace {
+namespace engine {
 
 static constexpr int PIECE_VALUES[6] = {
     100, 300, 300, 500, 900, 5000
@@ -25,10 +25,6 @@ static constexpr auto build_mvv_lva_table()
     }
     return table;
 }
-
-} // namespace
-
-namespace engine {
 
 static constexpr auto MVV_LVA_TABLE = build_mvv_lva_table();
 

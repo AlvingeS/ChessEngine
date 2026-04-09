@@ -4,7 +4,7 @@
 
 namespace engine {
 
-eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, const TimeManager& tm) {
+eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, bool allow_null_move, const TimeManager& tm) {
     node_count_++;
     if (node_count_ % NODE_CHECK_INTERVAL == 0) {
         if (tm.time_is_up()) {
@@ -41,6 +41,16 @@ eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, const Ti
     // Start quescence search if at depth 0
     if (depth == 0) {
         return quiescence(alpha, beta, ply, tm);
+    }
+
+    // Null move pruning
+    if (!move_generator_.in_check() && depth >= NULL_MOVE_DEPTH_REDUCTION + 1 && allow_null_move && has_non_pawn_material()) {
+        bitmask ep_target_mask = pos_.ep_target_mask;
+        make_null_move();
+        eval_t score = -negamax(depth - 1 - NULL_MOVE_DEPTH_REDUCTION, -beta, -beta + 1, ply + 1, false, tm);
+        undo_null_move(ep_target_mask);
+
+        if (score >= beta) return beta;
     }
 
     // Save for game history comparison
@@ -153,7 +163,7 @@ eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, const Ti
             return 0;
         }
 
-        eval_t score = -negamax(depth - 1, -beta, -alpha, ply + 1, tm);
+        eval_t score = -negamax(depth - 1, -beta, -alpha, ply + 1, true, tm);
         
         move_retractor_.unmake_move(move, undo_stack_[ply]);
         game_hist_.pop(previous_last_irreversible_move_idx);

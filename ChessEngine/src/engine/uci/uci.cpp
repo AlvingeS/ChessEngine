@@ -223,6 +223,15 @@ void uci_loop() {
                 search_thread.join();
             }
         }
+        else if (cmd == "bench") {
+            if (search_thread.joinable()) {
+                searcher.request_stop();
+                search_thread.join();
+            }
+            
+            searcher.bench();
+            break;
+        }
         else if (cmd == "quit") {
             if (search_thread.joinable()) {
                 searcher.request_stop();

@@ -3,6 +3,7 @@
 #include "io/board_printer.h"
 #include "model/constants.h"
 #include "logic/masks.h"
+#include "logic/utils.h"
 
 #include <cstdlib>
 namespace engine {
@@ -51,6 +52,45 @@ model::Movelist Searcher::gen_moves() {
 void Searcher::set_pos_from_fen(const std::string& fen) {
     clear_game_hist();
     io::fen::set_pos_from_fen(fen, pos_);
+}
+
+bool Searcher::has_non_pawn_material() const
+{
+    if (pos_.is_w) {
+        return 
+            pos_.bbs.get(PieceType::W_BISHOP) != 0ULL ||
+            pos_.bbs.get(PieceType::W_KNIGHT) != 0ULL ||
+            pos_.bbs.get(PieceType::W_ROOK)   != 0ULL ||
+            pos_.bbs.get(PieceType::W_QUEEN)  != 0ULL;
+    } else {
+        return 
+            pos_.bbs.get(PieceType::B_BISHOP) != 0ULL ||
+            pos_.bbs.get(PieceType::B_KNIGHT) != 0ULL ||
+            pos_.bbs.get(PieceType::B_ROOK)   != 0ULL ||
+            pos_.bbs.get(PieceType::B_QUEEN)  != 0ULL;
+    }
+}
+
+void Searcher::make_null_move()
+{
+    pos_.is_w = !pos_.is_w;
+    z_hasher_.toggle_side_to_move();
+
+    if (pos_.ep_target_mask != 0ULL)
+        z_hasher_.xor_ep_file_at(logic::utils::file_from_sq(logic::utils::lsb_idx(pos_.ep_target_mask)));
+
+    pos_.ep_target_mask = 0ULL;
+}
+
+void Searcher::undo_null_move(bitmask ep_target_mask)
+{
+    pos_.is_w = !pos_.is_w;
+    z_hasher_.toggle_side_to_move();
+
+    if (ep_target_mask != 0ULL)
+        z_hasher_.xor_ep_file_at(logic::utils::file_from_sq(logic::utils::lsb_idx(ep_target_mask)));
+    
+    pos_.ep_target_mask = ep_target_mask;
 }
 
 } // namespace engine

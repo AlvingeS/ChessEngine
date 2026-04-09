@@ -6,5 +6,6 @@ add_library(search
     time_manager.cpp
     transposition_table.cpp
     game_history.cpp
+    bench.cpp
 )
 target_link_libraries(search PUBLIC io eval makemove movegen uci cxx_setup Threads::Threads)

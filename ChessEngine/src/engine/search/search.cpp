@@ -53,7 +53,7 @@ model::Move Searcher::search(TimeManager& tm) {
                 }
             }
     
-            int score = -negamax(depth - 1, -BIG_NUMBER, BIG_NUMBER, 1, tm);
+            int score = -negamax(depth - 1, -BIG_NUMBER, BIG_NUMBER, 1, true, tm);
             move_retractor_.unmake_move(move, undo_info);
     
             if (stop_) break;

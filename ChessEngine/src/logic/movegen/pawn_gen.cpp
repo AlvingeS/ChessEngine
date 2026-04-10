@@ -106,7 +106,7 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
                         movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::BISHOP_PROMO_FLAG));
                         movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::KNIGHT_PROMO_FLAG));
                     } else {
-                        movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::SINGLE_PAWN_PUSH_FLAG));
+                        movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::QUIET_FLAG));
                     }
                 }
             }
@@ -120,10 +120,10 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
         if (utils::pop_count(quiet_moves_mask) == 2) {
             if (!captures_only) {
                 if (pos_.is_w) {
-                    movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(quiet_moves_mask), model::Move::SINGLE_PAWN_PUSH_FLAG));
+                    movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(quiet_moves_mask), model::Move::QUIET_FLAG));
                     movelist.add_move(model::Move(pawn_sq, utils::msb_idx(quiet_moves_mask), model::Move::DOUBLE_PAWN_PUSH_FLAG));
                 } else {
-                    movelist.add_move(model::Move(pawn_sq, utils::msb_idx(quiet_moves_mask), model::Move::SINGLE_PAWN_PUSH_FLAG));
+                    movelist.add_move(model::Move(pawn_sq, utils::msb_idx(quiet_moves_mask), model::Move::QUIET_FLAG));
                     movelist.add_move(model::Move(pawn_sq, utils::lsb_idx(quiet_moves_mask), model::Move::DOUBLE_PAWN_PUSH_FLAG));                
                 }
             }
@@ -138,7 +138,7 @@ void PawnGen::generate(model::Movelist& movelist, const LegalityInfo& legality_i
             
             } else {
                 if (!captures_only)
-                    movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::SINGLE_PAWN_PUSH_FLAG));
+                    movelist.add_move(model::Move(pawn_sq, to_sq, model::Move::QUIET_FLAG));
             }
         }
 

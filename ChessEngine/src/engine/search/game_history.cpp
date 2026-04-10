@@ -22,10 +22,10 @@ void GameHistory::clear()
     last_irreversible_move_idx_ = 0; 
 }
 
-bool GameHistory::is_move_irreversible(const model::Move& move, bool castle_rights_changed)
+bool GameHistory::is_move_irreversible(const model::Move& move, bool single_pawn_push, bool castle_rights_changed)
 {
         return move.is_any_capture() 
-            || move.flag() == model::Move::SINGLE_PAWN_PUSH_FLAG 
+            || single_pawn_push
             || move.flag() == model::Move::DOUBLE_PAWN_PUSH_FLAG
             || move.is_any_promo()
             || castle_rights_changed;

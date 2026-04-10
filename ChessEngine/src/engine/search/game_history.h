@@ -14,7 +14,7 @@ class GameHistory
 {
 
 public:
-    static bool is_move_irreversible(const model::Move& move, bool castle_rights_changed);
+    static bool is_move_irreversible(const model::Move& move, bool single_pawn_push, bool castle_rights_changed);
 
     inline void push(uint64_t hash) { arr_[idx_++] = hash; }
     inline void push_irreversible(uint64_t hash) { last_irreversible_move_idx_ = idx_; push(hash); }

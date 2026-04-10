@@ -146,9 +146,15 @@ eval_t Searcher::negamax(int depth, eval_t alpha, eval_t beta, int ply, bool all
                 continue;
             }
         }
+        bool single_pawn_push = false;
+        if (pos_.is_w) {
+            single_pawn_push = pos_.bbs.get_piece_type_at(move.to()) == PieceType::W_PAWN && move.is_quiet();
+        } else {
+            single_pawn_push = pos_.bbs.get_piece_type_at(move.to()) == PieceType::B_PAWN && move.is_quiet();
+        }
 
         uint64_t z_hash = z_hasher_.value();
-        if (GameHistory::is_move_irreversible(move, pos_.c_rights != undo_stack_[ply].c_rights)) {
+        if (GameHistory::is_move_irreversible(move, single_pawn_push, pos_.c_rights != undo_stack_[ply].c_rights)) {
             game_hist_.push_irreversible(z_hash);
         } else {
             game_hist_.push(z_hash);

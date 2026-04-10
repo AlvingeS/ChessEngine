@@ -147,7 +147,7 @@ model::Move notation_to_move(const std::string& notation, const model::Position&
         return model::Move(from_sq, to_sq, model::Move::CAPTURE_FLAG);
     
     if (piece_type_from == PieceType::W_PAWN || piece_type_from == PieceType::B_PAWN) {
-        return model::Move(from_sq, to_sq, model::Move::SINGLE_PAWN_PUSH_FLAG);
+        return model::Move(from_sq, to_sq, model::Move::QUIET_FLAG);
     } else {
         return model::Move(from_sq, to_sq, model::Move::QUIET_FLAG);
     }

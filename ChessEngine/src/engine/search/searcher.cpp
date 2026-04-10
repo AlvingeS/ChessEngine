@@ -26,7 +26,15 @@ Searcher::Searcher()
 void Searcher::make_move(const model::Move& move) {
     castle_rights prev_c_rights = pos_.c_rights;
     move_maker_.make_move(move);
-    if (GameHistory::is_move_irreversible(move, pos_.c_rights != prev_c_rights)) {
+
+    bool single_pawn_push = false;
+    if (pos_.is_w) {
+        single_pawn_push = pos_.bbs.get_piece_type_at(move.to()) == PieceType::W_PAWN && move.is_quiet();
+    } else {
+        single_pawn_push = pos_.bbs.get_piece_type_at(move.to()) == PieceType::B_PAWN && move.is_quiet();
+    }
+
+    if (GameHistory::is_move_irreversible(move, single_pawn_push, pos_.c_rights != prev_c_rights)) {
         game_hist_.push_irreversible(z_hasher_.value());
     } else {
         game_hist_.push(z_hasher_.value());
